@@ -54,3 +54,4 @@ excluded:
   - scripts/genstrings.swift
   - danger/DangerTests.swift
   - ${PROJECT_NAME}Tests
+  - ${PROJECT_NAME}UITests

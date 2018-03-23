@@ -1,3 +1,4 @@
+
 ENV["SWIFTLINT_VERSION"] = '0.25.0'
 
 #### HELPER METHODS
@@ -171,13 +172,14 @@ xcov.report(
 	scheme: project_name,
 	minimum_coverage_percentage: 50.0,
 	only_project_targets: true,
-	output_directory: "xcov_output"
+	output_directory: "xcov_output",
+	source_directory: "../../../" # Expecting this Dangerfile to be in `source/Submodules/WeTransfer-iOS-CI/Danger/`
 )
 
 # Run SwiftLint for source code and tests
 swiftlint.verbose = true
-swiftlint.config_file = File.join(Dir.pwd,'../SwiftLint','.swiftlint-source.yml')
+swiftlint.config_file = File.join(Dir.pwd,'Submodules/WeTransfer-iOS-CI/SwiftLint','.swiftlint-source.yml')
 swiftlint.lint_files inline_mode: true
 
-swiftlint.config_file = File.join(Dir.pwd,'../SwiftLint','.swiftlint-tests.yml')
+swiftlint.config_file = File.join(Dir.pwd,'Submodules/WeTransfer-iOS-CI/SwiftLint','.swiftlint-tests.yml')
 swiftlint.lint_files inline_mode: true

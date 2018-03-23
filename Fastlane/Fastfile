@@ -4,5 +4,5 @@ lane :validate_changes do |options|
   ENV["PROJECT_NAME"] = options[:project_name]
   
   # Run Danger
-  danger(dangerfile: "#{Dir.pwd}/../Submodules/WeTransfer-iOS-CI/Danger/Dangerfile")
+  danger(dangerfile: "../Submodules/WeTransfer-iOS-CI/Danger/Dangerfile")
 end

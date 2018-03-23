@@ -47,3 +47,4 @@ excluded:
   - scripts/genstrings.swift
   - danger/DangerTests.swift
   - ${PROJECT_NAME}
+  - Sources # Folder for open source projects

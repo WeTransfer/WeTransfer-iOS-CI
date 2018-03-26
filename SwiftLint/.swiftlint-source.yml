@@ -2,7 +2,6 @@
 disabled_rules: # Rule identifiers to exclude from running
   - line_length # Documentation can exceed line lengths
   - identifier_name
-  - superfluous_disable_command
 opt_in_rules:
   - empty_count
   - force_unwrapping
@@ -26,7 +25,6 @@ trailing_comma:
 trailing_newline: error
 trailing_semicolon: error
 trailing_whitespace: error
-unneeded_break_in_switch: error
 unused_closure_parameter: error
 unused_optional_binding: 
   severity: error
@@ -48,10 +46,11 @@ custom_rules:
     severity: warning # violation severity. optional.
 
 excluded:
-  - Carthage
-  - Playgrounds
-  - Submodules
-  - scripts/genstrings.swift
-  - danger/DangerTests.swift
-  - ${PROJECT_NAME}Tests
-  - ${PROJECT_NAME}UITests
+  # We add ../../../ to work with the way Danger is expanding paths based on the config file.
+  - ../../../Carthage
+  - ../../../Playgrounds
+  - ../../../Submodules
+  - ../../../scripts/genstrings.swift
+  - ../../../danger/DangerTests.swift
+  - ../../../${PROJECT_NAME}Tests
+  - ../../../${PROJECT_NAME}UITests

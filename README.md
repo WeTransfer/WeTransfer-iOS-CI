@@ -61,12 +61,12 @@ fi
 You can now run fastlane using your CI environment. This can be integrated easily using the script in this repo:
 
 ```
-- "./Submodules/WeTransfer-iOS-CI/Scripts/travis.sh PROJECT_NAME" # Run WeTransfer iOS CI Travis script
+- "./Submodules/WeTransfer-iOS-CI/Scripts/travis.sh PROJECT_NAME"
 ```
 
 _Note: replace **PROJECT\_NAME** with your project name_
 
 ## License
 
-UINotifications is available under the MIT license. See the LICENSE file for more info.
+WeTransfer-iOS-CI is available under the MIT license. See the LICENSE file for more info.
 

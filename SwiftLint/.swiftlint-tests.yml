@@ -39,10 +39,10 @@ trailing_whitespace:
   ignores_empty_lines: true # This is such a hassle to do right and adds nothing
 
 excluded:
-  - ../../../Carthage
-  - ../../../Playgrounds
-  - ../../../Submodules
-  - ../../../scripts/genstrings.swift
-  - ../../../danger/DangerTests.swift
-  - ../../../${PROJECT_NAME}
-  - ../../../Sources # Folder for open source projects
+  - ${SRCROOT}/Carthage
+  - ${SRCROOT}/Playgrounds
+  - ${SRCROOT}/Submodules
+  - ${SRCROOT}/scripts/genstrings.swift
+  - ${SRCROOT}/danger/DangerTests.swift
+  - ${SRCROOT}/${PROJECT_NAME}
+  - ${SRCROOT}/Sources # Folder for open source projects

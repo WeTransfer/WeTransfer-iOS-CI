@@ -169,7 +169,7 @@ end
 # Show Code coverage report
 xcov.report(
 	scheme: project_name,
-	minimum_coverage_percentage: 50.0,
+	minimum_coverage_percentage: ENV['MINIMUM_COVERAGE_PERCENTAGE'] || 75.0,
 	only_project_targets: true,
 	output_directory: "xcov_output",
 	source_directory: "../../../" # Expecting this Dangerfile to be in `source/Submodules/WeTransfer-iOS-CI/Danger/`

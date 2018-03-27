@@ -178,8 +178,10 @@ xcov.report(
 # Run SwiftLint for source code and tests
 swiftlint.verbose = true
 swiftlint.config_file = File.join(Dir.pwd,'Submodules/WeTransfer-iOS-CI/SwiftLint','.swiftlint-source.yml')
+swiftlint.directory = "../../../"
 swiftlint.lint_files inline_mode: true
 
 swiftlint.verbose = true
 swiftlint.config_file = File.join(Dir.pwd,'Submodules/WeTransfer-iOS-CI/SwiftLint','.swiftlint-tests.yml')
+swiftlint.directory = "../../../"
 swiftlint.lint_files inline_mode: true 

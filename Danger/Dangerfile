@@ -42,36 +42,6 @@ if has_wip_label || has_wip_title
 	warn("PR is classed as Work in Progress")
 end
 
-# Warn when there is a big PR.
-warn("Big PR") if git.lines_of_code > 500
-
-# Check for warnings
-json_file = "build/reports/errors.json"
-if File.file?(json_file)
-	xcode_summary.ignored_files = 'Submodules/**'
-	xcode_summary.inline_mode = true
-	xcode_summary.report 'build/reports/errors.json'
-end
-
-# Check to see if any of our project files contains a line with "SOURCE_ROOT" which indicates that the file isn't in sync with Finder.
-["Rabbit.xcodeproj/project.pbxproj",
- "Coyote.xcodeproj/project.pbxproj"].each do |project_file|
- 	next unless File.file?(project_file)
-	File.readlines(project_file).each_with_index do |line, index|
-		# The folder Resources is a folder references for sharing resources for testing. Don't warn for that folder.
-		files_to_ignore = ["Resources", "Toucan.swift"]
-		line_should_be_ignored = files_to_ignore.map { |name| "name = " + name }.any? { |file_to_ignore| line.include?(file_to_ignore) }
-		if line.include?("sourceTree = SOURCE_ROOT;") and line.include?("PBXFileReference") and !line_should_be_ignored
-			warn("Files should be in sync with project structure", file: project_file, line: index+1) 
-		end
-	end
-end
-
-# Mainly to encourage writing up some reasoning about the PR, rather than just leaving a title.
-if github.pr_body.length < 3 && git.lines_of_code > 10
-  warn("Please provide a summary in the Pull Request description")
-end
-
 # 
 # ** FILE CHECKS **
 # Checks for certain rules and warns if needed.
@@ -164,6 +134,14 @@ has_test_changes = !files.grep(/#{project_name}Tests/).empty?
 ## for changed number of lines of code
 if has_app_changes && !has_test_changes && git.lines_of_code > 20
   warn("Tests were not updated", sticky: false)
+end
+
+# Check for warnings
+json_file = "build/reports/errors.json"
+if File.file?(json_file)
+	xcode_summary.ignored_files = 'Submodules/**'
+	xcode_summary.inline_mode = true
+	xcode_summary.report 'build/reports/errors.json'
 end
 
 # Show Code coverage report

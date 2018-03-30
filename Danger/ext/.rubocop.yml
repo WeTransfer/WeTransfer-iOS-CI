@@ -9,3 +9,6 @@ Metrics/BlockLength:
 
 Metrics/ModuleLength:
   Enabled: false
+
+Metrics/AbcSize:
+  Enabled: false

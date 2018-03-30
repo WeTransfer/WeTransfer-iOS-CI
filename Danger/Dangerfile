@@ -34,14 +34,6 @@ def lineRequiresDocumentation(line)
 	return true
 end
 
-# Make it more obvious that a PR is a work in progress and shouldn't be merged yet.
-has_wip_label = github.pr_labels.any? { |label| label.include? "WIP" }
-has_wip_title = github.pr_title.include? "[WIP]"
-
-if has_wip_label || has_wip_title
-	warn("PR is classed as Work in Progress")
-end
-
 # 
 # ** FILE CHECKS **
 # Checks for certain rules and warns if needed.
@@ -119,23 +111,6 @@ files_to_check = (git.modified_files + git.added_files).uniq
 	end
 end
 
-# Grab the project name from Xcode.
-project_name = ENV['PROJECT_NAME']
-
-# Combine added and modifed files. If we add a test as a new file, this has to be captured as well.
-files = git.added_files + git.modified_files
-
-## Let's check if there are any changes in the project folder
-has_app_changes = !files.grep(/#{project_name}/).empty?
-## Then, we should check if tests are updated
-has_test_changes = !files.grep(/#{project_name}Tests/).empty?
-
-## Finally, let's combine them and put extra condition
-## for changed number of lines of code
-if has_app_changes && !has_test_changes && git.lines_of_code > 20
-  warn("Tests were not updated", sticky: false)
-end
-
 # Check for warnings
 json_file = "build/reports/errors.json"
 if File.file?(json_file)
@@ -146,7 +121,7 @@ end
 
 # Show Code coverage report
 xcov.report(
-	scheme: project_name,
+	scheme: ENV['PROJECT_NAME'],
 	minimum_coverage_percentage: ENV['MINIMUM_COVERAGE_PERCENTAGE'] || 75.0,
 	only_project_targets: true,
 	output_directory: "xcov_output",

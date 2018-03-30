@@ -1,10 +1,11 @@
 # GIT Warnings and errors report of the lint.
 class GitSwiftLinterReport
-  attr_accessor :warnings, :errors
+  attr_accessor :warnings, :errors, :project_name
 
   def initialize(warnings, errors)
     @warnings = warnings
     @errors = errors
+    @project_name = ENV['PROJECT_NAME']
   end
 end
 
@@ -40,5 +41,15 @@ class GitSwiftLinter
     has_wip_title = danger_file.github.pr_title.include? '[WIP]'
 
     danger_file.warn('PR is classed as Work in Progress') if has_wip_label || has_wip_title
+  end
+
+  # Verify whether the tests are updated with this PR.
+  def updated_tests
+    files = danger_file.git.added_files + danger_file.git.modified_files
+
+    has_app_changes = !files.grep(/#{@project_name}/).empty?
+    has_test_changes = !files.grep(/#{@project_name}Tests/).empty?
+
+    danger_file.warn('Tests were not updated') if has_app_changes && !has_test_changes && danger_file.git.lines_of_code > 20
   end
 end

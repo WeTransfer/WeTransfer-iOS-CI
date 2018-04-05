@@ -169,6 +169,7 @@ end
 # Show Code coverage report
 xcov.report(
 	scheme: project_name,
+	project: "#{project_name}.xcodeproj",
 	minimum_coverage_percentage: ENV['MINIMUM_COVERAGE_PERCENTAGE'].to_f || 75,
 	only_project_targets: true,
 	output_directory: "xcov_output",

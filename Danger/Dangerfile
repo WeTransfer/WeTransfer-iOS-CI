@@ -20,9 +20,9 @@ xcov.report(
   scheme: ENV['PROJECT_NAME'],
   minimum_coverage_percentage: ENV['MINIMUM_COVERAGE_PERCENTAGE'].to_f || 75,
   only_project_targets: true,
-  legacy_support: "",
-  output_directory: "xcov_output",
-  source_directory: "../../../" # Expecting this Dangerfile to be in `source/Submodules/WeTransfer-iOS-CI/Danger/`
+  legacy_support: '',
+  output_directory: 'xcov_output',
+  source_directory: '../../../'
 )
 
 # Run SwiftLint for source code and tests

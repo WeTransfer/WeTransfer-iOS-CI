@@ -98,7 +98,7 @@ describe GitSwiftLinter do
         'class nonFinalClass'
       ]
 
-      @gitswiftlinter.file_final_usage('CoyoteTests/file.swift', filelines)
+      @gitswiftlinter.file_final_usage('Coyote/file.swift', filelines)
     end
 
     it 'Warns for unowned usage' do
@@ -109,7 +109,7 @@ describe GitSwiftLinter do
         '[unowned self] _ in'
       ]
 
-      @gitswiftlinter.unowned_usage('CoyoteTests/file.swift', filelines)
+      @gitswiftlinter.unowned_usage('Coyote/file.swift', filelines)
     end
 
     it 'Warns for empty override methods' do
@@ -133,7 +133,7 @@ describe GitSwiftLinter do
         '}'
       ]
 
-      @gitswiftlinter.mark_usage('CoyoteTests/file.swift', filelines, 2)
+      @gitswiftlinter.mark_usage('Coyote/file.swift', filelines, 2)
     end
 
     it 'Does not warn for MARK: usage in small files' do
@@ -145,7 +145,7 @@ describe GitSwiftLinter do
         '}'
       ]
 
-      @gitswiftlinter.mark_usage('CoyoteTests/file.swift', filelines, 5)
+      @gitswiftlinter.mark_usage('Coyote/file.swift', filelines, 5)
     end
 
     it 'Does not warn for MARK: usage if it is used' do
@@ -158,7 +158,19 @@ describe GitSwiftLinter do
         '}'
       ]
 
-      @gitswiftlinter.mark_usage('CoyoteTests/file.swift', filelines, 2)
+      @gitswiftlinter.mark_usage('Coyote/file.swift', filelines, 2)
+    end
+
+    it 'It does not warn for MARK: usage in big test files' do
+      expect(@gitswiftlinter.danger_file).not_to receive(:warn)
+
+      filelines = [
+        'override func myMethod() {',
+        'print("something")',
+        '}'
+      ]
+
+      @gitswiftlinter.mark_usage('CoyoteTests/fileTests.swift', filelines, 2)
     end
   end
 end

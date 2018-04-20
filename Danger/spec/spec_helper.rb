@@ -1,4 +1,9 @@
 require 'pathname'
+require 'bundler/setup'
+require 'pry'
+require 'danger'
+require 'cork'
+require 'danger_plugin'
 
 ROOT = Pathname.new(File.expand_path('../../', __FILE__))
 $LOAD_PATH.unshift((ROOT + 'ext').to_s)
@@ -13,13 +18,6 @@ RSpec::Matchers.define :including do |x|
   match { |actual| actual.include? x }
 end
 
-require 'bundler/setup'
-require 'pry'
-
-require 'danger'
-require 'cork'
-require 'danger_plugin'
-
 # A silent version of the user interface
 def testing_ui
   Cork::Board.new(silent: true)
@@ -31,7 +29,7 @@ def testing_env
   {
     'HAS_JOSH_K_SEAL_OF_APPROVAL' => 'true',
     'TRAVIS_PULL_REQUEST' => '800',
-    'TRAVIS_REPO_SLUG' => 'artsy/eigen',
+    'TRAVIS_REPO_SLUG' => 'WeTransfer/WeTransfer-iOS-CI',
     'TRAVIS_COMMIT_RANGE' => '759adcbd0d8f...13c4dc8bb61d',
     'DANGER_GITHUB_API_TOKEN' => '123sbdq54erfsd3422gdfio'
   }

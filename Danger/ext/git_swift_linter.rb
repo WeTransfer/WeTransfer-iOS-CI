@@ -81,6 +81,7 @@ class GitSwiftLinter
 
   # Check for big classes without MARK: usage
   def mark_usage(file, filelines, minimum_lines_count)
+    return false if File.basename(file).downcase.include?('test')
     return false if filelines.grep(/MARK:/).any? || filelines.count < minimum_lines_count
     danger_file.warn("Consider to place some `MARK:` lines for #{file}, which is over 200 lines big.")
   end

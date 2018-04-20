@@ -76,5 +76,89 @@ describe GitSwiftLinter do
 
       @gitswiftlinter.updated_tests
     end
+
+    it 'Warns for not using final with classes' do
+      expect(@gitswiftlinter.danger_file).to receive(:warn).once
+
+      filelines = [
+        'protocol MyDelegate: class',
+        'final func myMethod()',
+        '// final comment',
+        'class nonFinalClass'
+      ]
+
+      @gitswiftlinter.file_final_usage('CoyoteTests/file.swift', filelines)
+    end
+
+    it 'Does not warn if the final class rule is disabled' do
+      expect(@gitswiftlinter.danger_file).not_to receive(:warn)
+
+      filelines = [
+        'danger:disable final_class',
+        'class nonFinalClass'
+      ]
+
+      @gitswiftlinter.file_final_usage('CoyoteTests/file.swift', filelines)
+    end
+
+    it 'Warns for unowned usage' do
+      expect(@gitswiftlinter.danger_file).to receive(:warn).once
+
+      filelines = [
+        '[weak self]',
+        '[unowned self] _ in'
+      ]
+
+      @gitswiftlinter.unowned_usage('CoyoteTests/file.swift', filelines)
+    end
+
+    it 'Warns for empty override methods' do
+      expect(@gitswiftlinter.danger_file).to receive(:warn).once
+
+      filelines = [
+        'override func viewDidLoad() {',
+        'super.viewDidLoad()',
+        '}'
+      ]
+
+      @gitswiftlinter.empty_override_methods('CoyoteTests/file.swift', filelines)
+    end
+
+    it 'Warns for MARK: usage in big files' do
+      expect(@gitswiftlinter.danger_file).to receive(:warn).once
+
+      filelines = [
+        'override func myMethod() {',
+        'print("something")',
+        '}'
+      ]
+
+      @gitswiftlinter.mark_usage('CoyoteTests/file.swift', filelines, 2)
+    end
+
+    it 'Does not warn for MARK: usage in small files' do
+      expect(@gitswiftlinter.danger_file).not_to receive(:warn)
+
+      filelines = [
+        'override func myMethod() {',
+        'print("something")',
+        '}'
+      ]
+
+      @gitswiftlinter.mark_usage('CoyoteTests/file.swift', filelines, 5)
+    end
+
+    it 'Does not warn for MARK: usage if it is used' do
+      expect(@gitswiftlinter.danger_file).not_to receive(:warn)
+
+      filelines = [
+        'MARK: methods',
+        'override func myMethod() {',
+        'print("something")',
+        '}'
+      ]
+
+      @gitswiftlinter.mark_usage('CoyoteTests/file.swift', filelines, 2)
+    end
   end
 end

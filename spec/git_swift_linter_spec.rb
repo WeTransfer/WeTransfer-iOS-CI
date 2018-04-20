@@ -152,7 +152,7 @@ describe GitSwiftLinter do
       expect(@gitswiftlinter.danger_file).not_to receive(:warn)
 
       filelines = [
-        'MARK: methods',
+        #'MARK: methods',
         'override func myMethod() {',
         'print("something")',
         '}'

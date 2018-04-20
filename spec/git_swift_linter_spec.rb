@@ -1,5 +1,5 @@
 require File.expand_path('../spec_helper', __FILE__)
-require File.expand_path('../../ext/git_swift_linter', __FILE__)
+require File.expand_path('../../Danger/ext/git_swift_linter', __FILE__)
 
 describe GitSwiftLinter do
   before do

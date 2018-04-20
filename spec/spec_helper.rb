@@ -1,13 +1,8 @@
-require 'pathname'
 require 'bundler/setup'
 require 'pry'
 require 'danger'
 require 'cork'
 require 'danger_plugin'
-
-ROOT = Pathname.new(File.expand_path('../../', __FILE__))
-$LOAD_PATH.unshift((ROOT + 'ext').to_s)
-$LOAD_PATH.unshift((ROOT + 'spec').to_s)
 
 RSpec.configure do |config|
   # Use color in STDOUT

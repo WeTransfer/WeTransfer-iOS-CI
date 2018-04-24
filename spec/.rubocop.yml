@@ -1,0 +1,11 @@
+# In the context of unit test with RSpec it is acceptable to have long blocks
+# and long lines, at times the behaviour we need to describe might be a bit
+# lengthy, require some setup, have a number of edge cases.
+Metrics/LineLength:
+  Enabled: false
+
+Metrics/BlockLength:
+  Enabled: false
+
+Metrics/ModuleLength:
+  Enabled: false

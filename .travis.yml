@@ -1,0 +1,7 @@
+language: ruby
+gemfile: Gemfile
+bundler_args: "--without documentation --path bundle" # Don't download documentation for gems.
+script:
+  - bundle exec rspec
+  - bundle exec danger
+cache: bundler

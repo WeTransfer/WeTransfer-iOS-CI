@@ -1,9 +1,9 @@
 ENV['SWIFTLINT_VERSION'] = '0.25.0'
 
-require File.expand_path('../../ext/git_swift_linter', __FILE__)
+require File.expand_path('../ext/git_swift_linter.rb', __FILE__)
 
 gitswiftlinter = GitSwiftLinter.new(self)
-gitswiftlinter.lint
+gitswiftlinter.lint_files
 
 # Check for warnings
 json_file = 'build/reports/errors.json'

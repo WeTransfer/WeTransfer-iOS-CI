@@ -1,28 +1,9 @@
-# GIT Warnings and errors report of the lint.
-class GitSwiftLinterReport
-  attr_accessor :warnings, :errors, :project_name
-
-  def initialize(warnings, errors)
-    @warnings = warnings
-    @errors = errors
-    @project_name = ENV['PROJECT_NAME']
-  end
-end
-
 # Lints GIT Swift changes.
 class GitSwiftLinter
   attr_accessor :danger_file
 
   def initialize(danger_file)
     @danger_file = danger_file
-  end
-
-  def lint
-    warnings = []
-
-    warnings.push('Big PR') if danger_file.git.lines_of_code > 500
-
-    GitSwiftLinterReport.new(warnings, [])
   end
 
   # Warn if we submitted a big PR.
@@ -87,7 +68,7 @@ class GitSwiftLinter
   end
 
   def lint_files
-    (git.modified_files + git.added_files).uniq.each do |file|
+    (danger_file.git.modified_files + danger_file.git.added_files).uniq.each do |file|
       next unless File.file?(file)
       next unless File.extname(file).include?('.swift')
 

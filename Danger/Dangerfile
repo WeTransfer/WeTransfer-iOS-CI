@@ -16,14 +16,18 @@ end
 # Show Code coverage report
 # Expecting this Dangerfile to be in:
 # `source/Submodules/WeTransfer-iOS-CI/Danger/`
-xcov.report(
-  scheme: ENV['PROJECT_NAME'],
-  minimum_coverage_percentage: ENV['MINIMUM_COVERAGE_PERCENTAGE'].to_f || 75,
-  only_project_targets: true,
-  legacy_support: '',
-  output_directory: 'xcov_output',
-  source_directory: '../../../'
-)
+begin
+  xcov.report(
+    scheme: ENV['PROJECT_NAME'],
+    minimum_coverage_percentage: ENV['MINIMUM_COVERAGE_PERCENTAGE'].to_f || 75,
+    only_project_targets: true,
+    legacy_support: '',
+    output_directory: 'xcov_output',
+    source_directory: '../../../'
+  )
+rescue
+  fail('Coverage creation failed')
+end
 
 # Run SwiftLint for source code and tests
 swiftlint_source_config_file = File.join(

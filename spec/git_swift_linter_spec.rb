@@ -134,6 +134,19 @@ describe GitSwiftLinter do
       @gitswiftlinter.empty_override_methods('CoyoteTests/file.swift', filelines)
     end
 
+    it 'Does not warn for empty override methods with closures' do
+      expect(@gitswiftlinter.danger_file).not_to receive(:warn)
+
+      filelines = [
+        'override func viewDidLoad() {',
+        'super.viewDidLoad()',
+        'guard let download = self.download else { return }',
+        '}'
+      ]
+
+      @gitswiftlinter.empty_override_methods('CoyoteTests/file.swift', filelines)
+    end
+
     it 'Warns for MARK: usage in big files' do
       expect(@gitswiftlinter.danger_file).to receive(:warn).once
 

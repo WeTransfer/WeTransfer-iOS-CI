@@ -55,7 +55,7 @@ class GitSwiftLinter
   # Check for methods that only call the super class' method
   def empty_override_methods(file, filelines)
     filelines.each_with_index do |line, index|
-      next unless line.include?('override') && line.include?('func') && filelines[index + 1].include?('super') && filelines[index + 2].include?('}')
+      next unless line.include?('override') && line.include?('func') && filelines[index + 1].include?('super') && filelines[index + 2].include?('}') && !filelines[index + 2].include?('{')
       danger_file.warn('Override methods which only call super can be removed', file: file, line: index + 3)
     end
   end

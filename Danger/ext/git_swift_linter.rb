@@ -36,9 +36,13 @@ class GitSwiftLinter
 
   # Warn for not using final
   def file_final_usage(file, filelines)
+    is_multiline_comment = false
     filelines.each_with_index do |line, index|
-      break if line.include?('danger:disable final_class')
-      next unless class_line?(line) && !line.include?('final')
+      is_multiline_comment = true if line.include?('/**')
+      is_multiline_comment = false if line.include?('*/')
+
+      break if line.include?('danger:disable final_class') || is_multiline_comment
+      next unless should_be_final_class_line?(line)
 
       danger_file.warn('Consider using final for this class or use a struct (final_class)', file: file, line: index + 1)
     end
@@ -55,7 +59,7 @@ class GitSwiftLinter
   # Check for methods that only call the super class' method
   def empty_override_methods(file, filelines)
     filelines.each_with_index do |line, index|
-      next unless line.include?('override') && line.include?('func') && filelines[index + 1].include?('super') && filelines[index + 2].include?('}')
+      next unless line.include?('override') && line.include?('func') && filelines[index + 1].include?('super') && filelines[index + 2].include?('}') && !filelines[index + 2].include?('{')
       danger_file.warn('Override methods which only call super can be removed', file: file, line: index + 3)
     end
   end
@@ -84,6 +88,11 @@ class GitSwiftLinter
   # Helper methods
   # Returns true if the line includes a class definition
   def class_line?(line)
-    line.include?('class') && !line.include?('func') && !line.include?('//') && !line.include?('protocol')
+    line.include?('class') && !line.include?('func') && !line.include?('//') && !line.include?('protocol') && !line.include?('"')
+  end
+
+  # Returns true if the line should be a final class
+  def should_be_final_class_line?(line)
+    class_line?(line) && !line.include?('final') && !line.include?('open')
   end
 end

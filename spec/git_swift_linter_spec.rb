@@ -101,6 +101,31 @@ describe GitSwiftLinter do
       @gitswiftlinter.file_final_usage('Coyote/file.swift', filelines)
     end
 
+    it 'Does not warn for final class if "open" is used' do
+      expect(@gitswiftlinter.danger_file).not_to receive(:warn)
+
+      filelines = [
+        'open class nonFinalClass'
+      ]
+
+      @gitswiftlinter.file_final_usage('Coyote/file.swift', filelines)
+    end
+
+    it 'Does not warn for final class if used in comments' do
+      expect(@gitswiftlinter.danger_file).not_to receive(:warn)
+
+      filelines = [
+        'fatalError("Subclasses must implement `execute` without overriding super.")',
+        '/**',
+        'This class',
+        '*/',
+        '/// class',
+        '// class'
+      ]
+
+      @gitswiftlinter.file_final_usage('Coyote/file.swift', filelines)
+    end
+
     it 'Warns for unowned usage' do
       expect(@gitswiftlinter.danger_file).to receive(:warn).once
 
@@ -118,6 +143,19 @@ describe GitSwiftLinter do
       filelines = [
         'override func viewDidLoad() {',
         'super.viewDidLoad()',
+        '}'
+      ]
+
+      @gitswiftlinter.empty_override_methods('CoyoteTests/file.swift', filelines)
+    end
+
+    it 'Does not warn for empty override methods with closures' do
+      expect(@gitswiftlinter.danger_file).not_to receive(:warn)
+
+      filelines = [
+        'override func viewDidLoad() {',
+        'super.viewDidLoad()',
+        'guard let download = self.download else { return }',
         '}'
       ]
 

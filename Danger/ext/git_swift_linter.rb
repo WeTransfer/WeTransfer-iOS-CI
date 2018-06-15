@@ -36,9 +36,13 @@ class GitSwiftLinter
 
   # Warn for not using final
   def file_final_usage(file, filelines)
+    is_multiline_comment = false
     filelines.each_with_index do |line, index|
-      break if line.include?('danger:disable final_class')
-      next unless class_line?(line) && !line.include?('final') && !line.include?('open')
+      is_multiline_comment = true if line.include?('/**')
+      is_multiline_comment = false if line.include?('*/')
+
+      break if line.include?('danger:disable final_class') || is_multiline_comment
+      next unless should_be_final_class_line?(line)
 
       danger_file.warn('Consider using final for this class or use a struct (final_class)', file: file, line: index + 1)
     end
@@ -84,6 +88,11 @@ class GitSwiftLinter
   # Helper methods
   # Returns true if the line includes a class definition
   def class_line?(line)
-    line.include?('class') && !line.include?('func') && !line.include?('//') && !line.include?('protocol')
+    line.include?('class') && !line.include?('func') && !line.include?('//') && !line.include?('protocol') && !line.include?('"')
+  end
+
+  # Returns true if the line should be a final class
+  def should_be_final_class_line?(line)
+    class_line?(line) && !line.include?('final') && !line.include?('open')
   end
 end

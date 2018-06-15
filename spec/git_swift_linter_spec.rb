@@ -111,6 +111,21 @@ describe GitSwiftLinter do
       @gitswiftlinter.file_final_usage('Coyote/file.swift', filelines)
     end
 
+    it 'Does not warn for final class if used in comments' do
+      expect(@gitswiftlinter.danger_file).not_to receive(:warn)
+
+      filelines = [
+        'fatalError("Subclasses must implement `execute` without overriding super.")',
+        '/**',
+        'This class',
+        '*/',
+        '/// class',
+        '// class'
+      ]
+
+      @gitswiftlinter.file_final_usage('Coyote/file.swift', filelines)
+    end
+
     it 'Warns for unowned usage' do
       expect(@gitswiftlinter.danger_file).to receive(:warn).once
 

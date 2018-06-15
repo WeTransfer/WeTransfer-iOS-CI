@@ -1,7 +1,9 @@
 # WeTransfer-iOS-CI
 Containing all the shared CI logic for WeTransfer repositories
 
-# Features
+# Why should I use it?
+What's in it for me? Well, quite a lot! With low effort to add it to your project.
+
 - Integrate [SwiftLint](https://github.com/realm/SwiftLint) to lint source code and tests. We have a different config for tests to allow `unwrapping optionals` for example
 - Integrate [Danger](http://danger.systems/) to automatically improve PR reviews
 

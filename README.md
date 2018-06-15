@@ -1,4 +1,6 @@
 # WeTransfer-iOS-CI
+[![Build Status](https://travis-ci.org/WeTransfer/WeTransfer-iOS-CI.svg?branch=master)](https://travis-ci.org/WeTransfer/WeTransfer-iOS-CI)
+
 Containing all the shared CI logic for WeTransfer repositories
 
 # Why should I use it?

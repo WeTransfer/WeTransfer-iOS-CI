@@ -38,7 +38,7 @@ class GitSwiftLinter
   def file_final_usage(file, filelines)
     filelines.each_with_index do |line, index|
       break if line.include?('danger:disable final_class')
-      next unless class_line?(line) && !line.include?('final')
+      next unless class_line?(line) && !line.include?('final') && !line.include?('open')
 
       danger_file.warn('Consider using final for this class or use a struct (final_class)', file: file, line: index + 1)
     end

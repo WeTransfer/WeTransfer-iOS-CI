@@ -101,6 +101,16 @@ describe GitSwiftLinter do
       @gitswiftlinter.file_final_usage('Coyote/file.swift', filelines)
     end
 
+    it 'Does not warn for final class if "open" is used' do
+      expect(@gitswiftlinter.danger_file).not_to receive(:warn)
+
+      filelines = [
+        'open class nonFinalClass'
+      ]
+
+      @gitswiftlinter.file_final_usage('Coyote/file.swift', filelines)
+    end
+
     it 'Warns for unowned usage' do
       expect(@gitswiftlinter.danger_file).to receive(:warn).once
 

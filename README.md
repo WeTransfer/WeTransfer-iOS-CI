@@ -6,11 +6,11 @@ Containing all the shared CI logic for WeTransfer repositories
 # Why should I use it?
 What's in it for me? Well, quite a lot! With low effort to add it to your project.
 
-- Integrate [SwiftLint](https://github.com/realm/SwiftLint) to lint source code and tests. We have a different config for tests to allow `unwrapping optionals` for example
+- Integrate [SwiftLint](https://github.com/realm/SwiftLint) to lint source code and tests. We have a different config for tests to allow `force unwrapping` for example
 - Integrate [Danger](http://danger.systems/) to automatically improve PR reviews
 
 ## Danger features
-Following are a list of features which are posted in a comment on PRs based on the submitted files.
+Following is a list of features which are posted in a comment on PRs based on the submitted files.
 
   - Warn for big PRs, containing more than 500 lines of code
   - Warn for missing PR description
@@ -27,9 +27,8 @@ These warnings are posted inline inside the PR, helping you to solve them easily
   -  Suggest `weak` over `unowned`
   -  Suggest `// MARK:` usage for large files
 
-_A comment example. Note that `WeTransferBot` will be replaced by your own bot. More info can be found here: [Getting started with Danger](http://danger.systems/guides/getting_started.html)._
-
 ![](Assets/danger_comment.png)
+_This is an example comment. Note that `WeTransferBot` will be replaced by your own bot. More info can be found here: [Getting started with Danger](http://danger.systems/guides/getting_started.html)._
 
 # How to integrate?
 

@@ -36,7 +36,7 @@ trailing_whitespace:
   ignores_empty_lines: true # This is such a hassle to do right and adds nothing
   
 custom_rules:
-  nslog_prohibted: # rule identifier
+  nslog_prohibited: # rule identifier
     included: ".*.swift" # regex that defines paths to include during linting. optional.
     excluded: ".*(Tests|SnapshotHelper|DataTestCase)\\.swift" # regex that defines paths to exclude during linting. optional
     name: "Create your custom wrapper for logging instead of using NSLog, print, or OSLog" # rule name. optional.

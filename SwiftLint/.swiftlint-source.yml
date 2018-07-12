@@ -1,4 +1,3 @@
-# References to Coyote are made in Rabbit, so we can use the same lint-file for both.
 disabled_rules: # Rule identifiers to exclude from running
   - line_length # Documentation can exceed line lengths
   - identifier_name

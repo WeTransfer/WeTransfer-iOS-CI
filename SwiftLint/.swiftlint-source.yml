@@ -1,4 +1,3 @@
-# References to Coyote are made in Rabbit, so we can use the same lint-file for both.
 disabled_rules: # Rule identifiers to exclude from running
   - line_length # Documentation can exceed line lengths
   - identifier_name
@@ -37,10 +36,10 @@ trailing_whitespace:
   ignores_empty_lines: true # This is such a hassle to do right and adds nothing
   
 custom_rules:
-  nslog_prohibted: # rule identifier
+  nslog_prohibited: # rule identifier
     included: ".*.swift" # regex that defines paths to include during linting. optional.
     excluded: ".*(Tests|SnapshotHelper|DataTestCase)\\.swift" # regex that defines paths to exclude during linting. optional
-    name: "Use Log instead of NSLog, print, OSLog" # rule name. optional.
+    name: "Create your custom wrapper for logging instead of using NSLog, print, or OSLog" # rule name. optional.
     regex: 'NSLog|import os.log|print\(' # matching pattern
     message: "Incorrect logging" # violation message. optional.
     severity: warning # violation severity. optional.

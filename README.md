@@ -57,7 +57,7 @@ lane :test do |options|
 
   begin
     scan(
-      scheme: options[:project_name],
+      scheme: options[:scheme],
       project: "#{options[:project_name]}.xcodeproj",
       device: "iPhone 7",
       clean: true,

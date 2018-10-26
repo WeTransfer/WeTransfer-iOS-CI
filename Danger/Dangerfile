@@ -1,4 +1,4 @@
-ENV['SWIFTLINT_VERSION'] = '0.25.1'
+ENV['SWIFTLINT_VERSION'] = '0.27.0'
 
 require File.expand_path('../ext/git_swift_linter.rb', __FILE__)
 

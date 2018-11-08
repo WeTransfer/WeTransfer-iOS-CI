@@ -44,6 +44,8 @@ custom_rules:
     message: "Incorrect logging" # violation message. optional.
     severity: warning # violation severity. optional.
 
+included:
+  - ${SRCROOT}/../Sources
 excluded:
   # We add ../../../ to work with the way Danger is expanding paths based on the config file.
   - ${SRCROOT}/Carthage

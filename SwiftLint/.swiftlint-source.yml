@@ -49,6 +49,7 @@ excluded:
   - ${SRCROOT}/Carthage
   - ${SRCROOT}/Playgrounds
   - ${SRCROOT}/Submodules
+  - ${SRCROOT}/Pods
   - ${SRCROOT}/scripts/genstrings.swift
   - ${SRCROOT}/danger/DangerTests.swift
   - ${SRCROOT}/${PROJECT_NAME}Tests

@@ -45,4 +45,5 @@ excluded:
   - ${SRCROOT}/scripts/genstrings.swift
   - ${SRCROOT}/danger/DangerTests.swift
   - ${SRCROOT}/${PROJECT_NAME}
+  - ${SRCROOT}/Pods
   - ${SRCROOT}/Sources # Folder for open source projects

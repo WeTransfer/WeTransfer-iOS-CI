@@ -17,7 +17,7 @@ end
 # Expecting this Dangerfile to be in:
 # `source/Submodules/WeTransfer-iOS-CI/Danger/`
 begin
-  if ENV['WORKSPACE_PATH'].is_set?
+  if defined?(ENV['WORKSPACE_PATH'])
     xcov.report(
       scheme: ENV['SCHEME'],
       workspace: ENV['WORKSPACE_PATH'], 

@@ -17,13 +17,24 @@ end
 # Expecting this Dangerfile to be in:
 # `source/Submodules/WeTransfer-iOS-CI/Danger/`
 begin
-  xcov.report(
-    scheme: ENV['SCHEME'],
-    minimum_coverage_percentage: ENV['MINIMUM_COVERAGE_PERCENTAGE'].to_f || 75,
-    only_project_targets: true,
-    output_directory: 'xcov_output',
-    source_directory: '../../../'
-  )
+  if ENV['WORKSPACE_PATH'].is_set?
+    xcov.report(
+      scheme: ENV['SCHEME'],
+      workspace: ENV['WORKSPACE_PATH'], 
+      minimum_coverage_percentage: ENV['MINIMUM_COVERAGE_PERCENTAGE'].to_f || 75,
+      only_project_targets: true,
+      output_directory: 'xcov_output',
+      source_directory: '../../../'
+    )
+  else
+    xcov.report(
+      scheme: ENV['SCHEME'],
+      minimum_coverage_percentage: ENV['MINIMUM_COVERAGE_PERCENTAGE'].to_f || 75,
+      only_project_targets: true,
+      output_directory: 'xcov_output',
+      source_directory: '../../../'
+    )
+  end
 rescue
   fail('Coverage creation failed')
 end

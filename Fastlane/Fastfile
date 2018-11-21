@@ -4,6 +4,7 @@ lane :validate_changes do |options|
   ENV["PROJECT_NAME"] = options[:project_name]
   ENV["SCHEME"] = options[:scheme] || options[:project_name]
   ENV["SRCROOT"] = "../../../"
+  ENV['XCOV_TARGETS'] = options[:xcov_targets] || "#{options[:project_name]}.framework"
   # Run Danger
   danger(dangerfile: "#{Dir.pwd.gsub(/ /, '\ ')}/../Submodules/WeTransfer-iOS-CI/Danger/Dangerfile")
 end

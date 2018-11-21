@@ -1,9 +1,12 @@
-desc "Validates the changes with SwiftLint and Danger"
+# rubocop:disable LineLength
+desc 'Validates the changes with SwiftLint and Danger'
 lane :validate_changes do |options|
-  # Set the project name. This will be used in Danger to determine several things like "Are tests updated by detecting files in "PROJECT_NAMETests" folder "
-  ENV["PROJECT_NAME"] = options[:project_name]
-  ENV["SCHEME"] = options[:scheme] || options[:project_name]
-  ENV["SRCROOT"] = "../../../"
+  # Set the project name.
+  # This will be used in Danger to determine several things like:
+  # "Are tests updated by detecting files in "PROJECT_NAMETests" folder "
+  ENV['PROJECT_NAME'] = options[:project_name]
+  ENV['SCHEME'] = options[:scheme] || options[:project_name]
+  ENV['SRCROOT'] = '../../../'
   ENV['XCOV_TARGETS'] = options[:xcov_targets] || "#{options[:project_name]}.framework"
   # Run Danger
   danger(dangerfile: "#{Dir.pwd.gsub(/ /, '\ ')}/../Submodules/WeTransfer-iOS-CI/Danger/Dangerfile")

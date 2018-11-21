@@ -1,3 +1,5 @@
+# rubocop:disable Lint/RescueWithoutErrorClass
+# rubocop:disable Style/SignalException
 ENV['SWIFTLINT_VERSION'] = '0.27.0'
 
 require File.expand_path('../ext/git_swift_linter.rb', __FILE__)
@@ -9,6 +11,8 @@ gitswiftlinter.lint_files
 report_files = Dir.glob('build/reports/*.json').select
 
 report_files.each do |json_file|
+  next if report_files.to_a.size > 1 && json_file.include?('errors.json')
+
   if report_files.to_a.size > 1
     name = File.basename(json_file, File.extname(json_file)).sub('_', ' ')
     name = name.split.map(&:capitalize).join(' ')

@@ -1,4 +1,3 @@
-# rubocop:disable RescueWithoutErrorClass
 # rubocop:disable Style/SignalException
 ENV['SWIFTLINT_VERSION'] = '0.27.0'
 
@@ -47,7 +46,7 @@ begin
       source_directory: '../../../'
     )
   end
-rescue
+rescue OtherError
   fail('Code coverage creation failed')
 end
 

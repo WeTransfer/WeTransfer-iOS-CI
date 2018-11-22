@@ -1,4 +1,4 @@
-# rubocop:disable Lint/RescueWithoutErrorClass
+# rubocop:disable RescueWithoutErrorClass
 # rubocop:disable Style/SignalException
 ENV['SWIFTLINT_VERSION'] = '0.27.0'
 

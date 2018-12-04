@@ -1,3 +1,4 @@
+# rubocop:disable Style/SignalException
 ENV['SWIFTLINT_VERSION'] = '0.27.0'
 
 require File.expand_path('../ext/git_swift_linter.rb', __FILE__)
@@ -6,37 +7,47 @@ gitswiftlinter = GitSwiftLinter.new(self)
 gitswiftlinter.lint_files
 
 # Check for warnings
-json_file = 'build/reports/errors.json'
-if File.file?(json_file)
+report_files = Dir.glob('build/reports/*.json').select
+
+report_files.each do |json_file|
+  next if report_files.to_a.size > 1 && json_file.include?('errors.json')
+
+  if report_files.to_a.size > 1
+    name = File.basename(json_file, File.extname(json_file)).sub('_', ' ')
+    name = name.split.map(&:capitalize).join(' ')
+    message "#{name}:"
+  end
+
   xcode_summary.ignored_files = 'Submodules/**'
   xcode_summary.inline_mode = true
-  xcode_summary.report 'build/reports/errors.json'
+  xcode_summary.report json_file
 end
 
 # Show Code coverage report
 # Expecting this Dangerfile to be in:
 # `source/Submodules/WeTransfer-iOS-CI/Danger/`
 begin
-  if defined?(ENV['WORKSPACE_PATH'])
+  minimum_coverage_percentage = ENV['MINIMUM_COVERAGE_PERCENTAGE'].to_f || 75
+  if ENV['WORKSPACE_PATH']
     xcov.report(
       scheme: ENV['SCHEME'],
-      workspace: ENV['WORKSPACE_PATH'], 
-      minimum_coverage_percentage: ENV['MINIMUM_COVERAGE_PERCENTAGE'].to_f || 75,
-      only_project_targets: true,
+      workspace: ENV['WORKSPACE_PATH'],
+      minimum_coverage_percentage: minimum_coverage_percentage,
+      include_targets: ENV['XCOV_TARGETS'],
       output_directory: 'xcov_output',
       source_directory: '../../../'
     )
   else
     xcov.report(
       scheme: ENV['SCHEME'],
-      minimum_coverage_percentage: ENV['MINIMUM_COVERAGE_PERCENTAGE'].to_f || 75,
-      only_project_targets: true,
+      minimum_coverage_percentage: minimum_coverage_percentage,
+      include_targets: ENV['XCOV_TARGETS'],
       output_directory: 'xcov_output',
       source_directory: '../../../'
     )
   end
-rescue
-  fail('Coverage creation failed')
+rescue OtherError
+  fail('Code coverage creation failed')
 end
 
 # Run SwiftLint for source code and tests

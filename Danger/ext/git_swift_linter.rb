@@ -34,6 +34,22 @@ class GitSwiftLinter
     danger_file.warn('Tests were not updated') if has_app_changes && !has_test_changes && danger_file.git.lines_of_code > 20
   end
 
+  # Verify that a changelog edit is included.
+  def updated_changelog
+    files = danger_file.git.added_files + danger_file.git.modified_files
+
+    has_app_changes = !files.grep(/#{@project_name}/).empty?
+
+    # Sometimes it's a README fix, or something like that - which isn't relevant for
+    # including in a project's CHANGELOG for example
+    not_declared_trivial = !(danger_file.github.pr_title.include? '#trivial')
+
+    no_changelog_entry = !danger_file.git.modified_files.include?('Changelog.md')
+
+    return if !has_app_changes || !no_changelog_entry || !not_declared_trivial
+    danger_file.warn('Any changes to code should be reflected in the Changelog. Please consider adding a note there.')
+  end
+
   # Warn for not using final
   def file_final_usage(file, filelines)
     is_multiline_comment = false

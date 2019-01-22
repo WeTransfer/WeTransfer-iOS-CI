@@ -20,7 +20,16 @@ report_files.each do |json_file|
   if report_files.to_a.size > 1
     name = File.basename(json_file, File.extname(json_file)).sub('_', ' ')
     name = name.split.map(&:capitalize).join(' ')
-    message "#{name}:"
+
+    # Put the project name in front of the summary message.
+    json = File.read(json_file)
+    data = JSON.parse(json)
+    data['tests_summary_messages'].each do |message|
+      message.insert(1, ' ' + name + ':') unless message.empty?
+    end
+    File.open(json_file, 'w') do |f|
+      f.puts JSON.pretty_generate(data)
+    end
   end
 
   xcode_summary.ignored_files = 'Submodules/**'

@@ -61,7 +61,7 @@ begin
     )
   end
 rescue
-  fail('Code coverage creation failed')
+  warn('Code coverage creation failed')
 end
 
 # Run SwiftLint for source code and tests

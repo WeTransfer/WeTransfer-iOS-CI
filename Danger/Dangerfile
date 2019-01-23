@@ -60,7 +60,7 @@ begin
       source_directory: '../../../'
     )
   end
-rescue OtherError
+rescue
   fail('Code coverage creation failed')
 end
 

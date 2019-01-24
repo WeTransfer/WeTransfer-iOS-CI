@@ -7,10 +7,6 @@ describe GitSwiftLinter do
   end
 
   describe :lint do
-    after(:each) do
-      ENV['PROJECT_NAME'] = nil
-    end
-
     it 'Warns for a big PR' do
       allow(@gitswiftlinter.danger_file.git).to receive(:lines_of_code).and_return(600)
       expect(@gitswiftlinter.danger_file).to receive(:warn).with('Big PR')
@@ -41,74 +37,42 @@ describe GitSwiftLinter do
       @gitswiftlinter.work_in_progress
     end
 
-    it 'Warns when tests are not updated' do
-      ENV['PROJECT_NAME'] = 'Coyote'
-
-      allow(@gitswiftlinter.danger_file.git).to receive(:modified_files).and_return(['Coyote/file.swift'])
-      allow(@gitswiftlinter.danger_file.git).to receive(:added_files).and_return([])
-      allow(@gitswiftlinter.danger_file.git).to receive(:lines_of_code).and_return(30)
-
-      expect(@gitswiftlinter.danger_file).to receive(:warn).with('Tests were not updated')
-
-      @gitswiftlinter.updated_tests
-    end
-
-    it 'Warns when tests are not updated only if more than 20 lines of code' do
-      ENV['PROJECT_NAME'] = 'Coyote'
-
-      allow(@gitswiftlinter.danger_file.git).to receive(:modified_files).and_return(['Coyote/file.swift'])
-      allow(@gitswiftlinter.danger_file.git).to receive(:added_files).and_return([])
-      allow(@gitswiftlinter.danger_file.git).to receive(:lines_of_code).and_return(10)
-
-      expect(@gitswiftlinter.danger_file).not_to receive(:warn)
-
-      @gitswiftlinter.updated_tests
-    end
-
-    it 'Does not warn when tests are updated' do
-      ENV['PROJECT_NAME'] = 'Coyote'
-
-      allow(@gitswiftlinter.danger_file.git).to receive(:modified_files).and_return(['CoyoteTests/file.swift'])
-      allow(@gitswiftlinter.danger_file.git).to receive(:added_files).and_return([])
-      allow(@gitswiftlinter.danger_file.git).to receive(:lines_of_code).and_return(30)
-
-      expect(@gitswiftlinter.danger_file).not_to receive(:warn)
-
-      @gitswiftlinter.updated_tests
-    end
-
-    it 'Warns if no changelog entry is made while the app files are changed' do
-      ENV['PROJECT_NAME'] = 'Coyote'
-
+    it 'Warns if no changelog entry is made while code files are changed' do
       allow(@gitswiftlinter.danger_file.git).to receive(:modified_files).and_return(['Coyote/file.swift'])
       allow(@gitswiftlinter.danger_file.git).to receive(:added_files).and_return([])
       allow(@gitswiftlinter.danger_file.github).to receive(:pr_title).and_return('PR Title')
 
-      expect(@gitswiftlinter.danger_file).to receive(:warn)
+      expect(@gitswiftlinter.danger_file).to receive(:fail)
 
       @gitswiftlinter.updated_changelog
     end
 
-    it 'Does not warn if a changelog entry is made and the app files are changed' do
-      ENV['PROJECT_NAME'] = 'Coyote'
-
+    it 'Does not warn if a changelog entry is made and code files are changed' do
       allow(@gitswiftlinter.danger_file.git).to receive(:modified_files).and_return(['Coyote/file.swift', 'CHANGELOG.md'])
       allow(@gitswiftlinter.danger_file.git).to receive(:added_files).and_return([])
       allow(@gitswiftlinter.danger_file.github).to receive(:pr_title).and_return('PR Title')
 
-      expect(@gitswiftlinter.danger_file).not_to receive(:warn)
+      expect(@gitswiftlinter.danger_file).not_to receive(:fail)
 
       @gitswiftlinter.updated_changelog
     end
 
-    it 'Does not warn if a changelog entry is not made and the app files are changed but #trivial is in the title' do
-      ENV['PROJECT_NAME'] = 'Coyote'
-
+    it 'Does not warn if a changelog entry is not made and code files are changed but #trivial is in the title' do
       allow(@gitswiftlinter.danger_file.git).to receive(:modified_files).and_return(['Coyote/file.swift'])
       allow(@gitswiftlinter.danger_file.git).to receive(:added_files).and_return([])
       allow(@gitswiftlinter.danger_file.github).to receive(:pr_title).and_return('PR Title #trivial')
 
-      expect(@gitswiftlinter.danger_file).not_to receive(:warn)
+      expect(@gitswiftlinter.danger_file).not_to receive(:fail)
+
+      @gitswiftlinter.updated_changelog
+    end
+
+    it 'Does not warn if a changelog entry is not made and no code files are changed' do
+      allow(@gitswiftlinter.danger_file.git).to receive(:modified_files).and_return(['Coyote/travis.yml'])
+      allow(@gitswiftlinter.danger_file.git).to receive(:added_files).and_return([])
+      allow(@gitswiftlinter.danger_file.github).to receive(:pr_title).and_return('PR Title')
+
+      expect(@gitswiftlinter.danger_file).not_to receive(:fail)
 
       @gitswiftlinter.updated_changelog
     end

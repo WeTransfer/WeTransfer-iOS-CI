@@ -8,7 +8,6 @@ gitswiftlinter.lint_files
 gitswiftlinter.lines_of_code
 gitswiftlinter.pr_description
 gitswiftlinter.work_in_progress
-gitswiftlinter.updated_tests
 gitswiftlinter.updated_changelog
 
 # Check for warnings
@@ -37,7 +36,7 @@ report_files.each do |json_file|
   xcode_summary.report json_file
 end
 
-unless report_files.to_a.empty
+unless report_files.to_a.empty?
   # Show Code coverage report
   # Expecting this Dangerfile to be in:
   # `source/Submodules/WeTransfer-iOS-CI/Danger/`

@@ -16,19 +16,17 @@ report_files = Dir.glob('build/reports/*.json').select
 report_files.each do |json_file|
   next if report_files.to_a.size > 1 && json_file.include?('errors.json')
 
-  if report_files.to_a.size > 1
-    name = File.basename(json_file, File.extname(json_file)).sub('_', ' ')
-    name = name.split.map(&:capitalize).join(' ')
+  name = File.basename(json_file, File.extname(json_file)).sub('_', ' ')
+  name = name.split.map(&:capitalize).join(' ')
 
-    # Put the project name in front of the summary message.
-    json = File.read(json_file)
-    data = JSON.parse(json)
-    data['tests_summary_messages'].each do |message|
-      message.insert(1, ' ' + name + ':') unless message.empty?
-    end
-    File.open(json_file, 'w') do |f|
-      f.puts JSON.pretty_generate(data)
-    end
+  # Put the project name in front of the summary message.
+  json = File.read(json_file)
+  data = JSON.parse(json)
+  data['tests_summary_messages'].each do |message|
+    message.insert(1, ' ' + name + ':') unless message.empty?
+  end
+  File.open(json_file, 'w') do |f|
+    f.puts JSON.pretty_generate(data)
   end
 
   xcode_summary.ignored_files = 'Submodules/**'

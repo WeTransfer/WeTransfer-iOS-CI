@@ -92,7 +92,7 @@ describe GitSwiftLinter do
     it 'Does not warn if a changelog entry is made and the app files are changed' do
       ENV['PROJECT_NAME'] = 'Coyote'
 
-      allow(@gitswiftlinter.danger_file.git).to receive(:modified_files).and_return(['Coyote/file.swift', 'Changelog.md'])
+      allow(@gitswiftlinter.danger_file.git).to receive(:modified_files).and_return(['Coyote/file.swift', 'CHANGELOG.md'])
       allow(@gitswiftlinter.danger_file.git).to receive(:added_files).and_return([])
       allow(@gitswiftlinter.danger_file.github).to receive(:pr_title).and_return('PR Title')
 

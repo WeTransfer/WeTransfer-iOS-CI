@@ -37,31 +37,33 @@ report_files.each do |json_file|
   xcode_summary.report json_file
 end
 
-# Show Code coverage report
-# Expecting this Dangerfile to be in:
-# `source/Submodules/WeTransfer-iOS-CI/Danger/`
-begin
-  minimum_coverage_percentage = ENV['MINIMUM_COVERAGE_PERCENTAGE'].to_f || 75
-  if ENV['WORKSPACE_PATH']
-    xcov.report(
-      scheme: ENV['SCHEME'],
-      workspace: ENV['WORKSPACE_PATH'],
-      minimum_coverage_percentage: minimum_coverage_percentage,
-      include_targets: ENV['XCOV_TARGETS'],
-      output_directory: 'xcov_output',
-      source_directory: '../../../'
-    )
-  else
-    xcov.report(
-      scheme: ENV['SCHEME'],
-      minimum_coverage_percentage: minimum_coverage_percentage,
-      include_targets: ENV['XCOV_TARGETS'],
-      output_directory: 'xcov_output',
-      source_directory: '../../../'
-    )
+unless report_files.to_a.empty
+  # Show Code coverage report
+  # Expecting this Dangerfile to be in:
+  # `source/Submodules/WeTransfer-iOS-CI/Danger/`
+  begin
+    minimum_coverage_percentage = ENV['MINIMUM_COVERAGE_PERCENTAGE'].to_f || 75
+    if ENV['WORKSPACE_PATH']
+      xcov.report(
+        scheme: ENV['SCHEME'],
+        workspace: ENV['WORKSPACE_PATH'],
+        minimum_coverage_percentage: minimum_coverage_percentage,
+        include_targets: ENV['XCOV_TARGETS'],
+        output_directory: 'xcov_output',
+        source_directory: '../../../'
+      )
+    else
+      xcov.report(
+        scheme: ENV['SCHEME'],
+        minimum_coverage_percentage: minimum_coverage_percentage,
+        include_targets: ENV['XCOV_TARGETS'],
+        output_directory: 'xcov_output',
+        source_directory: '../../../'
+      )
+    end
+  rescue
+    warn('Code coverage creation failed')
   end
-rescue
-  warn('Code coverage creation failed')
 end
 
 # Run SwiftLint for source code and tests

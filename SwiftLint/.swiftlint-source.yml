@@ -1,9 +1,11 @@
 disabled_rules: # Rule identifiers to exclude from running
   - line_length # Documentation can exceed line lengths
   - identifier_name
+  - force_unwrapping
+  - force_cast
+  - force_try
 opt_in_rules:
   - empty_count
-  - force_unwrapping
   - explicit_init
   - first_where
   - object_literal
@@ -13,10 +15,6 @@ opt_in_rules:
   - prohibited_super_call
   - redundant_nil_coalescing
   - switch_case_on_newline
-force_cast: error
-force_try: error
-force_unwrapping: 
-  severity: error
 operator_usage_whitespace: error
 syntactic_sugar: error
 trailing_comma: 

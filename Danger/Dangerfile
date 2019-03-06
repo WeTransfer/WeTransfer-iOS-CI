@@ -1,5 +1,5 @@
 # rubocop:disable Style/SignalException
-ENV['SWIFTLINT_VERSION'] = '0.29.4'
+ENV['SWIFTLINT_VERSION'] = '0.31.0'
 
 require File.expand_path('../ext/git_swift_linter.rb', __FILE__)
 

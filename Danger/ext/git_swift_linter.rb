@@ -47,7 +47,7 @@ class GitSwiftLinter
     no_changelog_entry = danger_file.git.modified_files.none? { |s| s.casecmp('changelog.md').zero? }
 
     return if !pr_contains_code_changes && !pr_contains_localization_changes || !no_changelog_entry || !not_declared_trivial
-    return unless %w[master develop].include?(danger_file.git.branch_for_base)
+    return unless %w[master develop].include?(danger_file.github.branch_for_base)
     danger_file.fail('Any changes to code should be reflected in the Changelog. Please consider adding a note there.')
   end
 

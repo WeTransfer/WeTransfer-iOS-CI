@@ -38,7 +38,19 @@ describe GitSwiftLinter do
     end
 
     it 'Warns if no changelog entry is made while code files are changed' do
+      allow(@gitswiftlinter.danger_file.git).to receive(:branch_for_base).and_return('master')
       allow(@gitswiftlinter.danger_file.git).to receive(:modified_files).and_return(['Coyote/file.swift'])
+      allow(@gitswiftlinter.danger_file.git).to receive(:added_files).and_return([])
+      allow(@gitswiftlinter.danger_file.github).to receive(:pr_title).and_return('PR Title')
+
+      expect(@gitswiftlinter.danger_file).to receive(:fail)
+
+      @gitswiftlinter.updated_changelog
+    end
+
+    it 'Warns if no changelog entry is made while localizable files are changed' do
+      allow(@gitswiftlinter.danger_file.git).to receive(:branch_for_base).and_return('develop')
+      allow(@gitswiftlinter.danger_file.git).to receive(:modified_files).and_return(['Coyote/Localizable.strings'])
       allow(@gitswiftlinter.danger_file.git).to receive(:added_files).and_return([])
       allow(@gitswiftlinter.danger_file.github).to receive(:pr_title).and_return('PR Title')
 
@@ -69,6 +81,17 @@ describe GitSwiftLinter do
 
     it 'Does not warn if a changelog entry is not made and no code files are changed' do
       allow(@gitswiftlinter.danger_file.git).to receive(:modified_files).and_return(['Coyote/travis.yml'])
+      allow(@gitswiftlinter.danger_file.git).to receive(:added_files).and_return([])
+      allow(@gitswiftlinter.danger_file.github).to receive(:pr_title).and_return('PR Title')
+
+      expect(@gitswiftlinter.danger_file).not_to receive(:fail)
+
+      @gitswiftlinter.updated_changelog
+    end
+
+    it 'Does not warn if a changelog entry is not made and target branch is not develop or master' do
+      allow(@gitswiftlinter.danger_file.git).to receive(:branch_for_base).and_return('feature/accounts_syncing')
+      allow(@gitswiftlinter.danger_file.git).to receive(:modified_files).and_return(['Coyote/file.swift'])
       allow(@gitswiftlinter.danger_file.git).to receive(:added_files).and_return([])
       allow(@gitswiftlinter.danger_file.github).to receive(:pr_title).and_return('PR Title')
 

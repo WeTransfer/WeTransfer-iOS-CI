@@ -27,7 +27,19 @@ unused_optional_binding:
   severity: error
 vertical_whitespace: 
   severity: error
-
+file_length:
+  warning: 600
+  error: 1200
+function_body_length:
+  warning: 50
+  error: 70
+type_body_length:
+  warning: 300
+  error: 400
+type_name:
+  max_length: # warning and error
+    warning: 50
+    error: 60
 object_literal:
   color_literal: false
 trailing_whitespace:

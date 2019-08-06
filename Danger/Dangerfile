@@ -10,6 +10,11 @@ gitswiftlinter.pr_description
 gitswiftlinter.work_in_progress
 gitswiftlinter.updated_changelog
 
+junit_files = Dir.glob('build/reports/plists/*.xml')
+puts junit_files
+junit.parse_files junit_files
+junit.report
+
 # Check for warnings
 report_files = Dir.glob('build/reports/*.json').select
 

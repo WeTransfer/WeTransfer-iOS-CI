@@ -26,6 +26,7 @@ opt_in_rules:
   - redundant_nil_coalescing
   - switch_case_on_newline
   - toggle_bool
+  - type_contents_order
   - unused_private_declaration
 operator_usage_whitespace: error
 syntactic_sugar: error
@@ -56,7 +57,20 @@ object_literal:
   color_literal: false
 trailing_whitespace:
   ignores_empty_lines: true # This is such a hassle to do right and adds nothing
-  
+type_contents_order:
+  order:
+    - case
+    - subtype
+    - associated_type
+    - type_alias
+    - ib_outlet
+    - ib_inspectable
+    - type_property
+    - instance_property
+    - initializer
+    - view_life_cycle_method
+    - [subscript, other_method, ib_action]
+
 custom_rules:
   nslog_prohibited: # rule identifier
     included: ".*.swift" # regex that defines paths to include during linting. optional.

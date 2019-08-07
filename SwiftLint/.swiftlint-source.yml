@@ -5,16 +5,28 @@ disabled_rules: # Rule identifiers to exclude from running
   - force_cast
   - force_try
 opt_in_rules:
+  - block_based_kvo
+  - class_delegate_protocol
+  - contains_over_first_not_nil
+  - convenience_type
   - empty_count
+  - empty_string
   - explicit_init
+  - fallthrough
+  - fatal_error_message
   - first_where
+  - identical_operands
+  - joined_default_parameter
+  - modifier_order
   - object_literal
   - operator_usage_whitespace
-  - overridden_super_call # Not sure if this will cause any problems, let's see.
+  - overridden_super_call
   - private_outlet
   - prohibited_super_call
   - redundant_nil_coalescing
   - switch_case_on_newline
+  - toggle_bool
+  - unused_private_declaration
 operator_usage_whitespace: error
 syntactic_sugar: error
 trailing_comma: 

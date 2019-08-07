@@ -92,6 +92,7 @@ excluded:
   - ${SRCROOT}/Submodules
   - ${SRCROOT}/Vendor
   - ${SRCROOT}/Pods
+  - ${SRCROOT}/bundle
   - ${SRCROOT}/scripts/genstrings.swift
   - ${SRCROOT}/danger/DangerTests.swift
   - ${SRCROOT}/${PROJECT_NAME}Tests

@@ -70,6 +70,7 @@ type_contents_order:
     - initializer
     - view_life_cycle_method
     - [subscript, other_method, ib_action]
+    - type_method
 
 custom_rules:
   nslog_prohibited: # rule identifier

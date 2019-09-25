@@ -42,7 +42,8 @@ report_files.each do |json_file|
   xcode_summary.report json_file
 end
 
-unless report_files.to_a.empty?
+xcresult_files = Dir.glob('build/reports/*.xcresult').select
+xcresult_files.each do |xcresult_file|
   # Show Code coverage report
   # Expecting this Dangerfile to be in:
   # `source/Submodules/WeTransfer-iOS-CI/Danger/`
@@ -55,7 +56,7 @@ unless report_files.to_a.empty?
         minimum_coverage_percentage: minimum_coverage_percentage,
         include_targets: ENV['XCOV_TARGETS'],
         output_directory: 'xcov_output',
-        source_directory: '../../../'
+        source_directory: 'build/reports/'
       )
     else
       xcov.report(
@@ -63,7 +64,8 @@ unless report_files.to_a.empty?
         minimum_coverage_percentage: minimum_coverage_percentage,
         include_targets: ENV['XCOV_TARGETS'],
         output_directory: 'xcov_output',
-        source_directory: '../../../'
+        source_directory: 'build/reports/',
+        xccov_file_direct_path: xcresult_file
       )
     end
   rescue

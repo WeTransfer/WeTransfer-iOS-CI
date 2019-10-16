@@ -56,20 +56,28 @@ xcresult_files.each do |xcresult_file|
         minimum_coverage_percentage: minimum_coverage_percentage,
         include_targets: ENV['XCOV_TARGETS'],
         output_directory: 'xcov_output',
-        source_directory: 'build/reports/'
+        source_directory: 'build/reports/',
+        only_project_targets: true
       )
     else
+      # Make sure only the related coverage is shown.
+      # This prevents Coyote from showing its test coverage for frameworks as well.
+      xcresults_file_name = File.basename(xcresult_file, ".*")
+      target_name = xcresults_file_name.split('.').first
+      xcov_targets = ENV['XCOV_TARGETS'].split(', ')
+      target_to_include = xcov_targets.find {|e| e.include? target_name }
+
       xcov.report(
         scheme: ENV['SCHEME'],
         minimum_coverage_percentage: minimum_coverage_percentage,
-        include_targets: ENV['XCOV_TARGETS'],
+        include_targets: target_to_include,
         output_directory: 'xcov_output',
         source_directory: 'build/reports/',
         xccov_file_direct_path: xcresult_file
       )
     end
-  rescue
-    warn('Code coverage creation failed')
+  rescue => ex
+    warn("Code coverage creation failed: #{ex}")
   end
 end
 

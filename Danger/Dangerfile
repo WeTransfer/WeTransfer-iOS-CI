@@ -2,7 +2,7 @@
 
 ENV['SWIFTLINT_VERSION'] = '0.34.0'
 
-require File.expand_path('../ext/git_swift_linter.rb', __dir__)
+require File.expand_path('ext/git_swift_linter.rb', __dir__)
 
 gitswiftlinter = GitSwiftLinter.new(self)
 gitswiftlinter.lint_files
@@ -43,11 +43,11 @@ report_files.each do |json_file|
   xcode_summary.report json_file
 end
 
-def xcov_workspace
+def xcov_workspace(minimum_coverage_percentage)
   xcov.report(
     scheme: ENV['SCHEME'],
     workspace: ENV['WORKSPACE_PATH'],
-    minimum_coverage_percentage: params[:minimum_coverage_percentage],
+    minimum_coverage_percentage: minimum_coverage_percentage,
     include_targets: ENV['XCOV_TARGETS'],
     output_directory: 'xcov_output',
     source_directory: 'build/reports/',
@@ -55,21 +55,21 @@ def xcov_workspace
   )
 end
 
-def xcresult_file_targets
-  xcresults_file_name = File.basename(params[:xcresult_file], '.*')
+def xcresult_file_targets(xcresult_file)
+  xcresults_file_name = File.basename(xcresult_file, '.*')
   target_name = xcresults_file_name.split('.').first
   xcov_targets = ENV['XCOV_TARGETS'].split(', ')
   xcov_targets.find { |e| e.include? target_name }
 end
 
-def xcov_project
+def xcov_project(minimum_coverage_percentage, xcresult_file)
   # Make sure only the related coverage is shown.
   # Prevents Coyote from showing its test coverage for frameworks as well.
-  target_to_include = xcresult_file_targets(params[:xcresult_file])
+  target_to_include = xcresult_file_targets(xcresult_file)
 
   xcov.report(
     scheme: ENV['SCHEME'],
-    minimum_coverage_percentage: params[:minimum_coverage_percentage],
+    minimum_coverage_percentage: minimum_coverage_percentage,
     include_targets: target_to_include,
     output_directory: 'xcov_output',
     source_directory: 'build/reports/',

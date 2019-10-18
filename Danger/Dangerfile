@@ -1,7 +1,8 @@
-# rubocop:disable Style/SignalException
+# frozen_string_literal: true
+
 ENV['SWIFTLINT_VERSION'] = '0.34.0'
 
-require File.expand_path('../ext/git_swift_linter.rb', __FILE__)
+require File.expand_path('ext/git_swift_linter.rb', __dir__)
 
 gitswiftlinter = GitSwiftLinter.new(self)
 gitswiftlinter.lint_files
@@ -13,7 +14,7 @@ gitswiftlinter.updated_changelog
 junit_files = Dir.glob('build/reports/*.xml')
 
 unless junit_files.empty?
-  junit.headers = [:classname, :name]
+  junit.headers = %i[classname name]
   junit.parse_files junit_files
   junit.report
 end
@@ -42,34 +43,54 @@ report_files.each do |json_file|
   xcode_summary.report json_file
 end
 
+def xcov_workspace(minimum_coverage_percentage)
+  xcov.report(
+    scheme: ENV['SCHEME'],
+    workspace: ENV['WORKSPACE_PATH'],
+    minimum_coverage_percentage: minimum_coverage_percentage,
+    include_targets: ENV['XCOV_TARGETS'],
+    output_directory: 'xcov_output',
+    source_directory: 'build/reports/',
+    only_project_targets: true
+  )
+end
+
+def xcresult_file_targets(xcresult_file)
+  xcresults_file_name = File.basename(xcresult_file, '.*')
+  target_name = xcresults_file_name.split('.').first
+  xcov_targets = ENV['XCOV_TARGETS'].split(', ')
+  xcov_targets.find { |e| e.include? target_name }
+end
+
+def xcov_project(minimum_coverage_percentage, xcresult_file)
+  # Make sure only the related coverage is shown.
+  # Prevents Coyote from showing its test coverage for frameworks as well.
+  target_to_include = xcresult_file_targets(xcresult_file)
+
+  xcov.report(
+    scheme: ENV['SCHEME'],
+    minimum_coverage_percentage: minimum_coverage_percentage,
+    include_targets: target_to_include,
+    output_directory: 'xcov_output',
+    source_directory: 'build/reports/',
+    xccov_file_direct_path: xcresult_file
+  )
+end
+
+# Show Code coverage report
+# Expecting this Dangerfile to be in:
+# `source/Submodules/WeTransfer-iOS-CI/Danger/`
+minimum_coverage_percentage = ENV['MINIMUM_COVERAGE_PERCENTAGE'].to_f || 75
 xcresult_files = Dir.glob('build/reports/*.xcresult').select
 xcresult_files.each do |xcresult_file|
-  # Show Code coverage report
-  # Expecting this Dangerfile to be in:
-  # `source/Submodules/WeTransfer-iOS-CI/Danger/`
   begin
-    minimum_coverage_percentage = ENV['MINIMUM_COVERAGE_PERCENTAGE'].to_f || 75
     if ENV['WORKSPACE_PATH']
-      xcov.report(
-        scheme: ENV['SCHEME'],
-        workspace: ENV['WORKSPACE_PATH'],
-        minimum_coverage_percentage: minimum_coverage_percentage,
-        include_targets: ENV['XCOV_TARGETS'],
-        output_directory: 'xcov_output',
-        source_directory: 'build/reports/'
-      )
+      xcov_workspace(minimum_coverage_percentage)
     else
-      xcov.report(
-        scheme: ENV['SCHEME'],
-        minimum_coverage_percentage: minimum_coverage_percentage,
-        include_targets: ENV['XCOV_TARGETS'],
-        output_directory: 'xcov_output',
-        source_directory: 'build/reports/',
-        xccov_file_direct_path: xcresult_file
-      )
+      xcov_project(minimum_coverage_percentage, xcresult_file)
     end
-  rescue
-    warn('Code coverage creation failed')
+  rescue => e # rubocop:disable Style/RescueStandardError
+    warn("Code coverage creation failed: #{e}")
   end
 end
 

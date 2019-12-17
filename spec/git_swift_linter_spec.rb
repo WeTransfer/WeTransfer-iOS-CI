@@ -237,7 +237,7 @@ describe GitSwiftLinter do
     it 'Prints out the Bitrise build URL if it is set' do
       allow(ENV).to receive(:[]).with('BITRISE_BUILD_URL').and_return('https://www.fakeurl.com')
 
-      expect(@gitswiftlinter.danger_file).to receive(:message).with('<a href="https://www.fakeurl.com">Open the build in Bitrise</a>')
+      expect(@gitswiftlinter.danger_file).to receive(:message).with('View more details on <a href="https://www.fakeurl.com" target="_blank">Bitrise</a>')
 
       @gitswiftlinter.show_bitrise_build_url
     end

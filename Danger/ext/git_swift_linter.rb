@@ -94,7 +94,8 @@ class GitSwiftLinter
   # Expose Bitrise buildnumber
   def show_bitrise_build_url
     return unless ENV['BITRISE_BUILD_URL']
-    danger_file.message("<a href=\"#{ENV['BITRISE_BUILD_URL']}\">Open the build in Bitrise</a>")
+
+    danger_file.message("View more details on <a href=\"#{ENV['BITRISE_BUILD_URL']}\" target=\"_blank\">Bitrise</a>")
   end
 
   def lint_files

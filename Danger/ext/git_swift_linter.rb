@@ -69,6 +69,7 @@ class GitSwiftLinter
   def unowned_usage(file, filelines)
     filelines.each_with_index do |line, index|
       next unless line.include?('unowned self')
+
       danger_file.warn('It is safer to use weak instead of unowned', file: file, line: index + 1)
     end
   end
@@ -77,6 +78,7 @@ class GitSwiftLinter
   def empty_override_methods(file, filelines)
     filelines.each_with_index do |line, index|
       next unless line.include?('override') && line.include?('func') && filelines[index + 1].include?('super') && filelines[index + 2].include?('}') && !filelines[index + 2].include?('{')
+
       danger_file.warn('Override methods which only call super can be removed', file: file, line: index + 3)
     end
   end
@@ -85,7 +87,14 @@ class GitSwiftLinter
   def mark_usage(file, filelines, minimum_lines_count)
     return false if File.basename(file).downcase.include?('test')
     return false if filelines.grep(/MARK:/).any? || filelines.count < minimum_lines_count
+
     danger_file.warn("Consider to place some `MARK:` lines for #{file}, which is over 200 lines big.")
+  end
+
+  # Expose Bitrise buildnumber
+  def show_bitrise_build_url
+    return unless ENV['BITRISE_BUILD_URL']
+    danger_file.message("<a href=\"#{ENV['BITRISE_BUILD_URL']}\">Open the build in Bitrise</a>")
   end
 
   def lint_files

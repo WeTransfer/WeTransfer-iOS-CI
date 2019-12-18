@@ -1,5 +1,8 @@
 ## Changelog
 
+### Next
+- Added a link towards the current Bitrise build if available (#38)
+
 ### 1.0
 - First public release! 🎉
 - Added SwiftLint for source code and test code

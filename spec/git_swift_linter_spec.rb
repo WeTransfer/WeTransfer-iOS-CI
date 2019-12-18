@@ -233,5 +233,19 @@ describe GitSwiftLinter do
 
       @gitswiftlinter.mark_usage('CoyoteTests/fileTests.swift', filelines, 2)
     end
+
+    it 'Prints out the Bitrise build URL if it is set' do
+      allow(ENV).to receive(:[]).with('BITRISE_BUILD_URL').and_return('https://www.fakeurl.com')
+
+      expect(@gitswiftlinter.danger_file).to receive(:message).with('View more details on <a href="https://www.fakeurl.com" target="_blank">Bitrise</a>')
+
+      @gitswiftlinter.show_bitrise_build_url
+    end
+
+    it 'Does not print out the Bitrise build URL if it is not set' do
+      expect(@gitswiftlinter.danger_file).not_to receive(:message)
+
+      @gitswiftlinter.show_bitrise_build_url
+    end
   end
 end

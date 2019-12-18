@@ -10,6 +10,7 @@ gitswiftlinter.lines_of_code
 gitswiftlinter.pr_description
 gitswiftlinter.work_in_progress
 gitswiftlinter.updated_changelog
+gitswiftlinter.show_bitrise_build_url
 
 junit_files = Dir.glob('build/reports/*.xml')
 

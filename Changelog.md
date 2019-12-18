@@ -1,7 +1,7 @@
 ## Changelog
 
 ### Next
-- Added a link towards the current Bitrise build if available (#38)
+- Added a link towards the current Bitrise build if available (https://github.com/WeTransfer/WeTransfer-iOS-CI/issues/38)
 
 ### 1.0
 - First public release! 🎉

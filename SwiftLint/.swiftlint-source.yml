@@ -97,3 +97,4 @@ excluded:
   - ${SRCROOT}/danger/DangerTests.swift
   - ${SRCROOT}/${PROJECT_NAME}Tests
   - ${SRCROOT}/${PROJECT_NAME}UITests
+  - ${SRCROOT}/.rbenv

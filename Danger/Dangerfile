@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-ENV['SWIFTLINT_VERSION'] = '0.38.0'
-
 require File.expand_path('ext/git_swift_linter.rb', __dir__)
 
 gitswiftlinter = GitSwiftLinter.new(self)

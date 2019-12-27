@@ -27,7 +27,6 @@ opt_in_rules:
   - switch_case_on_newline
   - toggle_bool
   - type_contents_order
-  - unused_private_declaration
 operator_usage_whitespace: error
 syntactic_sugar: error
 trailing_comma: 
@@ -99,3 +98,5 @@ excluded:
   - ${SRCROOT}/${PROJECT_NAME}UITests
   - ${SRCROOT}/Tests
   - ${SRCROOT}/.rbenv
+  - ${SRCROOT}/*/*/*/*/main.swift # App Store Connect SDK structure
+  - ${SRCROOT}/*/*/Tests # App Store Connect SDK structure

@@ -51,8 +51,7 @@ def xcov_workspace(minimum_coverage_percentage)
     minimum_coverage_percentage: minimum_coverage_percentage,
     include_targets: ENV['XCOV_TARGETS'],
     output_directory: 'xcov_output',
-    source_directory: 'build/reports/',
-    only_project_targets: true
+    source_directory: 'build/reports/'
   )
 end
 

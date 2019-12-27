@@ -42,8 +42,13 @@ excluded:
   - ${SRCROOT}/Carthage
   - ${SRCROOT}/Playgrounds
   - ${SRCROOT}/Submodules
+  - ${SRCROOT}/../Submodules
+  - ${SRCROOT}/../../Submodules
   - ${SRCROOT}/scripts/genstrings.swift
   - ${SRCROOT}/danger/DangerTests.swift
   - ${SRCROOT}/${PROJECT_NAME}
+  - ${SRCROOT}/Example/*/${PROJECT_NAME} # App Store Connect SDK structure
   - ${SRCROOT}/Pods
   - ${SRCROOT}/Sources # Folder for open source projects
+  - ${SRCROOT}/../Sources
+  - ${SRCROOT}/../../Sources

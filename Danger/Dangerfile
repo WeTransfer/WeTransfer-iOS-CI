@@ -44,7 +44,6 @@ end
 
 def xcov_workspace(minimum_coverage_percentage)
   xcov.report(
-    scheme: ENV['SCHEME'],
     workspace: ENV['WORKSPACE_PATH'],
     minimum_coverage_percentage: minimum_coverage_percentage,
     include_targets: ENV['XCOV_TARGETS'],

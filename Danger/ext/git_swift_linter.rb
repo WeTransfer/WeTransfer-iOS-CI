@@ -44,7 +44,8 @@ class GitSwiftLinter
     # including in a project's CHANGELOG for example
     not_declared_trivial = !(danger_file.github.pr_title.include? '#trivial')
 
-    no_changelog_entry = danger_file.git.modified_files.none? { |s| s.casecmp('changelog.md').zero? }
+    files = danger_file.git.added_files + danger_file.git.modified_files
+    no_changelog_entry = files.none? { |s| s.casecmp('changelog.md').zero? }
 
     return if !pr_contains_code_changes && !pr_contains_localization_changes || !no_changelog_entry || !not_declared_trivial
     return unless %w[master develop].include?(danger_file.github.branch_for_base)

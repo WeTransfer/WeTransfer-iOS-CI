@@ -79,6 +79,16 @@ describe GitSwiftLinter do
       @gitswiftlinter.updated_changelog
     end
 
+    it 'Does not warn if a changelog entry is added as a new file' do
+      allow(@gitswiftlinter.danger_file.git).to receive(:modified_files).and_return(['Coyote/file.swift'])
+      allow(@gitswiftlinter.danger_file.git).to receive(:added_files).and_return(['CHANGELOG.md'])
+      allow(@gitswiftlinter.danger_file.github).to receive(:pr_title).and_return('PR Title')
+
+      expect(@gitswiftlinter.danger_file).not_to receive(:fail)
+
+      @gitswiftlinter.updated_changelog
+    end
+
     it 'Does not warn if a changelog entry is not made and no code files are changed' do
       allow(@gitswiftlinter.danger_file.git).to receive(:modified_files).and_return(['Coyote/travis.yml'])
       allow(@gitswiftlinter.danger_file.git).to receive(:added_files).and_return([])

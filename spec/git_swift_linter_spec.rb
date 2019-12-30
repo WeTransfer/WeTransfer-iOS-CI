@@ -43,7 +43,7 @@ describe GitSwiftLinter do
       allow(@gitswiftlinter.danger_file.git).to receive(:added_files).and_return([])
       allow(@gitswiftlinter.danger_file.github).to receive(:pr_title).and_return('PR Title')
 
-      expect(@gitswiftlinter.danger_file).to receive(:fail)
+      expect(@gitswiftlinter.danger_file).to receive(:warn)
 
       @gitswiftlinter.updated_changelog
     end
@@ -54,7 +54,7 @@ describe GitSwiftLinter do
       allow(@gitswiftlinter.danger_file.git).to receive(:added_files).and_return([])
       allow(@gitswiftlinter.danger_file.github).to receive(:pr_title).and_return('PR Title')
 
-      expect(@gitswiftlinter.danger_file).to receive(:fail)
+      expect(@gitswiftlinter.danger_file).to receive(:warn)
 
       @gitswiftlinter.updated_changelog
     end
@@ -64,7 +64,7 @@ describe GitSwiftLinter do
       allow(@gitswiftlinter.danger_file.git).to receive(:added_files).and_return([])
       allow(@gitswiftlinter.danger_file.github).to receive(:pr_title).and_return('PR Title')
 
-      expect(@gitswiftlinter.danger_file).not_to receive(:fail)
+      expect(@gitswiftlinter.danger_file).not_to receive(:warn)
 
       @gitswiftlinter.updated_changelog
     end
@@ -74,7 +74,7 @@ describe GitSwiftLinter do
       allow(@gitswiftlinter.danger_file.git).to receive(:added_files).and_return([])
       allow(@gitswiftlinter.danger_file.github).to receive(:pr_title).and_return('PR Title #trivial')
 
-      expect(@gitswiftlinter.danger_file).not_to receive(:fail)
+      expect(@gitswiftlinter.danger_file).not_to receive(:warn)
 
       @gitswiftlinter.updated_changelog
     end
@@ -84,7 +84,7 @@ describe GitSwiftLinter do
       allow(@gitswiftlinter.danger_file.git).to receive(:added_files).and_return(['CHANGELOG.md'])
       allow(@gitswiftlinter.danger_file.github).to receive(:pr_title).and_return('PR Title')
 
-      expect(@gitswiftlinter.danger_file).not_to receive(:fail)
+      expect(@gitswiftlinter.danger_file).not_to receive(:warn)
 
       @gitswiftlinter.updated_changelog
     end
@@ -94,7 +94,7 @@ describe GitSwiftLinter do
       allow(@gitswiftlinter.danger_file.git).to receive(:added_files).and_return([])
       allow(@gitswiftlinter.danger_file.github).to receive(:pr_title).and_return('PR Title')
 
-      expect(@gitswiftlinter.danger_file).not_to receive(:fail)
+      expect(@gitswiftlinter.danger_file).not_to receive(:warn)
 
       @gitswiftlinter.updated_changelog
     end
@@ -105,7 +105,7 @@ describe GitSwiftLinter do
       allow(@gitswiftlinter.danger_file.git).to receive(:added_files).and_return([])
       allow(@gitswiftlinter.danger_file.github).to receive(:pr_title).and_return('PR Title')
 
-      expect(@gitswiftlinter.danger_file).not_to receive(:fail)
+      expect(@gitswiftlinter.danger_file).not_to receive(:warn)
 
       @gitswiftlinter.updated_changelog
     end

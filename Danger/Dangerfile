@@ -86,7 +86,7 @@ xcresult_files.each do |xcresult_file|
     else
       xcov_project(minimum_coverage_percentage, xcresult_file)
     end
-  rescue => e # rubocop:disable Style/RescueStandardError
+  rescue => e
     warn("Code coverage creation failed: #{e}")
   end
 end

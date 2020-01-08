@@ -378,7 +378,7 @@ public let TestDSLGitHubJSON = """
           "html_url": "https://github.com/artsy/eidolon/pull/609",
           "id": 167696965,
           "number": 609,
-          "title": "Xcode updates",
+          "title": "PR_TITLE",
           "user": {
             "login": "ashfurrow",
             "id": 498212,
@@ -398,7 +398,17 @@ public let TestDSLGitHubJSON = """
             "type": "User",
             "site_admin": false
           },
-          "labels": [],
+          "labels": [
+            {
+              "id": 983870497,
+              "node_id": "MDU6TGFiZWw5ODM4NzA0OTc=",
+              "url": "https://api.github.com/repos/WeTransfer/Coyote/labels/PR_LABEL",
+              "name": "PR_LABEL",
+              "color": "ededed",
+              "default": false,
+              "description": null
+            }
+          ],
           "state": "closed",
           "locked": false,
           "assignee": {
@@ -518,7 +528,7 @@ public let TestDSLGitHubJSON = """
           "number": 609,
           "state": "closed",
           "locked": false,
-          "title": "Xcode updates",
+          "title": "PR_TITLE",
           "user": {
             "login": "ashfurrow",
             "id": 498212,

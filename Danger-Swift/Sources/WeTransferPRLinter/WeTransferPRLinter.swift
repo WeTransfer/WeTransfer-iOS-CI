@@ -38,6 +38,7 @@ extension WeTransferPRLinter {
         swiftFiles.forEach { file in
             let lines = danger.utils.readFile(file).components(separatedBy: .newlines)
             validateFinalClasses(using: danger, file: file, lines: lines)
+            validateUnownedSelf(using: danger, file: file, lines: lines)
         }
     }
 
@@ -56,6 +57,14 @@ extension WeTransferPRLinter {
             guard !isMultilineComment, line.shouldBeFinalClass else { return }
 
             danger.warn(message: "Consider using final for this class or use a struct (final_class)", file: file, line: index + 1)
+        }
+    }
+
+    /// Warns if unowned is used. It's safer to use weak.
+    static func validateUnownedSelf(using danger: DangerDSL, file: File, lines: [String]) {
+        for (index, line) in lines.enumerated() {
+            guard line.contains("unowned self") else { continue }
+            danger.warn(message: "It is safer to use weak instead of unowned", file: file, line: index + 1)
         }
     }
 }

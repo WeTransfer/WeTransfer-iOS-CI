@@ -99,6 +99,17 @@ final class WeTransferLinterTests: XCTestCase {
         XCTAssertEqual(danger.warnings.count, 0)
     }
 
+    /// It should warn for using unowned self.
+    func testUnownedSelfUsage() {
+        let danger = DangerDSL(testSettings: [:])
+        WeTransferPRLinter.validateUnownedSelf(using: danger, file: "File.swift", lines: [
+                   "[weak self]",
+                   "[unowned self] _ in"
+               ])
+        XCTAssertEqual(danger.warnings.count, 1)
+        XCTAssertEqual(danger.warnings.first?.message, "It is safer to use weak instead of unowned")
+    }
+
     static var allTests = [
         ("testAllGood", testAllGood),
         ("testEmptyPRDescription", testEmptyPRDescription),

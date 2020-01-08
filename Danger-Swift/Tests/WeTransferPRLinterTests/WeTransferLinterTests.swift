@@ -58,6 +58,47 @@ final class WeTransferLinterTests: XCTestCase {
         XCTAssertEqual(danger.warnings.first?.message, "PR is classed as Work in Progress")
     }
 
+    /// It should warn for not using final with classes.
+    func testFinalClass() {
+        let danger = githubWithFilesDSL(created: ["file.swift"], fileMap: ["file.swift" : "class MyCustomType {"])
+        WeTransferPRLinter.validateFiles(using: danger)
+        XCTAssertEqual(danger.warnings.count, 1)
+        XCTAssertEqual(danger.warnings.first?.message, "Consider using final for this class or use a struct (final_class)")
+    }
+
+    /// It should not warn for not using final with classes if the rule is disabled.
+    func testFinalClassDisabled() {
+        let danger = DangerDSL(testSettings: [:])
+        WeTransferPRLinter.validateFinalClasses(using: danger, file: "File.swift", lines: [
+            "danger:disable final_class",
+            "class MyCustomType {"
+        ])
+        XCTAssertEqual(danger.warnings.count, 0)
+    }
+
+    /// It should not warn for not using final with open classes.
+    func testNotFinalForOpenClass() {
+        let danger = DangerDSL(testSettings: [:])
+        WeTransferPRLinter.validateFinalClasses(using: danger, file: "File.swift", lines: [
+            "open class MyCustomType {"
+        ])
+        XCTAssertEqual(danger.warnings.count, 0)
+    }
+
+    /// It should not warn for not using final inside comments.
+    func testNotFinalForComments() {
+        let danger = DangerDSL(testSettings: [:])
+        WeTransferPRLinter.validateFinalClasses(using: danger, file: "File.swift", lines: [
+            "fatalError(\"Subclasses must implement `execute` without overriding super.\")",
+            "/**",
+            "This class",
+            "*/",
+            "/// class",
+            "// class"
+        ])
+        XCTAssertEqual(danger.warnings.count, 0)
+    }
+
     static var allTests = [
         ("testAllGood", testAllGood),
         ("testEmptyPRDescription", testEmptyPRDescription),

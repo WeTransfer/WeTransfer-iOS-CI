@@ -12,7 +12,7 @@ final class WeTransferLinterTests: XCTestCase {
 
     /// It should not create any warnings or errors if nothing is wrong.
     func testAllGood() {
-        let danger = DangerDSL(testSettings: [:])
+        let danger = githubWithFilesDSL()
         WeTransferPRLinter.lint(using: danger)
 
         XCTAssertEqual(danger.warnings.count, 0)
@@ -108,6 +108,30 @@ final class WeTransferLinterTests: XCTestCase {
                ])
         XCTAssertEqual(danger.warnings.count, 1)
         XCTAssertEqual(danger.warnings.first?.message, "It is safer to use weak instead of unowned")
+    }
+
+    /// It should warn for empty method overrides.
+    func testEmptyMethodOverrides() {
+        let danger = DangerDSL(testSettings: [:])
+        WeTransferPRLinter.validateEmptyMethodOverrides(using: danger, file: "File.swift", lines: [
+                   "override func viewDidLoad() {",
+                   "super.viewDidLoad()",
+                   "}"
+               ])
+        XCTAssertEqual(danger.warnings.count, 1)
+        XCTAssertEqual(danger.warnings.first?.message, "Override methods which only call super can be removed")
+    }
+
+    /// It should not warn for method overrides including closures.
+    func testClosureMethodOverrides() {
+        let danger = DangerDSL(testSettings: [:])
+        WeTransferPRLinter.validateEmptyMethodOverrides(using: danger, file: "File.swift", lines: [
+                   "override func viewDidLoad() {",
+                   "super.viewDidLoad()",
+                   "guard let download = self.download else { return }",
+                   "}"
+               ])
+        XCTAssertEqual(danger.warnings.count, 0)
     }
 
     static var allTests = [

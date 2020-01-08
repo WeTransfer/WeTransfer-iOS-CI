@@ -6,6 +6,7 @@ public enum WeTransferPRLinter {
         validatePRDescription(using: danger)
         validateWorkInProgress(using: danger)
         validateFiles(using: danger)
+        showBitriseBuildURL(using: danger)
     }
 
     /// Mainly to encourage writing up some reasoning about the PR, rather than just leaving a title.
@@ -25,6 +26,15 @@ public enum WeTransferPRLinter {
             danger.warn("PR is classed as Work in Progress")
             return
         }
+    }
+
+    /// Show the Bitrise build URL for easier access.
+    static func showBitriseBuildURL(using danger: DangerDSL, environmentVariables: [String: String] = ProcessInfo.processInfo.environment) {
+        guard let bitriseURL = environmentVariables["BITRISE_BUILD_URL"] else {
+            danger.message("Bitrise URL not found")
+            return
+        }
+        danger.message("View more details on <a href=\"\(bitriseURL)\" target=\"_blank\">Bitrise</a>")
     }
 }
 

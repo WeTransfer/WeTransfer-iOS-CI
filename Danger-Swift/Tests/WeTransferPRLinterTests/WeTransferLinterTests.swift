@@ -180,11 +180,32 @@ final class WeTransferLinterTests: XCTestCase {
         XCTAssertEqual(danger.warnings.count, 0)
     }
 
+    /// It should show the Bitrise URL if it's set.
+    func testBitriseURL() {
+        let danger = DangerDSL(testSettings: [:])
+        let bitriseURL = "www.fakeurl.com"
+        WeTransferPRLinter.showBitriseBuildURL(using: danger, environmentVariables: ["BITRISE_BUILD_URL": bitriseURL])
+        XCTAssertEqual(danger.messages.count, 1)
+        XCTAssertEqual(danger.messages.first?.message, "View more details on <a href=\"\(bitriseURL)\" target=\"_blank\">Bitrise</a>")
+    }
+
     static var allTests = [
         ("testAllGood", testAllGood),
         ("testEmptyPRDescription", testEmptyPRDescription),
         ("testNonEmptyPRDescription", testNonEmptyPRDescription),
         ("testWorkInProgressLabel", testWorkInProgressLabel),
-        ("testWorkInProgressTitle", testWorkInProgressTitle)
+        ("testWorkInProgressTitle", testWorkInProgressTitle),
+        ("testFinalClass", testFinalClass),
+        ("testFinalClassDisabled", testFinalClassDisabled),
+        ("testNotFinalForOpenClass", testNotFinalForOpenClass),
+        ("testNotFinalForComments", testNotFinalForComments),
+        ("testUnownedSelfUsage", testUnownedSelfUsage),
+        ("testEmptyMethodOverrides", testEmptyMethodOverrides),
+        ("testClosureMethodOverrides", testClosureMethodOverrides),
+        ("testMarkUsage", testMarkUsage),
+        ("testMarkUsageSmallFiles", testMarkUsageSmallFiles),
+        ("testMarkAlreadyUsed", testMarkAlreadyUsed),
+        ("testMarkUsageInTests", testMarkUsageInTests),
+        ("testBitriseURL", testBitriseURL)
     ]
 }

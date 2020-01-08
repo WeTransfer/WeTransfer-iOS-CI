@@ -4,23 +4,34 @@ import XCTest
 @testable import DangerFixtures
 
 final class WeTransferLinterTests: XCTestCase {
-    func testWarnsWhenThereAreCreatedAtPrefixes() {
-        // Arrange a custom Danger DSL to run against
-        let danger = githubWithFilesDSL(modified: ["file.swift"], fileMap: ["file.swift": "//  Created by Orta"])
-        // Act against running our check
-        WeTransferPRLinter.lint(using: danger)
-        // Assert the number of warnings has increased
-        XCTAssertEqual(danger.warnings.count, 1)
+
+    override func tearDown() {
+        resetDangerResults()
+        super.tearDown()
     }
 
-    func testDoesNotWarnWhenNoCreatedAt() {
-        let danger = githubWithFilesDSL(modified: ["file.swift"], fileMap: ["file.swift": "{}"])
-        WeTransferPRLinter.lint(using: danger)
+    /// It should warn for an empty PR description.
+    func testEmptyPRDescription() throws {
+        let danger = DangerDSL(testSettings: [
+            .prDescription: ""
+        ])
+        WeTransferPRLinter.validatePRDescription(using: danger)
+        XCTAssertEqual(danger.warnings.count, 1)
+        let message = try XCTUnwrap(danger.warnings.first?.message)
+        XCTAssertEqual(message, "Please provide a summary in the Pull Request description")
+    }
+
+    /// It should not warn if a PR description is set.
+    func testNonEmptyPRDescription() throws {
+        let danger = DangerDSL(testSettings: [
+            .prDescription: "This is a great PR with a lot of fixes"
+        ])
+        WeTransferPRLinter.validatePRDescription(using: danger)
         XCTAssertEqual(danger.warnings.count, 0)
     }
 
     static var allTests = [
-        ("testWarnsWhenThereAreCreatedAtPrefixes", testWarnsWhenThereAreCreatedAtPrefixes),
-        ("testDoesNotWarnWhenNoCreatedAt", testDoesNotWarnWhenNoCreatedAt)
+        ("testEmptyPRDescription", testEmptyPRDescription),
+        ("testNonEmptyPRDescription", testNonEmptyPRDescription)
     ]
 }

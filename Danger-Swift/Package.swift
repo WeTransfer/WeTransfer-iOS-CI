@@ -20,6 +20,6 @@ let package = Package(
             dependencies: ["Danger"]),
         .testTarget(
             name: "WeTransferPRLinterTests",
-            dependencies: ["WeTransferPRLinter"]),
+            dependencies: ["WeTransferPRLinter", "DangerFixtures"]),
     ]
 )

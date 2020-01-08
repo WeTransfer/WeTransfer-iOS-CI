@@ -1,14 +1,21 @@
 import Danger
 import Foundation
 
-public func lint(using danger: DangerDSL) -> Void {
-    let swiftFilesWithCopyright = danger.git.modifiedFiles.filter {
-        $0.fileType == .swift
-            && danger.utils.readFile($0).contains("//  Created by")
+public enum WeTransferPRLinter {
+    public static func lint() {
+        let danger = Danger()
+        lint(using: danger)
     }
 
-    if swiftFilesWithCopyright.count > 0 {
-        let files = swiftFilesWithCopyright.joined(separator: ", ")
-        warn("Please don't include copyright headers, found them in: \(files)")
+    static func lint(using danger: DangerDSL) {
+        let swiftFilesWithCopyright = danger.git.modifiedFiles.filter {
+            $0.fileType == .swift
+                && danger.utils.readFile($0).contains("//  Created by")
+        }
+
+        if swiftFilesWithCopyright.count > 0 {
+            let files = swiftFilesWithCopyright.joined(separator: ", ")
+            danger.warn("Please don't include copyright headers, found them in: \(files)")
+        }
     }
 }

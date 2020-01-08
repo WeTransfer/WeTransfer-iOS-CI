@@ -11,14 +11,13 @@ final class WeTransferLinterTests: XCTestCase {
     }
 
     /// It should warn for an empty PR description.
-    func testEmptyPRDescription() throws {
+    func testEmptyPRDescription() {
         let danger = DangerDSL(testSettings: [
             .prDescription: ""
         ])
         WeTransferPRLinter.validatePRDescription(using: danger)
         XCTAssertEqual(danger.warnings.count, 1)
-        let message = try XCTUnwrap(danger.warnings.first?.message)
-        XCTAssertEqual(message, "Please provide a summary in the Pull Request description")
+        XCTAssertEqual(danger.warnings.first?.message, "Please provide a summary in the Pull Request description")
     }
 
     /// It should not warn if a PR description is set.

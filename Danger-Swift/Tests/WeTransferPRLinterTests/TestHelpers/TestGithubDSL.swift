@@ -1,5 +1,6 @@
 // swiftlint:disable line_length file_length
 
+/// Used by `DangerTestExtensions.swift` for testing purposes. Some properties in here will be overriden for tests.
 public let TestDSLGitHubJSON = """
 
 {

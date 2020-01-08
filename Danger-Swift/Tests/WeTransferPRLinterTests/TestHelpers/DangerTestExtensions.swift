@@ -9,7 +9,10 @@ import Foundation
 @testable import Danger
 @testable import DangerFixtures
 
+/// Adds an option for overriding settings for testing.
 extension DangerDSL {
+
+    /// Available overrides. To add a new one, open the `TestDSLGitHubJSON` and add a key for replacement.
     enum TestOverride: String {
         case prDescription = "PR_DESCRIPTION_CONTENT"
     }

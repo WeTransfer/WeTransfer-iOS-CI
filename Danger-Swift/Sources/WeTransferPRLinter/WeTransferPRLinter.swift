@@ -40,6 +40,7 @@ extension WeTransferPRLinter {
             validateFinalClasses(using: danger, file: file, lines: lines)
             validateUnownedSelf(using: danger, file: file, lines: lines)
             validateEmptyMethodOverrides(using: danger, file: file, lines: lines)
+            validateMarkUsage(using: danger, file: file, lines: lines)
         }
     }
 
@@ -75,6 +76,15 @@ extension WeTransferPRLinter {
             guard line.contains("override"), line.contains("func"), lines[index + 1].contains("super"), lines[index + 2].contains("}"), !lines[index + 2].contains("{") else { continue }
             danger.warn(message: "Override methods which only call super can be removed", file: file, line: index + 3)
         }
+    }
+
+    /// Warns if a big files is containing any // MARK.
+    static func validateMarkUsage(using danger: DangerDSL, file: File, lines: [String], minimumLinesCount: Int = 200) {
+        guard !file.lowercased().contains("test"), lines.count >= minimumLinesCount else { return }
+        let containsMark = lines.contains(where: { line in line.contains("MARK:") })
+        guard !containsMark else { return }
+
+        danger.warn("Consider to place some `MARK:` lines for \(file), which is over \(minimumLinesCount) lines big.")
     }
 }
 

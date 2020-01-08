@@ -103,9 +103,9 @@ final class WeTransferLinterTests: XCTestCase {
     func testUnownedSelfUsage() {
         let danger = DangerDSL(testSettings: [:])
         WeTransferPRLinter.validateUnownedSelf(using: danger, file: "File.swift", lines: [
-                   "[weak self]",
-                   "[unowned self] _ in"
-               ])
+            "[weak self]",
+            "[unowned self] _ in"
+        ])
         XCTAssertEqual(danger.warnings.count, 1)
         XCTAssertEqual(danger.warnings.first?.message, "It is safer to use weak instead of unowned")
     }
@@ -114,10 +114,10 @@ final class WeTransferLinterTests: XCTestCase {
     func testEmptyMethodOverrides() {
         let danger = DangerDSL(testSettings: [:])
         WeTransferPRLinter.validateEmptyMethodOverrides(using: danger, file: "File.swift", lines: [
-                   "override func viewDidLoad() {",
-                   "super.viewDidLoad()",
-                   "}"
-               ])
+            "override func viewDidLoad() {",
+            "super.viewDidLoad()",
+            "}"
+        ])
         XCTAssertEqual(danger.warnings.count, 1)
         XCTAssertEqual(danger.warnings.first?.message, "Override methods which only call super can be removed")
     }
@@ -126,11 +126,57 @@ final class WeTransferLinterTests: XCTestCase {
     func testClosureMethodOverrides() {
         let danger = DangerDSL(testSettings: [:])
         WeTransferPRLinter.validateEmptyMethodOverrides(using: danger, file: "File.swift", lines: [
-                   "override func viewDidLoad() {",
-                   "super.viewDidLoad()",
-                   "guard let download = self.download else { return }",
-                   "}"
-               ])
+            "override func viewDidLoad() {",
+            "super.viewDidLoad()",
+            "guard let download = self.download else { return }",
+            "}"
+        ])
+        XCTAssertEqual(danger.warnings.count, 0)
+    }
+
+    /// It should warn for using // Mark: in big files without any mark.
+    func testMarkUsage() {
+        let danger = DangerDSL(testSettings: [:])
+        WeTransferPRLinter.validateMarkUsage(using: danger, file: "File.swift", lines: [
+            "func myMethod() {",
+            "print(\"something\")",
+            "}"
+        ], minimumLinesCount: 2)
+        XCTAssertEqual(danger.warnings.count, 1)
+        XCTAssertEqual(danger.warnings.first?.message, "Consider to place some `MARK:` lines for File.swift, which is over 2 lines big.")
+    }
+
+    /// It should not warn for using // Mark: in small files without any mark.
+    func testMarkUsageSmallFiles() {
+        let danger = DangerDSL(testSettings: [:])
+        WeTransferPRLinter.validateMarkUsage(using: danger, file: "File.swift", lines: [
+            "func myMethod() {",
+            "print(\"something\")",
+            "}"
+        ], minimumLinesCount: 5)
+        XCTAssertEqual(danger.warnings.count, 0)
+    }
+
+    /// It should not warn for using // Mark: in big files if a mark is used.
+    func testMarkAlreadyUsed() {
+        let danger = DangerDSL(testSettings: [:])
+        WeTransferPRLinter.validateMarkUsage(using: danger, file: "File.swift", lines: [
+            "MARK: Methods",
+            "func myMethod() {",
+            "print(\"something\")",
+            "}"
+        ], minimumLinesCount: 2)
+        XCTAssertEqual(danger.warnings.count, 0)
+    }
+
+    /// It should not warn for using // Mark: in test files.
+    func testMarkUsageInTests() {
+        let danger = DangerDSL(testSettings: [:])
+        WeTransferPRLinter.validateMarkUsage(using: danger, file: "FileTests.swift", lines: [
+            "func myMethod() {",
+            "print(\"something\")",
+            "}"
+        ], minimumLinesCount: 2)
         XCTAssertEqual(danger.warnings.count, 0)
     }
 

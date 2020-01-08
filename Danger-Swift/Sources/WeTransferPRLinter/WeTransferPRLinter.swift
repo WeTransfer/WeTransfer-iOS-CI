@@ -43,27 +43,12 @@ public enum WeTransferPRLinter {
         print("Starting SwiftLint...")
         print("Linting files:\n- \((danger.git.createdFiles + danger.git.modifiedFiles).joined(separator: "\n- "))")
 
-        SwiftLint.lint(inline: true, configFile: "\(pwd)/Submodules/WeTransfer-iOS-CI/SwiftLint/.swiftlint-source.yml")
-        SwiftLint.lint(inline: true, configFile: "\(pwd)/Submodules/WeTransfer-iOS-CI/SwiftLint/.swiftlint-tests.yml")
-//        # Run SwiftLint for source code and tests
-//        swiftlint_source_config_file = File.join(
-//          Dir.pwd,
-//          'Submodules/WeTransfer-iOS-CI/SwiftLint',
-//          '.swiftlint-source.yml'
-//        )
-//        swiftlint_tests_config_file = File.join(
-//          Dir.pwd,
-//          'Submodules/WeTransfer-iOS-CI/SwiftLint',
-//          '.swiftlint-tests.yml'
-//        )
-//
-//        swiftlint.verbose = true
-//        swiftlint.config_file = swiftlint_source_config_file
-//        swiftlint.lint_files inline_mode: true
-//
-//        swiftlint.verbose = true
-//        swiftlint.config_file = swiftlint_tests_config_file
-//        swiftlint.lint_files inline_mode: true
+        SwiftLint.lint(inline: true, configFile: "\(pwd)/Submodules/WeTransfer-iOS-CI/SwiftLint/.swiftlint-source.yml", quiet: false, filesFilter: { file -> Bool in
+            return !file.lowercased().contains("test")
+        })
+        SwiftLint.lint(inline: true, configFile: "\(pwd)/Submodules/WeTransfer-iOS-CI/SwiftLint/.swiftlint-tests.yml", quiet: false, filesFilter: { file -> Bool in
+            return file.lowercased().contains("test")
+        })
     }
 }
 

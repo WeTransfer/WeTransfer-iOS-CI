@@ -7,13 +7,14 @@ final class WeTransferLinterTests: XCTestCase {
 
     override func tearDown() {
         resetDangerResults()
+        MockedSwiftLintExecutor.lintedFiles = [:]
         super.tearDown()
     }
 
     /// It should not create any warnings or errors if nothing is wrong.
     func testAllGood() {
         let danger = githubWithFilesDSL()
-        WeTransferPRLinter.lint(using: danger)
+        WeTransferPRLinter.lint(using: danger, swiftLintExecutor: MockedSwiftLintExecutor.self)
 
         XCTAssertEqual(danger.warnings.count, 0)
         XCTAssertEqual(danger.fails.count, 0)
@@ -189,6 +190,27 @@ final class WeTransferLinterTests: XCTestCase {
         XCTAssertEqual(danger.messages.first?.message, "View more details on <a href=\"\(bitriseURL)\" target=\"_blank\">Bitrise</a>")
     }
 
+    /// It should correctly split files into test and non-test files.
+    func testSwiftLintFileSplitting() {
+        let danger = githubWithFilesDSL(created: ["ViewModel.swift", "ViewModelTests.swift", "Changelog.md", "RubyTests.rb"], fileMap: [:])
+        let mockedSwiftLintExecutor = MockedSwiftLintExecutor.self
+        WeTransferPRLinter.swiftLint(using: danger, executor: mockedSwiftLintExecutor)
+
+        let nonTestFiles = mockedSwiftLintExecutor.lintedFiles.first(where: { !$0.key.contains("tests") })?.value
+        let testFiles = mockedSwiftLintExecutor.lintedFiles.first(where: { $0.key.contains("tests") })?.value
+        XCTAssertEqual(nonTestFiles, ["ViewModel.swift"])
+        XCTAssertEqual(testFiles, ["ViewModelTests.swift"])
+    }
+
+    /// It should not trigger SwiftLint if there's no files to lint.
+    func testSwiftLintSkippingForNoSwiftFiles() {
+        let danger = githubWithFilesDSL(created: ["Changelog.md", "RubyTests.rb"], fileMap: [:])
+        let mockedSwiftLintExecutor = MockedSwiftLintExecutor.self
+        WeTransferPRLinter.swiftLint(using: danger, executor: mockedSwiftLintExecutor)
+
+        XCTAssertEqual(mockedSwiftLintExecutor.lintedFiles, [:])
+    }
+
     static var allTests = [
         ("testAllGood", testAllGood),
         ("testEmptyPRDescription", testEmptyPRDescription),
@@ -206,6 +228,8 @@ final class WeTransferLinterTests: XCTestCase {
         ("testMarkUsageSmallFiles", testMarkUsageSmallFiles),
         ("testMarkAlreadyUsed", testMarkAlreadyUsed),
         ("testMarkUsageInTests", testMarkUsageInTests),
-        ("testBitriseURL", testBitriseURL)
+        ("testBitriseURL", testBitriseURL),
+        ("testSwiftLintFileSplitting", testSwiftLintFileSplitting),
+        ("testSwiftLintSkippingForNoSwiftFiles", testSwiftLintSkippingForNoSwiftFiles)
     ]
 }

@@ -2,12 +2,12 @@ import Danger
 import Foundation
 
 public enum WeTransferPRLinter {
-    public static func lint(using danger: DangerDSL = Danger()) {
+    public static func lint(using danger: DangerDSL = Danger(), swiftLintExecutor: SwiftLintExecuting.Type = SwiftLintExecutor.self) {
         validatePRDescription(using: danger)
         validateWorkInProgress(using: danger)
         validateFiles(using: danger)
         showBitriseBuildURL(using: danger)
-        swiftLint(using: danger)
+        swiftLint(using: danger, executor: swiftLintExecutor)
     }
 
     /// Mainly to encourage writing up some reasoning about the PR, rather than just leaving a title.
@@ -38,17 +38,24 @@ public enum WeTransferPRLinter {
         danger.message("View more details on <a href=\"\(bitriseURL)\" target=\"_blank\">Bitrise</a>")
     }
 
-    static func swiftLint(using danger: DangerDSL) {
+    /// Triggers SwiftLint and makes use of specific configuration for tests and non-tests.
+    static func swiftLint(using danger: DangerDSL, executor: SwiftLintExecuting.Type = SwiftLintExecutor.self) {
         let pwd = danger.utils.exec("pwd")
         print("Starting SwiftLint...")
-        print("Linting files:\n- \((danger.git.createdFiles + danger.git.modifiedFiles).joined(separator: "\n- "))")
 
-        SwiftLint.lint(inline: true, configFile: "\(pwd)/Submodules/WeTransfer-iOS-CI/SwiftLint/.swiftlint-source.yml", quiet: false, filesFilter: { file -> Bool in
-            return !file.lowercased().contains("test")
-        })
-        SwiftLint.lint(inline: true, configFile: "\(pwd)/Submodules/WeTransfer-iOS-CI/SwiftLint/.swiftlint-tests.yml", quiet: false, filesFilter: { file -> Bool in
-            return file.lowercased().contains("test")
-        })
+        let files = danger.git.createdFiles + danger.git.modifiedFiles
+        let nonTestFiles = files.filter { !$0.lowercased().contains("test") && $0.fileType == .swift }
+        let testFiles = files.filter { $0.lowercased().contains("test") && $0.fileType == .swift }
+
+        if !nonTestFiles.isEmpty {
+            print("Linting non-test files:\n- \(nonTestFiles.joined(separator: "\n- "))")
+            executor.lint(files: nonTestFiles, configFile: "\(pwd)/Submodules/WeTransfer-iOS-CI/SwiftLint/.swiftlint-source.yml")
+        }
+
+        if !testFiles.isEmpty {
+            print("Linting test files:\n- \(testFiles.joined(separator: "\n- "))")
+            executor.lint(files: testFiles, configFile: "\(pwd)/Submodules/WeTransfer-iOS-CI/SwiftLint/.swiftlint-tests.yml")
+        }
     }
 }
 

@@ -2,22 +2,54 @@ import XCTest
 @testable import WeTransferPRLinter
 @testable import Danger
 @testable import DangerFixtures
+import Files
 
 final class WeTransferLinterTests: XCTestCase {
 
+    private var buildFolder: Folder!
+
+    override func setUp() {
+        super.setUp()
+        buildFolder = try! Folder.current.createSubfolderIfNeeded(withName: ".filesTest")
+        try! buildFolder.empty()
+    }
+
     override func tearDown() {
+        try? buildFolder.delete()
         resetDangerResults()
         MockedSwiftLintExecutor.lintedFiles = [:]
+        MockedCoverageReporter.reportedXCResultBundlesNames = []
         super.tearDown()
     }
 
     /// It should not create any warnings or errors if nothing is wrong.
     func testAllGood() {
         let danger = githubWithFilesDSL()
-        WeTransferPRLinter.lint(using: danger, swiftLintExecutor: MockedSwiftLintExecutor.self)
+        WeTransferPRLinter.lint(using: danger, swiftLintExecutor: MockedSwiftLintExecutor.self, reportsPath: buildFolder.name)
 
         XCTAssertEqual(danger.warnings.count, 0)
         XCTAssertEqual(danger.fails.count, 0)
+    }
+
+    /// It should report code coverage for each xcresult file.
+    func testCodeCoverageReport() throws {
+        let danger = githubWithFilesDSL()
+        let coverageReporter = MockedCoverageReporter.self
+        let rabbitXCResultFileName = try buildFolder.createSubfolder(named: "Rabbit.test_result.xcresult").name
+        let okapiXCResultFileName = try buildFolder.createSubfolder(named: "Okapi.test_result.xcresult").name
+        WeTransferPRLinter.lint(using: danger, coverageReporter: coverageReporter, reportsPath: buildFolder.name)
+
+        XCTAssertEqual(coverageReporter.reportedXCResultBundlesNames.count, 2)
+        XCTAssertTrue(coverageReporter.reportedXCResultBundlesNames.contains(rabbitXCResultFileName))
+        XCTAssertTrue(coverageReporter.reportedXCResultBundlesNames.contains(okapiXCResultFileName))
+    }
+
+    /// It should report an error if code coverage creation failed.
+    func testCodeCoverageFailed() throws {
+        let danger = githubWithFilesDSL()
+        WeTransferPRLinter.lint(using: danger)
+        XCTAssertEqual(danger.warnings.count, 1)
+        XCTAssertTrue(danger.warnings.first?.message.contains("Code coverage generation failed with error") == true)
     }
 
     /// It should warn for an empty PR description.
@@ -213,6 +245,7 @@ final class WeTransferLinterTests: XCTestCase {
 
     static var allTests = [
         ("testAllGood", testAllGood),
+        ("testCodeCoverageReport", testCodeCoverageReport),
         ("testEmptyPRDescription", testEmptyPRDescription),
         ("testNonEmptyPRDescription", testNonEmptyPRDescription),
         ("testWorkInProgressLabel", testWorkInProgressLabel),

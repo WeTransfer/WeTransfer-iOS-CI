@@ -1,11 +1,13 @@
 import Danger
 import Foundation
-import DangerSwiftCoverage
 import Files
 
 public enum WeTransferPRLinter {
-    public static func lint(using danger: DangerDSL = Danger(), swiftLintExecutor: SwiftLintExecuting.Type = SwiftLintExecutor.self) {
-        reportCodeCoverage(using: danger)
+    public static func lint(using danger: DangerDSL = Danger(),
+                            swiftLintExecutor: SwiftLintExecuting.Type = SwiftLintExecutor.self,
+                            coverageReporter: CoverageReporting.Type = CoverageReporter.self,
+                            reportsPath: String = "build/reports") {
+        reportCodeCoverage(using: danger, coverageReporter: coverageReporter, reportsPath: reportsPath)
         validatePRDescription(using: danger)
         validateWorkInProgress(using: danger)
         validateFiles(using: danger)
@@ -13,22 +15,21 @@ public enum WeTransferPRLinter {
         swiftLint(using: danger, executor: swiftLintExecutor)
     }
 
-    static func reportCodeCoverage(using danger: DangerDSL) {
+    static func reportCodeCoverage(using danger: DangerDSL, coverageReporter: CoverageReporting.Type, reportsPath: String) {
         defer { print("\n") }
 
         do {
-            let reports = try Folder(path: "build/reports").subfolders
-            let xcresultFiles = reports.filter { $0.extension == "xcresult" }
+            let reports = try Folder(path: reportsPath).subfolders
+            let xcresultBundles = reports.filter { $0.extension == "xcresult" }
 
-            print("Found the following reports:\n- \(xcresultFiles.map { $0.description }.joined(separator: "\n- "))")
+            print("Found the following reports:\n- \(xcresultBundles.map { $0.description }.joined(separator: "\n- "))")
 
-            guard !xcresultFiles.isEmpty else {
-                return danger.message("There were no files to create a code coverage report for.")
+            guard !xcresultBundles.isEmpty else {
+                return print("There were no files to create a code coverage report for.")
             }
 
-            xcresultFiles.forEach { file in
-                print("Generating coverage report for \(file.name)")
-                Coverage.xcodeBuildCoverage(.xcresultBundle(file.path), minimumCoverage: 0, hideProjectCoverage: true)
+            xcresultBundles.forEach { xcresultBundle in
+                coverageReporter.reportCoverage(for: xcresultBundle)
             }
         } catch {
             danger.warn("Code coverage generation failed with error: \(error).")

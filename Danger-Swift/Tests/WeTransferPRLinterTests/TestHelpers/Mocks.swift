@@ -1,5 +1,5 @@
 //
-//  MockedSwiftLintExecutor.swift
+//  Mocks.swift
 //  WeTransferPRLinterTests
 //
 //  Created by Antoine van der Lee on 09/01/2020.
@@ -15,5 +15,14 @@ struct MockedSwiftLintExecutor: SwiftLintExecuting {
 
     static func lint(files: [File], configFile: String) {
         lintedFiles[configFile] = files
+    }
+}
+
+struct MockedCoverageReporter: CoverageReporting {
+
+    static var reportedXCResultBundlesNames: [String] = []
+
+    static func reportCoverage(for xcresultBundle: XCResultBundle) {
+        reportedXCResultBundlesNames.append(xcresultBundle.name)
     }
 }

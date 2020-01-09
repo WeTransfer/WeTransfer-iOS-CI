@@ -14,12 +14,14 @@ let package = Package(
     dependencies: [
 //        .package(url: "https://github.com/danger/swift", from: "2.0.7")
         .package(path: "/Users/antoinevanderlee/Documents/GIT-Projects/Eigen/swift"),
-        .package(url: "https://github.com/f-meloni/danger-swift-coverage", from: "1.0.1")
+//        .package(url: "https://github.com/f-meloni/danger-swift-coverage", from: "1.0.1"),
+        .package(path: "/Users/antoinevanderlee/Documents/GIT-Projects/Eigen/danger-swift-coverage"),
+        .package(url: "https://github.com/JohnSundell/Files", from: "4.1.1")
     ],
     targets: [
         .target(
             name: "WeTransferPRLinter",
-            dependencies: ["Danger", "DangerSwiftCoverage"]),
+            dependencies: ["Danger", "DangerSwiftCoverage", "Files"]),
         .testTarget(
             name: "WeTransferPRLinterTests",
             dependencies: ["WeTransferPRLinter", "DangerFixtures"]),

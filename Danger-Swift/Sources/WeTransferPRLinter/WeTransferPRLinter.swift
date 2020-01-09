@@ -1,14 +1,38 @@
 import Danger
 import Foundation
 import DangerSwiftCoverage
+import Files
 
 public enum WeTransferPRLinter {
     public static func lint(using danger: DangerDSL = Danger(), swiftLintExecutor: SwiftLintExecuting.Type = SwiftLintExecutor.self) {
+        reportCodeCoverage(using: danger)
         validatePRDescription(using: danger)
         validateWorkInProgress(using: danger)
         validateFiles(using: danger)
         showBitriseBuildURL(using: danger)
         swiftLint(using: danger, executor: swiftLintExecutor)
+    }
+
+    static func reportCodeCoverage(using danger: DangerDSL) {
+        defer { print("\n") }
+
+        do {
+            let reports = try Folder(path: "build/reports").subfolders
+            let xcresultFiles = reports.filter { $0.extension == "xcresult" }
+
+            print("Found the following reports:\n- \(xcresultFiles.map { $0.description }.joined(separator: "\n- "))")
+
+            guard !xcresultFiles.isEmpty else {
+                return danger.message("There were no files to create a code coverage report for.")
+            }
+
+            xcresultFiles.forEach { file in
+                print("Generating coverage report for \(file.name)")
+                Coverage.xcodeBuildCoverage(.xcresultBundle(file.path), minimumCoverage: 0, hideProjectCoverage: true)
+            }
+        } catch {
+            danger.warn("Code coverage generation failed with error: \(error).")
+        }
     }
 
     /// Mainly to encourage writing up some reasoning about the PR, rather than just leaving a title.
@@ -41,6 +65,8 @@ public enum WeTransferPRLinter {
 
     /// Triggers SwiftLint and makes use of specific configuration for tests and non-tests.
     static func swiftLint(using danger: DangerDSL, executor: SwiftLintExecuting.Type = SwiftLintExecutor.self) {
+        defer { print("\n") }
+
         let pwd = danger.utils.exec("pwd")
         print("Starting SwiftLint...")
 
@@ -77,7 +103,7 @@ extension WeTransferPRLinter {
     }
 
     /// Warns and asks to use "final" in front of a non-final class.
-    static func validateFinalClasses(using danger: DangerDSL, file: File, lines: [String]) {
+    static func validateFinalClasses(using danger: DangerDSL, file: Danger.File, lines: [String]) {
         guard !file.contains("danger:disable final_class") else { return }
         var isMultilineComment = false
 
@@ -95,7 +121,7 @@ extension WeTransferPRLinter {
     }
 
     /// Warns if unowned is used. It's safer to use weak.
-    static func validateUnownedSelf(using danger: DangerDSL, file: File, lines: [String]) {
+    static func validateUnownedSelf(using danger: DangerDSL, file: Danger.File, lines: [String]) {
         for (index, line) in lines.enumerated() {
             guard line.contains("unowned self") else { continue }
             danger.warn(message: "It is safer to use weak instead of unowned", file: file, line: index + 1)
@@ -103,7 +129,7 @@ extension WeTransferPRLinter {
     }
 
     /// Warns if a method override contains no addtional code.
-    static func validateEmptyMethodOverrides(using danger: DangerDSL, file: File, lines: [String]) {
+    static func validateEmptyMethodOverrides(using danger: DangerDSL, file: Danger.File, lines: [String]) {
         for (index, line) in lines.enumerated() {
             guard line.contains("override"), line.contains("func"), lines[index + 1].contains("super"), lines[index + 2].contains("}"), !lines[index + 2].contains("{") else { continue }
             danger.warn(message: "Override methods which only call super can be removed", file: file, line: index + 3)
@@ -111,7 +137,7 @@ extension WeTransferPRLinter {
     }
 
     /// Warns if a big files is containing any // MARK.
-    static func validateMarkUsage(using danger: DangerDSL, file: File, lines: [String], minimumLinesCount: Int = 200) {
+    static func validateMarkUsage(using danger: DangerDSL, file: Danger.File, lines: [String], minimumLinesCount: Int = 200) {
         guard !file.lowercased().contains("test"), lines.count >= minimumLinesCount else { return }
         let containsMark = lines.contains(where: { line in line.contains("MARK:") })
         guard !containsMark else { return }

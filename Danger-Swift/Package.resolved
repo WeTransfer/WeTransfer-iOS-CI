@@ -38,30 +38,21 @@
         }
       },
       {
-        "package": "DangerSwiftCoverage",
-        "repositoryURL": "https://github.com/f-meloni/danger-swift-coverage",
+        "package": "DangerXCodeSummary",
+        "repositoryURL": "https://github.com/f-meloni/danger-swift-xcodesummary",
         "state": {
           "branch": null,
-          "revision": "8dfd82339c14cb2eef55284e65c7afe14104d20d",
-          "version": "1.0.1"
+          "revision": "fb862e5ae91f3efe197874afdcee85a09eafe8ed",
+          "version": "1.0.0"
         }
       },
       {
-        "package": "Komondor",
-        "repositoryURL": "https://github.com/shibapm/Komondor",
+        "package": "Files",
+        "repositoryURL": "https://github.com/JohnSundell/Files",
         "state": {
           "branch": null,
-          "revision": "3cd6d76887816ead5931ddbfb249c2935f518e17",
-          "version": "1.0.4"
-        }
-      },
-      {
-        "package": "Logger",
-        "repositoryURL": "https://github.com/shibapm/Logger",
-        "state": {
-          "branch": null,
-          "revision": "53c3ecca5abe8cf46697e33901ee774236d94cce",
-          "version": "0.2.3"
+          "revision": "22fe84797d499ffca911ccd896b34efaf06a50b9",
+          "version": "4.1.1"
         }
       },
       {
@@ -92,6 +83,15 @@
         }
       },
       {
+        "package": "PackageConfig",
+        "repositoryURL": "https://github.com/shibapm/PackageConfig",
+        "state": {
+          "branch": null,
+          "revision": "fd0829aac9851434b3d2db0890e27bc489fc973a",
+          "version": "0.12.2"
+        }
+      },
+      {
         "package": "Quick",
         "repositoryURL": "https://github.com/Quick/Quick.git",
         "state": {
@@ -116,15 +116,6 @@
           "branch": null,
           "revision": "fd5e9e99aada7432170366c9e95967011ce13bad",
           "version": "2.4.0"
-        }
-      },
-      {
-        "package": "Rocket",
-        "repositoryURL": "https://github.com/shibapm/Rocket",
-        "state": {
-          "branch": null,
-          "revision": "f75c9736733b489a3456b4f3a47cf13adb99f197",
-          "version": "0.9.2"
         }
       },
       {
@@ -242,15 +233,6 @@
           "branch": null,
           "revision": "200046c93f6d5d78a6d72bfd9c0b27a95e9c0a2b",
           "version": "1.2.0"
-        }
-      },
-      {
-        "package": "Yams",
-        "repositoryURL": "https://github.com/jpsim/Yams.git",
-        "state": {
-          "branch": null,
-          "revision": "c947a306d2e80ecb2c0859047b35c73b8e1ca27f",
-          "version": "2.0.0"
         }
       }
     ]

@@ -10,15 +10,15 @@ import Danger
 
 /// Defines a type that's capable of executing SwiftLint.
 public protocol SwiftLintExecuting {
-    static func lint(files: [File], configFile: String)
+    static func lint(files: [Danger.File], configFile: String)
 }
 
 /// A simple facade for testing purposes that directly calls SwiftLint.
 public enum SwiftLintExecutor: SwiftLintExecuting {
-    public static func lint(files: [File], configFile: String) {
+    public static func lint(files: [Danger.File], configFile: String) {
         SwiftLint.lint(.files(files),
                        inline: true,
                        configFile: configFile,
-                       quiet: false)
+                       quiet: true)
     }
 }

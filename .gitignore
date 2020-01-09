@@ -1,3 +1,4 @@
 junit-results.xml
+.build
 node_modules
 .swiftpm

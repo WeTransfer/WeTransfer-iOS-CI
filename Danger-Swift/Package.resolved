@@ -2,12 +2,48 @@
   "object": {
     "pins": [
       {
-        "package": "Files",
-        "repositoryURL": "https://github.com/JohnSundell/Files.git",
+        "package": "Commandant",
+        "repositoryURL": "https://github.com/Carthage/Commandant.git",
         "state": {
           "branch": null,
-          "revision": "a84615f4558151fab52ac38df697ce2442991f93",
-          "version": "2.3.0"
+          "revision": "ab68611013dec67413628ac87c1f29e8427bc8e4",
+          "version": "0.17.0"
+        }
+      },
+      {
+        "package": "Curry",
+        "repositoryURL": "https://github.com/thoughtbot/Curry.git",
+        "state": {
+          "branch": null,
+          "revision": "4331dd50bc1db007db664a23f32e6f3df93d4e1a",
+          "version": "4.0.2"
+        }
+      },
+      {
+        "package": "CwlCatchException",
+        "repositoryURL": "https://github.com/mattgallagher/CwlCatchException.git",
+        "state": {
+          "branch": null,
+          "revision": "7cd2f8cacc4d22f21bc0b2309c3b18acf7957b66",
+          "version": "1.2.0"
+        }
+      },
+      {
+        "package": "CwlPreconditionTesting",
+        "repositoryURL": "https://github.com/mattgallagher/CwlPreconditionTesting.git",
+        "state": {
+          "branch": null,
+          "revision": "c228db5d2ad1b01ebc84435e823e6cca4e3db98b",
+          "version": "1.2.0"
+        }
+      },
+      {
+        "package": "Komondor",
+        "repositoryURL": "https://github.com/shibapm/Komondor",
+        "state": {
+          "branch": null,
+          "revision": "3cd6d76887816ead5931ddbfb249c2935f518e17",
+          "version": "1.0.4"
         }
       },
       {
@@ -20,12 +56,21 @@
         }
       },
       {
-        "package": "Marathon",
-        "repositoryURL": "https://github.com/JohnSundell/Marathon",
+        "package": "MarkdownGenerator",
+        "repositoryURL": "https://github.com/eneko/MarkdownGenerator.git",
         "state": {
           "branch": null,
-          "revision": "35b672e05ac411fb104e462fbfd6541f995abc17",
-          "version": "3.3.0"
+          "revision": "1fc31be6b66245187c3f87f35d86b6aeac6dfe7f",
+          "version": "0.5.0"
+        }
+      },
+      {
+        "package": "Nimble",
+        "repositoryURL": "https://github.com/Quick/Nimble.git",
+        "state": {
+          "branch": null,
+          "revision": "b02b00b30b6353632aa4a5fb6124f8147f7140c0",
+          "version": "8.0.5"
         }
       },
       {
@@ -38,12 +83,21 @@
         }
       },
       {
-        "package": "Releases",
-        "repositoryURL": "https://github.com/JohnSundell/Releases.git",
+        "package": "Quick",
+        "repositoryURL": "https://github.com/Quick/Quick.git",
         "state": {
           "branch": null,
-          "revision": "ea62f33a429185b0ed21344c2355862c5bc4fcce",
-          "version": "4.0.0"
+          "revision": "33682c2f6230c60614861dfc61df267e11a1602f",
+          "version": "2.2.0"
+        }
+      },
+      {
+        "package": "Rainbow",
+        "repositoryURL": "https://github.com/onevcat/Rainbow",
+        "state": {
+          "branch": null,
+          "revision": "9c52c1952e9b2305d4507cf473392ac2d7c9b155",
+          "version": "3.1.5"
         }
       },
       {
@@ -56,12 +110,12 @@
         }
       },
       {
-        "package": "Require",
-        "repositoryURL": "https://github.com/JohnSundell/Require.git",
+        "package": "Rocket",
+        "repositoryURL": "https://github.com/shibapm/Rocket",
         "state": {
           "branch": null,
-          "revision": "7cfbd0d8a2dede0e01f6f0d8ab2c7acef1df112e",
-          "version": "2.0.1"
+          "revision": "f75c9736733b489a3456b4f3a47cf13adb99f197",
+          "version": "0.9.2"
         }
       },
       {
@@ -74,12 +128,120 @@
         }
       },
       {
-        "package": "danger-swift",
-        "repositoryURL": "https://github.com/danger/swift",
+        "package": "SourceDocs",
+        "repositoryURL": "https://github.com/eneko/SourceDocs",
         "state": {
           "branch": null,
-          "revision": "74b552511bee69051ec23347177d1e5ab6e2510a",
-          "version": "2.0.7"
+          "revision": "dfa6fdae84c555264ad9795dcb7d629339191c01",
+          "version": "0.6.1"
+        }
+      },
+      {
+        "package": "SourceKitten",
+        "repositoryURL": "https://github.com/jpsim/SourceKitten.git",
+        "state": {
+          "branch": null,
+          "revision": "97b5848e5692150d75b5cf0b81d7ebef5f4d5071",
+          "version": "0.28.0"
+        }
+      },
+      {
+        "package": "llbuild",
+        "repositoryURL": "https://github.com/apple/swift-llbuild.git",
+        "state": {
+          "branch": null,
+          "revision": "f1c9ad9a253cdf1aa89a7f5c99c30b4513b06ddb",
+          "version": "0.1.1"
+        }
+      },
+      {
+        "package": "SwiftPM",
+        "repositoryURL": "https://github.com/apple/swift-package-manager.git",
+        "state": {
+          "branch": null,
+          "revision": "8656a25cb906c1896339f950ac960ee1b4fe8034",
+          "version": "0.4.0"
+        }
+      },
+      {
+        "package": "SnapshotTesting",
+        "repositoryURL": "https://github.com/pointfreeco/swift-snapshot-testing.git",
+        "state": {
+          "branch": "master",
+          "revision": "acf77ae0b0341e2adceb2289cdea32852822da10",
+          "version": null
+        }
+      },
+      {
+        "package": "SwiftFormat",
+        "repositoryURL": "https://github.com/nicklockwood/SwiftFormat",
+        "state": {
+          "branch": null,
+          "revision": "d9b7cf39e06e89428004a767d97006fb6d293c53",
+          "version": "0.43.5"
+        }
+      },
+      {
+        "package": "SwiftLint",
+        "repositoryURL": "https://github.com/Realm/SwiftLint",
+        "state": {
+          "branch": null,
+          "revision": "6f6c9fed8c9eba586c2f1acb751b0f769ee4994f",
+          "version": "0.38.1"
+        }
+      },
+      {
+        "package": "SwiftShell",
+        "repositoryURL": "https://github.com/kareman/SwiftShell",
+        "state": {
+          "branch": null,
+          "revision": "beebe43c986d89ea5359ac3adcb42dac94e5e08a",
+          "version": "4.1.2"
+        }
+      },
+      {
+        "package": "SwiftyTextTable",
+        "repositoryURL": "https://github.com/scottrhoyt/SwiftyTextTable.git",
+        "state": {
+          "branch": null,
+          "revision": "c6df6cf533d120716bff38f8ff9885e1ce2a4ac3",
+          "version": "0.9.0"
+        }
+      },
+      {
+        "package": "SWXMLHash",
+        "repositoryURL": "https://github.com/drmohundro/SWXMLHash.git",
+        "state": {
+          "branch": null,
+          "revision": "a4931e5c3bafbedeb1601d3bb76bbe835c6d475a",
+          "version": "5.0.1"
+        }
+      },
+      {
+        "package": "System",
+        "repositoryURL": "https://github.com/eneko/System.git",
+        "state": {
+          "branch": null,
+          "revision": "381352d9479fb9c75d99a5ae5503f7d560c62449",
+          "version": "0.2.0"
+        }
+      },
+      {
+        "package": "Version",
+        "repositoryURL": "https://github.com/mxcl/Version",
+        "state": {
+          "branch": null,
+          "revision": "200046c93f6d5d78a6d72bfd9c0b27a95e9c0a2b",
+          "version": "1.2.0"
+        }
+      },
+      {
+        "package": "Yams",
+        "repositoryURL": "https://github.com/jpsim/Yams.git",
+        "state": {
+          "branch": null,
+          "revision": "c947a306d2e80ecb2c0859047b35c73b8e1ca27f",
+          "version": "2.0.0"
         }
       }
     ]

@@ -12,7 +12,8 @@ let package = Package(
             targets: ["WeTransferPRLinter"])
     ],
     dependencies: [
-        .package(url: "https://github.com/danger/swift", from: "2.0.7")
+//        .package(url: "https://github.com/danger/swift", from: "2.0.7")
+        .package(path: "/Users/antoinevanderlee/Documents/GIT-Projects/Eigen/swift")
     ],
     targets: [
         .target(

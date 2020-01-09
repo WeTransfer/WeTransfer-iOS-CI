@@ -1,5 +1,6 @@
 import Danger
 import Foundation
+import DangerSwiftCoverage
 
 public enum WeTransferPRLinter {
     public static func lint(using danger: DangerDSL = Danger(), swiftLintExecutor: SwiftLintExecuting.Type = SwiftLintExecutor.self) {

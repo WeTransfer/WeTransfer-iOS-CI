@@ -38,6 +38,15 @@
         }
       },
       {
+        "package": "DangerSwiftCoverage",
+        "repositoryURL": "https://github.com/f-meloni/danger-swift-coverage",
+        "state": {
+          "branch": null,
+          "revision": "8dfd82339c14cb2eef55284e65c7afe14104d20d",
+          "version": "1.0.1"
+        }
+      },
+      {
         "package": "Komondor",
         "repositoryURL": "https://github.com/shibapm/Komondor",
         "state": {
@@ -186,8 +195,8 @@
         "repositoryURL": "https://github.com/Realm/SwiftLint",
         "state": {
           "branch": null,
-          "revision": "6f6c9fed8c9eba586c2f1acb751b0f769ee4994f",
-          "version": "0.38.1"
+          "revision": "76d44cff391645a7f4d5ba2bf1853afaf3f5c1fb",
+          "version": "0.38.2"
         }
       },
       {

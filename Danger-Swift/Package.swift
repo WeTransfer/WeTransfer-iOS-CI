@@ -13,12 +13,13 @@ let package = Package(
     ],
     dependencies: [
 //        .package(url: "https://github.com/danger/swift", from: "2.0.7")
-        .package(path: "/Users/antoinevanderlee/Documents/GIT-Projects/Eigen/swift")
+        .package(path: "/Users/antoinevanderlee/Documents/GIT-Projects/Eigen/swift"),
+        .package(url: "https://github.com/f-meloni/danger-swift-coverage", from: "1.0.1")
     ],
     targets: [
         .target(
             name: "WeTransferPRLinter",
-            dependencies: ["Danger"]),
+            dependencies: ["Danger", "DangerSwiftCoverage"]),
         .testTarget(
             name: "WeTransferPRLinterTests",
             dependencies: ["WeTransferPRLinter", "DangerFixtures"]),

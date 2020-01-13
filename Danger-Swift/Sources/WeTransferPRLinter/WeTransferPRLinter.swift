@@ -88,7 +88,7 @@ extension WeTransferPRLinter {
         }
     }
 
-    /// Warns if a big files is containing any // MARK.
+    /// Warns if a big files is not containing any // MARK comments.
     static func validateMarkUsage(using danger: DangerDSL, file: File, lines: [String], minimumLinesCount: Int = 200) {
         guard !file.lowercased().contains("test"), lines.count >= minimumLinesCount else { return }
         let containsMark = lines.contains(where: { line in line.contains("MARK:") })

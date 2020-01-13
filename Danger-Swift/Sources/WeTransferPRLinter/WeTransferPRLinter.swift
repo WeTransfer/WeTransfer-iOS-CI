@@ -22,10 +22,10 @@ public enum WeTransferPRLinter {
         let hasWIPLabel = danger.github.issue.labels.contains(where: { $0.name.contains("WIP") })
         let hasWIPTitle = danger.github.pullRequest.title.contains("WIP")
 
-        guard !hasWIPLabel, !hasWIPTitle else {
-            danger.warn("PR is classed as Work in Progress")
+        guard hasWIPLabel || hasWIPTitle else {
             return
         }
+        danger.warn("PR is classed as Work in Progress")
     }
 
     /// Show the Bitrise build URL for easier access.

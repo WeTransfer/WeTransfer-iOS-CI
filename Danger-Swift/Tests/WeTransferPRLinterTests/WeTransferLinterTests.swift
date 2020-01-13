@@ -66,6 +66,16 @@ final class WeTransferLinterTests: XCTestCase {
         XCTAssertTrue(summaryReporter.reportedSummaryFiles.map { $0.name }.contains(okapiSummaryFile.name))
     }
 
+    /// It should add the file name in front of the summary message.
+    func testFileNameInSummaryMessage() throws {
+        let danger = githubWithFilesDSL()
+        let summaryReporter = MockedXcodeSummaryReporter.self
+        let summaryFile = try buildFolder.createFile(at: "Rabbit_Tests.json", contents: TestXcodeSummaryJSON.data(using: .utf8))
+        WeTransferPRLinter.lint(using: danger, summaryReporter: summaryReporter, reportsPath: buildFolder.name)
+        let summaryFileContents = try summaryFile.readAsString()
+        XCTAssertTrue(summaryFileContents.contains("Rabbit: Executed 964 tests, with 0 failures (0 unexpected) in 135.257 (135.775) seconds"))
+    }
+
     /// It should report an error if Xcode Summary reporting failes.
     func testXcodeSummaryReportingFailed() throws {
         let danger = githubWithFilesDSL()

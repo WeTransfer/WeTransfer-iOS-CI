@@ -23,15 +23,16 @@ public enum WeTransferPRLinter {
 
         do {
             let reportsFolder = try Folder(path: reportsPath)
-            let jsonFiles = reportsFolder.files.filter { $0.extension == "json" }
+            let summaryFiles = reportsFolder.files.filter { $0.extension == "json" }
 
-            print("Found Summary Reports:\n- \(jsonFiles.map { $0.name }.joined(separator: "\n- "))")
-
-            guard !jsonFiles.isEmpty else {
+            guard !summaryFiles.isEmpty else {
                 return print("There were no files to create an Xcode Summary report for.")
             }
 
-            jsonFiles.forEach { jsonFile in
+            print("Found Summary Reports:\n- \(summaryFiles.map { $0.name }.joined(separator: "\n- "))")
+
+            try summaryFiles.forEach { jsonFile in
+                try jsonFile.addFileNameToSummaryMessage()
                 summaryReporter.reportXcodeSummary(for: jsonFile)
             }
         } catch {
@@ -46,11 +47,11 @@ public enum WeTransferPRLinter {
             let reports = try Folder(path: reportsPath).subfolders
             let xcresultBundles = reports.filter { $0.extension == "xcresult" }
 
-            print("Found the following reports:\n- \(xcresultBundles.map { $0.description }.joined(separator: "\n- "))")
-
             guard !xcresultBundles.isEmpty else {
                 return print("There were no files to create a code coverage report for.")
             }
+
+            print("Found the following reports:\n- \(xcresultBundles.map { $0.description }.joined(separator: "\n- "))")
 
             xcresultBundles.forEach { xcresultBundle in
                 coverageReporter.reportCoverage(for: xcresultBundle)

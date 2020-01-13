@@ -15,7 +15,7 @@ final class WeTransferLinterTests: XCTestCase {
     }
 
     override func tearDown() {
-        try? buildFolder.delete()
+        XCTAssertNoThrow(try buildFolder.delete())
         resetDangerResults()
         MockedSwiftLintExecutor.lintedFiles = [:]
         MockedCoverageReporter.reportedXCResultBundlesNames = []

@@ -31,8 +31,8 @@ public enum WeTransferPRLinter {
 
             print("Found Summary Reports:\n- \(summaryFiles.map { $0.name }.joined(separator: "\n- "))")
 
-            try summaryFiles.forEach { jsonFile in
-                try jsonFile.addFileNameToSummaryMessage()
+            summaryFiles.forEach { jsonFile in
+                try? jsonFile.addFileNameToSummaryMessage()
                 summaryReporter.reportXcodeSummary(for: jsonFile)
             }
         } catch {

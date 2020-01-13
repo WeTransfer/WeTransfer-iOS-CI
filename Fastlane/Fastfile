@@ -1,13 +1,31 @@
 # rubocop:disable LineLength
 desc 'Validates the changes with SwiftLint and Danger'
 lane :validate_changes do |options|
-  # Set the project name.
-  # This will be used in Danger to determine several things like:
-  # "Are tests updated by detecting files in "PROJECT_NAMETests" folder "
-  ENV['PROJECT_NAME'] = options[:project_name]
-  ENV['SCHEME'] = options[:scheme] || options[:project_name]
-  ENV['SRCROOT'] = '../../../'
-  ENV['XCOV_TARGETS'] = options[:xcov_targets] || "#{options[:project_name]}.framework"
   # Run Danger
   danger(dangerfile: "#{Dir.pwd.gsub(/ /, '\ ')}/../Submodules/WeTransfer-iOS-CI/Danger/Dangerfile", verbose: true)
+end
+
+desc 'Tests the WeTransferPRLinter Swift Package'
+lane :test do |options|
+	spm(command: "generate-xcodeproj", package_path: "Danger-Swift")
+
+	begin
+		ENV["XCPRETTY_JSON_FILE_OUTPUT"] = "build/reports/WeTransferPRLinter_Tests.json"
+		scan(
+		  scheme: "WeTransferPRLinter-Package",
+		  project: "Danger-Swift/WeTransferPRLinter.xcodeproj",
+		  skip_detect_devices: true,
+		  code_coverage: true,
+		  fail_build: false,
+		  skip_slack: true,
+		  output_types: "",
+		  include_simulator_logs: true,
+		  formatter: "xcpretty-json-formatter",
+		  xcargs: "-UseNewBuildSystem=YES CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO",
+		  result_bundle: true,
+		  output_directory: "build/reports/"
+		)
+	rescue => ex
+		UI.important("Tests failed for #{ex}")
+	end
 end

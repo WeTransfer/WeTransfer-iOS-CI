@@ -19,6 +19,7 @@ final class WeTransferLinterTests: XCTestCase {
         resetDangerResults()
         MockedSwiftLintExecutor.lintedFiles = [:]
         MockedCoverageReporter.reportedXCResultBundlesNames = []
+        MockedXcodeSummaryReporter.reportedSummaryFiles = []
         super.tearDown()
     }
 
@@ -47,9 +48,30 @@ final class WeTransferLinterTests: XCTestCase {
     /// It should report an error if code coverage creation failed.
     func testCodeCoverageFailed() throws {
         let danger = githubWithFilesDSL()
-        WeTransferPRLinter.lint(using: danger)
+        WeTransferPRLinter.reportCodeCoverage(using: danger, coverageReporter: MockedCoverageReporter.self, reportsPath: "build/reports")
         XCTAssertEqual(danger.warnings.count, 1)
         XCTAssertTrue(danger.warnings.first?.message.contains("Code coverage generation failed with error") == true)
+    }
+
+    /// It should report a summary for each Xcode Summary file.
+    func testXcodeSummaryReporting() throws {
+        let danger = githubWithFilesDSL()
+        let summaryReporter = MockedXcodeSummaryReporter.self
+        let rabbitSummaryFile = try buildFolder.createFile(at: "Rabbit_Tests.json")
+        let okapiSummaryFile = try buildFolder.createFile(at: "Okapi_Tests.json")
+        WeTransferPRLinter.lint(using: danger, summaryReporter: summaryReporter, reportsPath: buildFolder.name)
+
+        XCTAssertEqual(summaryReporter.reportedSummaryFiles.count, 2)
+        XCTAssertTrue(summaryReporter.reportedSummaryFiles.map { $0.name }.contains(rabbitSummaryFile.name))
+        XCTAssertTrue(summaryReporter.reportedSummaryFiles.map { $0.name }.contains(okapiSummaryFile.name))
+    }
+
+    /// It should report an error if Xcode Summary reporting failes.
+    func testXcodeSummaryReportingFailed() throws {
+        let danger = githubWithFilesDSL()
+        WeTransferPRLinter.reportXcodeSummary(using: danger, summaryReporter: MockedXcodeSummaryReporter.self, reportsPath: "build/reports")
+        XCTAssertEqual(danger.warnings.count, 1)
+        XCTAssertTrue(danger.warnings.first?.message.contains("Xcode Summary failed with error") == true)
     }
 
     /// It should warn for an empty PR description.

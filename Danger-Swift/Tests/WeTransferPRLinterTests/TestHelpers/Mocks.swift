@@ -26,3 +26,11 @@ struct MockedCoverageReporter: CoverageReporting {
         reportedXCResultBundlesNames.append(xcresultBundle.name)
     }
 }
+
+struct MockedXcodeSummaryReporter: XcodeSummaryReporting {
+    static var reportedSummaryFiles: [XcodeSummaryContaining] = []
+
+    static func reportXcodeSummary(for file: XcodeSummaryContaining) {
+        reportedSummaryFiles.append(file)
+    }
+}

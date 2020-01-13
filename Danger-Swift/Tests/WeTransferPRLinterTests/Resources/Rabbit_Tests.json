@@ -1,0 +1,261 @@
+{
+  "warnings": [
+
+  ],
+  "ld_warnings": [
+    "ld: linking against a dylib which is not safe for use in application extensions: /Users/antoinevanderlee/Library/Developer/Xcode/DerivedData/Rabbit-ggzydsqyfdvoxobkplrlydytmvsw/Build/Products/Debug-iphonesimulator/Purchases.framework/Purchases"
+  ],
+  "compile_warnings": [
+    {
+      "file_name": "SessionDelegate.swift",
+      "file_path": "/Users/antoinevanderlee/Documents/GIT-Projects/WeTransfer/Coyote/Submodules/Alamofire/Source/SessionDelegate.swift:554:15",
+      "reason": "parameter of 'urlSession(_:dataTask:didReceive:)' has different optionality than expected by protocol 'URLSessionDataDelegate'",
+      "line": "    open func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data?) {",
+      "cursor": "              ^                                                                                    ~"
+    },
+    {
+      "file_name": "SessionDelegate.swift",
+      "file_path": "/Users/antoinevanderlee/Documents/GIT-Projects/WeTransfer/Coyote/Submodules/Alamofire/Source/SessionDelegate.swift:554:15",
+      "reason": "parameter of 'urlSession(_:dataTask:didReceive:)' has different optionality than expected by protocol 'URLSessionDataDelegate'",
+      "line": "    open func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data?) {",
+      "cursor": "                  ^"
+    },
+    {
+      "file_name": "SessionDelegate.swift",
+      "file_path": "/Users/antoinevanderlee/Documents/GIT-Projects/WeTransfer/Coyote/Submodules/Alamofire/Source/SessionDelegate.swift:554:15",
+      "reason": "parameter of 'urlSession(_:dataTask:didReceive:)' has different optionality than expected by protocol 'URLSessionDataDelegate'",
+      "line": "    open func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data?) {",
+      "cursor": "                  ^"
+    },
+    {
+      "file_name": "SessionDelegate.swift",
+      "file_path": "/Users/antoinevanderlee/Documents/GIT-Projects/WeTransfer/Coyote/Submodules/Alamofire/Source/SessionDelegate.swift:554:15",
+      "reason": "parameter of 'urlSession(_:dataTask:didReceive:)' has different optionality than expected by protocol 'URLSessionDataDelegate'",
+      "line": "    open func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data?) {",
+      "cursor": "                  ^"
+    },
+    {
+      "file_name": "SessionDelegate.swift",
+      "file_path": "/Users/antoinevanderlee/Documents/GIT-Projects/WeTransfer/Coyote/Submodules/Alamofire/Source/SessionDelegate.swift:554:15",
+      "reason": "parameter of 'urlSession(_:dataTask:didReceive:)' has different optionality than expected by protocol 'URLSessionDataDelegate'",
+      "line": "    open func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data?) {",
+      "cursor": "                  ^"
+    },
+    {
+      "file_name": "SessionDelegate.swift",
+      "file_path": "/Users/antoinevanderlee/Documents/GIT-Projects/WeTransfer/Coyote/Submodules/Alamofire/Source/SessionDelegate.swift:554:15",
+      "reason": "parameter of 'urlSession(_:dataTask:didReceive:)' has different optionality than expected by protocol 'URLSessionDataDelegate'",
+      "line": "    open func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data?) {",
+      "cursor": "                  ^"
+    },
+    {
+      "file_name": "Bucket+CoreDataProperties.swift",
+      "file_path": "/Users/antoinevanderlee/Documents/GIT-Projects/WeTransfer/Coyote/Vendor/Rabbit/Rabbit/CoreData/Entity Models/Bucket+CoreDataProperties.swift:126:14",
+      "reason": "Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating",
+      "line": "    #warning(\"Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating\")",
+      "cursor": "                  ^"
+    },
+    {
+      "file_name": "Bucket+CoreDataProperties.swift",
+      "file_path": "/Users/antoinevanderlee/Documents/GIT-Projects/WeTransfer/Coyote/Vendor/Rabbit/Rabbit/CoreData/Entity Models/Bucket+CoreDataProperties.swift:126:14",
+      "reason": "Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating",
+      "line": "    #warning(\"Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating\")",
+      "cursor": "             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    },
+    {
+      "file_name": "Bucket+CoreDataProperties.swift",
+      "file_path": "/Users/antoinevanderlee/Documents/GIT-Projects/WeTransfer/Coyote/Vendor/Rabbit/Rabbit/CoreData/Entity Models/Bucket+CoreDataProperties.swift:126:14",
+      "reason": "Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating",
+      "line": "    #warning(\"Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating\")",
+      "cursor": "             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    },
+    {
+      "file_name": "Bucket+CoreDataProperties.swift",
+      "file_path": "/Users/antoinevanderlee/Documents/GIT-Projects/WeTransfer/Coyote/Vendor/Rabbit/Rabbit/CoreData/Entity Models/Bucket+CoreDataProperties.swift:126:14",
+      "reason": "Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating",
+      "line": "    #warning(\"Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating\")",
+      "cursor": "             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    },
+    {
+      "file_name": "Bucket+CoreDataProperties.swift",
+      "file_path": "/Users/antoinevanderlee/Documents/GIT-Projects/WeTransfer/Coyote/Vendor/Rabbit/Rabbit/CoreData/Entity Models/Bucket+CoreDataProperties.swift:126:14",
+      "reason": "Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating",
+      "line": "    #warning(\"Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating\")",
+      "cursor": "             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    },
+    {
+      "file_name": "Bucket+CoreDataProperties.swift",
+      "file_path": "/Users/antoinevanderlee/Documents/GIT-Projects/WeTransfer/Coyote/Vendor/Rabbit/Rabbit/CoreData/Entity Models/Bucket+CoreDataProperties.swift:126:14",
+      "reason": "Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating",
+      "line": "    #warning(\"Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating\")",
+      "cursor": "             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    },
+    {
+      "file_name": "Bucket+CoreDataProperties.swift",
+      "file_path": "/Users/antoinevanderlee/Documents/GIT-Projects/WeTransfer/Coyote/Vendor/Rabbit/Rabbit/CoreData/Entity Models/Bucket+CoreDataProperties.swift:126:14",
+      "reason": "Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating",
+      "line": "    #warning(\"Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating\")",
+      "cursor": "             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    },
+    {
+      "file_name": "Bucket+CoreDataProperties.swift",
+      "file_path": "/Users/antoinevanderlee/Documents/GIT-Projects/WeTransfer/Coyote/Vendor/Rabbit/Rabbit/CoreData/Entity Models/Bucket+CoreDataProperties.swift:126:14",
+      "reason": "Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating",
+      "line": "    #warning(\"Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating\")",
+      "cursor": "             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    },
+    {
+      "file_name": "Bucket+CoreDataProperties.swift",
+      "file_path": "/Users/antoinevanderlee/Documents/GIT-Projects/WeTransfer/Coyote/Vendor/Rabbit/Rabbit/CoreData/Entity Models/Bucket+CoreDataProperties.swift:126:14",
+      "reason": "Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating",
+      "line": "    #warning(\"Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating\")",
+      "cursor": "             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    },
+    {
+      "file_name": "Bucket+CoreDataProperties.swift",
+      "file_path": "/Users/antoinevanderlee/Documents/GIT-Projects/WeTransfer/Coyote/Vendor/Rabbit/Rabbit/CoreData/Entity Models/Bucket+CoreDataProperties.swift:126:14",
+      "reason": "Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating",
+      "line": "    #warning(\"Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating\")",
+      "cursor": "             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    },
+    {
+      "file_name": "Bucket+CoreDataProperties.swift",
+      "file_path": "/Users/antoinevanderlee/Documents/GIT-Projects/WeTransfer/Coyote/Vendor/Rabbit/Rabbit/CoreData/Entity Models/Bucket+CoreDataProperties.swift:126:14",
+      "reason": "Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating",
+      "line": "    #warning(\"Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating\")",
+      "cursor": "             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    },
+    {
+      "file_name": "Bucket+CoreDataProperties.swift",
+      "file_path": "/Users/antoinevanderlee/Documents/GIT-Projects/WeTransfer/Coyote/Vendor/Rabbit/Rabbit/CoreData/Entity Models/Bucket+CoreDataProperties.swift:126:14",
+      "reason": "Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating",
+      "line": "    #warning(\"Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating\")",
+      "cursor": "             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    },
+    {
+      "file_name": "Bucket+CoreDataProperties.swift",
+      "file_path": "/Users/antoinevanderlee/Documents/GIT-Projects/WeTransfer/Coyote/Vendor/Rabbit/Rabbit/CoreData/Entity Models/Bucket+CoreDataProperties.swift:126:14",
+      "reason": "Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating",
+      "line": "    #warning(\"Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating\")",
+      "cursor": "             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    },
+    {
+      "file_name": "Bucket+CoreDataProperties.swift",
+      "file_path": "/Users/antoinevanderlee/Documents/GIT-Projects/WeTransfer/Coyote/Vendor/Rabbit/Rabbit/CoreData/Entity Models/Bucket+CoreDataProperties.swift:126:14",
+      "reason": "Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating",
+      "line": "    #warning(\"Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating\")",
+      "cursor": "             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    },
+    {
+      "file_name": "Bucket+CoreDataProperties.swift",
+      "file_path": "/Users/antoinevanderlee/Documents/GIT-Projects/WeTransfer/Coyote/Vendor/Rabbit/Rabbit/CoreData/Entity Models/Bucket+CoreDataProperties.swift:126:14",
+      "reason": "Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating",
+      "line": "    #warning(\"Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating\")",
+      "cursor": "             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    },
+    {
+      "file_name": "Bucket+CoreDataProperties.swift",
+      "file_path": "/Users/antoinevanderlee/Documents/GIT-Projects/WeTransfer/Coyote/Vendor/Rabbit/Rabbit/CoreData/Entity Models/Bucket+CoreDataProperties.swift:126:14",
+      "reason": "Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating",
+      "line": "    #warning(\"Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating\")",
+      "cursor": "             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    },
+    {
+      "file_name": "Bucket+CoreDataProperties.swift",
+      "file_path": "/Users/antoinevanderlee/Documents/GIT-Projects/WeTransfer/Coyote/Vendor/Rabbit/Rabbit/CoreData/Entity Models/Bucket+CoreDataProperties.swift:126:14",
+      "reason": "Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating",
+      "line": "    #warning(\"Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating\")",
+      "cursor": "             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    },
+    {
+      "file_name": "Bucket+CoreDataProperties.swift",
+      "file_path": "/Users/antoinevanderlee/Documents/GIT-Projects/WeTransfer/Coyote/Vendor/Rabbit/Rabbit/CoreData/Entity Models/Bucket+CoreDataProperties.swift:126:14",
+      "reason": "Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating",
+      "line": "    #warning(\"Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating\")",
+      "cursor": "             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    },
+    {
+      "file_name": "Bucket+CoreDataProperties.swift",
+      "file_path": "/Users/antoinevanderlee/Documents/GIT-Projects/WeTransfer/Coyote/Vendor/Rabbit/Rabbit/CoreData/Entity Models/Bucket+CoreDataProperties.swift:126:14",
+      "reason": "Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating",
+      "line": "    #warning(\"Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating\")",
+      "cursor": "             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    },
+    {
+      "file_name": "Bucket+CoreDataProperties.swift",
+      "file_path": "/Users/antoinevanderlee/Documents/GIT-Projects/WeTransfer/Coyote/Vendor/Rabbit/Rabbit/CoreData/Entity Models/Bucket+CoreDataProperties.swift:126:14",
+      "reason": "Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating",
+      "line": "    #warning(\"Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating\")",
+      "cursor": "             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    },
+    {
+      "file_name": "Bucket+CoreDataProperties.swift",
+      "file_path": "/Users/antoinevanderlee/Documents/GIT-Projects/WeTransfer/Coyote/Vendor/Rabbit/Rabbit/CoreData/Entity Models/Bucket+CoreDataProperties.swift:126:14",
+      "reason": "Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating",
+      "line": "    #warning(\"Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating\")",
+      "cursor": "             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    },
+    {
+      "file_name": "Bucket+CoreDataProperties.swift",
+      "file_path": "/Users/antoinevanderlee/Documents/GIT-Projects/WeTransfer/Coyote/Vendor/Rabbit/Rabbit/CoreData/Entity Models/Bucket+CoreDataProperties.swift:126:14",
+      "reason": "Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating",
+      "line": "    #warning(\"Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating\")",
+      "cursor": "             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    },
+    {
+      "file_name": "Bucket+CoreDataProperties.swift",
+      "file_path": "/Users/antoinevanderlee/Documents/GIT-Projects/WeTransfer/Coyote/Vendor/Rabbit/Rabbit/CoreData/Entity Models/Bucket+CoreDataProperties.swift:126:14",
+      "reason": "Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating",
+      "line": "    #warning(\"Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating\")",
+      "cursor": "             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    },
+    {
+      "file_name": "Bucket+CoreDataProperties.swift",
+      "file_path": "/Users/antoinevanderlee/Documents/GIT-Projects/WeTransfer/Coyote/Vendor/Rabbit/Rabbit/CoreData/Entity Models/Bucket+CoreDataProperties.swift:126:14",
+      "reason": "Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating",
+      "line": "    #warning(\"Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating\")",
+      "cursor": "             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    },
+    {
+      "file_name": "Bucket+CoreDataProperties.swift",
+      "file_path": "/Users/antoinevanderlee/Documents/GIT-Projects/WeTransfer/Coyote/Vendor/Rabbit/Rabbit/CoreData/Entity Models/Bucket+CoreDataProperties.swift:126:14",
+      "reason": "Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating",
+      "line": "    #warning(\"Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating\")",
+      "cursor": "             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    },
+    {
+      "file_name": "Bucket+CoreDataProperties.swift",
+      "file_path": "/Users/antoinevanderlee/Documents/GIT-Projects/WeTransfer/Coyote/Vendor/Rabbit/Rabbit/CoreData/Entity Models/Bucket+CoreDataProperties.swift:126:14",
+      "reason": "Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating",
+      "line": "    #warning(\"Remove this property with the next Core Data migration. Make sure to remove any existing hidden buckets before migrating\")",
+      "cursor": "             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    },
+    {
+      "file_name": "WebContent+CoreDataProperties.swift",
+      "file_path": "/Users/antoinevanderlee/Documents/GIT-Projects/WeTransfer/Coyote/Vendor/Rabbit/Rabbit/CoreData/Entity Models/Content/WebContent+CoreDataProperties.swift:18:9",
+      "reason": "Todo Violation: TODOs should be resolved (On the next migration, remove ...). (todo)",
+      "line": "Linting 'Content.swift' (91/255)",
+      "cursor": "             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    }
+  ],
+  "errors": [
+
+  ],
+  "compile_errors": [
+
+  ],
+  "file_missing_errors": [
+
+  ],
+  "undefined_symbols_errors": [
+
+  ],
+  "duplicate_symbols_errors": [
+
+  ],
+  "tests_failures": {
+  },
+  "tests_summary_messages": [
+    "\t Executed 964 tests, with 0 failures (0 unexpected) in 135.257 (135.775) seconds\n"
+  ]
+}

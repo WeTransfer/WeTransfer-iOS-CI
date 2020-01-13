@@ -1,18 +1,42 @@
 import Danger
 import Foundation
 import Files
+import DangerXCodeSummary
 
 public enum WeTransferPRLinter {
     public static func lint(using danger: DangerDSL = Danger(),
                             swiftLintExecutor: SwiftLintExecuting.Type = SwiftLintExecutor.self,
+                            summaryReporter: XcodeSummaryReporting.Type = XcodeSummaryReporter.self,
                             coverageReporter: CoverageReporting.Type = CoverageReporter.self,
                             reportsPath: String = "build/reports") {
+        reportXcodeSummary(using: danger, summaryReporter: summaryReporter, reportsPath: reportsPath)
         reportCodeCoverage(using: danger, coverageReporter: coverageReporter, reportsPath: reportsPath)
         validatePRDescription(using: danger)
         validateWorkInProgress(using: danger)
         validateFiles(using: danger)
         showBitriseBuildURL(using: danger)
         swiftLint(using: danger, executor: swiftLintExecutor)
+    }
+
+    static func reportXcodeSummary(using danger: DangerDSL, summaryReporter: XcodeSummaryReporting.Type, reportsPath: String) {
+        defer { print("\n") }
+
+        do {
+            let reportsFolder = try Folder(path: reportsPath)
+            let jsonFiles = reportsFolder.files.filter { $0.extension == "json" }
+
+            print("Found Summary Reports:\n- \(jsonFiles.map { $0.name }.joined(separator: "\n- "))")
+
+            guard !jsonFiles.isEmpty else {
+                return print("There were no files to create an Xcode Summary report for.")
+            }
+
+            jsonFiles.forEach { jsonFile in
+                summaryReporter.reportXcodeSummary(for: jsonFile)
+            }
+        } catch {
+            danger.warn("Xcode Summary failed with error: \(error).")
+        }
     }
 
     static func reportCodeCoverage(using danger: DangerDSL, coverageReporter: CoverageReporting.Type, reportsPath: String) {

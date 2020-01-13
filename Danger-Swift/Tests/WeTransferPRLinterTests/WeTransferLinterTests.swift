@@ -278,6 +278,10 @@ final class WeTransferLinterTests: XCTestCase {
     static var allTests = [
         ("testAllGood", testAllGood),
         ("testCodeCoverageReport", testCodeCoverageReport),
+        ("testCodeCoverageFailed", testCodeCoverageFailed),
+        ("testXcodeSummaryReporting", testXcodeSummaryReporting),
+        ("testFileNameInSummaryMessage", testFileNameInSummaryMessage),
+        ("testXcodeSummaryReportingFailed", testXcodeSummaryReportingFailed),
         ("testEmptyPRDescription", testEmptyPRDescription),
         ("testNonEmptyPRDescription", testNonEmptyPRDescription),
         ("testWorkInProgressLabel", testWorkInProgressLabel),
@@ -295,6 +299,6 @@ final class WeTransferLinterTests: XCTestCase {
         ("testMarkUsageInTests", testMarkUsageInTests),
         ("testBitriseURL", testBitriseURL),
         ("testSwiftLintFileSplitting", testSwiftLintFileSplitting),
-        ("testSwiftLintSkippingForNoSwiftFiles", testSwiftLintSkippingForNoSwiftFiles)
+        ("testSwiftLintSkippingForNoSwiftFiles", testSwiftLintSkippingForNoSwiftFiles),
     ]
 }

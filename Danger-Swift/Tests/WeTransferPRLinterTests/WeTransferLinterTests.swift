@@ -299,6 +299,6 @@ final class WeTransferLinterTests: XCTestCase {
         ("testMarkUsageInTests", testMarkUsageInTests),
         ("testBitriseURL", testBitriseURL),
         ("testSwiftLintFileSplitting", testSwiftLintFileSplitting),
-        ("testSwiftLintSkippingForNoSwiftFiles", testSwiftLintSkippingForNoSwiftFiles),
+        ("testSwiftLintSkippingForNoSwiftFiles", testSwiftLintSkippingForNoSwiftFiles)
     ]
 }

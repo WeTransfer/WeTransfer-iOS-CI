@@ -1,4 +1,4 @@
 import Danger
 import WeTransferPRLinter
 
-WeTransferPRLinter.lint()
+WeTransferPRLinter.lint(swiftLintConfigsFolderPath: "SwiftLint")

@@ -8,14 +8,15 @@ public enum WeTransferPRLinter {
                             swiftLintExecutor: SwiftLintExecuting.Type = SwiftLintExecutor.self,
                             summaryReporter: XcodeSummaryReporting.Type = XcodeSummaryReporter.self,
                             coverageReporter: CoverageReporting.Type = CoverageReporter.self,
-                            reportsPath: String = "build/reports") {
+                            reportsPath: String = "build/reports",
+                            swiftLintConfigsFolderPath: String? = nil) {
         reportXcodeSummary(using: danger, summaryReporter: summaryReporter, reportsPath: reportsPath)
         reportCodeCoverage(using: danger, coverageReporter: coverageReporter, reportsPath: reportsPath)
         validatePRDescription(using: danger)
         validateWorkInProgress(using: danger)
         validateFiles(using: danger)
         showBitriseBuildURL(using: danger)
-        swiftLint(using: danger, executor: swiftLintExecutor)
+        swiftLint(using: danger, executor: swiftLintExecutor, configsFolderPath: swiftLintConfigsFolderPath)
     }
 
     static func reportXcodeSummary(using danger: DangerDSL, summaryReporter: XcodeSummaryReporting.Type, reportsPath: String) {
@@ -90,10 +91,10 @@ public enum WeTransferPRLinter {
     }
 
     /// Triggers SwiftLint and makes use of specific configuration for tests and non-tests.
-    static func swiftLint(using danger: DangerDSL, executor: SwiftLintExecuting.Type = SwiftLintExecutor.self) {
+    static func swiftLint(using danger: DangerDSL, executor: SwiftLintExecuting.Type = SwiftLintExecutor.self, configsFolderPath: String? = nil) {
         defer { print("\n") }
 
-        let pwd = danger.utils.exec("pwd")
+        let configsFolderPath = configsFolderPath ?? "\(danger.utils.exec("pwd"))/Submodules/WeTransfer-iOS-CI/SwiftLint"
         print("Starting SwiftLint...")
 
         let files = danger.git.createdFiles + danger.git.modifiedFiles
@@ -102,12 +103,12 @@ public enum WeTransferPRLinter {
 
         if !nonTestFiles.isEmpty {
             print("Linting non-test files:\n- \(nonTestFiles.joined(separator: "\n- "))")
-            executor.lint(files: nonTestFiles, configFile: "\(pwd)/Submodules/WeTransfer-iOS-CI/SwiftLint/.swiftlint-source.yml")
+            executor.lint(files: nonTestFiles, configFile: "\(configsFolderPath)/.swiftlint-source.yml")
         }
 
         if !testFiles.isEmpty {
             print("Linting test files:\n- \(testFiles.joined(separator: "\n- "))")
-            executor.lint(files: testFiles, configFile: "\(pwd)/Submodules/WeTransfer-iOS-CI/SwiftLint/.swiftlint-tests.yml")
+            executor.lint(files: testFiles, configFile: "\(configsFolderPath)/.swiftlint-tests.yml")
         }
     }
 }

@@ -1,6 +1,22 @@
-language: objective-c
+language: generic
 gemfile: Gemfile
 bundler_args: "--without documentation --path bundle" # Don't download documentation for gems.
+
+os: osx
+osx_image: xcode11.2
+install:
+  - node -v
+  - npm install -g danger@7.1.4
+  - make install
+
 script:
   - bundle exec fastlane test
-cache: bundler
+  - danger-swift ci
+
+cache:
+  bundler: true
+  directories:
+    # General SwiftPM
+    - .build
+    # Danger Swift plugins
+    - ~/.danger-swift

@@ -7,6 +7,11 @@ end
 
 desc 'Tests the WeTransferPRLinter Swift Package'
 lane :test do |options|
+
+	# Clean old reports so they're not reported for no reason.
+	reports_dir = "./../build/reports"
+	FileUtils.rm_rf Dir.glob("#{reports_dir}/*") if File.directory?(reports_dir)
+
 	spm(command: "generate-xcodeproj", package_path: "Danger-Swift")
 
 	begin

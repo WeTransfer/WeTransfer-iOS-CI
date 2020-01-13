@@ -49,7 +49,7 @@ extension XcodeSummaryContaining {
 
         json["tests_summary_messages"] = updatedSummaryMessages
 
-        let updatedJSON = try JSONSerialization.data(withJSONObject: json, options: [])
+        let updatedJSON = try JSONSerialization.data(withJSONObject: json, options: [.prettyPrinted])
         try write(updatedJSON)
     }
 }

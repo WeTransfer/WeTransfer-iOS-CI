@@ -22,7 +22,7 @@ struct MockedCoverageReporter: CoverageReporting {
 
     static var reportedXCResultBundlesNames: [String] = []
 
-    static func reportCoverage(for xcresultBundle: XCResultBundle) {
-        reportedXCResultBundlesNames.append(xcresultBundle.name)
+    static func reportCoverage(for xcResultBundle: XCResultBundle) {
+        reportedXCResultBundlesNames.append(xcResultBundle.name)
     }
 }

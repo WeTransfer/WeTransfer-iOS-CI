@@ -12,12 +12,12 @@ import Files
 public typealias XCResultBundle = Folder
 
 public protocol CoverageReporting {
-    static func reportCoverage(for xcresultBundle: XCResultBundle)
+    static func reportCoverage(for xcResultBundle: XCResultBundle)
 }
 
 public enum CoverageReporter: CoverageReporting {
-    public static func reportCoverage(for file: XCResultBundle) {
-        print("Generating coverage report for \(file.name)")
-        Coverage.xcodeBuildCoverage(.xcresultBundle(file.path), minimumCoverage: 0, hideProjectCoverage: true)
+    public static func reportCoverage(for xcResultBundle: XCResultBundle) {
+        print("Generating coverage report for \(xcResultBundle.name)")
+        Coverage.xcodeBuildCoverage(.xcresultBundle(xcResultBundle.path), minimumCoverage: 0, hideProjectCoverage: true)
     }
 }

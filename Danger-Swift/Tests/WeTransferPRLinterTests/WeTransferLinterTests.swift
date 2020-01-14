@@ -20,7 +20,7 @@ final class WeTransferLinterTests: XCTestCase {
         XCTAssertNoThrow(try buildFolder.delete())
         resetDangerResults()
         MockedSwiftLintExecutor.lintedFiles = [:]
-        MockedCoverageReporter.reportedXCResultBundlesNames = []
+        MockedCoverageReporter.reportedXCResultBundlesNames = [:]
         MockedXcodeSummaryReporter.reportedSummaryFiles = []
         super.tearDown()
     }
@@ -43,8 +43,21 @@ final class WeTransferLinterTests: XCTestCase {
         WeTransferPRLinter.lint(using: danger, coverageReporter: coverageReporter, reportsPath: buildFolder.name)
 
         XCTAssertEqual(coverageReporter.reportedXCResultBundlesNames.count, 2)
-        XCTAssertTrue(coverageReporter.reportedXCResultBundlesNames.contains(rabbitXCResultFileName))
-        XCTAssertTrue(coverageReporter.reportedXCResultBundlesNames.contains(okapiXCResultFileName))
+        XCTAssertTrue(coverageReporter.reportedXCResultBundlesNames.keys.contains(rabbitXCResultFileName))
+        XCTAssertTrue(coverageReporter.reportedXCResultBundlesNames.keys.contains(okapiXCResultFileName))
+    }
+
+    /// It should exclude project test targets for coverage.
+    func testCodeCoverageTestTargetExclusion() throws {
+        let danger = githubWithFilesDSL()
+        let coverageReporter = MockedCoverageReporter.self
+        let rabbitXCResultFileName = try buildFolder.createSubfolder(named: "Rabbit.test_result.xcresult").name
+        let okapiXCResultFileName = try buildFolder.createSubfolder(named: "WeTransferPRLinter-Package.test_result.xcresult").name
+        WeTransferPRLinter.lint(using: danger, coverageReporter: coverageReporter, reportsPath: buildFolder.name)
+
+        XCTAssertEqual(coverageReporter.reportedXCResultBundlesNames.count, 2)
+        XCTAssertEqual(coverageReporter.reportedXCResultBundlesNames[rabbitXCResultFileName], ["RabbitTests.xctest"])
+        XCTAssertEqual(coverageReporter.reportedXCResultBundlesNames[okapiXCResultFileName], ["WeTransferPRLinterTests.xctest"])
     }
 
     /// It should report an error if code coverage creation failed.
@@ -290,6 +303,7 @@ final class WeTransferLinterTests: XCTestCase {
     static var allTests = [
         ("testAllGood", testAllGood),
         ("testCodeCoverageReport", testCodeCoverageReport),
+        ("testCodeCoverageTestTargetExclusion", testCodeCoverageTestTargetExclusion),
         ("testCodeCoverageFailed", testCodeCoverageFailed),
         ("testXcodeSummaryReporting", testXcodeSummaryReporting),
         ("testFileNameInSummaryMessage", testFileNameInSummaryMessage),

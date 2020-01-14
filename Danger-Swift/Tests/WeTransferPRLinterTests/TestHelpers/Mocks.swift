@@ -20,10 +20,10 @@ struct MockedSwiftLintExecutor: SwiftLintExecuting {
 
 struct MockedCoverageReporter: CoverageReporting {
 
-    static var reportedXCResultBundlesNames: [String] = []
+    static var reportedXCResultBundlesNames: [String: [String]] = [:]
 
-    static func reportCoverage(for xcResultBundle: XCResultBundle) {
-        reportedXCResultBundlesNames.append(xcResultBundle.name)
+    static func reportCoverage(for xcResultBundle: XCResultBundle, excludedTargets: [String]) {
+        reportedXCResultBundlesNames[xcResultBundle.name] = excludedTargets
     }
 }
 

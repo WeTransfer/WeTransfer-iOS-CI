@@ -48,16 +48,16 @@ public enum WeTransferPRLinter {
 
         do {
             let reports = try Folder(path: reportsPath).subfolders
-            let xcresultBundles = reports.filter { $0.extension == "xcresult" }
+            let xcResultBundles = reports.filter { $0.extension == "xcresult" }
 
-            guard !xcresultBundles.isEmpty else {
+            guard !xcResultBundles.isEmpty else {
                 return print("There were no files to create a code coverage report for.")
             }
 
-            print("Found the following reports:\n- \(xcresultBundles.map { $0.description }.joined(separator: "\n- "))")
+            print("Found the following reports:\n- \(xcResultBundles.map { $0.description }.joined(separator: "\n- "))")
 
-            xcresultBundles.forEach { xcresultBundle in
-                coverageReporter.reportCoverage(for: xcresultBundle)
+            xcResultBundles.forEach { xcResultBundle in
+                coverageReporter.reportCoverage(for: xcResultBundle, excludedTargets: ["\(xcResultBundle.projectName)Tests.xctest"])
             }
         } catch {
             danger.warn("Code coverage generation failed with error: \(error).")

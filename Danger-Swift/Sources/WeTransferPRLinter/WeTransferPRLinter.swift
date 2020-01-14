@@ -1,3 +1,5 @@
+// danger:disable unowned_self
+
 import Danger
 import Foundation
 import Files
@@ -84,7 +86,7 @@ public enum WeTransferPRLinter {
     /// Show the Bitrise build URL for easier access.
     static func showBitriseBuildURL(using danger: DangerDSL, environmentVariables: [String: String] = ProcessInfo.processInfo.environment) {
         guard let bitriseURL = environmentVariables["BITRISE_BUILD_URL"] else {
-            danger.message("Bitrise URL not found")
+            print("Bitrise URL not found")
             return
         }
         danger.message("View more details on <a href=\"\(bitriseURL)\" target=\"_blank\">Bitrise</a>")
@@ -131,17 +133,17 @@ extension WeTransferPRLinter {
 
     /// Warns and asks to use "final" in front of a non-final class.
     static func validateFinalClasses(using danger: DangerDSL, file: Danger.File, lines: [String]) {
-        guard !file.contains("danger:disable final_class") else { return }
         var isMultilineComment = false
 
         for (index, line) in lines.enumerated() {
+            guard !line.contains("danger:disable final_class") else { return }
             if line.contains("/**") {
                 isMultilineComment = true
             }
             if line.contains("*/") {
                 isMultilineComment = false
             }
-            guard !isMultilineComment, line.shouldBeFinalClass else { return }
+            guard !isMultilineComment, line.shouldBeFinalClass else { continue }
 
             danger.warn(message: "Consider using final for this class or use a struct (final_class)", file: file, line: index + 1)
         }
@@ -150,6 +152,7 @@ extension WeTransferPRLinter {
     /// Warns if unowned is used. It's safer to use weak.
     static func validateUnownedSelf(using danger: DangerDSL, file: Danger.File, lines: [String]) {
         for (index, line) in lines.enumerated() {
+            guard !line.contains("danger:disable unowned_self") else { return }
             guard line.contains("unowned self") else { continue }
             danger.warn(message: "It is safer to use weak instead of unowned", file: file, line: index + 1)
         }
@@ -158,8 +161,14 @@ extension WeTransferPRLinter {
     /// Warns if a method override contains no addtional code.
     static func validateEmptyMethodOverrides(using danger: DangerDSL, file: Danger.File, lines: [String]) {
         for (index, line) in lines.enumerated() {
-            guard line.contains("override"), line.contains("func"), lines[index + 1].contains("super"), lines[index + 2].contains("}"), !lines[index + 2].contains("{") else { continue }
-            danger.warn(message: "Override methods which only call super can be removed", file: file, line: index + 3)
+            guard
+                line.contains("override"), !line.contains("\"override"), // To make sure it's not true for linting this repo.
+                line.contains("func"),
+                lines[index + 1].contains("super"),
+                lines[index + 2].contains("}"),
+                !lines[index + 2].contains("{")
+                else { continue }
+            danger.warn(message: "Override methods which only call super can be removed \(file) \(index)", file: file, line: index + 3)
         }
     }
 

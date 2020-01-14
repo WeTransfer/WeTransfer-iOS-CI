@@ -1,3 +1,5 @@
+// danger:disable unowned_self
+
 import XCTest
 @testable import WeTransferPRLinter
 @testable import Danger
@@ -175,6 +177,16 @@ final class WeTransferLinterTests: XCTestCase {
         XCTAssertEqual(danger.warnings.first?.message, "It is safer to use weak instead of unowned")
     }
 
+    /// It should not warn for unowned self if the rule is disabled.
+    func testUnownedSelfDisabled() {
+        let danger = DangerDSL(testSettings: [:])
+        WeTransferPRLinter.validateUnownedSelf(using: danger, file: "File.swift", lines: [
+            "danger:disable unowned_self",
+            "[unowned self] _ in"
+        ])
+        XCTAssertEqual(danger.warnings.count, 0)
+    }
+
     /// It should warn for empty method overrides.
     func testEmptyMethodOverrides() {
         let danger = DangerDSL(testSettings: [:])
@@ -291,6 +303,7 @@ final class WeTransferLinterTests: XCTestCase {
         ("testNotFinalForOpenClass", testNotFinalForOpenClass),
         ("testNotFinalForComments", testNotFinalForComments),
         ("testUnownedSelfUsage", testUnownedSelfUsage),
+        ("testUnownedSelfDisabled", testUnownedSelfDisabled),
         ("testEmptyMethodOverrides", testEmptyMethodOverrides),
         ("testClosureMethodOverrides", testClosureMethodOverrides),
         ("testMarkUsage", testMarkUsage),

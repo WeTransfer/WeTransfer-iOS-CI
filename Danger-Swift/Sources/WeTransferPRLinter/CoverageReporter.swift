@@ -12,7 +12,7 @@ import Files
 public typealias XCResultBundle = Folder
 
 public protocol CoverageReporting {
-    static func reportCoverage(for xcresultBundle: XCResultBundle)
+    static func reportCoverage(for xcResultBundle: XCResultBundle)
 }
 
 public enum CoverageReporter: CoverageReporting {

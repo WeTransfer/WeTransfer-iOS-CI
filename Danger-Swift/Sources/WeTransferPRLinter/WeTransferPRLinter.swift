@@ -168,7 +168,7 @@ extension WeTransferPRLinter {
                 lines[index + 2].contains("}"),
                 !lines[index + 2].contains("{")
                 else { continue }
-            danger.warn(message: "Override methods which only call super can be removed \(file) \(index)", file: file, line: index + 3)
+            danger.warn(message: "Override methods which only call super can be removed", file: file, line: index + 3)
         }
     }
 

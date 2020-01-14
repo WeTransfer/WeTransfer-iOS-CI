@@ -23,6 +23,6 @@ let package = Package(
             dependencies: ["Danger", "DangerSwiftCoverage", "DangerXCodeSummary", "Files"]),
         .testTarget(
             name: "WeTransferPRLinterTests",
-            dependencies: ["WeTransferPRLinter", "DangerFixtures"]),
+            dependencies: ["WeTransferPRLinter", "DangerFixtures"])
     ]
 )

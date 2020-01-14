@@ -125,7 +125,7 @@ final class WeTransferLinterTests: XCTestCase {
 
     /// It should warn for not using final with classes.
     func testFinalClass() {
-        let danger = githubWithFilesDSL(created: ["file.swift"], fileMap: ["file.swift" : "class MyCustomType {"])
+        let danger = githubWithFilesDSL(created: ["file.swift"], fileMap: ["file.swift": "class MyCustomType {"])
         WeTransferPRLinter.validateFiles(using: danger)
         XCTAssertEqual(danger.warnings.count, 1)
         XCTAssertEqual(danger.warnings.first?.message, "Consider using final for this class or use a struct (final_class)")
@@ -199,7 +199,7 @@ final class WeTransferLinterTests: XCTestCase {
         XCTAssertEqual(danger.warnings.count, 0)
     }
 
-    /// It should warn for using // Mark: in big files without any mark.
+    /// It should warn for using Mark in big files without any mark.
     func testMarkUsage() {
         let danger = DangerDSL(testSettings: [:])
         WeTransferPRLinter.validateMarkUsage(using: danger, file: "File.swift", lines: [
@@ -211,7 +211,7 @@ final class WeTransferLinterTests: XCTestCase {
         XCTAssertEqual(danger.warnings.first?.message, "Consider to place some `MARK:` lines for File.swift, which is over 2 lines big.")
     }
 
-    /// It should not warn for using // Mark: in small files without any mark.
+    /// It should not warn for using Mark in small files without any mark.
     func testMarkUsageSmallFiles() {
         let danger = DangerDSL(testSettings: [:])
         WeTransferPRLinter.validateMarkUsage(using: danger, file: "File.swift", lines: [
@@ -222,7 +222,7 @@ final class WeTransferLinterTests: XCTestCase {
         XCTAssertEqual(danger.warnings.count, 0)
     }
 
-    /// It should not warn for using // Mark: in big files if a mark is used.
+    /// It should not warn for using Mark in big files if a mark is used.
     func testMarkAlreadyUsed() {
         let danger = DangerDSL(testSettings: [:])
         WeTransferPRLinter.validateMarkUsage(using: danger, file: "File.swift", lines: [
@@ -234,7 +234,7 @@ final class WeTransferLinterTests: XCTestCase {
         XCTAssertEqual(danger.warnings.count, 0)
     }
 
-    /// It should not warn for using // Mark: in test files.
+    /// It should not warn for using Mark in test files.
     func testMarkUsageInTests() {
         let danger = DangerDSL(testSettings: [:])
         WeTransferPRLinter.validateMarkUsage(using: danger, file: "FileTests.swift", lines: [

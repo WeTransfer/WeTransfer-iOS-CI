@@ -78,6 +78,7 @@ included:
 excluded:
   # We add ../../../ to work with the way Danger is expanding paths based on the config file.
   - ${SRCROOT}/Carthage
+  - ${SRCROOT}/.build
   - ${SRCROOT}/Playgrounds
   - ${SRCROOT}/Submodules
   - ${SRCROOT}/Vendor

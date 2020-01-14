@@ -15,6 +15,8 @@ extension DangerDSL {
     /// Available overrides. To add a new one, open the `TestDSLGitHubJSON` and add a key for replacement.
     enum TestOverride: String {
         case prDescription = "PR_DESCRIPTION_CONTENT"
+        case prTitle = "PR_TITLE"
+        case prLabel = "PR_LABEL"
     }
 
     typealias DangerTestSettings = [TestOverride: String]

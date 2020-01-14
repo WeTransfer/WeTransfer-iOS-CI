@@ -1,18 +1,43 @@
 import Danger
 import Foundation
 import Files
+import DangerXCodeSummary
 
 public enum WeTransferPRLinter {
     public static func lint(using danger: DangerDSL = Danger(),
                             swiftLintExecutor: SwiftLintExecuting.Type = SwiftLintExecutor.self,
+                            summaryReporter: XcodeSummaryReporting.Type = XcodeSummaryReporter.self,
                             coverageReporter: CoverageReporting.Type = CoverageReporter.self,
                             reportsPath: String = "build/reports") {
+        reportXcodeSummary(using: danger, summaryReporter: summaryReporter, reportsPath: reportsPath)
         reportCodeCoverage(using: danger, coverageReporter: coverageReporter, reportsPath: reportsPath)
         validatePRDescription(using: danger)
         validateWorkInProgress(using: danger)
         validateFiles(using: danger)
         showBitriseBuildURL(using: danger)
         swiftLint(using: danger, executor: swiftLintExecutor)
+    }
+
+    static func reportXcodeSummary(using danger: DangerDSL, summaryReporter: XcodeSummaryReporting.Type, reportsPath: String) {
+        defer { print("\n") }
+
+        do {
+            let reportsFolder = try Folder(path: reportsPath)
+            let summaryFiles = reportsFolder.files.filter { $0.extension == "json" }
+
+            guard !summaryFiles.isEmpty else {
+                return print("There were no files to create an Xcode Summary report for.")
+            }
+
+            print("Found Summary Reports:\n- \(summaryFiles.map { $0.name }.joined(separator: "\n- "))")
+
+            try summaryFiles.forEach { jsonFile in
+                try jsonFile.addFileNameToSummaryMessage()
+                summaryReporter.reportXcodeSummary(for: jsonFile)
+            }
+        } catch {
+            danger.warn("Xcode Summary failed with error: \(error).")
+        }
     }
 
     static func reportCodeCoverage(using danger: DangerDSL, coverageReporter: CoverageReporting.Type, reportsPath: String) {
@@ -22,11 +47,11 @@ public enum WeTransferPRLinter {
             let reports = try Folder(path: reportsPath).subfolders
             let xcresultBundles = reports.filter { $0.extension == "xcresult" }
 
-            print("Found the following reports:\n- \(xcresultBundles.map { $0.description }.joined(separator: "\n- "))")
-
             guard !xcresultBundles.isEmpty else {
                 return print("There were no files to create a code coverage report for.")
             }
+
+            print("Found the following reports:\n- \(xcresultBundles.map { $0.description }.joined(separator: "\n- "))")
 
             xcresultBundles.forEach { xcresultBundle in
                 coverageReporter.reportCoverage(for: xcresultBundle)

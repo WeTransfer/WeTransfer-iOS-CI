@@ -73,11 +73,11 @@ public enum WeTransferPRLinter {
     static func validateWorkInProgress(using danger: DangerDSL) {
         let hasWIPLabel = danger.github.issue.labels.contains(where: { $0.name.contains("WIP") })
         let hasWIPTitle = danger.github.pullRequest.title.contains("WIP")
-
-        guard !hasWIPLabel, !hasWIPTitle else {
-            danger.warn("PR is classed as Work in Progress")
+      
+        guard hasWIPLabel || hasWIPTitle else {
             return
         }
+        danger.warn("PR is classed as Work in Progress")
     }
 
     /// Show the Bitrise build URL for easier access.
@@ -162,7 +162,7 @@ extension WeTransferPRLinter {
         }
     }
 
-    /// Warns if a big files is containing any // MARK.
+    /// Warns if a big files is containing any // MARK comments.
     static func validateMarkUsage(using danger: DangerDSL, file: Danger.File, lines: [String], minimumLinesCount: Int = 200) {
         guard !file.lowercased().contains("test"), lines.count >= minimumLinesCount else { return }
         let containsMark = lines.contains(where: { line in line.contains("MARK:") })

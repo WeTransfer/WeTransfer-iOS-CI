@@ -16,7 +16,7 @@ lane :test_project do |options|
 		scan(
 		  scheme: options[:scheme],
 		  project: "#{options[:project_path]}#{options[:project_name]}.xcodeproj",
-		  #device: "iPhone 11",
+		  device: "iPhone 11",
 		  clean: true,
 		  force_quit_simulator: true,
 		  code_coverage: true,

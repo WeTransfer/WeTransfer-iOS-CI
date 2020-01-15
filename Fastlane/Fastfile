@@ -19,7 +19,6 @@ lane :test_project do |options|
 		  device: "iPhone 11",
 		  clean: true,
 		  force_quit_simulator: true,
-		  reinstall_app: true,
 		  code_coverage: true,
 		  disable_concurrent_testing: true,
 		  fail_build: false,

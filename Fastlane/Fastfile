@@ -16,7 +16,7 @@ lane :test_project do |options|
 		  scheme: options[:scheme],
 		  project: "#{options[:project_path]}#{options[:project_name]}.xcodeproj",
 		  skip_detect_devices: true,
-		  device: "iPhone 11",
+		  destination: "platform=iOS Simulator,OS=13.2.2,name=iPhone 11",
 		  code_coverage: true,
 		  disable_concurrent_testing: true,
 		  fail_build: false,
@@ -24,7 +24,7 @@ lane :test_project do |options|
 		  output_types: "",
 		  include_simulator_logs: true,
 		  formatter: "xcpretty-json-formatter",
-		  xcargs: "-UseNewBuildSystem=YES CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO",
+		  xcargs: "-UseNewBuildSystem=YES",
 		  result_bundle: true,
 		  output_directory: "build/reports/"
 		)

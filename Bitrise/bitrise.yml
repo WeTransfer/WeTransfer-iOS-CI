@@ -1,0 +1,43 @@
+---
+format_version: '8'
+default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
+project_type: macos
+trigger_map:
+- pull_request_source_branch: "*"
+  workflow: open_source_projects
+workflows:
+  open_source_projects:
+    steps:
+    - cache-pull@2.1.0: {}
+    - bitrise-step-install-bundler@1.1.2: {}
+    - bundler@0.0.4:
+        title: Install gems using Bundler
+    - fastlane@2.7.0:
+        inputs:
+        - lane: test_pr_linter
+    - brew-install@0.10.2:
+        inputs:
+        - packages: danger/tap/danger-swift swiftlint
+        - upgrade: 'no'
+        - cache_enabled: 'yes'
+    - script@1.1.5:
+        title: Run Danger
+        inputs:
+        - content: |-
+            #!/usr/bin/env bash
+            # fail if any commands fails
+            set -e
+            # debug log
+            set -x
+
+            danger-swift ci
+    - cache-push@2.2.0:
+        run_if: true
+        inputs:
+        - is_debug_mode: 'true'
+        - cache_paths: |
+            $BITRISE_CACHE_DIR
+            # General SwiftPM
+            .build
+            # Danger Swift plugins
+            ~/.danger-swift

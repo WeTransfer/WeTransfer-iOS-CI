@@ -1,4 +1,6 @@
 if [ -z "$CI" ]; then
+	set -e
+	
     if which swiftlint >/dev/null; then
     	BASEDIR=$(dirname "$0")
         swiftlint --config "$BASEDIR/.swiftlint-source.yml"

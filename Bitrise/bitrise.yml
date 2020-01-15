@@ -16,9 +16,12 @@ workflows:
         title: Run Fastlane
         inputs:
         - content: |-
-            bundle install --path vendor/bundle
-            lane = $FASTLANE_LANE || test
-            bundle exec fastlane $lane
+            #!/usr/bin/env bash
+            bundle config set path 'vendor/bundle'
+            # bundle install --path vendor/bundle
+            lane = $FASTLANE_LANE || "test"
+            echo $lane
+            bundle exec fastlane lane
     - script:
         inputs:
         - content: |-

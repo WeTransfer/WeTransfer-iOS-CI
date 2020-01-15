@@ -17,7 +17,8 @@ workflows:
         inputs:
         - content: |-
             bundle install --path vendor/bundle
-            bundle exec fastlane test
+            lane = $FASTLANE_LANE || test
+            bundle exec fastlane $lane
     - script:
         inputs:
         - content: |-

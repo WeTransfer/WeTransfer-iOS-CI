@@ -1,47 +1,24 @@
 # rubocop:disable LineLength
 desc 'Runs tests for an external project'
 lane :test_project do |options|
-  # Set timeout to prevent xcodebuild -list -project to take to much retries.
-  ENV["FASTLANE_XCODE_LIST_TIMEOUT"] = "120"
-  
-  begin
-    ENV["XCPRETTY_JSON_FILE_OUTPUT"] = "build/reports/#{options[:scheme]}_Tests.json"
-    scan(
-      scheme: options[:scheme],
-      project: "#{options[:project_path]}#{options[:project_name]}.xcodeproj",
-      device: "iPhone 11",
-      code_coverage: true,
-      disable_concurrent_testing: true,
-      fail_build: false,
-      skip_slack: true,
-      clean: true,
-      formatter: "xcpretty-json-formatter",
-      xcargs: "-UseNewBuildSystem=YES CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO",
-      result_bundle: true,
-      output_directory: "build/reports/"
-    )
-  rescue => ex
-    UI.important("Tests failed for #{ex}")
-  end
-end
-
-desc 'Tests the WeTransferPRLinter Swift Package'
-lane :test_pr_linter do |options|
 	clear_derived_data
 
 	# Clean old reports so they're not reported for no reason.
 	reports_dir = "./../build/reports"
 	FileUtils.rm_rf Dir.glob("#{reports_dir}/*") if File.directory?(reports_dir)
 
-	spm(command: "generate-xcodeproj", package_path: "Danger-Swift")
+	# Set timeout to prevent xcodebuild -list -project to take to much retries.
+	ENV["FASTLANE_XCODE_LIST_TIMEOUT"] = "120"
 
 	begin
-		ENV["XCPRETTY_JSON_FILE_OUTPUT"] = "build/reports/WeTransferPRLinter_Tests.json"
+		ENV["XCPRETTY_JSON_FILE_OUTPUT"] = "build/reports/#{options[:scheme]}_Tests.json"
 		scan(
-		  scheme: "WeTransferPRLinter-Package",
-		  project: "Danger-Swift/WeTransferPRLinter.xcodeproj",
+		  scheme: options[:scheme],
+		  project: "#{options[:project_path]}#{options[:project_name]}.xcodeproj",
 		  skip_detect_devices: true,
+		  device: "iPhone 11",
 		  code_coverage: true,
+		  disable_concurrent_testing: true,
 		  fail_build: false,
 		  skip_slack: true,
 		  output_types: "",
@@ -54,4 +31,10 @@ lane :test_pr_linter do |options|
 	rescue => ex
 		UI.important("Tests failed for #{ex}")
 	end
+end
+
+desc 'Tests the WeTransferPRLinter Swift Package'
+lane :test_pr_linter do |options|
+	spm(command: "generate-xcodeproj", package_path: "Danger-Swift")
+	test_project(project_path: "Danger-Swift/", project: "WeTransferPRLinter", scheme: "WeTransferPRLinter-Package")
 end

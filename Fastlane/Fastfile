@@ -14,7 +14,7 @@ lane :test_project do |options|
 		ENV["XCPRETTY_JSON_FILE_OUTPUT"] = "build/reports/#{options[:scheme]}_Tests.json"
 		scan(
 		  scheme: options[:scheme],
-		  project: "#{options[:project_path]}#{options[:project_name]}.xcodeproj",
+		  project: "#{BITRISE_SOURCE_DIR}#{options[:project_path]}#{options[:project_name]}.xcodeproj",
 		  skip_detect_devices: true,
 		  destination: "platform=iOS Simulator,OS=13.2.2,name=iPhone 11",
 		  code_coverage: true,

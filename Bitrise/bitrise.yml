@@ -37,6 +37,7 @@ workflows:
             # Install the following command
             brew install danger/tap/danger-swift
             brew install swiftlint
+            brew link danger-js
             brew link danger-swift
             brew link swiftlint
         title: Brew install

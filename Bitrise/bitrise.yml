@@ -16,7 +16,7 @@ workflows:
         title: Run Fastlane
         inputs:
         - content: |-
-            fastlane test
+            bundle exec fastlane test
     - brew-install@0.10.2:
         inputs:
         - packages: danger/tap/danger-swift swiftlint
@@ -39,7 +39,4 @@ workflows:
         - is_debug_mode: 'true'
         - cache_paths: |
             $BITRISE_CACHE_DIR
-            # General SwiftPM
             .build
-            # Danger Swift plugins
-            ~/.danger-swift

@@ -12,9 +12,11 @@ workflows:
     - bitrise-step-install-bundler@1.1.2: {}
     - bundler@0.0.4:
         title: Install gems using Bundler
-    - fastlane@2.7.0:
+    - script@1.1.5:
+        title: Run Fastlane
         inputs:
-        - lane: test
+        - content: |-
+            fastlane test
     - brew-install@0.10.2:
         inputs:
         - packages: danger/tap/danger-swift swiftlint

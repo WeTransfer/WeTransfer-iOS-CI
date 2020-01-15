@@ -1,12 +1,32 @@
 # rubocop:disable LineLength
-desc 'Validates the changes with SwiftLint and Danger'
-lane :validate_changes do |options|
-  # Run Danger
-  danger(dangerfile: "#{Dir.pwd.gsub(/ /, '\ ')}/../Submodules/WeTransfer-iOS-CI/Danger/Dangerfile", verbose: true)
+desc 'Runs tests for an external project'
+lane :test_project do |options|
+  # Set timeout to prevent xcodebuild -list -project to take to much retries.
+  ENV["FASTLANE_XCODE_LIST_TIMEOUT"] = "120"
+  
+  begin
+    ENV["XCPRETTY_JSON_FILE_OUTPUT"] = "build/reports/#{options[:scheme]}_Tests.json"
+    scan(
+      scheme: options[:scheme],
+      project: "#{options[:project_path]}#{options[:project_name]}.xcodeproj",
+      device: "iPhone 11",
+      code_coverage: true,
+      disable_concurrent_testing: true,
+      fail_build: false,
+      skip_slack: true,
+      clean: true,
+      formatter: "xcpretty-json-formatter",
+      xcargs: "-UseNewBuildSystem=YES CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO",
+      result_bundle: true,
+      output_directory: "build/reports/"
+    )
+  rescue => ex
+    UI.important("Tests failed for #{ex}")
+  end
 end
 
 desc 'Tests the WeTransferPRLinter Swift Package'
-lane :test do |options|
+lane :test_pr_linter do |options|
 	clear_derived_data
 
 	# Clean old reports so they're not reported for no reason.

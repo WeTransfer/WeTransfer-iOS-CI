@@ -14,7 +14,7 @@ workflows:
         title: Install gems using Bundler
     - fastlane@2.7.0:
         inputs:
-        - lane: test_pr_linter
+        - lane: test
     - brew-install@0.10.2:
         inputs:
         - packages: danger/tap/danger-swift swiftlint

@@ -26,7 +26,7 @@ lane :test_project do |options|
 		  fail_build: false,
 		  skip_slack: true,
 		  output_types: "",
-		  include_simulator_logs: true,
+		  include_simulator_logs: false, # Needed for this: https://github.com/fastlane/fastlane/issues/8909
 		  formatter: "xcpretty-json-formatter",
 		  result_bundle: true,
 		  output_directory: "build/reports/"

@@ -17,10 +17,10 @@ lane :test_project do |options|
 		  scheme: options[:scheme],
 		  project: "#{options[:project_path]}#{options[:project_name]}.xcodeproj",
 		  device: "iPhone 11",
-		  clean: true,
-		  force_quit_simulator: true,
+		  #clean: true,
+		  #force_quit_simulator: true,
 		  code_coverage: true,
-		  disable_concurrent_testing: true,
+		  #disable_concurrent_testing: true,
 		  fail_build: false,
 		  skip_slack: true,
 		  output_types: "",
@@ -37,5 +37,5 @@ end
 desc 'Tests the WeTransferPRLinter Swift Package'
 lane :test_pr_linter do |options|
 	spm(command: "generate-xcodeproj", package_path: "Danger-Swift")
-	test_project(project_path: "Danger-Swift/", project: "WeTransferPRLinter", scheme: "WeTransferPRLinter-Package")
+	test_project(project_path: "Danger-Swift/", project_name: "WeTransferPRLinter", scheme: "WeTransferPRLinter-Package")
 end

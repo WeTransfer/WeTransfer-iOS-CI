@@ -13,10 +13,12 @@ lane :test_project do |options|
 	begin
 		ENV["XCPRETTY_JSON_FILE_OUTPUT"] = "build/reports/#{options[:scheme]}_Tests.json"
 		source_dir = ENV['BITRISE_SOURCE_DIR'] || '.'
+		device = options[:device] || "iPhone 11"
 		scan(
 		  scheme: options[:scheme],
 		  project: "#{options[:project_path]}#{options[:project_name]}.xcodeproj",
-		  device: "iPhone 11",
+		  device: device,
+		  destination: options[:destination],
 		  #clean: true,
 		  #force_quit_simulator: true,
 		  code_coverage: true,
@@ -37,5 +39,10 @@ end
 desc 'Tests the WeTransferPRLinter Swift Package'
 lane :test_pr_linter do |options|
 	spm(command: "generate-xcodeproj", package_path: "Danger-Swift")
-	test_project(project_path: "Danger-Swift/", project_name: "WeTransferPRLinter", scheme: "WeTransferPRLinter-Package")
+	test_project(
+		project_path: "Danger-Swift/", 
+		project_name: "WeTransferPRLinter", 
+		scheme: "WeTransferPRLinter-Package",
+		device: nil,
+		destination: "platform=macOS")
 end

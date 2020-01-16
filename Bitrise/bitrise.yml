@@ -19,9 +19,9 @@ workflows:
             #!/usr/bin/env bash
             bundle config set path 'vendor/bundle'
             bundle install
-            lane = $FASTLANE_LANE || "test"
-            echo $lane
-            bundle exec fastlane lane
+            # Use the environment FASTLANE_LANE if available. Otherwise, fallback to "test"
+            lane=${FASTLANE_LANE:=test}
+            bundle exec fastlane $lane
     - script:
         inputs:
         - content: |-

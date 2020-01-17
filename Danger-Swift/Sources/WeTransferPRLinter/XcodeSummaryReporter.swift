@@ -44,7 +44,7 @@ extension XcodeSummaryContaining {
 
         let name = String(self.name.split(separator: "_").first ?? "")
         let updatedSummaryMessages = summaryMessages.map { summaryMessage in
-            return summaryMessage.replacingOccurrences(of: "Executed", with: "\(name):\nExecuted")
+            return summaryMessage.replacingOccurrences(of: "Executed", with: "\(name): Executed")
         }
 
         json["tests_summary_messages"] = updatedSummaryMessages

@@ -1,3 +1,5 @@
+// danger:disable unowned_self
+
 import XCTest
 @testable import WeTransferPRLinter
 @testable import Danger
@@ -18,7 +20,7 @@ final class WeTransferLinterTests: XCTestCase {
         XCTAssertNoThrow(try buildFolder.delete())
         resetDangerResults()
         MockedSwiftLintExecutor.lintedFiles = [:]
-        MockedCoverageReporter.reportedXCResultBundlesNames = []
+        MockedCoverageReporter.reportedXCResultBundlesNames = [:]
         MockedXcodeSummaryReporter.reportedSummaryFiles = []
         super.tearDown()
     }
@@ -41,8 +43,21 @@ final class WeTransferLinterTests: XCTestCase {
         WeTransferPRLinter.lint(using: danger, coverageReporter: coverageReporter, reportsPath: buildFolder.name)
 
         XCTAssertEqual(coverageReporter.reportedXCResultBundlesNames.count, 2)
-        XCTAssertTrue(coverageReporter.reportedXCResultBundlesNames.contains(rabbitXCResultFileName))
-        XCTAssertTrue(coverageReporter.reportedXCResultBundlesNames.contains(okapiXCResultFileName))
+        XCTAssertTrue(coverageReporter.reportedXCResultBundlesNames.keys.contains(rabbitXCResultFileName))
+        XCTAssertTrue(coverageReporter.reportedXCResultBundlesNames.keys.contains(okapiXCResultFileName))
+    }
+
+    /// It should exclude project test targets for coverage.
+    func testCodeCoverageTestTargetExclusion() throws {
+        let danger = githubWithFilesDSL()
+        let coverageReporter = MockedCoverageReporter.self
+        let rabbitXCResultFileName = try buildFolder.createSubfolder(named: "Rabbit.test_result.xcresult").name
+        let okapiXCResultFileName = try buildFolder.createSubfolder(named: "WeTransferPRLinter-Package.test_result.xcresult").name
+        WeTransferPRLinter.lint(using: danger, coverageReporter: coverageReporter, reportsPath: buildFolder.name)
+
+        XCTAssertEqual(coverageReporter.reportedXCResultBundlesNames.count, 2)
+        XCTAssertEqual(coverageReporter.reportedXCResultBundlesNames[rabbitXCResultFileName], ["RabbitTests.xctest"])
+        XCTAssertEqual(coverageReporter.reportedXCResultBundlesNames[okapiXCResultFileName], ["WeTransferPRLinterTests.xctest"])
     }
 
     /// It should report an error if code coverage creation failed.
@@ -125,7 +140,7 @@ final class WeTransferLinterTests: XCTestCase {
 
     /// It should warn for not using final with classes.
     func testFinalClass() {
-        let danger = githubWithFilesDSL(created: ["file.swift"], fileMap: ["file.swift" : "class MyCustomType {"])
+        let danger = githubWithFilesDSL(created: ["file.swift"], fileMap: ["file.swift": "class MyCustomType {"])
         WeTransferPRLinter.validateFiles(using: danger)
         XCTAssertEqual(danger.warnings.count, 1)
         XCTAssertEqual(danger.warnings.first?.message, "Consider using final for this class or use a struct (final_class)")
@@ -175,6 +190,16 @@ final class WeTransferLinterTests: XCTestCase {
         XCTAssertEqual(danger.warnings.first?.message, "It is safer to use weak instead of unowned")
     }
 
+    /// It should not warn for unowned self if the rule is disabled.
+    func testUnownedSelfDisabled() {
+        let danger = DangerDSL(testSettings: [:])
+        WeTransferPRLinter.validateUnownedSelf(using: danger, file: "File.swift", lines: [
+            "danger:disable unowned_self",
+            "[unowned self] _ in"
+        ])
+        XCTAssertEqual(danger.warnings.count, 0)
+    }
+
     /// It should warn for empty method overrides.
     func testEmptyMethodOverrides() {
         let danger = DangerDSL(testSettings: [:])
@@ -199,7 +224,7 @@ final class WeTransferLinterTests: XCTestCase {
         XCTAssertEqual(danger.warnings.count, 0)
     }
 
-    /// It should warn for using // Mark: in big files without any mark.
+    /// It should warn for using Mark in big files without any mark.
     func testMarkUsage() {
         let danger = DangerDSL(testSettings: [:])
         WeTransferPRLinter.validateMarkUsage(using: danger, file: "File.swift", lines: [
@@ -211,7 +236,7 @@ final class WeTransferLinterTests: XCTestCase {
         XCTAssertEqual(danger.warnings.first?.message, "Consider to place some `MARK:` lines for File.swift, which is over 2 lines big.")
     }
 
-    /// It should not warn for using // Mark: in small files without any mark.
+    /// It should not warn for using Mark in small files without any mark.
     func testMarkUsageSmallFiles() {
         let danger = DangerDSL(testSettings: [:])
         WeTransferPRLinter.validateMarkUsage(using: danger, file: "File.swift", lines: [
@@ -222,7 +247,7 @@ final class WeTransferLinterTests: XCTestCase {
         XCTAssertEqual(danger.warnings.count, 0)
     }
 
-    /// It should not warn for using // Mark: in big files if a mark is used.
+    /// It should not warn for using Mark in big files if a mark is used.
     func testMarkAlreadyUsed() {
         let danger = DangerDSL(testSettings: [:])
         WeTransferPRLinter.validateMarkUsage(using: danger, file: "File.swift", lines: [
@@ -234,7 +259,7 @@ final class WeTransferLinterTests: XCTestCase {
         XCTAssertEqual(danger.warnings.count, 0)
     }
 
-    /// It should not warn for using // Mark: in test files.
+    /// It should not warn for using Mark in test files.
     func testMarkUsageInTests() {
         let danger = DangerDSL(testSettings: [:])
         WeTransferPRLinter.validateMarkUsage(using: danger, file: "FileTests.swift", lines: [
@@ -278,6 +303,7 @@ final class WeTransferLinterTests: XCTestCase {
     static var allTests = [
         ("testAllGood", testAllGood),
         ("testCodeCoverageReport", testCodeCoverageReport),
+        ("testCodeCoverageTestTargetExclusion", testCodeCoverageTestTargetExclusion),
         ("testCodeCoverageFailed", testCodeCoverageFailed),
         ("testXcodeSummaryReporting", testXcodeSummaryReporting),
         ("testFileNameInSummaryMessage", testFileNameInSummaryMessage),
@@ -291,6 +317,7 @@ final class WeTransferLinterTests: XCTestCase {
         ("testNotFinalForOpenClass", testNotFinalForOpenClass),
         ("testNotFinalForComments", testNotFinalForComments),
         ("testUnownedSelfUsage", testUnownedSelfUsage),
+        ("testUnownedSelfDisabled", testUnownedSelfDisabled),
         ("testEmptyMethodOverrides", testEmptyMethodOverrides),
         ("testClosureMethodOverrides", testClosureMethodOverrides),
         ("testMarkUsage", testMarkUsage),

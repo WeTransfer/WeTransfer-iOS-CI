@@ -1,13 +1,48 @@
 # rubocop:disable LineLength
-desc 'Validates the changes with SwiftLint and Danger'
-lane :validate_changes do |options|
-  # Set the project name.
-  # This will be used in Danger to determine several things like:
-  # "Are tests updated by detecting files in "PROJECT_NAMETests" folder "
-  ENV['PROJECT_NAME'] = options[:project_name]
-  ENV['SCHEME'] = options[:scheme] || options[:project_name]
-  ENV['SRCROOT'] = '../../../'
-  ENV['XCOV_TARGETS'] = options[:xcov_targets] || "#{options[:project_name]}.framework"
-  # Run Danger
-  danger(dangerfile: "#{Dir.pwd.gsub(/ /, '\ ')}/../Submodules/WeTransfer-iOS-CI/Danger/Dangerfile", verbose: true)
+desc 'Runs tests for an external project'
+lane :test_project do |options|
+	clear_derived_data
+
+	# Clean old reports so they're not reported for no reason.
+	reports_dir = "./../build/reports"
+	FileUtils.rm_rf Dir.glob("#{reports_dir}/*") if File.directory?(reports_dir)
+
+	# Set timeout to prevent xcodebuild -list -project to take to much retries.
+	ENV["FASTLANE_XCODE_LIST_TIMEOUT"] = "120"
+
+	begin
+		ENV["XCPRETTY_JSON_FILE_OUTPUT"] = "build/reports/#{options[:scheme]}_Tests.json"
+		source_dir = ENV['BITRISE_SOURCE_DIR'] || '.'
+		device = options[:device] || "iPhone 11"
+		scan(
+		  scheme: options[:scheme],
+		  project: "#{options[:project_path]}#{options[:project_name]}.xcodeproj",
+		  device: device,
+		  destination: options[:destination],
+		  #clean: true,
+		  #force_quit_simulator: true,
+		  code_coverage: true,
+		  #disable_concurrent_testing: true,
+		  fail_build: false,
+		  skip_slack: true,
+		  output_types: "",
+		  include_simulator_logs: false, # Needed for this: https://github.com/fastlane/fastlane/issues/8909
+		  formatter: "xcpretty-json-formatter",
+		  result_bundle: true,
+		  output_directory: "build/reports/"
+		)
+	rescue => ex
+		UI.important("Tests failed for #{ex}")
+	end
+end
+
+desc 'Tests the WeTransferPRLinter Swift Package'
+lane :test_pr_linter do |options|
+	spm(command: "generate-xcodeproj", package_path: "Danger-Swift")
+	test_project(
+		project_path: "Danger-Swift/", 
+		project_name: "WeTransferPRLinter", 
+		scheme: "WeTransferPRLinter-Package",
+		device: nil,
+		destination: "platform=macOS")
 end

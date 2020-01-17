@@ -46,3 +46,70 @@ lane :test_pr_linter do |options|
 		device: nil,
 		destination: "platform=macOS")
 end
+
+desc "Create a new release on Github"
+desc ""
+desc "- Uses the changelog as description of the new release"
+lane :create_github_release do |options|
+  title = options[:title]
+  tag_name = options[:tag_name]
+  commitish = sh "git rev-parse HEAD"
+  repository_name = sh("git remote show origin -n | ruby -ne 'puts /^\s*Fetch.*:(.*).git/.match($_)[1] rescue nil'").strip
+
+  puts "Creating Github Release '#{title} for repository #{repository_name}"
+
+  changelog = options[:changelog] || current_changelog
+
+  github_release = set_github_release(
+    repository_name: repository_name,
+    api_token: ENV["DANGER_GITHUB_API_TOKEN"],
+    name: title,
+    tag_name: tag_name,
+    description: changelog,
+    commitish: commitish.strip,
+    is_draft: false,
+    is_prerelease: options[:is_prerelease] || false
+  )
+  github_release["html_url"]
+end
+
+desc "Appends the current open changes to the Changelog.md. Returns the appended changelog lines"
+lane :create_changelog_release do |options|
+  release_title = options[:release_title]
+
+  changelog_path = options[:changelog_path] || '../Changelog.md'
+  existing_changelog = File.read(changelog_path)
+  new_changelog = current_changelog
+
+  File.open(changelog_path, 'w') { |file| 
+    file << "# #{release_title}\n" + "\n"
+    file << new_changelog + "\n"
+    file << existing_changelog
+  }
+  new_changelog
+end
+
+desc "Get the current changes since the last non-draft release"
+lane :current_changelog do |options|
+	puts "Fetching changelog for base branch #{options[:base_branch]}"
+	latest_release_tag = latest_github_release
+	base_branch = options[:base_branch] || "master"
+	changelog = sh("changelogproducer -b #{base_branch} -s #{latest_release_tag}")
+end
+
+desc "Get latest Coyote release from Github. Draft releases and prereleases are not returned by this endpoint. See: https://developer.github.com/v3/repos/releases/#get-the-latest-release"
+lane :latest_github_release do
+	origin_name = sh("git remote show origin -n | ruby -ne 'puts /^\s*Fetch.*:(.*).git/.match($_)[1] rescue nil'").split('/')
+	organisation = origin_name[0].strip
+	repository = origin_name[1].strip
+
+	result = github_api(
+		server_url: "https://api.github.com",
+		api_token: ENV["DANGER_GITHUB_API_TOKEN"],
+		http_method: "GET",
+		path: "/repos/#{organisation}/#{repository}/releases/latest"
+	)
+
+	puts "Latest Github release is #{result[:json]["tag_name"]}"
+	result[:json]["tag_name"]
+end

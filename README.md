@@ -9,7 +9,7 @@ Containing shared CI logic to quickly set up your repository with:
 # Why should I use it?
 What's in it for me? Well, quite a lot! With low effort to add it to your project.
 
-- Integrate [SwiftLint](https://github.com/realm/SwiftLint) to lint source code and tests.
+- Integrate [SwiftLint](https://github.com/realm/SwiftLint) to lint source code and tests
 - Integrate [Fastlane](https://github.com/fastlane/fastlane) to run tests for PRs
 - Integrate [Danger](http://danger.systems/) to automatically improve PR reviews
 
@@ -23,7 +23,7 @@ Following is a list of features which are posted in a comment on PRs based on th
   - Show any failed tests
   - Show all `warnings` and `errors` in the project
 
-All this is writting in Swift 🚀
+All this is written in Swift and fully tested 🚀
 
 ### Custom linting
 These warnings are posted inline inside the PR, helping you to solve them easily.
@@ -89,72 +89,21 @@ Create a fastlane file which executes testing with code coverage enabled. Import
 ```ruby
 import "./../Submodules/WeTransfer-iOS-CI/Fastlane/Fastfile"
 
-desc "Clean the derived data, run tests validate the changes"
+desc "Run the tests and prepare for Danger"
 lane :test do |options|
-  # clear_derived_data
-
-  # Set timeout to prevent xcodebuild -list -project to take to much retries.
-  ENV["FASTLANE_XCODE_LIST_TIMEOUT"] = "120"
-
-  begin
-    scan(
-      scheme: options[:scheme],
-      project: "#{options[:project_name]}.xcodeproj",
-      device: "iPhone 7",
-      clean: true,
-      code_coverage: true,
-      formatter: "xcpretty-json-formatter"
-    )
-  rescue => ex
-    UI.error("Tests failed: #{ex}")
-  end
-
-  validate_changes(project_name: options[:project_name])
+  test_project(
+    project_path: "YOUR_PROJECT_PATH/",
+    project_name: "YOUR_PROJECT_NAME", 
+    scheme: "YOUR_PROJECT_SCHEME")
 end
+
 ```
 
 ### 3: Integrate SwiftLint in your project
-Add a run script and use the following script:
+Add a run script and use the common used [SwiftLint](https://github.com/WeTransfer/WeTransfer-iOS-CI/blob/master/SwiftLint/swiftlint.sh) script:
 
 ```shell
-if [ -z "$CI" ]; then
-    if which swiftlint >/dev/null; then
-        swiftlint --config "${SRCROOT}/Submodules/WeTransfer-iOS-CI/SwiftLint/.swiftlint-source.yml"
-        swiftlint --config "${SRCROOT}/Submodules/WeTransfer-iOS-CI/SwiftLint/.swiftlint-tests.yml"
-    else
-        echo "warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint"
-    fi
-fi
-```
-
-![](Assets/runscript.png)
-
-### 4: Run fastlane
-You can now run fastlane using your CI environment. This can be integrated easily using the script in this repo inside your CI script:
-
-```
-- "./Submodules/WeTransfer-iOS-CI/Scripts/travis.sh PROJECT_NAME"
-```
-
-_Note: replace **PROJECT\_NAME** with your project name_
-
-An example of a `travis.yml`:
-
-```
-language: objective-c
-osx_image: xcode9.2
-gemfile: Gemfile
-bundler_args: "--without documentation --path bundle" # Don't download documentation for gems.
-cache:
-  bundler: true
-  directories:
-    - /tmp/SwiftLint # Cache SwiftLint (absolute url on purpose)
-env:
-  global:
-    - NOKOGIRI_USE_SYSTEM_LIBRARIES=true # Prevents long install time http://awesomism.co.uk/nokogiri-slow-install/
-
-script:
-  - "./Submodules/WeTransfer-iOS-CI/Scripts/travis.sh WeScan" # Run WeTransfer iOS CI Travis script
+./Submodules/WeTransfer-iOS-CI/SwiftLint/swiftlint.sh
 ```
 
 ## License

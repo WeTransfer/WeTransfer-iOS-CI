@@ -1,5 +1,5 @@
 # WeTransfer-iOS-CI
-![Build Status](https://app.bitrise.io/app/7d0461fc8e66fea4.svg?token=lg7wtKj13ZJhCrdMttXjhA)
+![Build Status](https://app.bitrise.io/app/9829cbc3cc6501a3.svg?token=hCyPPIJ1MV2h0xyX1Ux4kA)
 
 Containing shared CI logic to quickly set up your repository with:
 

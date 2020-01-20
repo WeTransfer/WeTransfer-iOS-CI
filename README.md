@@ -23,7 +23,7 @@ Following is a list of features which are posted in a comment on PRs based on th
   - Show any failed tests
   - Show all `warnings` and `errors` in the project
 
-All this is writting in Swift 🚀
+All this is written in Swift and fully tested 🚀
 
 ### Custom linting
 These warnings are posted inline inside the PR, helping you to solve them easily.

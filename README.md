@@ -9,7 +9,7 @@ Containing shared CI logic to quickly set up your repository with:
 # Why should I use it?
 What's in it for me? Well, quite a lot! With low effort to add it to your project.
 
-- Integrate [SwiftLint](https://github.com/realm/SwiftLint) to lint source code and tests.
+- Integrate [SwiftLint](https://github.com/realm/SwiftLint) to lint source code and tests
 - Integrate [Fastlane](https://github.com/fastlane/fastlane) to run tests for PRs
 - Integrate [Danger](http://danger.systems/) to automatically improve PR reviews
 

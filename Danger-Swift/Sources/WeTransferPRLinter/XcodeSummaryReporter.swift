@@ -18,7 +18,11 @@ public protocol XcodeSummaryReporting {
 public enum XcodeSummaryReporter: XcodeSummaryReporting {
     public static func reportXcodeSummary(for file: XcodeSummaryContaining) {
         print("Generating Xcode Summary report for \(file.name)")
-        let summary = XCodeSummary(filePath: file.path)
+        let summary = XCodeSummary(filePath: file.path, resultsFilter: { result in
+            guard let file = result.file else { return true }
+            /// Filter results from submodules
+            return !file.contains("Submodules/")
+        })
         summary.report()
     }
 }

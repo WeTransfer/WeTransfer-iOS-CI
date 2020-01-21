@@ -21,7 +21,7 @@ public enum XcodeSummaryReporter: XcodeSummaryReporting {
         let summary = XCodeSummary(filePath: file.path, resultsFilter: { result in
             guard let file = result.file else { return true }
             /// Filter results from submodules
-            return !file.contains("Submodules/")
+            return !file.contains("Submodules/") && !result.message.contains("Submodules/")
         })
         summary.report()
     }

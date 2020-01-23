@@ -23,6 +23,15 @@ workflows:
     - script:
         inputs:
         - content: |-
+            #!/usr/bin/env bash
+            # fail if any commands fails
+            set -e
+            # debug log
+            set -x
+            env
+    - script:
+        inputs:
+        - content: |-
             # Add cache directory to environment variable
             envman add --key BREW_SWIFTLINT --value "$(brew --cellar)/swiftlint"
             envman add --key BREW_OPT_SWIFTLINT --value "/usr/local/opt/swiftlint"

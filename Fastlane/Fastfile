@@ -48,6 +48,22 @@ lane :test_pr_linter do |options|
 		destination: "platform=macOS")
 end
 
+desc 'Create a release from a tag triggered CI run'
+lane :release_from_tag do |options|
+	# Get the latest tag
+	sh("git fetch --tags")
+	latest_tag = sh("git tag --sort=committerdate | tail -1").strip
+    changelog = current_changelog(since_tag: latest_tag)
+    next unless !changelog.strip!.empty?
+    puts "HELLO"
+	# Get the changelog
+	# Create a release on Github with the changelog
+	# Create a release branch
+	# Update the changelog
+	# Update the podspec
+	# Push the podspec to trunk
+end
+
 desc "Create a new release on Github"
 desc ""
 desc "- Uses the changelog as description of the new release"
@@ -93,7 +109,7 @@ end
 desc "Get the current changes since the last non-draft release"
 lane :current_changelog do |options|
 	puts "Fetching changelog for base branch #{options[:base_branch]}"
-	latest_release_tag = latest_github_release
+	latest_release_tag = options[:since_tag] || latest_github_release
 	base_branch = options[:base_branch] || "master"
 	changelog = sh("changelogproducer -b #{base_branch} -s #{latest_release_tag}")
 end

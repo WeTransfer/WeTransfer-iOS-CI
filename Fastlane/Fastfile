@@ -50,18 +50,42 @@ end
 
 desc 'Create a release from a tag triggered CI run'
 lane :release_from_tag do |options|
-	# Get the latest tag
-	sh("git fetch --tags")
-	latest_tag = sh("git tag --sort=committerdate | tail -1").strip
-    changelog = current_changelog(since_tag: latest_tag)
-    next unless !changelog.strip!.empty?
-    puts "HELLO"
+	# Get the latest tag, which is the new release that triggered this lane.
+	sh "git fetch --tags origin #{ENV["BITRISE_GIT_BRANCH"]} --no-recurse-submodules"
+    
+    released_tag = sh("git tag --sort=committerdate | tail -1").strip
+	previous_tag = sh("git describe --abbrev=0 --tags `git rev-list --tags --skip=1  --max-count=1`").strip
+    
 	# Get the changelog
-	# Create a release on Github with the changelog
+    changelog = current_changelog(since_tag: previous_tag)
+
+    # Stop if there's no changelog
+    next unless !changelog.strip!.empty?
+    
+    # Create a release on Github with the changelog
+    title = "#{released_tag}"
+    # release_url = create_github_release(title: title, tag_name: released_tag, changelog: changelog)
+
+    # puts "Created release: #{release_url}"
+
 	# Create a release branch
+	# sh "git branch release/#{released_tag} origin/master"
+ #    sh "git checkout release/#{released_tag}"
+ #    sh "git merge -X theirs #{released_tag}"
+
 	# Update the changelog
+	create_changelog_release(release_title: title)
+
+	# Find the podspec file in directory ..
+	podspec_path = ..
+
 	# Update the podspec
+	version_bump_podspec(path: podspec_path, version_number: released_tag)
 	# Push the podspec to trunk
+
+	# Push the changes to the branch
+
+	# Create a PR
 end
 
 desc "Create a new release on Github"

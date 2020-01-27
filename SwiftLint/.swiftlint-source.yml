@@ -4,6 +4,7 @@ disabled_rules: # Rule identifiers to exclude from running
   - force_unwrapping
   - force_cast
   - force_try
+  - orphaned_doc_comment
 opt_in_rules:
   - block_based_kvo
   - class_delegate_protocol

@@ -11,6 +11,16 @@ workflows:
     - cache-pull: {}
     - bitrise-step-install-bundler: {}
     - script:
+        inputs:
+        - content: |-
+            envman add --key BREW_MINT --value "$(brew --cellar)/mint"
+            envman add --key BREW_OPT_MINT --value "/usr/local/opt/mint"
+
+            brew install mint
+            brew link mint
+            mint install WeTransfer/ChangelogProducer
+        title: Brew install
+    - script:
         title: Run Fastlane
         inputs:
         - content: |-
@@ -24,6 +34,7 @@ workflows:
         - is_debug_mode: 'true'
         - cache_paths: |
             $BITRISE_CACHE_DIR
+            $BREW_MINT
+            $BREW_OPT_MINT
             .build
-
             ./vendor-> ./Gemfile.lock #gem installation directory

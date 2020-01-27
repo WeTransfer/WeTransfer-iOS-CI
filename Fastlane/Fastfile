@@ -108,7 +108,7 @@ end
 
 desc "Returns the repository name. E.g: WeTransfer/Mocker"
 lane :git_repository_name do
-	sh("git remote show origin -n | ruby -ne 'puts /^\s*Fetch.*(:|\/){1}([^\/]+\/[^\/]+).git/.match($_)[2] rescue nil'").strip
+	sh("git remote show origin -n | ruby -ne 'puts /^\s*Fetch.*(:|\\/){1}([^\\/]+\\/[^\\/]+).git/.match($_)[2] rescue nil'").strip
 end
 
 desc "Create a new release on Github"

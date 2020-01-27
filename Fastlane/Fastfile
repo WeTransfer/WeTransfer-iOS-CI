@@ -80,7 +80,7 @@ lane :release_from_tag do |options|
 	version_bump_podspec(version_number: released_tag)
 	
 	# Push the podspec to trunk
-	# pod_push
+	pod_push
 
 	# Push the changes to the branch
 	sh('git commit -a -m "Created a new release"')

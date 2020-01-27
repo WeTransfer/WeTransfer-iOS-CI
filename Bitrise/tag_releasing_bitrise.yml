@@ -1,0 +1,29 @@
+---
+format_version: '8'
+default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
+project_type: ios
+trigger_map:
+- tag: "*"
+  workflow: wetransfer_tag_releasing
+workflows:
+  wetransfer_tag_releasing:
+    steps:
+    - cache-pull: {}
+    - bitrise-step-install-bundler: {}
+    - script:
+        title: Run Fastlane
+        inputs:
+        - content: |-
+            #!/usr/bin/env bash
+            bundle config set path 'vendor/bundle'
+            bundle install
+            bundle exec fastlane release_from_tag
+    - cache-push:
+        run_if: true
+        inputs:
+        - is_debug_mode: 'true'
+        - cache_paths: |
+            $BITRISE_CACHE_DIR
+            .build
+
+            ./vendor-> ./Gemfile.lock #gem installation directory

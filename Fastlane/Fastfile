@@ -64,28 +64,42 @@ lane :release_from_tag do |options|
     
     # Create a release on Github with the changelog
     title = "#{released_tag}"
-    # release_url = create_github_release(title: title, tag_name: released_tag, changelog: changelog)
+    release_url = create_github_release(title: title, tag_name: released_tag, changelog: changelog)
 
-    # puts "Created release: #{release_url}"
+    puts "Created release: #{release_url}"
 
 	# Create a release branch
-	# sh "git branch release/#{released_tag} origin/master"
- #    sh "git checkout release/#{released_tag}"
- #    sh "git merge -X theirs #{released_tag}"
+	sh "git branch release/#{released_tag} origin/master"
+    sh "git checkout release/#{released_tag}"
+    sh "git merge -X theirs #{released_tag}"
 
 	# Update the changelog
 	create_changelog_release(release_title: title)
 
-	# Find the podspec file in directory ..
-	podspec_path = ..
-
-	# Update the podspec
-	version_bump_podspec(path: podspec_path, version_number: released_tag)
+	# Update the podspec. It finds the .podspec automatically in the current folder.
+	version_bump_podspec(version_number: released_tag)
+	
 	# Push the podspec to trunk
+	pod_push
 
 	# Push the changes to the branch
-
+	sh('git commit -a -m "Created a new release"')
+    sh("git push origin release/#{released_tag}")
+	
 	# Create a PR
+    # Create a pull request for master to include the updated Changelog.md and podspec
+    create_pull_request(
+      api_token: ENV["DANGER_GITHUB_API_TOKEN"],
+      repo: git_repository_name,
+      title: "Merge release #{released_tag} into master",
+      base: "master", # The branch to merge the changes into.
+      body: "Containing all the changes for our latest release: **#{released_tag}**."
+    )
+end
+
+desc "Returns the repository name. E.g: WeTransfer/Mocker"
+lane :git_repository_name do
+	sh("git remote show origin -n | ruby -ne 'puts /^\s*Fetch.*:(.*).git/.match($_)[1] rescue nil'").strip
 end
 
 desc "Create a new release on Github"
@@ -95,7 +109,7 @@ lane :create_github_release do |options|
   title = options[:title]
   tag_name = options[:tag_name]
   commitish = sh "git rev-parse HEAD"
-  repository_name = sh("git remote show origin -n | ruby -ne 'puts /^\s*Fetch.*:(.*).git/.match($_)[1] rescue nil'").strip
+  repository_name = git_repository_name
 
   puts "Creating Github Release '#{title} for repository #{repository_name}"
 
@@ -140,9 +154,9 @@ end
 
 desc "Get latest Coyote release from Github. Draft releases and prereleases are not returned by this endpoint. See: https://developer.github.com/v3/repos/releases/#get-the-latest-release"
 lane :latest_github_release do
-	origin_name = sh("git remote show origin -n | ruby -ne 'puts /^\s*Fetch.*:(.*).git/.match($_)[1] rescue nil'").split('/')
-	organisation = origin_name[0].strip
-	repository = origin_name[1].strip
+	origin_name = git_repository_name.split('/')
+	organisation = origin_name[0]
+	repository = origin_name[1]
 
 	result = github_api(
 		server_url: "https://api.github.com",

@@ -58,7 +58,6 @@ workflows:
     - cache-push:
         run_if: true
         inputs:
-        - is_debug_mode: 'true'
         - cache_paths: |
             $BITRISE_CACHE_DIR
             .build

@@ -97,6 +97,15 @@ lane :release_from_tag do |options|
     )
 end
 
+desc "Unhide dev dependencies for danger"
+lane :unhide_spm_package_dev_dependencies do 
+	text = File.read('../Package.swift')
+	new_contents = text.gsub('// dev ', "")
+
+	# To write changes to the file, use:
+	File.open('../Package.swift', "w") {|file| file.puts new_contents }
+end
+
 desc "Returns the repository name. E.g: WeTransfer/Mocker"
 lane :git_repository_name do
 	sh("git remote show origin -n | ruby -ne 'puts /^\s*Fetch.*:(.*).git/.match($_)[1] rescue nil'").strip

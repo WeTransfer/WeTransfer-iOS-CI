@@ -74,7 +74,7 @@ lane :release_from_tag do |options|
     sh "git merge -X theirs #{released_tag}"
 
 	# Update the changelog
-	create_changelog_release(release_title: title)
+	create_changelog_release(release_title: title, changelog: changelog)
 
 	# Update the podspec. It finds the .podspec automatically in the current folder.
 	version_bump_podspec(version_number: released_tag)
@@ -93,7 +93,7 @@ lane :release_from_tag do |options|
       repo: git_repository_name,
       title: "Merge release #{released_tag} into master",
       base: "master", # The branch to merge the changes into.
-      body: "Containing all the changes for our latest release: **#{released_tag}**."
+      body: "Containing all the changes for our [**#{released_tag} Release**](#{release_url})."
     )
 end
 
@@ -143,7 +143,7 @@ lane :create_changelog_release do |options|
 
   changelog_path = options[:changelog_path] || '../Changelog.md'
   existing_changelog = File.read(changelog_path)
-  new_changelog = current_changelog
+  new_changelog = options[:changelog] || current_changelog
 
   File.open(changelog_path, 'w') { |file| 
     file << "# #{release_title}\n" + "\n"

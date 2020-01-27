@@ -25,6 +25,7 @@ workflows:
         inputs:
         - content: |-
             #!/usr/bin/env bash
+            git config --global url."git@github.com:".insteadOf "https://github.com/"
             bundle config set path 'vendor/bundle'
             bundle install
             bundle exec fastlane release_from_tag

@@ -17,10 +17,10 @@ workflows:
             #!/usr/bin/env bash
             bundle config set path 'vendor/bundle'
             bundle install
+            bundle exec fastlane unhide_spm_package_dev_dependencies
             # Use the environment FASTLANE_LANE if available. Otherwise, fallback to "test"
             lane=${FASTLANE_LANE:=test}
             bundle exec fastlane $lane
-            bundle exec fastlane unhide_spm_package_dev_dependencies
     - script:
         inputs:
         - content: |-

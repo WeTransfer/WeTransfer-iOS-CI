@@ -76,11 +76,14 @@ lane :release_from_tag do |options|
 	# Update the changelog
 	create_changelog_release(release_title: title, changelog: changelog)
 
-	# Update the podspec. It finds the .podspec automatically in the current folder.
-	version_bump_podspec(version_number: released_tag)
-	
-	# Push the podspec to trunk
-	pod_push
+	# Run only if there's a podspec to update
+	if Dir['../*.podspec'].any?
+		# Update the podspec. It finds the .podspec automatically in the current folder.
+		version_bump_podspec(version_number: released_tag)
+		
+		# Push the podspec to trunk
+		pod_push
+	end 
 
 	# Push the changes to the branch
 	sh('git commit -a -m "Created a new release"')

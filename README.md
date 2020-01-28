@@ -123,7 +123,7 @@ We also need to create a environment secret for CocoaPods trunk pushes with the 
 
 After all, you're secrets should look as follows:
 
-![](assets/bitrise_env_vars.png)
+![](Assets/bitrise_env_vars.png)
 
 After that, we need to add a new trigger for tags:
 

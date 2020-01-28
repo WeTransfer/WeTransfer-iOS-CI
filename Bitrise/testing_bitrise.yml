@@ -9,6 +9,12 @@ workflows:
   wetransfer_pr_testing:
     steps:
     - cache-pull: {}
+    - script:
+        inputs:
+        - content: |-
+            # Get the latest master branch for WeTransfer-iOS-CI.
+            git submodule update --remote
+        title: Update WeTransfer-iOS-CI submodule
     - bitrise-step-install-bundler: {}
     - script:
         title: Run Fastlane

@@ -1,3 +1,8 @@
+### 3.0.0
+
+- Tag Releasing: automated open-source releases ([#55](https://github.com/WeTransfer/WeTransfer-iOS-CI/pull/55)) via @AvdLee
+- Use the new build system for Scan ([#53](https://github.com/WeTransfer/WeTransfer-iOS-CI/pull/53)) via @AvdLee
+
 ### 1.0
 - First public release! 🎉
 - Added SwiftLint for source code and test code

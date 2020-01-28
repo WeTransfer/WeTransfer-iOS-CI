@@ -7,8 +7,6 @@ lane :test_project do |options|
 	reports_dir = "./../build/reports"
 	FileUtils.rm_rf Dir.glob("#{reports_dir}/*") if File.directory?(reports_dir)
 
-	puts "Test print to see if the submodule update works"
-
 	# Set timeout to prevent xcodebuild -list -project to take to much retries.
 	ENV["FASTLANE_XCODE_LIST_TIMEOUT"] = "120"
 

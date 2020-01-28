@@ -54,7 +54,7 @@ lane :release_from_tag do |options|
 	sh "git fetch --tags origin master --no-recurse-submodules"
     
     released_tag = sh("git describe --abbrev=0").strip
-	previous_tag = sh("git describe --abbrev=0 --tags `git rev-list --tags --skip=1  --max-count=1`").strip
+	previous_tag = sh("git describe --abbrev=0 --tags `git rev-list --tags --skip=1  --max-count=1 --no-walk`").strip
     
 	# Get the changelog
     changelog = current_changelog(since_tag: previous_tag)

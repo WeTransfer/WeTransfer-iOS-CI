@@ -146,8 +146,8 @@ lane :create_changelog_release do |options|
   new_changelog = options[:changelog] || current_changelog
 
   File.open(changelog_path, 'w') { |file| 
-    file << "# #{release_title}\n" + "\n"
-    file << new_changelog + "\n"
+    file << "### #{release_title}\n" + "\n"
+    file << new_changelog + "\n\n"
     file << existing_changelog
   }
   new_changelog

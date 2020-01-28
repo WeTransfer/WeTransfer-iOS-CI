@@ -1,0 +1,40 @@
+---
+format_version: '8'
+default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
+project_type: ios
+trigger_map:
+- tag: "*"
+  workflow: wetransfer_tag_releasing
+workflows:
+  wetransfer_tag_releasing:
+    steps:
+    - cache-pull: {}
+    - bitrise-step-install-bundler: {}
+    - script:
+        inputs:
+        - content: |-
+            envman add --key BREW_MINT --value "$(brew --cellar)/mint"
+            envman add --key BREW_OPT_MINT --value "/usr/local/opt/mint"
+
+            brew install mint
+            brew link mint
+            mint install WeTransfer/ChangelogProducer
+        title: Brew install
+    - script:
+        title: Run Fastlane
+        inputs:
+        - content: |-
+            #!/usr/bin/env bash
+            bundle config set path 'vendor/bundle'
+            bundle install
+            bundle exec fastlane release_from_tag
+    - cache-push:
+        run_if: true
+        inputs:
+        - is_debug_mode: 'true'
+        - cache_paths: |
+            $BITRISE_CACHE_DIR
+            $BREW_MINT
+            $BREW_OPT_MINT
+            .build
+            ./vendor-> ./Gemfile.lock #gem installation directory

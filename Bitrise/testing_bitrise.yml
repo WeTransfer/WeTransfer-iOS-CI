@@ -4,9 +4,9 @@ default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
 project_type: ios
 trigger_map:
 - pull_request_source_branch: "*"
-  workflow: open_source_projects
+  workflow: wetransfer_pr_testing
 workflows:
-  open_source_projects:
+  wetransfer_pr_testing:
     steps:
     - cache-pull: {}
     - bitrise-step-install-bundler: {}
@@ -20,6 +20,7 @@ workflows:
             # Use the environment FASTLANE_LANE if available. Otherwise, fallback to "test"
             lane=${FASTLANE_LANE:=test}
             bundle exec fastlane $lane
+            bundle exec fastlane unhide_spm_package_dev_dependencies
     - script:
         inputs:
         - content: |-

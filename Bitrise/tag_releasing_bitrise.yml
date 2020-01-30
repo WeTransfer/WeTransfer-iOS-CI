@@ -13,7 +13,7 @@ workflows:
         inputs:
         - content: |-
             # Get the latest master branch for WeTransfer-iOS-CI.
-            git submodule update --remote
+            git submodule update --remote --no-fetch Submodules/WeTransfer-iOS-CI
         title: Update WeTransfer-iOS-CI submodule
     - bitrise-step-install-bundler: {}
     - script:

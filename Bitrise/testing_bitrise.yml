@@ -12,8 +12,16 @@ workflows:
     - script:
         inputs:
         - content: |-
-            # Get the latest master branch for WeTransfer-iOS-CI.
-            git submodule update --remote
+            #!/usr/bin/env bash
+            set -ex
+
+            if [ ! -d "Submodules/WeTransfer-iOS-CI" ] ; then
+              # file does not exist - simply exit with success
+              exit 0
+            fi
+
+            # Get the latest master branch for WeTransfer-iOS-CI if the submodule exists
+            git submodule update --remote --no-fetch Submodules/WeTransfer-iOS-CI
         title: Update WeTransfer-iOS-CI submodule
     - bitrise-step-install-bundler: {}
     - script:

@@ -10,6 +10,7 @@ workflows:
     steps:
     - cache-pull: {}
     - script:
+        run_if: [ -d "Submodules/WeTransfer-iOS-CI" ]
         inputs:
         - content: |-
             # Get the latest master branch for WeTransfer-iOS-CI.

@@ -50,35 +50,22 @@ end
 desc 'Create a release from a tag triggered CI run'
 lane :release_from_tag do |options|
 	# Get the latest tag, which is the new release that triggered this lane.
-	sh "git fetch --tags origin master --no-recurse-submodules"
+	sh('git fetch --tags origin master --no-recurse-submodules -q')
     
-    released_tag = sh("git describe --abbrev=0").strip
-	previous_tag = sh("git describe --abbrev=0 --tags `git rev-list --tags --skip=1  --max-count=1 --no-walk`").strip
-    
-	# Get the changelog
-    changelog = current_changelog(since_tag: previous_tag)
-
-    # Stop if there's no changelog
-    next unless !changelog.strip!.empty?
-    
-    # Create a release on Github with the changelog
-    title = "#{released_tag}"
-    release_url = create_github_release(title: title, tag_name: released_tag, changelog: changelog)
-
-    puts "Created release: #{release_url}"
-
+    latest_tag = sh('git describe --abbrev=0 --tags `git rev-list --tags --max-count=1 --no-walk`').strip
+	
 	# Create a release branch
-	sh "git branch release/#{released_tag} origin/master"
-    sh "git checkout release/#{released_tag}"
-    sh "git merge -X theirs #{released_tag}"
+	sh "git branch release/#{latest_tag} origin/master"
+    sh "git checkout release/#{latest_tag}"
+    sh "git merge -X theirs #{latest_tag}"
 
-	# Update the changelog
-	create_changelog_release(release_title: title, changelog: changelog)
+	release_url = sh('gitbuddy release -c "../Changelog.md" --verbose')
+    puts "Created release: #{release_url}"
 
 	# Run only if there's a podspec to update
 	if Dir['../*.podspec'].any?
 		# Update the podspec. It finds the .podspec automatically in the current folder.
-		version_bump_podspec(version_number: released_tag)
+		version_bump_podspec(version_number: latest_tag)
 		
 		# Push the podspec to trunk
 		pod_push
@@ -86,16 +73,16 @@ lane :release_from_tag do |options|
 
 	# Push the changes to the branch
 	sh('git commit -a -m "Created a new release"')
-    sh("git push origin release/#{released_tag}")
+    sh("git push origin release/#{latest_tag}")
 	
 	# Create a PR
     # Create a pull request for master to include the updated Changelog.md and podspec
     create_pull_request(
       api_token: ENV["DANGER_GITHUB_API_TOKEN"],
       repo: git_repository_name,
-      title: "Merge release #{released_tag} into master",
+      title: "Merge release #{latest_tag} into master",
       base: "master", # The branch to merge the changes into.
-      body: "Containing all the changes for our [**#{released_tag} Release**](#{release_url})."
+      body: "Containing all the changes for our [**#{latest_tag} Release**](#{release_url})."
     )
 end
 
@@ -111,71 +98,4 @@ end
 desc "Returns the repository name. E.g: WeTransfer/Mocker"
 lane :git_repository_name do
 	sh("git remote show origin -n | ruby -ne 'puts /^\s*Fetch.*(:|\\/){1}([^\\/]+\\/[^\\/]+).git/.match($_)[2] rescue nil'").strip
-end
-
-desc "Create a new release on Github"
-desc ""
-desc "- Uses the changelog as description of the new release"
-lane :create_github_release do |options|
-  title = options[:title]
-  tag_name = options[:tag_name]
-  commitish = sh "git rev-parse HEAD"
-  repository_name = git_repository_name
-
-  puts "Creating Github Release '#{title} for repository #{repository_name}"
-
-  changelog = options[:changelog] || current_changelog
-
-  github_release = set_github_release(
-    repository_name: repository_name,
-    api_token: ENV["DANGER_GITHUB_API_TOKEN"],
-    name: title,
-    tag_name: tag_name,
-    description: changelog,
-    commitish: commitish.strip,
-    is_draft: false,
-    is_prerelease: options[:is_prerelease] || false
-  )
-  github_release["html_url"]
-end
-
-desc "Appends the current open changes to the Changelog.md. Returns the appended changelog lines"
-lane :create_changelog_release do |options|
-  release_title = options[:release_title]
-
-  changelog_path = options[:changelog_path] || '../Changelog.md'
-  existing_changelog = File.read(changelog_path)
-  new_changelog = options[:changelog] || current_changelog
-
-  File.open(changelog_path, 'w') { |file| 
-    file << "### #{release_title}\n" + "\n"
-    file << new_changelog + "\n\n"
-    file << existing_changelog
-  }
-  new_changelog
-end
-
-desc "Get the current changes since the last non-draft release"
-lane :current_changelog do |options|
-	puts "Fetching changelog for base branch #{options[:base_branch]}"
-	latest_release_tag = options[:since_tag] || latest_github_release
-	base_branch = options[:base_branch] || "master"
-	changelog = sh("changelogproducer -b #{base_branch} -s #{latest_release_tag}")
-end
-
-desc "Get latest Coyote release from Github. Draft releases and prereleases are not returned by this endpoint. See: https://developer.github.com/v3/repos/releases/#get-the-latest-release"
-lane :latest_github_release do
-	origin_name = git_repository_name.split('/')
-	organisation = origin_name[0]
-	repository = origin_name[1]
-
-	result = github_api(
-		server_url: "https://api.github.com",
-		api_token: ENV["DANGER_GITHUB_API_TOKEN"],
-		http_method: "GET",
-		path: "/repos/#{organisation}/#{repository}/releases/latest"
-	)
-
-	puts "Latest Github release is #{result[:json]["tag_name"]}"
-	result[:json]["tag_name"]
 end

@@ -32,7 +32,7 @@ workflows:
 
             brew install mint
             brew link mint
-            mint install WeTransfer/ChangelogProducer
+            mint install WeTransfer/GitBuddy
         title: Brew install
     - script:
         title: Run Fastlane

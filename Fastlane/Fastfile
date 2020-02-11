@@ -1,4 +1,7 @@
 # rubocop:disable LineLength
+
+require "uri"
+
 desc 'Runs tests for an external project'
 lane :test_project do |options|
 	clear_derived_data
@@ -59,7 +62,8 @@ lane :release_from_tag do |options|
     sh "git checkout release/#{latest_tag}"
     sh "git merge -X theirs #{latest_tag}"
 
-	release_url = sh('gitbuddy release -c "../Changelog.md" | tail -1')
+	release_output = sh('gitbuddy release -c "../Changelog.md"')
+	release_url = URI.extract(release_output).first
     puts "Created release: #{release_url}"
 
 	# Run only if there's a podspec to update

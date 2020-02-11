@@ -63,7 +63,7 @@ lane :release_from_tag do |options|
     sh "git merge -X theirs #{latest_tag}"
 
 	release_output = sh('gitbuddy release -c "../Changelog.md"')
-	release_url = URI.extract(value).find { |url| url.include? 'releases/tag' }
+	release_url = URI.extract(release_output).find { |url| url.include? 'releases/tag' }
     puts "Created release with URL: #{release_url}"
 
 	# Run only if there's a podspec to update

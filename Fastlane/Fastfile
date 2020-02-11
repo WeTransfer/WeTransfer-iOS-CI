@@ -59,7 +59,7 @@ lane :release_from_tag do |options|
     sh "git checkout release/#{latest_tag}"
     sh "git merge -X theirs #{latest_tag}"
 
-	release_url = sh('gitbuddy release -c "../Changelog.md"')
+	release_url = sh('gitbuddy release -c "../Changelog.md" | tail -1')
     puts "Created release: #{release_url}"
 
 	# Run only if there's a podspec to update
@@ -67,8 +67,12 @@ lane :release_from_tag do |options|
 		# Update the podspec. It finds the .podspec automatically in the current folder.
 		version_bump_podspec(version_number: latest_tag)
 		
-		# Push the podspec to trunk
-		pod_push
+		begin
+			# Push the podspec to trunk
+			pod_push
+		rescue => ex
+			UI.important("Pod push failed: #{ex}")
+		end
 	end 
 
 	# Push the changes to the branch

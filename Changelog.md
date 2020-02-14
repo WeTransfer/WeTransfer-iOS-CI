@@ -1,3 +1,7 @@
+### 3.1.0
+- Only update the CI submodule remotely ([#57](https://github.com/WeTransfer/WeTransfer-iOS-CI/pull/57)) via @AvdLee
+- Merge release 3.0.0 into master ([#56](https://github.com/WeTransfer/WeTransfer-iOS-CI/pull/56))
+
 ### 3.0.0
 
 - Tag Releasing: automated open-source releases ([#55](https://github.com/WeTransfer/WeTransfer-iOS-CI/pull/55)) via @AvdLee

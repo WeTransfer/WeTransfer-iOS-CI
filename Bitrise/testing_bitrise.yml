@@ -30,7 +30,7 @@ workflows:
         - content: |-
             #!/usr/bin/env bash
             bundle config set path 'vendor/bundle'
-            bundle install
+            bundle update
             bundle exec fastlane unhide_spm_package_dev_dependencies
             # Use the environment FASTLANE_LANE if available. Otherwise, fallback to "test"
             lane=${FASTLANE_LANE:=test}
@@ -63,8 +63,6 @@ workflows:
         inputs:
         - content: |-
             #!/usr/bin/env bash
-            # fail if any commands fails
-            set -e
             # debug log
             set -x
 

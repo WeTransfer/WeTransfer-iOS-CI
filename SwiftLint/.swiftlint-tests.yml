@@ -11,6 +11,7 @@ disabled_rules: # Rule identifiers to exclude from running
   - function_body_length
   - nesting
   - orphaned_doc_comment
+  - weak_delegate
 opt_in_rules:
   - empty_count
   - explicit_init
@@ -24,15 +25,15 @@ opt_in_rules:
   - switch_case_on_newline
 operator_usage_whitespace: error
 syntactic_sugar: error
-trailing_comma: 
+trailing_comma:
   severity: error
 trailing_newline: error
 trailing_semicolon: error
 trailing_whitespace: error
 unused_closure_parameter: error
-unused_optional_binding: 
+unused_optional_binding:
   severity: error
-vertical_whitespace: 
+vertical_whitespace:
   severity: error
 object_literal:
   color_literal: false

@@ -1,3 +1,7 @@
+### 3.2.0
+- Disable weak delegate rule in test target ([#64](https://github.com/WeTransfer/WeTransfer-iOS-CI/pull/64)) via @kairadiagne
+- Merge release 3.1.0 into master ([#62](https://github.com/WeTransfer/WeTransfer-iOS-CI/pull/62)) via @WeTransferBot
+
 ### 3.1.0
 - Only update the CI submodule remotely ([#57](https://github.com/WeTransfer/WeTransfer-iOS-CI/pull/57)) via @AvdLee
 - Merge release 3.0.0 into master ([#56](https://github.com/WeTransfer/WeTransfer-iOS-CI/pull/56))

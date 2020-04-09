@@ -52,10 +52,7 @@ end
 
 desc 'Create a release from a tag triggered CI run'
 lane :release_from_tag do |options|
-	# Get the latest tag, which is the new release that triggered this lane.
-	sh('git fetch --tags origin master --no-recurse-submodules -q')
-    
-    latest_tag = sh('git describe --abbrev=0 --tags `git rev-list --tags --max-count=1 --no-walk`').strip
+	latest_tag = ENV["BITRISE_GIT_TAG"]
 	
 	# Create a release branch
 	sh "git branch release/#{latest_tag} origin/master"

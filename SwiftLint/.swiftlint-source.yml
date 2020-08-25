@@ -66,8 +66,7 @@ type_contents_order:
     - ib_outlet
     - ib_inspectable
     - type_property
-    - instance_property
-    - initializer
+    - [initializer, instance_property]
     - view_life_cycle_method
     - [subscript, other_method, ib_action]
     - type_method

@@ -25,7 +25,7 @@ if [ -z "$CI" ]; then
 	        swiftlint lint --use-script-input-files --config "$BASEDIR/.swiftlint-source.yml" --force-exclude;
 		    swiftlint lint --use-script-input-files --config "$BASEDIR/.swiftlint-tests.yml" --force-exclude || true; # Don't fail if there's no tests to lint
 	    else
-	        echo "No files to lint, number of files fount is $count"
+	        echo "No files to lint, the number of files found is $count"
 	        exit 0
 	    fi
     else

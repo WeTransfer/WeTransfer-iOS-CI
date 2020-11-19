@@ -43,10 +43,12 @@ excluded:
   - ${SRCROOT}/Carthage
   - ${SRCROOT}/.build
   - ${SRCROOT}/Playgrounds
+  - ${SRCROOT}/Vendor
   - ${SRCROOT}/Submodules
   - ${SRCROOT}/scripts/genstrings.swift
   - ${SRCROOT}/danger/DangerTests.swift
   - ${SRCROOT}/${PROJECT_NAME}
+  - ${SRCROOT}/Shared # Coyote shared folder
   - Example/*/${PROJECT_NAME} # App Store Connect SDK structure
   - ${SRCROOT}/Pods
   - ${SRCROOT}/Sources # Folder for open source projects

@@ -22,7 +22,7 @@ if [ -z "$CI" ]; then
 
 		if (( $count > 0 )); then
 	        echo "Found lintable files! Linting..."
-	        swiftlint lint --use-script-input-files --config "$BASEDIR/.swiftlint-source.yml" --force-exclude;
+	        swiftlint lint --use-script-input-files --config "$BASEDIR/.swiftlint-source.yml" --force-exclude || true;
 		    swiftlint lint --use-script-input-files --config "$BASEDIR/.swiftlint-tests.yml" --force-exclude || true; # Don't fail if there's no tests to lint
 	    else
 	        echo "No files to lint, the number of files found is $count"

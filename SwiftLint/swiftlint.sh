@@ -18,6 +18,12 @@ if [ -z "$CI" ]; then
 			count=$((count + 1))
 		done < <(git diff --relative --diff-filter=d --cached --name-only $SRCROOT | grep ".swift$")
 
+		# Committed files
+		while read filename; do 
+			export SCRIPT_INPUT_FILE_$count="${filename}"
+			count=$((count + 1))
+		done < <(git diff develop... --relative --diff-filter=d --name-only $SRCROOT | grep ".swift$")
+
 		export SCRIPT_INPUT_FILE_COUNT=$count
 
 		if (( $count > 0 )); then

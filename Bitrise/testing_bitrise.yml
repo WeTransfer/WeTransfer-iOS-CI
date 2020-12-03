@@ -73,6 +73,7 @@ workflows:
         - cache_paths: |
             $BITRISE_CACHE_DIR
             .build
+            SourcePackages
             $BREW_SWIFTLINT
             $BREW_OPT_SWIFTLINT
 

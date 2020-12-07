@@ -4,10 +4,6 @@ require "uri"
 
 desc 'Runs tests for a specific package'
 lane :test_package do |options|
-	# Clean old reports so they're not reported for no reason.
-	reports_dir = "#{ENV['PWD']}/build/reports"
-	FileUtils.rm_rf Dir.glob("#{reports_dir}/*") if File.directory?(reports_dir)
-
 	begin
 		ENV["XCPRETTY_JSON_FILE_OUTPUT"] = "#{reports_dir}/#{options[:package_name]}_Tests.json"
 		destination = 'platform=iOS Simulator,name=iPhone 11,OS=14.2'
@@ -22,10 +18,6 @@ end
 desc 'Runs tests for an external project'
 lane :test_project do |options|
 	clear_derived_data
-
-	# Clean old reports so they're not reported for no reason.
-	reports_dir = "./../build/reports"
-	FileUtils.rm_rf Dir.glob("#{reports_dir}/*") if File.directory?(reports_dir)
 
 	# Set timeout to prevent xcodebuild -list -project to take to much retries.
 	ENV["FASTLANE_XCODE_LIST_TIMEOUT"] = "120"

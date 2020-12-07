@@ -41,21 +41,13 @@ workflows:
             # Add cache directory to environment variable
             envman add --key BREW_SWIFTLINT --value "$(brew --cellar)/swiftlint"
             envman add --key BREW_OPT_SWIFTLINT --value "/usr/local/opt/swiftlint"
-
-            envman add --key BREW_DANGER_SWIFT --value "$(brew --cellar)/danger-swift"
-            envman add --key BREW_OPT_DANGER_SWIFT --value "/usr/local/opt/danger-swift"
-
-            envman add --key BREW_DANGER_JS --value "$(brew --cellar)/danger-js"
-            envman add --key BREW_OPT_DANGER_JS --value "/usr/local/opt/danger-js"
         title: Set Env Path
     - script:
         inputs:
         - content: |-
             # Install the following command
-            brew install danger/tap/danger-swift
+            npm install -g danger
             brew install swiftlint
-            brew link danger-js
-            brew link danger-swift
             brew link swiftlint
         title: Brew install
     - script:
@@ -66,21 +58,17 @@ workflows:
             # debug log
             set -x
 
-            danger-swift ci
+            swift build
+            swift run danger-swift ci
     - cache-push:
         run_if: true
         inputs:
         - cache_paths: |
             $BITRISE_CACHE_DIR
             .build
+            ~/.danger-swift
             SourcePackages
             $BREW_SWIFTLINT
             $BREW_OPT_SWIFTLINT
-
-            $BREW_DANGER_SWIFT
-            $BREW_OPT_DANGER_SWIFT
-
-            $BREW_DANGER_JS
-            $BREW_OPT_DANGER_JS
 
             ./vendor-> ./Gemfile.lock #gem installation directory

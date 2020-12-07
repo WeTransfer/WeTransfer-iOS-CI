@@ -38,17 +38,8 @@ workflows:
     - script:
         inputs:
         - content: |-
-            # Add cache directory to environment variable
-            envman add --key BREW_SWIFTLINT --value "$(brew --cellar)/swiftlint"
-            envman add --key BREW_OPT_SWIFTLINT --value "/usr/local/opt/swiftlint"
-        title: Set Env Path
-    - script:
-        inputs:
-        - content: |-
             # Install the following command
             npm install -g danger
-            brew install swiftlint
-            brew link swiftlint
         title: Brew install
     - script:
         title: Run Danger
@@ -68,7 +59,5 @@ workflows:
             .build
             ~/.danger-swift
             SourcePackages
-            $BREW_SWIFTLINT
-            $BREW_OPT_SWIFTLINT
 
             ./vendor-> ./Gemfile.lock #gem installation directory

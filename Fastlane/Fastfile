@@ -22,11 +22,12 @@ lane :test_project do |options|
 	clear_derived_data
 
 	# Set timeout to prevent xcodebuild -list -project to take to much retries.
+	ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "120"
 	ENV["FASTLANE_XCODE_LIST_TIMEOUT"] = "120"
-
+	
 	begin
 		ENV["XCPRETTY_JSON_FILE_OUTPUT"] = "build/reports/#{options[:scheme]}_Tests.json"
-		source_dir = ENV['BITRISE_SOURCE_DIR'] || '.'
+
 		device = options[:device] || "iPhone 11"
 		scan(
 		  scheme: options[:scheme],

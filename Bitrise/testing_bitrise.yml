@@ -23,7 +23,7 @@ workflows:
             # Get the latest master branch for WeTransfer-iOS-CI if the submodule exists
             git submodule update --remote --no-fetch Submodules/WeTransfer-iOS-CI
         title: Update WeTransfer-iOS-CI submodule
-     - script:
+    - script:
         title: Set GEM_CACHE_PATH env var
         inputs:
         - content: |-
@@ -50,11 +50,11 @@ workflows:
             # Install the following command
             npm install -g danger
     - brew-install@0:
-        title: Install SwiftLint
         inputs:
         - upgrade: 'no'
         - packages: swiftlint
         - cache_enabled: 'yes'
+        title: Install SwiftLint
     - script:
         title: Run Danger
         inputs:

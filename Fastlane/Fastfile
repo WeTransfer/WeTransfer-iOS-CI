@@ -24,7 +24,7 @@ lane :test_project do |options|
 	# Set timeout to prevent xcodebuild -list -project to take to much retries.
 	ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "120"
 	ENV["FASTLANE_XCODE_LIST_TIMEOUT"] = "120"
-
+	
 	begin
 		ENV["XCPRETTY_JSON_FILE_OUTPUT"] = "build/reports/#{options[:scheme]}_Tests.json"
 
@@ -33,7 +33,7 @@ lane :test_project do |options|
 		  scheme: options[:scheme],
 		  project: "#{options[:project_path]}#{options[:project_name]}.xcodeproj",
 		  device: device,
-		  destination: options[:destination] || 'platform=iOS Simulator,name=iPhone 11,OS=14.2',
+		  destination: options[:destination],
 		  code_coverage: true,
 		  disable_concurrent_testing: true,
 		  fail_build: false,

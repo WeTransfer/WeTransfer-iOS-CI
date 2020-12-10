@@ -56,7 +56,7 @@ final class WeTransferLinterTests: XCTestCase {
         let wetransferPRLinterXCResultFileName = try buildFolder.createSubfolder(named: "WeTransferPRLinter-Package.test_result.xcresult").name
         WeTransferPRLinter.lint(using: danger, coverageReporter: coverageReporter, reportsPath: buildFolder.name)
 
-        let expectedExcludedTargets = ["OkapiTests.xctest", "RabbitTests.xctest", "WeTransferPRLinterTests.xctest"]
+        let expectedExcludedTargets = ["OkapiTests", "RabbitTests", "WeTransferPRLinterTests"]
         XCTAssertEqual(coverageReporter.reportedXCResultBundlesNames.count, 3)
         XCTAssertEqual(coverageReporter.reportedXCResultBundlesNames[rabbitXCResultFileName], expectedExcludedTargets)
         XCTAssertEqual(coverageReporter.reportedXCResultBundlesNames[okapiXCResultFileName], expectedExcludedTargets)

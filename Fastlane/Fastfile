@@ -12,7 +12,7 @@ lane :test_package do |options|
 		ENV["XCPRETTY_JSON_FILE_OUTPUT"] = "#{reports_dir}/#{options[:package_name]}_Tests.json"
 		destination = 'platform=iOS Simulator,name=iPhone 11,OS=14.2'
 		sourcePackagesDir = "#{ENV['PWD']}/SourcePackages"
-
+		sh "xcodebuild -showBuildSettings -clonedSourcePackagesDirPath #{sourcePackagesDir}"
 	    sh "cd #{ENV['PWD']}/#{options[:package_path]} && xcodebuild -scheme #{options[:package_name]} -destination '#{destination}' -resultBundlePath '#{reports_dir}/#{options[:package_name]}.xcresult' -disable-concurrent-testing -enableCodeCoverage YES -UseNewBuildSystem=YES -clonedSourcePackagesDirPath #{sourcePackagesDir} build test | xcpretty -f `xcpretty-json-formatter`"
 	rescue => ex
 		UI.important("Tests failed for #{ex}")

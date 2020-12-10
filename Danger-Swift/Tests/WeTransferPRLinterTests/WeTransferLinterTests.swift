@@ -52,12 +52,15 @@ final class WeTransferLinterTests: XCTestCase {
         let danger = githubWithFilesDSL()
         let coverageReporter = MockedCoverageReporter.self
         let rabbitXCResultFileName = try buildFolder.createSubfolder(named: "Rabbit.test_result.xcresult").name
-        let okapiXCResultFileName = try buildFolder.createSubfolder(named: "WeTransferPRLinter-Package.test_result.xcresult").name
+        let okapiXCResultFileName = try buildFolder.createSubfolder(named: "Okapi.test_result.xcresult").name
+        let wetransferPRLinterXCResultFileName = try buildFolder.createSubfolder(named: "WeTransferPRLinter-Package.test_result.xcresult").name
         WeTransferPRLinter.lint(using: danger, coverageReporter: coverageReporter, reportsPath: buildFolder.name)
 
-        XCTAssertEqual(coverageReporter.reportedXCResultBundlesNames.count, 2)
-        XCTAssertEqual(coverageReporter.reportedXCResultBundlesNames[rabbitXCResultFileName], ["RabbitTests.xctest"])
-        XCTAssertEqual(coverageReporter.reportedXCResultBundlesNames[okapiXCResultFileName], ["WeTransferPRLinterTests.xctest"])
+        let expectedExcludedTargets = ["OkapiTests.xctest", "RabbitTests.xctest", "WeTransferPRLinterTests.xctest"]
+        XCTAssertEqual(coverageReporter.reportedXCResultBundlesNames.count, 3)
+        XCTAssertEqual(coverageReporter.reportedXCResultBundlesNames[rabbitXCResultFileName], expectedExcludedTargets)
+        XCTAssertEqual(coverageReporter.reportedXCResultBundlesNames[okapiXCResultFileName], expectedExcludedTargets)
+        XCTAssertEqual(coverageReporter.reportedXCResultBundlesNames[wetransferPRLinterXCResultFileName], expectedExcludedTargets)
     }
 
     /// It should report an error if code coverage creation failed.

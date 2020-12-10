@@ -4,14 +4,16 @@ require "uri"
 
 desc 'Runs tests for a specific package'
 lane :test_package do |options|
+	clear_derived_data
+	
 	reports_dir = "#{ENV['PWD']}/build/reports"
 
 	begin
 		ENV["XCPRETTY_JSON_FILE_OUTPUT"] = "#{reports_dir}/#{options[:package_name]}_Tests.json"
 		destination = 'platform=iOS Simulator,name=iPhone 11,OS=14.2'
 		sourcePackagesDir = "#{ENV['PWD']}/SourcePackages"
-
-	    sh "cd #{ENV['PWD']}/#{options[:package_path]} && xcodebuild -scheme #{options[:package_name]} -destination '#{destination}' -resultBundlePath '#{reports_dir}/#{options[:package_name]}.xcresult' -disable-concurrent-testing -enableCodeCoverage YES -UseNewBuildSystem=YES -clonedSourcePackagesDirPath #{sourcePackagesDir} build test | xcpretty -f `xcpretty-json-formatter`"
+		# sh "xcodebuild -showBuildSettings -clonedSourcePackagesDirPath #{sourcePackagesDir} -verbose"
+	    sh "cd #{ENV['PWD']}/#{options[:package_path]} && xcodebuild -scheme #{options[:package_name]} -destination '#{destination}' -verbose -resultBundlePath '#{reports_dir}/#{options[:package_name]}.xcresult' -disable-concurrent-testing -enableCodeCoverage YES -UseNewBuildSystem=YES -clonedSourcePackagesDirPath #{sourcePackagesDir} build test | xcpretty -f `xcpretty-json-formatter`"
 	rescue => ex
 		UI.important("Tests failed for #{ex}")
 	end
@@ -22,11 +24,12 @@ lane :test_project do |options|
 	clear_derived_data
 
 	# Set timeout to prevent xcodebuild -list -project to take to much retries.
+	ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "120"
 	ENV["FASTLANE_XCODE_LIST_TIMEOUT"] = "120"
 
 	begin
 		ENV["XCPRETTY_JSON_FILE_OUTPUT"] = "build/reports/#{options[:scheme]}_Tests.json"
-		source_dir = ENV['BITRISE_SOURCE_DIR'] || '.'
+
 		device = options[:device] || "iPhone 11"
 		scan(
 		  scheme: options[:scheme],

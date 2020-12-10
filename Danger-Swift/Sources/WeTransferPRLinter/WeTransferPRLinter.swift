@@ -55,9 +55,9 @@ public enum WeTransferPRLinter {
             }
 
             print("Found the following reports:\n- \(xcResultBundles.map { $0.description }.joined(separator: "\n- "))")
-
+            let testTargetsToExclude = xcResultBundles.map { "\($0.projectName)Tests" }
             xcResultBundles.forEach { xcResultBundle in
-                coverageReporter.reportCoverage(for: xcResultBundle, excludedTargets: ["\(xcResultBundle.projectName)Tests.xctest"])
+                coverageReporter.reportCoverage(for: xcResultBundle, excludedTargets: testTargetsToExclude)
             }
         } catch {
             danger.warn("Code coverage generation failed with error: \(error).")

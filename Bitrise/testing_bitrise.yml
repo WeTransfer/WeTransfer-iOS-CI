@@ -23,41 +23,38 @@ workflows:
             # Get the latest master branch for WeTransfer-iOS-CI if the submodule exists
             git submodule update --remote --no-fetch Submodules/WeTransfer-iOS-CI
         title: Update WeTransfer-iOS-CI submodule
+    - script:
+        title: Set GEM_CACHE_PATH env var
+        inputs:
+        - content: |-
+            #!/bin/bash
+            set -ex
+            RBENV_DIR="`cd $(rbenv which ruby)/../..;pwd`"
+            echo "Gem cache directory: $RBENV_DIR"
+            envman add --key GEM_CACHE_PATH --value $RBENV_DIR
     - bitrise-step-install-bundler: {}
     - script:
         title: Run Fastlane
         inputs:
         - content: |-
             #!/usr/bin/env bash
-            bundle config set path 'vendor/bundle'
             bundle update
             bundle exec fastlane unhide_spm_package_dev_dependencies
             # Use the environment FASTLANE_LANE if available. Otherwise, fallback to "test"
             lane=${FASTLANE_LANE:=test}
             bundle exec fastlane $lane
     - script:
-        inputs:
-        - content: |-
-            # Add cache directory to environment variable
-            envman add --key BREW_SWIFTLINT --value "$(brew --cellar)/swiftlint"
-            envman add --key BREW_OPT_SWIFTLINT --value "/usr/local/opt/swiftlint"
-
-            envman add --key BREW_DANGER_SWIFT --value "$(brew --cellar)/danger-swift"
-            envman add --key BREW_OPT_DANGER_SWIFT --value "/usr/local/opt/danger-swift"
-
-            envman add --key BREW_DANGER_JS --value "$(brew --cellar)/danger-js"
-            envman add --key BREW_OPT_DANGER_JS --value "/usr/local/opt/danger-js"
-        title: Set Env Path
-    - script:
+        title: Install Danger
         inputs:
         - content: |-
             # Install the following command
-            brew install danger/tap/danger-swift
-            brew install swiftlint
-            brew link danger-js
-            brew link danger-swift
-            brew link swiftlint
-        title: Brew install
+            npm install -g danger
+    - brew-install@0:
+        inputs:
+        - upgrade: 'no'
+        - packages: swiftlint
+        - cache_enabled: 'yes'
+        title: Install SwiftLint
     - script:
         title: Run Danger
         inputs:
@@ -66,21 +63,15 @@ workflows:
             # debug log
             set -x
 
-            danger-swift ci
+            swift build
+            swift run danger-swift ci
     - cache-push:
         run_if: true
         inputs:
         - cache_paths: |
             $BITRISE_CACHE_DIR
             .build
+            ~/.danger-swift
             SourcePackages
-            $BREW_SWIFTLINT
-            $BREW_OPT_SWIFTLINT
 
-            $BREW_DANGER_SWIFT
-            $BREW_OPT_DANGER_SWIFT
-
-            $BREW_DANGER_JS
-            $BREW_OPT_DANGER_JS
-
-            ./vendor-> ./Gemfile.lock #gem installation directory
+            $GEM_CACHE_PATH

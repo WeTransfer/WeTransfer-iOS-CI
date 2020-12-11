@@ -81,6 +81,7 @@ excluded:
   - ${SRCROOT}/.build
   - ${SRCROOT}/Playgrounds
   - ${SRCROOT}/Submodules
+  - ${SRCROOT}/SourcePackages
   - ${SRCROOT}/Vendor
   - ${SRCROOT}/Pods
   - ${SRCROOT}/bundle

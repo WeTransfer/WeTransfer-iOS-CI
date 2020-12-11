@@ -45,6 +45,7 @@ excluded:
   - ${SRCROOT}/Playgrounds
   - ${SRCROOT}/Vendor
   - ${SRCROOT}/Submodules
+  - ${SRCROOT}/SourcePackages
   - ${SRCROOT}/scripts/genstrings.swift
   - ${SRCROOT}/danger/DangerTests.swift
   - ${SRCROOT}/${PROJECT_NAME}

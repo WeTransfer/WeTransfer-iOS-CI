@@ -30,7 +30,7 @@ workflows:
             #!/usr/bin/env bash
             # As we work with submodules, make sure we use SSH for this config so we can push our PR later on.
             # See for more info: https://discuss.bitrise.io/t/git-force-to-use-ssh-url-instead-of-https-for-github-com/4384
-            git config --global url."git@github.com:".insteadOf "https://github.com/"
+            # git config --global url."git@github.com:".insteadOf "https://github.com/"
     - script:
         title: Set GEM_CACHE_PATH env var
         inputs:

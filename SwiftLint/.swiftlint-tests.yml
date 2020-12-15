@@ -46,6 +46,9 @@ excluded:
   - ${SRCROOT}/Vendor
   - ${SRCROOT}/Submodules
   - ${SRCROOT}/SourcePackages
+  - ${SRCROOT}/*/SourcePackages
+  - ${SRCROOT}/*/*/SourcePackages
+  - ${SRCROOT}/*/*/*/SourcePackages
   - ${SRCROOT}/scripts/genstrings.swift
   - ${SRCROOT}/danger/DangerTests.swift
   - ${SRCROOT}/${PROJECT_NAME}

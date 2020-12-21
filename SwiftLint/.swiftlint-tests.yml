@@ -23,7 +23,6 @@ opt_in_rules:
   - prohibited_super_call
   - redundant_nil_coalescing
   - switch_case_on_newline
-operator_usage_whitespace: error
 syntactic_sugar: error
 trailing_comma:
   severity: error
@@ -43,7 +42,7 @@ excluded:
   - ${SRCROOT}/Carthage
   - ${SRCROOT}/.build
   - ${SRCROOT}/Playgrounds
-  - ${SRCROOT}/Vendor
+  #- ${SRCROOT}/Vendor We include the vendor folder until we can add build phase scripts to SPM.
   - ${SRCROOT}/Submodules
   - ${SRCROOT}/SourcePackages
   - ${SRCROOT}/*/SourcePackages

@@ -28,7 +28,6 @@ opt_in_rules:
   - switch_case_on_newline
   - toggle_bool
   - type_contents_order
-operator_usage_whitespace: error
 syntactic_sugar: error
 trailing_comma: 
   severity: error
@@ -85,13 +84,13 @@ excluded:
   - ${SRCROOT}/*/SourcePackages
   - ${SRCROOT}/*/*/SourcePackages
   - ${SRCROOT}/*/*/*/SourcePackages
-  - ${SRCROOT}/Vendor
+  #- ${SRCROOT}/Vendor We include the vendor folder until we can add build phase scripts to SPM.
   - ${SRCROOT}/Pods
   - ${SRCROOT}/bundle
   - ${SRCROOT}/scripts/genstrings.swift
   - ${SRCROOT}/danger/DangerTests.swift
-  - ${SRCROOT}/${PROJECT_NAME}Tests
-  - ${SRCROOT}/${PROJECT_NAME}UITests
+  - ${SRCROOT}/*Tests
+  - ${SRCROOT}/*UITests
   - ${SRCROOT}/Tests
   - ${SRCROOT}/.rbenv
   - ${SRCROOT}/*/*/*/*/main.swift # App Store Connect SDK structure

@@ -42,7 +42,7 @@ excluded:
   - ${SRCROOT}/Carthage
   - ${SRCROOT}/.build
   - ${SRCROOT}/Playgrounds
-  #- ${SRCROOT}/Vendor We include the vendor folder until we can add build phase scripts to SPM.
+  - ${SRCROOT}/Vendor
   - ${SRCROOT}/Submodules
   - ${SRCROOT}/SourcePackages
   - ${SRCROOT}/*/SourcePackages

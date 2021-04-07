@@ -3,9 +3,7 @@
 require "uri"
 
 desc 'Runs tests for a specific package'
-lane :test_package do |options|
-	clear_derived_data
-	
+lane :test_package do |options|	
 	# Set timeout to prevent xcodebuild -list -project to take to much retries.
 	ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "120"
 	ENV["FASTLANE_XCODE_LIST_TIMEOUT"] = "120"
@@ -38,8 +36,16 @@ lane :test_package do |options|
 
 		destination = 'platform=iOS Simulator,name=iPhone 11'
 		sourcePackagesDir = "#{ENV['PWD']}/SourcePackages"
+
+		disable_automatic_package_resolution = options.fetch(:disable_automatic_package_resolution, true)
+		extra_flags = disable_automatic_package_resolution ? "-disableAutomaticPackageResolution" : ""
+
+		# Set the result bundle path and delete an existing one if needed.
+		result_bundle_path = "#{reports_dir}/#{options[:package_name]}.xcresult"
+		FileUtils.remove_dir(result_bundle_path) if File.exist?(result_bundle_path)
+
 		#sh "cd #{ENV['PWD']}/#{options[:package_path]} && xcodebuild -showBuildSettings -clonedSourcePackagesDirPath #{sourcePackagesDir} -verbose"
-	    sh "cd #{ENV['PWD']}/#{options[:package_path]} && xcodebuild -scheme #{options[:package_name]} -destination '#{destination}' -verbose -resultBundlePath '#{reports_dir}/#{options[:package_name]}.xcresult' -disable-concurrent-testing -enableCodeCoverage YES -UseNewBuildSystem=YES -clonedSourcePackagesDirPath #{sourcePackagesDir} -disableAutomaticPackageResolution build test | xcpretty -f `xcpretty-json-formatter`"
+	    sh "cd #{ENV['PWD']}/#{options[:package_path]} && xcodebuild -scheme #{options[:package_name]} -destination '#{destination}' -verbose -resultBundlePath '#{result_bundle_path}' -disable-concurrent-testing -enableCodeCoverage YES -UseNewBuildSystem=YES -clonedSourcePackagesDirPath #{sourcePackagesDir} #{extra_flags} build test | xcpretty -f `xcpretty-json-formatter`"
 	rescue => ex
 		UI.important("Tests failed for #{ex}")
 	end
@@ -171,7 +177,7 @@ lane :changed_files_in_pr do |options|
 	origin_name = git_repository_name.split('/')
 	organisation = origin_name[0]
 	repository = origin_name[1]
-	
+
 	result = github_api(
 		server_url: "https://api.github.com",
 		api_token: ENV["DANGER_GITHUB_API_TOKEN"],
@@ -189,5 +195,14 @@ end
 
 desc "Check whether any of the changes happened in the given path"
 lane :pr_changes_contains_path do |options|
-  options[:changed_files].include?(options[:path])
+  changes_contains_path = options[:changed_files].include?(options[:path])
+
+  if changes_contains_path
+  	puts "Changes found for path #{options[:path]}"
+  elsif
+	puts "No changes found for path #{options[:path]}"
+  end
+  	
+
+  changes_contains_path
 end

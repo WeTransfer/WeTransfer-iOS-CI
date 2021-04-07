@@ -178,6 +178,14 @@ lane :changed_files_in_pr do |options|
 	organisation = origin_name[0]
 	repository = origin_name[1]
 
+	if options[:pr_id].nil?
+		raise "Missing PR ID input"
+	elsif ENV["DANGER_GITHUB_API_TOKEN"].nil?
+		raise "Missing 'DANGER_GITHUB_API_TOKEN' environment variable"
+	end
+
+	puts "Fetching changed files for PR #{options[:pr_id]} using token ...#{ENV["DANGER_GITHUB_API_TOKEN"].last(5).to_s}"
+
 	result = github_api(
 		server_url: "https://api.github.com",
 		api_token: ENV["DANGER_GITHUB_API_TOKEN"],
@@ -203,6 +211,5 @@ lane :pr_changes_contains_path do |options|
 	puts "No changes found for path #{options[:path]}"
   end
   	
-
   changes_contains_path
 end

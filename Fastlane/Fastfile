@@ -165,3 +165,29 @@ lane :latest_github_release do
 	puts "Latest Github release is #{result[:json]["tag_name"]}"
 	result[:json]["tag_name"]
 end
+
+desc "Get all changed files in the current PR"
+lane :changed_files_in_pr do |options|
+	origin_name = git_repository_name.split('/')
+	organisation = origin_name[0]
+	repository = origin_name[1]
+	
+	result = github_api(
+		server_url: "https://api.github.com",
+		api_token: ENV["DANGER_GITHUB_API_TOKEN"],
+		http_method: "GET",
+		path: "/repos/#{organisation}/#{repository}/pulls/#{options[:pr_id]}"
+	)
+
+	baseRef = result[:json]["base"]["ref"]
+
+	# As CI fetches only the minimum we need to fetch the remote to make diffing work correctly.
+	sh 'git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"'
+	sh "git fetch --no-recurse-submodules --no-tags"
+	sh "git diff --name-only HEAD origin/#{baseRef}"
+end
+
+desc "Check whether any of the changes happened in the given path"
+lane :pr_changes_contains_path do |options|
+  options[:changed_files].include?(options[:path])
+end

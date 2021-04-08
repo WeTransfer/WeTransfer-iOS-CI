@@ -184,7 +184,7 @@ lane :changed_files_in_pr do |options|
 		raise "Missing 'DANGER_GITHUB_API_TOKEN' environment variable"
 	end
 
-	puts "Fetching changed files for PR #{options[:pr_id]} using token ...#{ENV["DANGER_GITHUB_API_TOKEN"].last(5).to_s}"
+	puts "Fetching changed files for PR #{options[:pr_id]} using token ...#{ENV["DANGER_GITHUB_API_TOKEN"].chars.last(5).join}"
 
 	result = github_api(
 		server_url: "https://api.github.com",

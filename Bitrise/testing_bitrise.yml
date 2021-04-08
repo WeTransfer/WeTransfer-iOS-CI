@@ -72,7 +72,7 @@ workflows:
             # debug log
             set -x
 
-            swift build
+            #swift build
             swift run danger-swift ci
     - cache-push:
         run_if: true

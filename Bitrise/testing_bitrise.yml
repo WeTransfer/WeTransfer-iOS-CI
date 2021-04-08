@@ -48,7 +48,6 @@ workflows:
         - content: |-
             #!/usr/bin/env bash
             bundle update
-            bundle exec fastlane unhide_spm_package_dev_dependencies
             # Use the environment FASTLANE_LANE if available. Otherwise, fallback to "test"
             lane=${FASTLANE_LANE:=test}
             bundle exec fastlane $lane
@@ -73,6 +72,7 @@ workflows:
             set -x
 
             #swift build
+            bundle exec fastlane unhide_spm_package_dev_dependencies
             swift run danger-swift ci
     - cache-push:
         run_if: true

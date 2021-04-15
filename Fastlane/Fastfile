@@ -45,7 +45,7 @@ lane :test_package do |options|
 		FileUtils.remove_dir(result_bundle_path) if File.exist?(result_bundle_path)
 
 		#sh "cd #{ENV['PWD']}/#{options[:package_path]} && xcodebuild -showBuildSettings -clonedSourcePackagesDirPath #{sourcePackagesDir} -verbose"
-	    sh "cd #{ENV['PWD']}/#{options[:package_path]} && xcodebuild -scheme #{options[:package_name]} -destination '#{destination}' -verbose -resultBundlePath '#{result_bundle_path}' -disable-concurrent-testing -enableCodeCoverage YES -UseNewBuildSystem=YES -clonedSourcePackagesDirPath #{sourcePackagesDir} #{extra_flags} build test | xcpretty -f `xcpretty-json-formatter`"
+	    sh "cd #{ENV['PWD']}/#{options[:package_path]} && xcodebuild -scheme #{options[:package_name]} -destination '#{destination}' -verbose -resultBundlePath '#{result_bundle_path}' -disable-concurrent-testing -enableCodeCoverage YES -UseNewBuildSystem=YES -clonedSourcePackagesDirPath #{sourcePackagesDir} #{extra_flags} test | xcpretty -f `xcpretty-json-formatter`"
 	rescue => ex
 		UI.important("Tests failed for #{ex}")
 	end

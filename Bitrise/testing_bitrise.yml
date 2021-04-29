@@ -51,12 +51,6 @@ workflows:
             # Use the environment FASTLANE_LANE if available. Otherwise, fallback to "test"
             lane=${FASTLANE_LANE:=test}
             bundle exec fastlane $lane
-    - script:
-        title: Install Danger
-        inputs:
-        - content: |-
-            # Install the following command
-            npm install -g danger
     - brew-install@0:
         inputs:
         - upgrade: 'no'

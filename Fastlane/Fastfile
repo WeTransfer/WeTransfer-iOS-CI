@@ -280,3 +280,37 @@ lane :certs do |options|
     force: true,
     type: "appstore")
 end
+
+desc "Fetch the version number we're preparing to release in App Store Connect"
+desc ""
+desc "#### Options"
+desc " * **`fastlane_team_id`**: the identifier of your Apple developer team."
+desc " * **`fastlane_itc_team_id`**: the identifier of the App Store Connect team "
+desc ""
+lane :current_preparing_app_version do |options|
+  puts 'fetching highest version on App Store Connect...'
+
+  ENV["FASTLANE_TEAM_ID"] = options[:fastlane_team_id]
+	ENV["FASTLANE_ITC_TEAM_ID"] = options[:fastlane_itc_team_id]
+
+  token = Spaceship::ConnectAPI::Token.create(Actions.lane_context[SharedValues::APP_STORE_CONNECT_API_KEY])
+  Spaceship::ConnectAPI.token = token
+
+  app = Spaceship::ConnectAPI::App.find(options[:app_identifier])
+
+  if app.nil?
+    puts 'App not found'
+    next
+  end
+
+  puts "Found app #{app.name}"
+
+  if app.get_edit_app_store_version.nil?
+    puts 'No edit app store version found'
+    next
+  end
+
+  puts "Latest edit version is #{app.get_edit_app_store_version.version_string}"
+
+  app.get_edit_app_store_version.version_string
+end

@@ -213,3 +213,39 @@ lane :pr_changes_contains_path do |options|
   	
   changes_contains_path
 end
+
+desc "Updates the build number of the project based on the commit count"
+desc ""
+desc "Options"
+desc "- xcodeproj: the path to the Xcode project to read the version number from"
+desc "- target: The target within the project to read the version number from"
+desc "When no paramaters are passed you will be prompted."
+lane :update_build_number do |options|
+	# Get the path to the Xcode project and the target to read the version number from.
+	xcodeproj = options[:xcodeproj]
+	target = options[:target]
+
+  # Compute a new build number based on the commit count.
+	build = sh "git rev-list --all --count"
+  new_build_number = 200 + Integer(build)
+
+	# Fetch the build number of the most recent test flight build, to make sure
+	# that the new build number will be higher.
+  version_number = get_version_number(xcodeproj: xcodeproj, target: target)
+  latest_app_store_build_number = latest_testflight_build_number
+  test_flight_build_number = latest_testflight_build_number(version: version_number)
+
+  if new_build_number <= latest_app_store_build_number
+    puts "git build number is smaller than the build number of the latest release"
+    puts "Using the latest release build number #{latest_app_store_build_number} + 1"
+    new_build_number = latest_app_store_build_number + 1
+  end
+
+  if new_build_number <= test_flight_build_number
+    puts "git build number is smaller than test flight build number"
+    puts "Using the TestFlight build number #{test_flight_build_number} + 1"
+    new_build_number = test_flight_build_number + 1
+  end
+
+  increment_build_number(build_number: new_build_number)
+end

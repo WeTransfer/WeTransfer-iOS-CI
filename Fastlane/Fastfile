@@ -164,7 +164,7 @@ lane :git_repository_name do
 	sh("git remote show origin -n | grep h.URL | sed 's/.*://;s/.git$//'").strip
 end
 
-desc "Get latest Coyote release from Github. Draft releases and prereleases are not returned by this endpoint. See: https://developer.github.com/v3/repos/releases/#get-the-latest-release"
+desc "Get latest release from Github. Draft releases and prereleases are not returned by this endpoint. See: https://developer.github.com/v3/repos/releases/#get-the-latest-release"
 lane :latest_github_release do
 	origin_name = git_repository_name.split('/')
 	organisation = origin_name[0]
@@ -225,10 +225,10 @@ end
 
 desc "Updates the build number of the project based on the commit count"
 desc ""
-desc "Options"
-desc "- xcodeproj: the path to the Xcode project to read the version number from"
-desc "- target: The target within the project to read the version number from"
-desc "When no paramaters are passed you will be prompted."
+desc "#### Options"
+desc " * **`xcodeproj`**: the path to the Xcode project to read the version number from"
+desc " * **`target`**: The target within the project to read the version number from"
+desc ""
 lane :update_build_number do |options|
 	# Get the path to the Xcode project and the target to read the version number from.
 	xcodeproj = options[:xcodeproj]
@@ -261,8 +261,9 @@ end
 
 desc "Syncs production certificates on CI"
 desc ""
-desc "Options"
-desc "- app_identifier: a list of all app identifiers for which to sync the certs"
+desc "#### Options"
+desc " * **`app_identifier`**: a list of all app identifiers for which to sync the certs"
+desc ""
 lane :certs do |options|
   # Create Keychain to store certificates in
   create_keychain(
@@ -284,8 +285,9 @@ end
 desc "Fetch the version number we're preparing to release in App Store Connect"
 desc ""
 desc "#### Options"
-desc " * **`fastlane_team_id`**: the identifier of your Apple developer team."
-desc " * **`fastlane_itc_team_id`**: the identifier of the App Store Connect team "
+desc " * **`fastlane_team_id`**: the identifier of your Apple developer team"
+desc " * **`fastlane_itc_team_id`**: the identifier of the App Store Connect team"
+desc " * **`app_identifier`**: the bundle identifier of the app for which to fetch the preparing version number"
 desc ""
 lane :current_preparing_app_version do |options|
   puts 'fetching highest version on App Store Connect...'

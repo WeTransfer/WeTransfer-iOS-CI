@@ -249,3 +249,25 @@ lane :update_build_number do |options|
 
   increment_build_number(build_number: new_build_number)
 end
+
+desc "Syncs production certificates on CI"
+desc ""
+desc "Options"
+desc "- app_identifier: a list of all app identifiers for which to sync the certs"
+lane :certs do |options|
+  # Create Keychain to store certificates in
+  create_keychain(
+    name: ENV["MATCH_KEYCHAIN_NAME"],
+    password: ENV["MATCH_KEYCHAIN_PASSWORD"],
+    default_keychain: true,
+    unlock: true,
+    timeout: 3600,
+    add_to_search_list: true)
+  # Sync certificates
+  match(
+    keychain_name: "#{ENV["MATCH_KEYCHAIN_NAME"]}",
+    keychain_password: "#{ENV["MATCH_KEYCHAIN_PASSWORD"]}",
+    app_identifier: options[:app_identifier],
+    force: true,
+    type: "appstore")
+end

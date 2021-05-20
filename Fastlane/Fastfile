@@ -3,7 +3,12 @@
 require "uri"
 
 desc 'Runs tests for a specific package'
-lane :test_package do |options|	
+desc ""
+desc "#### Options"
+desc " * **`package_name`**: The name of the package to test"
+desc " * **`package_path`**: The path to the package"
+desc ""
+lane :test_package do |options|
 	# Set timeout to prevent xcodebuild -list -project to take to much retries.
 	ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "120"
 	ENV["FASTLANE_XCODE_LIST_TIMEOUT"] = "120"
@@ -52,6 +57,12 @@ lane :test_package do |options|
 end
 
 desc 'Runs tests for an external project'
+desc ""
+desc "#### Options"
+desc " * **`scheme`**: The project's scheme"
+desc " * **`project_path`**: The path to the project"
+desc " * **`project_name`**: The name of the project"
+desc " * **`destination`**: .."
 lane :test_project do |options|
 	clear_derived_data
 
@@ -87,7 +98,7 @@ lane :test_project do |options|
 end
 
 desc 'Tests the WeTransferPRLinter Swift Package'
-lane :test_pr_linter do |options|
+lane :test_pr_linter do
 	spm(command: "generate-xcodeproj", package_path: "Danger-Swift")
 	test_project(
 		project_path: "Danger-Swift/", 
@@ -107,7 +118,7 @@ lane :is_changed_since_last_tag do
 end
 
 desc 'Create a release from a tag triggered CI run'
-lane :release_from_tag do |options|
+lane :release_from_tag do
 	# Get the latest tag, which is the new release that triggered this lane.
 	sh('git fetch --tags origin master --no-recurse-submodules -q')
 
@@ -151,7 +162,7 @@ lane :release_from_tag do |options|
 end
 
 desc "Unhide dev dependencies for danger"
-lane :unhide_spm_package_dev_dependencies do 
+lane :unhide_spm_package_dev_dependencies do
 	text = File.read('../Package.swift')
 	new_contents = text.gsub('// dev ', "")
 
@@ -182,6 +193,11 @@ lane :latest_github_release do
 end
 
 desc "Get all changed files in the current PR"
+desc "Requires that the enviroment contains a Danger GitHub API token `DANGER_GITHUB_API_TOKEN`"
+desc ""
+desc "#### Options"
+desc " * **`pr_id`**: The identifier of the PR that contains the changes."
+desc ""
 lane :changed_files_in_pr do |options|
 	origin_name = git_repository_name.split('/')
 	organisation = origin_name[0]
@@ -211,6 +227,10 @@ lane :changed_files_in_pr do |options|
 end
 
 desc "Check whether any of the changes happened in the given path"
+desc ""
+desc "#### Options"
+desc " * **`path`**: The path to check for"
+desc ""
 lane :pr_changes_contains_path do |options|
   changes_contains_path = options[:changed_files].include?(options[:path])
 

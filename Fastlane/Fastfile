@@ -316,3 +316,58 @@ lane :current_preparing_app_version do |options|
 
   app.get_edit_app_store_version.version_string
 end
+
+desc "Ensures that a new release is allowed to happen"
+desc ""
+desc "#### Options"
+desc " * **`version_number`**: The version number of the project"
+desc " * **`tag_name`**: The name of the latest release on GitHub"
+desc " * **`fastlane_team_id`**: the identifier of your Apple developer team"
+desc " * **`fastlane_itc_team_id`**: the identifier of the App Store Connect team"
+desc " * **`app_identifier`**: the bundle identifier of the app for which to fetch the preparing version number"
+desc ""
+lane :ensure_release_is_needed do |options|
+  preparing_app_version = current_preparing_app_version
+
+  if preparing_app_version.nil?
+    message = 'Weekly release cancelled as App Store Connect does not contain a preparing app version'
+    UI.important message
+    slack(
+      message: message,
+      success: false,
+      default_payloads: [:git_branch, :last_git_commit_message]
+    )
+
+    raise message
+  end
+
+  local_project_version_number = Gem::Version.new(options[:version_number])
+  tag_version_number = Gem::Version.new(options[:tag_name].split('b')[0])
+
+	app_store_preparing_version_string = current_preparing_app_version(
+		fastlane_team_id: options[:fastlane_team_id],
+		fastlane_itc_team_id: options[:fastlane_itc_team_id],
+		app_identifier: options[:app_identifier]
+	)
+
+  app_store_preparing_version = Gem::Version.new(app_store_preparing_version_string)
+
+  project_version_is_newer = tag_version_number < local_project_version_number
+  preparing_version_is_newer = tag_version_number < app_store_preparing_version
+
+	# Cancel when did not manage to create a stable release on GitHub or when the App Store Connect preparing version doesn't match the project version.
+  if project_version_is_newer || preparing_version_is_newer
+    UI.important "Release cancelled. Tag version: #{tag_version_number}, project version: #{local_project_version_number}, app store preparing version: #{app_store_preparing_version}"
+
+    slack(
+      message: "Weekly released cancelled as no new green light build is available.",
+      success: false,
+      default_payloads: [:git_branch, :last_git_commit_message],
+      payload: {
+        "Latest available release tag" => tag_version_number
+      }
+    )
+
+    raise "Weekly released cancelled as no new green light build is available."
+  end
+end

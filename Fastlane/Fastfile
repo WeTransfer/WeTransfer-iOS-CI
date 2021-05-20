@@ -387,3 +387,11 @@ lane :latest_github_non_candidate_tag do
   latest_release = result[:json].find { |release| !release["name"].downcase.include? "candidate" }
   latest_release["tag_name"]
 end
+
+desc "Strips Markdown URLs and returns it as plain text"
+desc "Used for example for the App Store changelog"
+desc "#### Options"
+desc " * **`input`**: The text from which to strip the Markdown URLs"
+lane :strip_markdown_url do |options|
+  options[:input].gsub(/(?:__|[*#])|\[(.*?)\]\(.*?\)/, '\1')
+end

@@ -395,3 +395,14 @@ desc " * **`input`**: The text from which to strip the Markdown URLs"
 lane :strip_markdown_url do |options|
   options[:input].gsub(/(?:__|[*#])|\[(.*?)\]\(.*?\)/, '\1')
 end
+
+desc "Generates a new tag name using the projects build and version number"
+desc ""
+desc "#### Options"
+desc " * **`xcodeproj**`: The name of the Xcode project to use to get the build and version number"
+desc " * **`target**`: The Xcode target to use to get the build and version number"
+lane :create_tag_name do
+  version_number = get_version_number(xcodeproj: options[:xcodeproj], target: options[:target])
+  build_number = get_build_number(xcodeproj: options[:xcodeproj])
+  tag_name = version_number + "b" + build_number
+end

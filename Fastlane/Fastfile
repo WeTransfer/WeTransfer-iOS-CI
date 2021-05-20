@@ -392,6 +392,7 @@ desc "Strips Markdown URLs and returns it as plain text"
 desc "Used for example for the App Store changelog"
 desc "#### Options"
 desc " * **`input`**: The text from which to strip the Markdown URLs"
+desc ""
 lane :strip_markdown_url do |options|
   options[:input].gsub(/(?:__|[*#])|\[(.*?)\]\(.*?\)/, '\1')
 end
@@ -399,10 +400,29 @@ end
 desc "Generates a new tag name using the projects build and version number"
 desc ""
 desc "#### Options"
-desc " * **`xcodeproj**`: The name of the Xcode project to use to get the build and version number"
-desc " * **`target**`: The Xcode target to use to get the build and version number"
-lane :create_tag_name do
+desc " * **`xcodeproj**: The name of the Xcode project to use to get the build and version number"
+desc " * **`target`**: The Xcode target to use to get the build and version number"
+lane :create_tag_name do |options|
   version_number = get_version_number(xcodeproj: options[:xcodeproj], target: options[:target])
   build_number = get_build_number(xcodeproj: options[:xcodeproj])
   tag_name = version_number + "b" + build_number
+end
+
+desc "Posts a message about the status of a build to Slack"
+desc "It is required to create an incoming Webhook for Slack and set this as an environment variable `SLACK_URL`"
+desc ""
+desc "#### Options"
+desc " * **`message**`: The message to post to Slack"
+desc "* **`tag_name**`: The name of the tag associated with the build"
+desc " * **`release_url`**: The url to a GH release."
+desc ""
+lane :slack_message do |options|
+  slack(
+      message: "#{options[:message]} (#{options[:tag_name]})",
+      success: true,
+      default_payloads: [:git_branch, :last_git_commit_message],
+      payload: {
+        "Release URL" => options[:release_url]
+      }
+  )
 end

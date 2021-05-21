@@ -456,37 +456,30 @@ lane :decrypt_ci do | options |
   sh(options[:path])
 end
 
-desc "Loads the JWT token that is used to authenticate with the App Store Connect API with the App manager role"
+desc "Loads the JWT token that is used to authenticate with the App Store Connect API"
+desc ""
+desc "#### Options"
+desc " * **`user_app_manager_role`**: Whether it should use the token with the App Manager Role or Developer Role"
 desc ""
 desc "This method requires following environment variables to be set:"
+desc " - `JWT_ISSUER_ID`: The identifier of the issuer of the JWT token"
 desc " - `APP_MANAGER_KEY_ID`: The id of the JWT token used to authenticate with an App manager role"
-desc " - `AC_JWT_ISSUER_ID`: The identifier of the issuer of the JWT token"
-desc " - `APP_MANAGER_KEY_PATH`: The path to the file containing the private key"
-desc ""
-lane :authenticateUsingAppManagerRole do
-  UI.important "Authenticating using App Manager Role"
-  app_store_connect_api_key(
-    key_id: ENV["APP_MANAGER_KEY_ID"],
-    issuer_id: ENV["AC_JWT_ISSUER_ID"],
-    key_filepath: ENV["APP_MANAGER_KEY_PATH"] ,
-    duration: 1200, # 90 minutes, matching Bitrise timeout limit.
-    in_house: false, # optional but may be required if using match/sigh
-  )
-end
-
-desc "Loads the JWT token that is used to authenticate with the App Store Connect API with the Developer role"
-desc ""
-desc "This method requires following environment variables to be set:"
 desc " - `DEVELOPER_KEY_ID`: The id of the JWT token used to authenticate with an App manager role"
-desc " - `AC_JWT_ISSUER_ID`: The identifier of the issuer of the JWT token"
+desc " - `APP_MANAGER_KEY_PATH`: The path to the file containing the private key"
 desc " - `DEVELOPER_KEY_PATH`: The path to the file containing the private key"
 desc ""
-lane :authenticateUsingDeveloperRole do
-	UI.important "Authenticating using App Manager Role"
+lane :authenticate do | options |
+	user_app_manager_role = options[:use_app_manager_role]
+	key_id = use_app_manager_role ? ENV["APP_MANAGER_KEY_ID"] : ENV["DEVELOPER_KEY_ID"]
+	key_filepath = use_app_manager_role ? ENV["APP_MANAGER_KEY_PATH"] : ENV["DEVELOPER_KEY_PATH"]
+	issuer_id = ENV["JWT_ISSUER_ID"]
+
+	UI.important "Authenticating using #{use_app_manager_role ? "App Manager Role" : "Developer Role"}"
+
   app_store_connect_api_key(
-    key_id: ENV["DEVELOPER_KEY_ID"],
-    issuer_id: ENV["AC_JWT_ISSUER_ID"],
-    key_filepath: ENV["DEVELOPER_KEY_PATH"] ,
+    key_id: key_id,
+    issuer_id: issuer_id,
+    key_filepath: key_filepath,
     duration: 1200, # 90 minutes, matching Bitrise timeout limit.
     in_house: false, # optional but may be required if using match/sigh
   )

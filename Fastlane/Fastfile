@@ -459,7 +459,7 @@ end
 desc "Loads the JWT token that is used to authenticate with the App Store Connect API"
 desc ""
 desc "#### Options"
-desc " * **`user_app_manager_role`**: Whether it should use the token with the App Manager Role or Developer Role"
+desc " * **`use_app_manager_role`**: Whether it should use the token with the App Manager Role or Developer Role"
 desc ""
 desc "This method requires following environment variables to be set:"
 desc " - `JWT_ISSUER_ID`: The identifier of the issuer of the JWT token"
@@ -469,7 +469,7 @@ desc " - `APP_MANAGER_KEY_PATH`: The path to the file containing the private key
 desc " - `DEVELOPER_KEY_PATH`: The path to the file containing the private key"
 desc ""
 lane :authenticate do | options |
-	user_app_manager_role = options[:use_app_manager_role]
+	use_app_manager_role = options[:use_app_manager_role] || false
 	key_id = use_app_manager_role ? ENV["APP_MANAGER_KEY_ID"] : ENV["DEVELOPER_KEY_ID"]
 	key_filepath = use_app_manager_role ? ENV["APP_MANAGER_KEY_PATH"] : ENV["DEVELOPER_KEY_PATH"]
 	issuer_id = ENV["JWT_ISSUER_ID"]

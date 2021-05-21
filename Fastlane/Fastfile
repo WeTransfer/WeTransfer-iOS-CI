@@ -454,3 +454,39 @@ desc " * **`script`**: The path to the bash script that needs to be executed to 
 lane :decrypt_ci do | options |
   sh(options[:path])
 end
+
+desc "Loads the JWT token that is used to authenticate with the App Store Connect API with the App manager role"
+desc ""
+desc "This method requires following environment variables to be set:"
+desc " - `APP_MANAGER_KEY_ID`: The id of the JWT token used to authenticate with an App manager role"
+desc " - `AC_JWT_ISSUER_ID`: The identifier of the issuer of the JWT token"
+desc " - `APP_MANAGER_KEY_PATH`: The path to the file containing the private key"
+desc ""
+lane :authenticateUsingAppManagerRole do
+  UI.important "Authenticating using App Manager Role"
+  app_store_connect_api_key(
+    key_id: ENV["APP_MANAGER_KEY_ID"],
+    issuer_id: ENV["AC_JWT_ISSUER_ID"],
+    key_filepath: ENV["APP_MANAGER_KEY_PATH"] ,
+    duration: 1200, # 90 minutes, matching Bitrise timeout limit.
+    in_house: false, # optional but may be required if using match/sigh
+  )
+end
+
+desc "Loads the JWT token that is used to authenticate with the App Store Connect API with the Developer role"
+desc ""
+desc "This method requires following environment variables to be set:"
+desc " - `DEVELOPER_KEY_ID`: The id of the JWT token used to authenticate with an App manager role"
+desc " - `AC_JWT_ISSUER_ID`: The identifier of the issuer of the JWT token"
+desc " - `DEVELOPER_KEY_PATH`: The path to the file containing the private key"
+desc ""
+lane :authenticateUsingDeveloperRole do
+	UI.important "Authenticating using App Manager Role"
+  app_store_connect_api_key(
+    key_id: ENV["DEVELOPER_KEY_ID"],
+    issuer_id: ENV["AC_JWT_ISSUER_ID"],
+    key_filepath: ENV["DEVELOPER_KEY_PATH"] ,
+    duration: 1200, # 90 minutes, matching Bitrise timeout limit.
+    in_house: false, # optional but may be required if using match/sigh
+  )
+end

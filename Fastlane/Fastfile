@@ -446,3 +446,11 @@ lane :slack_message do |options|
       }
   )
 end
+
+desc "Decrypts the encrypted files on CI."
+desc ""
+desc "#### Options"
+desc " * **`script`**: The path to the bash script that needs to be executed to decrypt the files."
+lane :decrypt_ci do | options |
+  sh(options[:path])
+end

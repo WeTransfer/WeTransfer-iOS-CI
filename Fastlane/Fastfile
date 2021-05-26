@@ -1,6 +1,9 @@
 # rubocop:disable LineLength
 
 require "uri"
+require 'spaceship'
+
+# Testing Lanes
 
 desc 'Runs tests for a specific package'
 desc ""
@@ -101,11 +104,271 @@ desc 'Tests the WeTransferPRLinter Swift Package'
 lane :test_pr_linter do
 	spm(command: "generate-xcodeproj", package_path: "Danger-Swift")
 	test_project(
-		project_path: "Danger-Swift/", 
-		project_name: "WeTransferPRLinter", 
+		project_path: "Danger-Swift/",
+		project_name: "WeTransferPRLinter",
 		scheme: "WeTransferPRLinter-Package",
 		device: nil,
 		destination: "platform=macOS")
+end
+
+# Deployment Lanes
+
+desc "Creates a new release candidate"
+desc ""
+desc "- Creates a new TestFlight build including the unreleased changelog"
+desc "- Creates a Github Draft Release including the unreleased changelog"
+desc ""
+desc "#### Options"
+desc "It is recommended to manage these options through a .env file."
+desc " * **`app_identifier`**: The bundle identifier of the main app. (`APP_IDENTIFIER`)"
+desc " * **`app_identifiers`**: A comma seperated string containing all bundle identifiers, e.g. app + extensions. (APP_IDENTIFIERS)"
+desc " * **`xcodeproj`**: The path to the Xcode project file. (`XCODEPROJ`)"
+desc " * **`target`**: The target to build. (`XCODE_TARGET`)"
+desc " * **`scheme`**: The project's scheme. (`XCODE_SCHEME`)"
+desc " * **`xcconfig`**: An (optional) xcconfig file to use to build the app. (`BETA_XCCONFIG`)"
+desc " * **`team_id`**: The ID of your App Store Connect team. (`FASTLANE_ITC_TEAM_ID`)"
+desc " * **`contact_email`**: The contact email for beta review. (`BETA_CONTACT_EMAIL`)"
+desc " * **`contact_first_name`**: The first name of the contact for beta review. (`BETA_CONTACT_FIRST_NAME`)"
+desc " * **`contact_last_name`**: The last name of the contact for beta review. (`BETA_CONTACT_LAST_NAME`)"
+desc " * **`contact_phone`**: The phone number of the contact for beta review. (`BETA_CONTACT_PHONE`)"
+desc " * **`demo_account_name`**: The name of the demo account for beta review. (`BETA_DEMO_ACCOUNT_NAME`)"
+desc " * **`demo_account_password`**: The passwords for the demo account for beta review. (`BETA_DEMO_ACCOUNT_PASSWORD`)"
+desc " * **`groups`**: A list of TestFlight groups that should get access to the beta build. (`TESTFLIGHT_GROUPS_BETA`)"
+lane :beta do |options|
+	xcodeproj = options[:xcodeproj] || ENV["XCODEPROJ"]
+	target = options[:target] || ENV["XCODE_TARGET"]
+	scheme = options[:scheme] || ENV["XCODE_SCHEME"]
+  tag_name = create_tag_name(xcodeproj: xcodeproj, target: target)
+
+  if is_changed_since_last_tag == false
+    slack_message(message: "A new Release is cancelled as there are no changes since the last available tag.", tag_name: tag_name)
+  else
+    clear_derived_data
+    build_number = update_build_number(xcodeproj: xcodeproj, target: target)
+
+    if options[:ci] || ENV['CI'] == 'true'
+      certs(app_identifier: options[:app_identifiers] || ENV["APP_IDENTIFIERS"])
+      decrypt_ci(path: ENV["CI_DECRYPT_SCRIPT"])
+    end
+
+    # Set timeout to prevent xcodebuild -list -project to take to much retries.
+    ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "120"
+    ENV["FASTLANE_XCODE_LIST_TIMEOUT"] = "120"
+
+    gym(
+      scheme: scheme,
+      configuration: "Release",
+      xcconfig: options[:xcconfig] || ENV["BETA_XCCONFIG"],
+      cloned_source_packages_path: "SourcePackages")
+
+    # Create a new GitHub release
+    last_non_candidate_tag = latest_github_non_candidate_tag
+    release_title = "#{tag_name} - App Store Release Candidate"
+    release_output = sh("gitbuddy release -l #{last_non_candidate_tag} -b develop --skip-comments --use-pre-release --target-commitish develop --tag-name #{tag_name} --release-title '#{release_title}'")
+    release_url = URI.extract(release_output).find { |url| url.include? 'releases/tag' }
+    puts "Created release with URL: #{release_url}"
+
+    # Create the change log
+    changelog = sh("gitbuddy changelog -b develop -s #{last_non_candidate_tag}")
+    stripped_changelog = strip_markdown_url(input: changelog)
+    # Refresh key as it's only valid for 20 minutes and TestFlight can take a long time.
+    authenticate(use_app_manager_role: true)
+
+    begin
+      testflight(
+        beta_app_review_info: {
+            contact_email: options[:contact_email] || ENV["BETA_CONTACT_EMAIL"],
+            contact_first_name: options[:contact_first_name] || ENV["BETA_CONTACT_FIRST_NAME"],
+            contact_last_name: options[:contact_last_name] || ENV["BETA_CONTACT_LAST_NAME"],
+            contact_phone: options[:contact_phone] || ENV["BETA_CONTACT_PHONE"],
+            demo_account_name: options[:demo_account_name] || ENV["BETA_DEMO_ACCOUNT_NAME"],
+            demo_account_password: options[:demo_account_password] || ENV["BETA_DEMO_ACCOUNT_PASSWORD"],
+        },
+        skip_waiting_for_build_processing: false,
+        skip_submission: false,
+        groups: options[:groups] || EMV["TESTFLIGHT_GROUPS_BETA"],
+        changelog: stripped_changelog,
+        team_id: options[:team_id] || ENV["FASTLANE_ITC_TEAM_ID"]
+      )
+    rescue => ex
+      raise ex unless ex.message.include?('Another build is in review')
+      UI.important('TestFlight delivery failed because a build is already in review, but continuing anyway!')
+    end
+
+    slack_message(message: "A new Release Candidate has been published.",tag_name: tag_name, release_url: release_url)
+  end
+end
+
+desc "Creates a new App Store Release"
+desc ""
+desc "- Fetches the latest Github Release"
+desc "- Merges the related tag into master"
+desc "- Updates the changelog, creates a PR to develop for this as well"
+desc "- Uses the changelog and creates a new Github App Store Release"
+desc "- Submits the build to App Store Connect and TestFlight"
+desc ""
+desc "#### Options"
+desc "It is recommended to manage these options through a .env file. "
+desc " * **`app_identifier`**: The bundle identifier of the main app. (`APP_IDENTIFIER`)"
+desc " * **`app_identifiers`**: A comma seperated string containing all bundle identifiers, e.g. app + extensions. (APP_IDENTIFIERS)"
+desc " * **`xcodeproj`**: The path to the Xcode project file. (`XCODEPROJ`)"
+desc " * **`target`**: The target to build. (`XCODE_TARGET`)"
+desc " * **`scheme`**: The project's scheme. (`XCODE_SCHEME`)"
+desc " * **`xcconfig`**: The xcconfig file to use to build the app, optional. (`RELEASE_XCCONFIG`)"
+desc " * **`team_id`**: The ID of your App Store Connect team. (`FASTLANE_ITC_TEAM_ID`)"
+desc " * **`repo`**: The name of the repository on GitHub. (`REPO_NAME`)"
+desc " * **`contact_email`**: The contact email for beta review. (`BETA_CONTACT_EMAIL`)"
+desc " * **`contact_first_name`**: The first name of the contact for beta review. (`BETA_CONTACT_FIRST_NAME`)"
+desc " * **`contact_last_name`**: The last name of the contact for beta review. (`BETA_CONTACT_LAST_NAME`)"
+desc " * **`contact_phone`**: The phone number of the contact for beta review. (`BETA_CONTACT_PHONE`)"
+desc " * **`demo_account_name`**: The name of the demo account for beta review. (`BETA_DEMO_ACCOUNT_NAME`)"
+desc " * **`demo_account_password`**: The passwords for the demo account for beta review. (`BETA_DEMO_ACCOUNT_PASSWORD`)"
+desc " * **`groups`**: A list of TestFlight groups that should get access to the beta build. (`TESTFLIGHT_GROUPS_RELEASE`)"
+desc " * **`hotfix`**: Whether the build is a hotfix release."
+desc ""
+lane :release do |options|
+  # Get the latest released tag, merge it into master and push it to remote.
+	xcodeproj = options[:xcodeproj] || ENV["XCODEPROJ"]
+	target = options[:target] || ENV["XCODE_TARGET"]
+	scheme = options[:scheme] || ENV["XCODE_SCHEME"]
+
+  version_number = get_version_number(xcodeproj: xcodeproj, target: target)
+  latest_release_tag = latest_github_release
+  is_hotfix = options[:hotfix] || false
+
+  begin
+    ensure_release_is_needed(
+      version_number: version_number,
+      tag_name: latest_release_tag,
+      app_identifier: options[:app_identifier] || ENV["APP_IDENTIFIER"],
+    ) unless is_hotfix
+
+    sh "git fetch --tags origin #{ENV["BITRISE_GIT_BRANCH"]} --no-recurse-submodules"
+
+    branch_name = is_hotfix ? "hotfix/#{latest_release_tag}" : "release/#{latest_release_tag}"
+
+    sh "git branch #{branch_name} origin/master"
+    sh "git checkout #{branch_name}"
+
+    sh "git merge -X theirs #{latest_release_tag}" unless is_hotfix
+
+    # Update any new submodules
+    sh 'git submodule sync && git submodule update --init --recursive && git submodule update --remote --no-fetch ../Submodules/WeTransfer-iOS-CI'
+
+    update_build_number(xcodeproj: xcodeproj, target: target)
+    last_non_candidate_tag = latest_github_non_candidate_tag
+
+    # Create a new Github Release, which also merges the Changelog.md
+    tag_name = create_tag_name(xcodeproj: xcodeproj, target: target)
+    target_commitish = git_branch
+    release_title = is_hotfix ? "#{tag_name} - App Store Hotfix Release" : "#{tag_name} - App Store Release"
+
+    # Push the changes to our release branch so we can create a tag from it
+    sh('git commit -a -m "Created a new release"')
+    sh("git push origin #{branch_name}")
+
+    release_latest_tag = is_hotfix ? latest_release_tag : last_non_candidate_tag
+    release_base_branch = is_hotfix ? 'master' : 'develop'
+    release_output = sh("gitbuddy release -l #{release_latest_tag} -b #{release_base_branch} -c '../Changelog.md' --target-commitish #{target_commitish} --tag-name #{tag_name} --release-title '#{release_title}' --verbose")
+    release_url = URI.extract(release_output).find { |url| url.include? 'releases/tag' }
+    puts "Created release with URL: #{release_url}"
+
+    changelog = sh("gitbuddy changelog -b #{release_base_branch} -s #{release_latest_tag}")
+    stripped_changelog = strip_markdown_url(input: changelog)
+
+    # Push the updated changelog.
+    sh('git commit -a -m "Created a new release"')
+    sh("git push origin #{branch_name}")
+
+    # Create a pull request for master to include the updated Changelog.md
+    create_pull_request(
+      api_token: ENV["DANGER_GITHUB_API_TOKEN"],
+      repo: options[:repo],
+      title: "Merge release #{tag_name} into master",
+      base: "master", # The branch to merge the changes into.
+      body: "Containing all the changes for our latest release: [#{tag_name}](#{release_url})."
+    )
+
+    # Create a pull request for develop to include the updated Changelog.md
+    create_pull_request(
+      api_token: ENV["DANGER_GITHUB_API_TOKEN"],
+      repo: options[:repo],
+      title: "Update Changelog in develop for latest release: #{tag_name}",
+      base: "develop", # The branch to merge the changes into.
+      body: "The changelog has been updated containing the changes from our latest release: [#{tag_name}](#{release_url})."
+    )
+
+    # Create and submit the actual build.
+    clear_derived_data
+
+    if options[:ci] || ENV['CI'] == 'true'
+      certs(app_identifier: options[:app_identifiers] || ENV["APP_IDENTIFIERS"])
+    end
+
+    # Decrypt again in case any of the encrypted file changed.
+    decrypt_ci(path: ENV["CI_DECRYPT_SCRIPT"])
+
+    # Set timeout to prevent xcodebuild -list -project to take to much retries.
+    ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "120"
+    ENV["FASTLANE_XCODE_LIST_TIMEOUT"] = "120"
+    ENV["FASTLANE_XCODEBUILD_SETTINGS_RETRIES"] = "6"
+
+    gym(
+      scheme: scheme,
+      configuration: "Release",
+      xcconfig: options[:xcconfig] || ENV["RELEASE_XCCONFIG"],
+      cloned_source_packages_path: "SourcePackages")
+
+    # Refresh key as it's only valid for 20 minutes and TestFlight can take a long time.
+    authenticate(use_app_manager_role: true)
+
+    testflight(
+      beta_app_review_info: {
+          contact_email: options[:contact_email] || ENV["BETA_CONTACT_EMAIL"],
+          contact_first_name: options[:contact_first_name] || ENV["BETA_CONTACT_FIRST_NAME"],
+          contact_last_name: options[:contact_last_name] || ENV["BETA_CONTACT_LAST_NAME"],
+          contact_phone: options[:contact_phone] || ENV["BETA_CONTACT_PHONE"],
+          demo_account_name: options[:demo_account_name] || ENV["BETA_DEMO_ACCOUNT_NAME"],
+          demo_account_password: options[:demo_account_password] || ENV["BETA_DEMO_ACCOUNT_PASSWORD"]
+      },
+      skip_waiting_for_build_processing: false,
+      skip_submission: true,
+      groups: options[:groups] || ENV["TESTFLIGHT_GROUPS_RELEASE"],
+      changelog: stripped_changelog,
+      team_id: options[:team_id] || ENV["FASTLANE_ITC_TEAM_ID"],
+      verbose: true)
+
+    # Refresh key as it's only valid for 20 minutes and TestFlight can take a long time.
+    authenticate(use_app_manager_role: true)
+
+    # Use the latest TestFlight build and submit it for review.
+    deliver(
+      build_number: get_build_number(xcodeproj: xcodeproj).to_s,
+      submit_for_review: true,
+      team_id: options[:team_id] || ENV["FASTLANE_ITC_TEAM_ID"],
+      force: true, # Skip HTMl report verification
+      skip_binary_upload: true, # Not needed as we use the TestFlight build.
+      phased_release: true,
+      automatic_release: false,
+      precheck_include_in_app_purchases: false,
+      submission_information: {
+        add_id_info_uses_idfa: false
+      }
+    )
+
+		# Currently doesn't work because as you can't download dsyms with an API key
+    # upload_dsyms
+
+    release_type = is_hotfix ? 'hotfix' : 'release'
+    slack_message(message: "A new #{release_type} has been submitted to the App Store.", tag_name: tag_name, release_url: release_url)
+  rescue => ex
+    UI.error ex
+  end
+end
+
+desc "Creates a hotfix using the release lane. Should always be called on master"
+lane :hotfix do
+  release(hotfix: true)
 end
 
 desc "Returns true if there are new changes since the last available tag"
@@ -118,7 +381,7 @@ lane :is_changed_since_last_tag do
 end
 
 desc 'Create a release from a tag triggered CI run'
-lane :release_from_tag do
+private_lane :release_from_tag do
 	# Get the latest tag, which is the new release that triggered this lane.
 	sh('git fetch --tags origin master --no-recurse-submodules -q')
 
@@ -144,7 +407,7 @@ lane :release_from_tag do
 		rescue => ex
 			UI.important("Pod push failed: #{ex}")
 		end
-	end 
+	end
 
 	# Push the changes to the branch
 	sh('git commit -a -m "Created a new release"')
@@ -171,7 +434,7 @@ lane :unhide_spm_package_dev_dependencies do
 end
 
 desc "Returns the repository name. E.g: WeTransfer/Mocker"
-lane :git_repository_name do
+private_lane :git_repository_name do
 	sh("git remote show origin -n | grep h.URL | sed 's/.*://;s/.git$//'").strip
 end
 
@@ -249,7 +512,7 @@ desc "#### Options"
 desc " * **`xcodeproj`**: the path to the Xcode project to read the version number from"
 desc " * **`target`**: The target within the project to read the version number from"
 desc ""
-lane :update_build_number do |options|
+private_lane :update_build_number do |options|
 	# Get the path to the Xcode project and the target to read the version number from.
 	xcodeproj = options[:xcodeproj]
 	target = options[:target]
@@ -284,7 +547,7 @@ desc ""
 desc "#### Options"
 desc " * **`app_identifier`**: a list of all app identifiers for which to sync the certs"
 desc ""
-lane :certs do |options|
+private_lane :certs do |options|
   # Create Keychain to store certificates in
   create_keychain(
     name: ENV["MATCH_KEYCHAIN_NAME"],
@@ -302,18 +565,13 @@ lane :certs do |options|
     type: "appstore")
 end
 
-desc "Fetch the version number we're preparing to release in App Store Connect"
+desc "Fetch the version number that's currently in prepare for submission mode in App Store Connect."
 desc ""
 desc "#### Options"
-desc " * **`fastlane_team_id`**: the identifier of your Apple developer team"
-desc " * **`fastlane_itc_team_id`**: the identifier of the App Store Connect team"
-desc " * **`app_identifier`**: the bundle identifier of the app for which to fetch the preparing version number"
+desc " * **`app_identifier`**: The bundle identifier of the app for which to fetch the preparing version number"
 desc ""
-lane :current_preparing_app_version do |options|
+private_lane :current_preparing_app_version do |options|
   puts 'fetching highest version on App Store Connect...'
-
-  ENV["FASTLANE_TEAM_ID"] = options[:fastlane_team_id]
-	ENV["FASTLANE_ITC_TEAM_ID"] = options[:fastlane_itc_team_id]
 
   token = Spaceship::ConnectAPI::Token.create(Actions.lane_context[SharedValues::APP_STORE_CONNECT_API_KEY])
   Spaceship::ConnectAPI.token = token
@@ -325,14 +583,12 @@ lane :current_preparing_app_version do |options|
     next
   end
 
-  puts "Found app #{app.name}"
-
   if app.get_edit_app_store_version.nil?
-    puts 'No edit app store version found'
+    puts 'No preparing version number found'
     next
   end
 
-  puts "Latest edit version is #{app.get_edit_app_store_version.version_string}"
+  puts "Latest perparing version is #{app.get_edit_app_store_version.version_string}"
 
   app.get_edit_app_store_version.version_string
 end
@@ -340,14 +596,12 @@ end
 desc "Ensures that a new release is allowed to happen"
 desc ""
 desc "#### Options"
+desc " * **`app_identifier`**: The bundle identifier of the app for which to fetch the preparing version number"
 desc " * **`version_number`**: The version number of the project"
 desc " * **`tag_name`**: The name of the latest release on GitHub"
-desc " * **`fastlane_team_id`**: the identifier of your Apple developer team"
-desc " * **`fastlane_itc_team_id`**: the identifier of the App Store Connect team"
-desc " * **`app_identifier`**: the bundle identifier of the app for which to fetch the preparing version number"
 desc ""
-lane :ensure_release_is_needed do |options|
-  preparing_app_version = current_preparing_app_version
+private_lane :ensure_release_is_needed do |options|
+  preparing_app_version = current_preparing_app_version(app_identifier: options["app_identifier"])
 
   if preparing_app_version.nil?
     message = 'Weekly release cancelled as App Store Connect does not contain a preparing app version'
@@ -364,13 +618,7 @@ lane :ensure_release_is_needed do |options|
   local_project_version_number = Gem::Version.new(options[:version_number])
   tag_version_number = Gem::Version.new(options[:tag_name].split('b')[0])
 
-	app_store_preparing_version_string = current_preparing_app_version(
-		fastlane_team_id: options[:fastlane_team_id],
-		fastlane_itc_team_id: options[:fastlane_itc_team_id],
-		app_identifier: options[:app_identifier]
-	)
-
-  app_store_preparing_version = Gem::Version.new(app_store_preparing_version_string)
+  app_store_preparing_version = Gem::Version.new(preparing_app_version)
 
   project_version_is_newer = tag_version_number < local_project_version_number
   preparing_version_is_newer = tag_version_number < app_store_preparing_version
@@ -393,7 +641,7 @@ lane :ensure_release_is_needed do |options|
 end
 
 desc "Get latest release from Github that is not a prelease or release candidate"
-lane :latest_github_non_candidate_tag do
+private_lane :latest_github_non_candidate_tag do
   origin_name = git_repository_name.split('/')
   organisation = origin_name[0]
   repository = origin_name[1]
@@ -413,7 +661,7 @@ desc "Used for example for the App Store changelog"
 desc "#### Options"
 desc " * **`input`**: The text from which to strip the Markdown URLs"
 desc ""
-lane :strip_markdown_url do |options|
+private_lane :strip_markdown_url do |options|
   options[:input].gsub(/(?:__|[*#])|\[(.*?)\]\(.*?\)/, '\1')
 end
 
@@ -422,7 +670,8 @@ desc ""
 desc "#### Options"
 desc " * **`xcodeproj**: The name of the Xcode project to use to get the build and version number"
 desc " * **`target`**: The Xcode target to use to get the build and version number"
-lane :create_tag_name do |options|
+desc ""
+private_lane :create_tag_name do |options|
   version_number = get_version_number(xcodeproj: options[:xcodeproj], target: options[:target])
   build_number = get_build_number(xcodeproj: options[:xcodeproj])
   tag_name = version_number + "b" + build_number
@@ -459,9 +708,9 @@ end
 desc "Loads the JWT token that is used to authenticate with the App Store Connect API"
 desc ""
 desc "#### Options"
-desc " * **`use_app_manager_role`**: Whether it should use the token with the App Manager Role or Developer Role"
+desc " * **`use_app_manager_role`**: Whether it should use the token with the App Manager Role or Developer Role. This is needed when you want to upload metadata in addition to a build, e.g. app metadata when submitting to Test Flight."
 desc ""
-desc "This method requires following environment variables to be set:"
+desc "This lane makes use of the following environment variables:"
 desc " - `JWT_ISSUER_ID`: The identifier of the issuer of the JWT token"
 desc " - `APP_MANAGER_KEY_ID`: The id of the JWT token used to authenticate with an App manager role"
 desc " - `DEVELOPER_KEY_ID`: The id of the JWT token used to authenticate with an App manager role"

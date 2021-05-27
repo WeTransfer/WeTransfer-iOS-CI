@@ -6,7 +6,7 @@ desc "#### Options"
 desc " * **`script`**: The path to the bash script that needs to be executed to decrypt the files. (`DECRYPT_CI_SCRIPT`)"
 desc ""
 lane :decrypt_ci do | options |
-  sh(options[:path] || ENV["DECRYPT_CI_SCRIPT"])
+  sh(options[:script] || ENV["DECRYPT_CI_SCRIPT"])
 end
 
 desc "Returns the repository name. E.g: WeTransfer/Mocker"

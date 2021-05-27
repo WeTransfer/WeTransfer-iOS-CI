@@ -2,50 +2,6 @@
 
 require "uri"
 
-desc 'Create a release from a tag triggered CI run'
-lane :release_from_tag do
-	# Get the latest tag, which is the new release that triggered this lane.
-	sh('git fetch --tags origin master --no-recurse-submodules -q')
-
-	latest_tag = ENV["BITRISE_GIT_TAG"]
-
-	# Create a release branch
-	sh "git branch release/#{latest_tag} origin/master"
-    sh "git checkout release/#{latest_tag}"
-    sh "git merge -X theirs #{latest_tag}"
-
-	release_output = sh('gitbuddy release -c "../Changelog.md"')
-	release_url = URI.extract(release_output).find { |url| url.include? 'releases/tag' }
-    puts "Created release with URL: #{release_url}"
-
-	# Run only if there's a podspec to update
-	if Dir['../*.podspec'].any?
-		# Update the podspec. It finds the .podspec automatically in the current folder.
-		version_bump_podspec(version_number: latest_tag)
-
-		begin
-			# Push the podspec to trunk
-			pod_push
-		rescue => ex
-			UI.important("Pod push failed: #{ex}")
-		end
-	end
-
-	# Push the changes to the branch
-	sh('git commit -a -m "Created a new release"')
-    sh("git push origin release/#{latest_tag}")
-
-	# Create a PR
-    # Create a pull request for master to include the updated Changelog.md and podspec
-    create_pull_request(
-      api_token: ENV["DANGER_GITHUB_API_TOKEN"],
-      repo: git_repository_name,
-      title: "Merge release #{latest_tag} into master",
-      base: "master", # The branch to merge the changes into.
-      body: "Containing all the changes for our [**#{latest_tag} Release**](#{release_url})."
-    )
-end
-
 desc 'Runs tests for a specific package'
 desc ""
 desc "#### Options"
@@ -152,6 +108,58 @@ lane :test_pr_linter do
 		destination: "platform=macOS")
 end
 
+desc 'Create a release from a tag triggered CI run'
+lane :release_from_tag do
+	# Get the latest tag, which is the new release that triggered this lane.
+	sh('git fetch --tags origin master --no-recurse-submodules -q')
+
+	latest_tag = ENV["BITRISE_GIT_TAG"]
+
+	# Create a release branch
+	sh "git branch release/#{latest_tag} origin/master"
+    sh "git checkout release/#{latest_tag}"
+    sh "git merge -X theirs #{latest_tag}"
+
+	release_output = sh('gitbuddy release -c "../Changelog.md"')
+	release_url = URI.extract(release_output).find { |url| url.include? 'releases/tag' }
+    puts "Created release with URL: #{release_url}"
+
+	# Run only if there's a podspec to update
+	if Dir['../*.podspec'].any?
+		# Update the podspec. It finds the .podspec automatically in the current folder.
+		version_bump_podspec(version_number: latest_tag)
+
+		begin
+			# Push the podspec to trunk
+			pod_push
+		rescue => ex
+			UI.important("Pod push failed: #{ex}")
+		end
+	end
+
+	# Push the changes to the branch
+	sh('git commit -a -m "Created a new release"')
+  sh("git push origin release/#{latest_tag}")
+
+  # Create a pull request for master to include the updated Changelog.md and podspec
+  create_pull_request(
+    api_token: ENV["DANGER_GITHUB_API_TOKEN"],
+    repo: git_repository_name,
+    title: "Merge release #{latest_tag} into master",
+    base: "master", # The branch to merge the changes into.
+    body: "Containing all the changes for our [**#{latest_tag} Release**](#{release_url})."
+  )
+end
+
+desc "Unhide dev dependencies for danger"
+lane :unhide_spm_package_dev_dependencies do
+	text = File.read('../Package.swift')
+	new_contents = text.gsub('// dev ', "")
+
+	# To write changes to the file, use:
+	File.open('../Package.swift', "w") {|file| file.puts new_contents }
+end
+
 desc "Get all changed files in the current PR"
 desc "Requires that the enviroment contains a Danger GitHub API token `DANGER_GITHUB_API_TOKEN`"
 desc ""
@@ -189,7 +197,7 @@ end
 desc "Check whether any of the changes happened in the given path"
 desc ""
 desc "#### Options"
-desc " * **`path`**: The path to check for"
+desc " * **`path`**: The path in which to check for changed files"
 desc ""
 lane :pr_changes_contains_path do |options|
   changes_contains_path = options[:changed_files].include?(options[:path])
@@ -201,13 +209,4 @@ lane :pr_changes_contains_path do |options|
   end
 
   changes_contains_path
-end
-
-desc "Unhide dev dependencies for danger"
-lane :unhide_spm_package_dev_dependencies do
-	text = File.read('../Package.swift')
-	new_contents = text.gsub('// dev ', "")
-
-	# To write changes to the file, use:
-	File.open('../Package.swift', "w") {|file| file.puts new_contents }
 end

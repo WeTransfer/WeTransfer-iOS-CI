@@ -3,14 +3,6 @@
 require 'spaceship'
 require "uri"
 
-before_all do |lane, options|
-  if options[:ci] || ENV['CI'] == 'true'
-    decrypt_ci(path: ENV["DECRYPT_CI_SCRIPT"])
-  end
-
-  authenticate
-end
-
 desc "Creates a new release candidate"
 desc ""
 desc "- Creates a new TestFlight build including the unreleased changelog"
@@ -114,7 +106,6 @@ desc " * **`target`**: The target to build. (`XCODE_TARGET`)"
 desc " * **`scheme`**: The project's scheme. (`XCODE_SCHEME`)"
 desc " * **`xcconfig`**: The xcconfig file to use to build the app, optional. (`RELEASE_XCCONFIG`)"
 desc " * **`team_id`**: The ID of your App Store Connect team. (`FASTLANE_ITC_TEAM_ID`)"
-desc " * **`repo`**: The name of the repository on GitHub. (`REPO_NAME`)"
 desc " * **`contact_email`**: The contact email for beta review. (`BETA_CONTACT_EMAIL`)"
 desc " * **`contact_first_name`**: The first name of the contact for beta review. (`BETA_CONTACT_FIRST_NAME`)"
 desc " * **`contact_last_name`**: The last name of the contact for beta review. (`BETA_CONTACT_LAST_NAME`)"
@@ -177,6 +168,8 @@ lane :release do |options|
     # Push the updated changelog.
     sh('git commit -a -m "Created a new release"')
     sh("git push origin #{branch_name}")
+
+    repo = git_repository_name
 
     # Create a pull request for master to include the updated Changelog.md
     create_pull_request(
@@ -269,6 +262,36 @@ lane :hotfix do
   release(hotfix: true)
 end
 
+desc "Loads the JWT token that is used to authenticate with the App Store Connect API"
+desc ""
+desc "#### Options"
+desc " * **`use_app_manager_role`**: Whether it should use the token with the App Manager Role or Developer Role. This is needed when you want to upload build metadata in addition to a build to TestFlight"
+desc ""
+desc "This lane makes use of the following environment variables:"
+desc " - `JWT_ISSUER_ID`: The identifier of the issuer of the JWT token"
+desc " - `APP_MANAGER_KEY_ID`: The id of the JWT token used to authenticate with an App manager role"
+desc " - `DEVELOPER_KEY_ID`: The id of the JWT token used to authenticate with an App manager role"
+desc " - `APP_MANAGER_KEY_PATH`: The path to the file containing the private key"
+desc " - `DEVELOPER_KEY_PATH`: The path to the file containing the private key"
+desc ""
+lane :authenticate do | options |
+	use_app_manager_role = options[:use_app_manager_role] || false
+	key_id = use_app_manager_role ? ENV["APP_MANAGER_KEY_ID"] : ENV["DEVELOPER_KEY_ID"]
+	key_filepath = use_app_manager_role ? ENV["APP_MANAGER_KEY_PATH"] : ENV["DEVELOPER_KEY_PATH"]
+	issuer_id = ENV["JWT_ISSUER_ID"]
+
+	UI.important "Authenticating using #{use_app_manager_role ? "App Manager Role" : "Developer Role"}"
+
+  app_store_connect_api_key(
+    key_id: key_id,
+    issuer_id: issuer_id,
+    key_filepath: key_filepath,
+    duration: 1200, # 90 minutes, matching Bitrise timeout limit.
+    in_house: false, # optional but may be required if using match/sigh
+  )
+end
+
+
 desc "Returns true if there are new changes since the last available tag"
 private_lane :is_changed_since_last_tag do
   sh "git fetch --tags origin #{ENV["BITRISE_GIT_BRANCH"]} --no-recurse-submodules"
@@ -276,28 +299,6 @@ private_lane :is_changed_since_last_tag do
   changes = sh "git diff --name-only HEAD #{last_tag}"
   puts "Is local HEAD changed since last tag #{last_tag}: #{!changes.empty?}"
   is_changed = !changes.empty?
-end
-
-desc "Returns the repository name. E.g: WeTransfer/Mocker"
-private_lane :git_repository_name do
-	sh("git remote show origin -n | grep h.URL | sed 's/.*://;s/.git$//'").strip
-end
-
-desc "Get latest release from Github. Draft releases and prereleases are not returned by this endpoint. See: https://developer.github.com/v3/repos/releases/#get-the-latest-release"
-private_lane :latest_github_release do
-	origin_name = git_repository_name.split('/')
-	organisation = origin_name[0]
-	repository = origin_name[1]
-
-	result = github_api(
-		server_url: "https://api.github.com",
-		api_token: ENV["DANGER_GITHUB_API_TOKEN"],
-		http_method: "GET",
-		path: "/repos/#{organisation}/#{repository}/releases/latest"
-	)
-
-	puts "Latest Github release is #{result[:json]["tag_name"]}"
-	result[:json]["tag_name"]
 end
 
 desc "Updates the build number of the project based on the commit count"
@@ -469,61 +470,4 @@ private_lane :create_tag_name do |options|
   version_number = get_version_number(xcodeproj: options[:xcodeproj], target: options[:target])
   build_number = get_build_number(xcodeproj: options[:xcodeproj])
   tag_name = version_number + "b" + build_number
-end
-
-desc "Posts a message about the status of a build to Slack"
-desc "It is required to create an incoming Webhook for Slack and set this as an environment variable `SLACK_URL`"
-desc ""
-desc "#### Options"
-desc " * **`message**`: The message to post to Slack"
-desc "* **`tag_name**`: The name of the tag associated with the build"
-desc " * **`release_url`**: The url to a GH release."
-desc ""
-lane :slack_message do |options|
-  slack(
-      message: "#{options[:message]} (#{options[:tag_name]})",
-      success: true,
-      default_payloads: [:git_branch, :last_git_commit_message],
-      payload: {
-        "Release URL" => options[:release_url]
-      }
-  )
-end
-
-desc "Decrypts the encrypted files on CI."
-desc ""
-desc "#### Options"
-desc " * **`script`**: The path to the bash script that needs to be executed to decrypt the files"
-desc ""
-lane :decrypt_ci do | options |
-  sh(options[:path])
-end
-
-desc "Loads the JWT token that is used to authenticate with the App Store Connect API"
-desc ""
-desc "#### Options"
-desc " * **`use_app_manager_role`**: Whether it should use the token with the App Manager Role or Developer Role. This is needed when you want to upload metadata in addition to a build, e.g. app metadata when submitting to Test Flight."
-desc ""
-desc "This lane makes use of the following environment variables:"
-desc " - `JWT_ISSUER_ID`: The identifier of the issuer of the JWT token"
-desc " - `APP_MANAGER_KEY_ID`: The id of the JWT token used to authenticate with an App manager role"
-desc " - `DEVELOPER_KEY_ID`: The id of the JWT token used to authenticate with an App manager role"
-desc " - `APP_MANAGER_KEY_PATH`: The path to the file containing the private key"
-desc " - `DEVELOPER_KEY_PATH`: The path to the file containing the private key"
-desc ""
-lane :authenticate do | options |
-	use_app_manager_role = options[:use_app_manager_role] || false
-	key_id = use_app_manager_role ? ENV["APP_MANAGER_KEY_ID"] : ENV["DEVELOPER_KEY_ID"]
-	key_filepath = use_app_manager_role ? ENV["APP_MANAGER_KEY_PATH"] : ENV["DEVELOPER_KEY_PATH"]
-	issuer_id = ENV["JWT_ISSUER_ID"]
-
-	UI.important "Authenticating using #{use_app_manager_role ? "App Manager Role" : "Developer Role"}"
-
-  app_store_connect_api_key(
-    key_id: key_id,
-    issuer_id: issuer_id,
-    key_filepath: key_filepath,
-    duration: 1200, # 90 minutes, matching Bitrise timeout limit.
-    in_house: false, # optional but may be required if using match/sigh
-  )
 end

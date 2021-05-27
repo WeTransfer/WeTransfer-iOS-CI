@@ -1,0 +1,54 @@
+# The id of the JWT token used to authenticate with an App manager role.
+APP_MANAGER_KEY_ID=
+# The path to the file containing the private key for the app manager token.
+APP_MANAGER_KEY_PATH=
+# The id of the JWT token used to authenticate with a developer role.
+DEVELOPER_KEY_ID=
+# The path to the file containing the private key for the developer token.
+DEVELOPER_KEY_PATH=
+# The identifier of the issuer of the JWT token used to authenticate with App Store Connect.
+JWT_ISSUER_ID=
+
+# A script that can be used to decrypt encrypted files on CI. (optional).
+DECRYPT_CI_SCRIPT=
+
+# The ID of your App Store Connect team.
+FASTLANE_ITC_TEAM_ID=
+
+# The bundle identifier of the app to build and deploy.
+APP_IDENTIFIER=
+# A comma separated string containing all bundle identifiers, e.g. app + extensions.
+APP_IDENTIFIERS=
+
+# The path to the Xcode project file.
+XCODEPROJ=
+# The target to build.
+XCODE_TARGET=
+# The project's scheme.
+XCODE_SCHEME=
+
+# A xcconfig file to use to when building the app for beta distribution (optional).
+BETA_XCCONFIG=
+# A xconfig file to use when building the app for app store distribution (optional).
+RELEASE_XCCONFIG=
+
+# The contact email for beta review.
+BETA_CONTACT_EMAIL=
+# The first name of the contact for beta review.
+BETA_CONTACT_FIRST_NAME=
+# The last name of the contact for beta review.
+BETA_CONTACT_LAST_NAME=
+# The phone number of the contact for beta review.
+BETA_CONTACT_PHONE=
+# The name of the demo account for beta review.
+BETA_DEMO_ACCOUNT_NAM=
+# The passwords for the demo account for beta review.
+BETA_DEMO_ACCOUNT_PASSWORD=
+
+# A list of TestFlight groups that should get access to the beta build (optional).
+TESTFLIGHT_GROUPS_BETA=
+# A list of TestFlight groups that should get access to the release build (optional).
+TESTFLIGHT_GROUPS_RELEASE=
+
+# The url of the incoming Webhook used to post build status messaged to a specific Slack channel.
+SLACK_URL="

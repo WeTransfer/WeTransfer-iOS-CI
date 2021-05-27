@@ -50,16 +50,17 @@ Add this repository as a submodule with the correct path `Submodules/WeTransfer-
 
 ### 2: Create a fastlane file
 
-Create a fastlane file which executes testing with code coverage enabled. Import the Fastfile from this repo and trigger the `validate_changes` lane.
+Create a fastlane file which executes testing with code coverage enabled. Import the Fastfile from this repo and trigger the `test` lane.
 
 ```ruby
 import "./../Submodules/WeTransfer-iOS-CI/Fastlane/Fastfile"
+import "./../Submodules/WeTransfer-iOS-CI/Fastfile/shared_lanes.rb"
 
 desc "Run the tests and prepare for Danger"
 lane :test do |options|
   test_project(
     project_path: "YOUR_PROJECT_PATH/",
-    project_name: "YOUR_PROJECT_NAME", 
+    project_name: "YOUR_PROJECT_NAME",
     scheme: "YOUR_PROJECT_SCHEME")
 end
 
@@ -162,8 +163,47 @@ steps:
 
 After that, you can simply create a new tag and the whole release process will be triggered! 🚀
 
+### 6: App deployment lanes
+If you are building an app instead of a framework you can make use of the deployment lanes.
+
+The `beta` lane takes care of:
+- Generating a changelog based on the GH issues that were solved and PR's that were merged in since the last beta build.
+- Create a draft release in GitHub.
+- Create a new AppStore release candidate and upload it to TestFlight.
+
+The `release` does the following:
+- Fetch the lates green (approved) release from GitHub.
+- Create a new release branch in GitHub.
+- Create a PR that merges the release branch into the main branch.
+- Create a PR that merges the release branch into develop in order to make sure that develop contains the updated changelog and incremented build number.
+- Create a release build, upload it to TestFlight and submit for review.
+
+These two lanes allow for the following workflow:
+1. Use the `beta` lane to upload an AppStore Release Candidate to TestFlight.
+2. Once the build went trough QA and has been approved for release mark it as green.
+3. Submit a new build to the App Store using the `release` lane.
+
+#### Marking a build as release ready
+- Find the draft release matching the tested TestFlight build number at `http://github.com/{organization}/{repo}/releases`.
+- Edit the draft and press the green button `Publish release`.
+
+#### How to use this in your project?
+
+Import the `deployment_lanes.rb` from this repo into the Fastfile. If you haven't done so already in step 2 also import the `shared_lanes` file.
+
+```ruby
+import "./../Submodules/WeTransfer-iOS-CI/Fastfile/deployment_lanes.rb"
+```
+
+Then you need to make sure to authenticate with App Store Connect before running the deployment lanes. This can be done by adding a `before_all` block, like so:
+
+```ruby
+before_all do |lane, options|
+  authenticate
+end
+```
+
+Then there is two ways you can start using the deployment lanes. The first one is to create a new lane in the Fastfile from which you call one of the deployment lanes specifying values for all the options. The other option is to use environment variables, for example by using a .env file. In that case the lanes can be called directly without passing any options. An example of a .env file can be found [here](sample_fastlane.env).
 
 ## License
-
 WeTransfer-iOS-CI is available under the MIT license. See the LICENSE file for more info.
-

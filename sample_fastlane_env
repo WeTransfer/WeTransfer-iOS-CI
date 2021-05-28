@@ -9,8 +9,8 @@ DEVELOPER_KEY_PATH=
 # The identifier of the issuer of the JWT token used to authenticate with App Store Connect.
 JWT_ISSUER_ID=
 
-# A script that can be used to decrypt encrypted files on CI. (optional).
-DECRYPT_CI_SCRIPT=
+# A script that can be used to prepare for a CI run. (optional).
+PREPARE_CI_SCRIPT=
 
 # The ID of your App Store Connect team.
 FASTLANE_ITC_TEAM_ID=

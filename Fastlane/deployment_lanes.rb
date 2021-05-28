@@ -38,7 +38,7 @@ lane :beta do |options|
 
     if options[:ci] || ENV['CI'] == 'true'
       certs(app_identifier: options[:app_identifiers] || ENV["APP_IDENTIFIERS"])
-      decrypt_ci(path: ENV["CI_DECRYPT_SCRIPT"])
+      prepare_for_ci
     end
 
     # Set timeout to prevent xcodebuild -list -project to take to much retries.
@@ -196,8 +196,7 @@ lane :release do |options|
       certs(app_identifier: options[:app_identifiers] || ENV["APP_IDENTIFIERS"])
     end
 
-    # Decrypt again in case any of the encrypted file changed.
-    decrypt_ci(path: ENV["CI_DECRYPT_SCRIPT"])
+    prepare_for_ci
 
     # Set timeout to prevent xcodebuild -list -project to take to much retries.
     ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "120"
@@ -262,7 +261,8 @@ lane :hotfix do
   release(hotfix: true)
 end
 
-desc "Loads the JWT token that is used to authenticate with the App Store Connect API"
+desc "Generates a JWT token used for JWT authorization with the App Store Connect API."
+desc "The JWT token is added to the shared lane context so that it is automatically loaded into actions that require it."
 desc ""
 desc "#### Options"
 desc " * **`use_app_manager_role`**: Whether it should use the token with the App Manager Role or Developer Role. This is needed when you want to upload build metadata in addition to a build to TestFlight"

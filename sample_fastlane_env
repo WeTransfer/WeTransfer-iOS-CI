@@ -12,6 +12,8 @@ JWT_ISSUER_ID=
 # A script that can be used to prepare for a CI run. (optional).
 PREPARE_CI_SCRIPT=
 
+# The ID of your Developer Portal team (Required if you are a member of multiple teams).
+FASTLANE_TEAM_ID=
 # The ID of your App Store Connect team.
 FASTLANE_ITC_TEAM_ID=
 

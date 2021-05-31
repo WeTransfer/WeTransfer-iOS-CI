@@ -205,5 +205,9 @@ end
 
 Then there is two ways you can start using the deployment lanes. The first one is to create a new lane in the Fastfile from which you call one of the deployment lanes specifying values for all the options. The other option is to use environment variables, for example by using a .env file. In that case the lanes can be called directly without passing any options. An example of a .env file can be found [here](sample_fastlane_env).
 
+### 7: Provisioning lanes
+
+The provisioning lanes help you with provisioning related task such as code signing and device management. To use them all you need to do is import `provisioning_lanes.rb` from this repo into the Fastfile.
+
 ## License
 WeTransfer-iOS-CI is available under the MIT license. See the LICENSE file for more info.

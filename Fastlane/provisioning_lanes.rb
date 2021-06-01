@@ -5,7 +5,7 @@ lane :install_match_dependencies do
   authenticate
 
   match_configuration(
-    type: "develop",
+    type: "development",
     readonly: true)
 
   match_configuration(
@@ -25,20 +25,18 @@ desc "Update the appstore certificates and profiles using fastlane match"
 lane :update_match_appstore_dependencies do
   match_configuration(
     type: "appstore",
-    readonly: false
+    readonly: false,
   )
 end
 
 desc "A convenience method for using fastlane match"
-desc ""
-desc "####{ }"
 private_lane :match_configuration do |options|
   api_key = authenticate
 
   sync_code_signing(
     type: options[:type],
     api_key: api_key,
-    readonly: options[:readonly]
+    readonly: options[:readonly],
   )
 end
 

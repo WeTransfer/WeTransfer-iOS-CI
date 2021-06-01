@@ -50,7 +50,7 @@ lane :test_package do |options|
 		FileUtils.remove_dir(result_bundle_path) if File.exist?(result_bundle_path)
 
 		#sh "cd #{ENV['PWD']}/#{options[:package_path]} && xcodebuild -showBuildSettings -clonedSourcePackagesDirPath #{sourcePackagesDir} -verbose"
-	    sh "cd #{ENV['PWD']}/#{options[:package_path]} && xcodebuild -scheme #{options[:package_name]} -destination '#{destination}' -verbose -resultBundlePath '#{result_bundle_path}' -disable-concurrent-testing -enableCodeCoverage YES -UseNewBuildSystem=YES -clonedSourcePackagesDirPath #{sourcePackagesDir} #{extra_flags} test | xcpretty -f `xcpretty-json-formatter`"
+	  sh "cd #{ENV['PWD']}/#{options[:package_path]} && xcodebuild -scheme #{options[:package_name]} -destination '#{destination}' -verbose -resultBundlePath '#{result_bundle_path}' -disable-concurrent-testing -enableCodeCoverage YES -UseNewBuildSystem=YES -clonedSourcePackagesDirPath #{sourcePackagesDir} #{extra_flags} test | xcpretty -f `xcpretty-json-formatter`"
 	rescue => ex
 		UI.important("Tests failed for #{ex}")
 	end
@@ -117,12 +117,12 @@ lane :release_from_tag do
 
 	# Create a release branch
 	sh "git branch release/#{latest_tag} origin/master"
-    sh "git checkout release/#{latest_tag}"
-    sh "git merge -X theirs #{latest_tag}"
+  sh "git checkout release/#{latest_tag}"
+  sh "git merge -X theirs #{latest_tag}"
 
 	release_output = sh('gitbuddy release -c "../Changelog.md"')
 	release_url = URI.extract(release_output).find { |url| url.include? 'releases/tag' }
-    puts "Created release with URL: #{release_url}"
+  puts "Created release with URL: #{release_url}"
 
 	# Run only if there's a podspec to update
 	if Dir['../*.podspec'].any?
@@ -205,7 +205,7 @@ lane :pr_changes_contains_path do |options|
   if changes_contains_path
   	puts "Changes found for path #{options[:path]}"
   elsif
-	puts "No changes found for path #{options[:path]}"
+		puts "No changes found for path #{options[:path]}"
   end
 
   changes_contains_path

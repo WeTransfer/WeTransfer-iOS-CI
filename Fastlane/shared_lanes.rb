@@ -24,17 +24,17 @@ end
 desc "Get latest release from Github. Draft releases and prereleases are not returned by this endpoint. See: https://developer.github.com/v3/repos/releases/#get-the-latest-release"
 lane :latest_github_release do
   origin_name = git_repository_name.split('/')
-	organisation = origin_name[0]
-	repository = origin_name[1]
+  organisation = origin_name[0]
+  repository = origin_name[1]
 
-	result = github_api(
+  result = github_api(
 		server_url: "https://api.github.com",
 		api_token: ENV["DANGER_GITHUB_API_TOKEN"],
 		http_method: "GET",
 		path: "/repos/#{organisation}/#{repository}/releases/latest"
 	)
 
-	puts "Latest Github release is #{result[:json]["tag_name"]}"
+  puts "Latest Github release is #{result[:json]["tag_name"]}"
 	result[:json]["tag_name"]
 end
 

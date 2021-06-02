@@ -76,7 +76,7 @@ lane :beta do |options|
         },
         skip_waiting_for_build_processing: false,
         skip_submission: false,
-        groups: options[:groups] || EMV["TESTFLIGHT_GROUPS_BETA"],
+        groups: options[:groups] || ENV["TESTFLIGHT_GROUPS_BETA"],
         changelog: stripped_changelog,
         team_id: options[:team_id] || ENV["FASTLANE_ITC_TEAM_ID"]
       )
@@ -85,7 +85,7 @@ lane :beta do |options|
       UI.important('TestFlight delivery failed because a build is already in review, but continuing anyway!')
     end
 
-    slack_message(message: "A new Release Candidate has been published.",tag_name: tag_name, release_url: release_url)
+    slack_message(message: "A new Release Candidate has been published.", tag_name: tag_name, release_url: release_url)
   end
 end
 

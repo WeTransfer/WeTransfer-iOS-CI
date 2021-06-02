@@ -2,8 +2,9 @@
 
 source 'https://rubygems.org'
 
-gem 'fastlane'
-gem 'xcpretty'
-gem 'xcpretty-json-formatter'
 gem 'cocoapods'
 gem 'dotenv'
+gem 'fastlane'
+gem 'rubocop', require: false
+gem 'xcpretty'
+gem 'xcpretty-json-formatter'

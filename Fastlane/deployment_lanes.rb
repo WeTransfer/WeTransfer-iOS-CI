@@ -28,7 +28,7 @@ lane :beta do |options|
 	xcodeproj = options[:xcodeproj] || ENV["XCODEPROJ"]
 	target = options[:target] || ENV["XCODE_TARGET"]
 	scheme = options[:scheme] || ENV["XCODE_SCHEME"]
-  tag_name = create_tag_name(xcodeproj: xcodeproj, target: target)
+	tag_name = create_tag_name(xcodeproj: xcodeproj, target: target)
 
   if is_changed_since_last_tag == false
     slack_message(message: "A new Release is cancelled as there are no changes since the last available tag.", tag_name: tag_name)
@@ -247,7 +247,7 @@ lane :release do |options|
     )
 
 		# Currently doesn't work because as you can't download dsyms with an API key
-    # upload_dsyms
+		# upload_dsyms
 
     release_type = is_hotfix ? 'hotfix' : 'release'
     slack_message(message: "A new #{release_type} has been submitted to the App Store.", tag_name: tag_name, release_url: release_url)
@@ -314,13 +314,13 @@ private_lane :update_build_number do |options|
 
   # Compute a new build number based on the commit count.
 	build = sh "git rev-list --all --count"
-  new_build_number = 200 + Integer(build)
+	new_build_number = 200 + Integer(build)
 
 	# Fetch the build number of the most recent test flight build, to make sure
 	# that the new build number will be higher.
-  version_number = get_version_number(xcodeproj: xcodeproj, target: target)
-  latest_app_store_build_number = latest_testflight_build_number
-  test_flight_build_number = latest_testflight_build_number(version: version_number)
+	version_number = get_version_number(xcodeproj: xcodeproj, target: target)
+	latest_app_store_build_number = latest_testflight_build_number
+	test_flight_build_number = latest_testflight_build_number(version: version_number)
 
   if new_build_number <= latest_app_store_build_number
     puts "git build number is smaller than the build number of the latest release"
@@ -419,7 +419,7 @@ private_lane :ensure_release_is_needed do |options|
   preparing_version_is_newer = tag_version_number < app_store_preparing_version
 
 	# Cancel when did not manage to create a stable release on GitHub or when the App Store Connect preparing version doesn't match the project version.
-  if project_version_is_newer || preparing_version_is_newer
+	if project_version_is_newer || preparing_version_is_newer
     UI.important "Release cancelled. Tag version: #{tag_version_number}, project version: #{local_project_version_number}, app store preparing version: #{app_store_preparing_version}"
 
     slack(

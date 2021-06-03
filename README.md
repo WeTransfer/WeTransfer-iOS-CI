@@ -54,7 +54,7 @@ Create a fastlane file which executes testing with code coverage enabled. Import
 
 ```ruby
 import "./../Submodules/WeTransfer-iOS-CI/Fastlane/Fastfile"
-import "./../Submodules/WeTransfer-iOS-CI/Fastfile/shared_lanes.rb"
+import "./../Submodules/WeTransfer-iOS-CI/Fastlane/shared_lanes.rb"
 
 desc "Run the tests and prepare for Danger"
 lane :test do |options|
@@ -192,7 +192,7 @@ These two lanes allow for the following workflow:
 Import the `deployment_lanes.rb` from this repo into the Fastfile. If you haven't done so already in step 2 also import the `shared_lanes` file.
 
 ```ruby
-import "./../Submodules/WeTransfer-iOS-CI/Fastfile/deployment_lanes.rb"
+import "./../Submodules/WeTransfer-iOS-CI/Fastlane/deployment_lanes.rb"
 ```
 
 Then you need to make sure to authenticate with App Store Connect before running the deployment lanes. This can be done by adding a `before_all` block, like so:

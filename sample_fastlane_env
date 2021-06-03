@@ -43,7 +43,7 @@ BETA_CONTACT_LAST_NAME=
 # The phone number of the contact for beta review.
 BETA_CONTACT_PHONE=
 # The name of the demo account for beta review.
-BETA_DEMO_ACCOUNT_NAM=
+BETA_DEMO_ACCOUNT_NAME=
 # The passwords for the demo account for beta review.
 BETA_DEMO_ACCOUNT_PASSWORD=
 

@@ -28,13 +28,14 @@ lane :beta do |options|
   xcodeproj = options[:xcodeproj] || ENV['XCODEPROJ']
   target = options[:target] || ENV['XCODE_TARGET']
   scheme = options[:scheme] || ENV['XCODE_SCHEME']
-  tag_name = create_tag_name(xcodeproj: xcodeproj, target: target)
 
   if is_changed_since_last_tag == false
+    tag_name = create_tag_name(xcodeproj: xcodeproj, target: target)
     slack_message(message: 'A new Release is cancelled as there are no changes since the last available tag.', tag_name: tag_name)
   else
     clear_derived_data
     build_number = update_build_number(xcodeproj: xcodeproj, target: target)
+    tag_name = create_tag_name(xcodeproj: xcodeproj, target: target)
 
     if options[:ci] || ENV['CI'] == 'true'
       certs(app_identifier: options[:app_identifiers] || ENV['APP_IDENTIFIERS'])

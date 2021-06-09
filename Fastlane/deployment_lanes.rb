@@ -179,7 +179,7 @@ lane :release do |options|
     # Create a pull request for master to include the updated Changelog.md
     create_pull_request(
       api_token: ENV['DANGER_GITHUB_API_TOKEN'],
-      repo: options[:repo],
+      repo: repo,
       title: "Merge release #{tag_name} into master",
       base: 'master', # The branch to merge the changes into.
       body: "Containing all the changes for our latest release: [#{tag_name}](#{release_url})."
@@ -188,7 +188,7 @@ lane :release do |options|
     # Create a pull request for develop to include the updated Changelog.md
     create_pull_request(
       api_token: ENV['DANGER_GITHUB_API_TOKEN'],
-      repo: options[:repo],
+      repo: repo,
       title: "Update Changelog in develop for latest release: #{tag_name}",
       base: 'develop', # The branch to merge the changes into.
       body: "The changelog has been updated containing the changes from our latest release: [#{tag_name}](#{release_url})."

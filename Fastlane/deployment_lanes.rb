@@ -402,7 +402,7 @@ desc ' * **`version_number`**: The version number of the project'
 desc ' * **`tag_name`**: The name of the latest release on GitHub'
 desc ''
 private_lane :ensure_release_is_needed do |options|
-  preparing_app_version = current_preparing_app_version(app_identifier: options['app_identifier'])
+  preparing_app_version = current_preparing_app_version(app_identifier: options[:app_identifier'])
 
   if preparing_app_version.nil?
     message = 'Weekly release cancelled as App Store Connect does not contain a preparing app version'

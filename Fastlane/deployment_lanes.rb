@@ -328,7 +328,7 @@ lane :authenticate do |options|
   issuer_id = ENV['JWT_ISSUER_ID']
 
   UI.important "Authenticating using #{use_app_manager_role ? 'App Manager Role' : 'Developer Role'}"
-
+  puts 'this could be it'
   app_store_connect_api_key(
     key_id: key_id,
     issuer_id: issuer_id,

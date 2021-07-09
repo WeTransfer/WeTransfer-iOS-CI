@@ -53,6 +53,9 @@ workflows:
             bundle exec fastlane $lane
     - script:
         title: Run Danger
+        deps:
+          brew:
+          - name: swiftlint
         inputs:
         - content: |-
             #!/usr/bin/env bash

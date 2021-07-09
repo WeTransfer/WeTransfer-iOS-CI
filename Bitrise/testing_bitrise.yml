@@ -51,12 +51,6 @@ workflows:
             # Use the environment FASTLANE_LANE if available. Otherwise, fallback to "test"
             lane=${FASTLANE_LANE:=test}
             bundle exec fastlane $lane
-    - brew-install@0:
-        inputs:
-        - upgrade: 'no'
-        - packages: swiftlint
-        - cache_enabled: 'yes'
-        title: Install SwiftLint
     - script:
         title: Run Danger
         inputs:
@@ -65,7 +59,6 @@ workflows:
             # debug log
             set -x
 
-            #swift build
             bundle exec fastlane unhide_spm_package_dev_dependencies
             swift run danger-swift ci
     - cache-push:

@@ -297,11 +297,11 @@ lane :appium_build do |options|
 
     # Refresh key as it's only valid for 20 minutes and TestFlight can take a long time.
     authenticate(use_app_manager_role: true)
-    upload_to_browserstack_app_live(
-      browserstack_username: ENV["BROWSERSTACK_USERNAME"],
-      browserstack_access_key: ENV["BROWSERSTACK_ACCESS_KEY"],
-      file_path: "PATH/TO/IPA"
-    )
+    # upload_to_browserstack_app_live(
+    #   browserstack_username: ENV["BROWSERSTACK_USERNAME"],
+    #   browserstack_access_key: ENV["BROWSERSTACK_ACCESS_KEY"],
+    #   file_path: "PATH/TO/IPA"
+    # )
 
 
     slack_message(message: 'Appium test triggered', tag_name: tag_name, release_url: release_url)

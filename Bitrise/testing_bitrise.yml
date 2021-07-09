@@ -33,21 +33,19 @@ workflows:
             # git config --global url."git@github.com:".insteadOf "https://github.com/"
             for ip in $(dig @8.8.8.8 github.com +short); do ssh-keyscan github.com,$ip; ssh-keyscan $ip; done 2>/dev/null >> ~/.ssh/known_hosts
     - script:
-        title: Set GEM_CACHE_PATH env var
+        title: Setup caching for GEMs
         inputs:
         - content: |-
             #!/bin/bash
-            set -ex
-            RBENV_DIR="`cd $(rbenv which ruby)/../..;pwd`"
-            echo "Gem cache directory: $RBENV_DIR"
-            envman add --key GEM_CACHE_PATH --value $RBENV_DIR
+            set -ev
+            envman add --key GEM_HOME --value "$(gem environment gemdir)"
     - bitrise-step-install-bundler: {}
     - script:
         title: Bundle updating
         inputs:
         - content: |-
             #!/usr/bin/env bash
-            bundle update
+            bundle update --path .gem-caches
     - script:
         title: Run Fastlane
         inputs:
@@ -77,5 +75,5 @@ workflows:
             .build
             ~/.danger-swift
             SourcePackages
-
-            $GEM_CACHE_PATH
+            .gem-caches-> ./Gemfile.lock # Invalidate if Gemfile changed
+            $GEM_HOME

@@ -67,7 +67,7 @@ workflows:
             set -x
 
             bundle exec fastlane unhide_spm_package_dev_dependencies
-            swift run danger-swift ci
+            swift run danger-swift ci --cache-path .build --build-path .build
     - cache-push:
         run_if: true
         inputs:
@@ -75,6 +75,5 @@ workflows:
             $BITRISE_CACHE_DIR
             .build
             ~/.danger-swift
-            SourcePackages
-            .gem-caches-> ./Gemfile.lock # Invalidate if Gemfile changed
+            .gem-caches
             $GEM_HOME

@@ -266,7 +266,7 @@ lane :hotfix do
   release(hotfix: true)
 end
 ######### proposed lane begin
-lane :appium do |options|
+lane :appium_build do |options|
   xcodeproj = options[:xcodeproj] || ENV['XCODEPROJ']
   target = options[:target] || ENV['XCODE_TARGET']
   scheme = options[:scheme] || ENV['XCODE_SCHEME']

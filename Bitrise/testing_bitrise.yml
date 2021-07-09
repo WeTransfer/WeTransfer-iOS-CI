@@ -41,11 +41,11 @@ workflows:
             envman add --key GEM_HOME --value "$(gem environment gemdir)"
     - bitrise-step-install-bundler: {}
     - script:
-        title: Bundle updating
+        title: Bundle install (with cache)
         inputs:
         - content: |-
             #!/usr/bin/env bash
-            bundle update --path .gem-caches
+            bundle install --path .gem-caches
     - script:
         title: Run Fastlane
         inputs:

@@ -43,11 +43,16 @@ workflows:
             envman add --key GEM_CACHE_PATH --value $RBENV_DIR
     - bitrise-step-install-bundler: {}
     - script:
-        title: Run Fastlane
+        title: Bundle updating
         inputs:
         - content: |-
             #!/usr/bin/env bash
             bundle update
+    - script:
+        title: Run Fastlane
+        inputs:
+        - content: |-
+            #!/usr/bin/env bash
             # Use the environment FASTLANE_LANE if available. Otherwise, fallback to "test"
             lane=${FASTLANE_LANE:=test}
             bundle exec fastlane $lane

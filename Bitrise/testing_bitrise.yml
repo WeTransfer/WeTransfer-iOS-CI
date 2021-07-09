@@ -69,7 +69,7 @@ workflows:
         inputs:
         - cache_paths: |
             $BITRISE_CACHE_DIR
-            .build
+            ./build
             ~/.danger-swift
             SourcePackages
 

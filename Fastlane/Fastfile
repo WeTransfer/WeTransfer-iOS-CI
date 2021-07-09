@@ -40,7 +40,7 @@ lane :test_package do |options|
     # )
 
     destination = 'platform=iOS Simulator,name=iPhone 11'
-    sourcePackagesDir = "#{ENV['PWD']}/SourcePackages"
+    sourcePackagesDir = "#{ENV['PWD']}/.build"
 
     disable_automatic_package_resolution = options.fetch(:disable_automatic_package_resolution, true)
     extra_flags = disable_automatic_package_resolution ? '-disableAutomaticPackageResolution' : ''
@@ -90,7 +90,7 @@ lane :test_project do |options|
       formatter: 'xcpretty-json-formatter',
       result_bundle: true,
       output_directory: 'build/reports/',
-      cloned_source_packages_path: 'SourcePackages'
+      cloned_source_packages_path: '.build'
     )
   rescue StandardError => e
     UI.important("Tests failed for #{e}")

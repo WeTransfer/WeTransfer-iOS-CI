@@ -74,6 +74,5 @@ workflows:
         - cache_paths: |
             $BITRISE_CACHE_DIR
             .build
-            ~/.danger-swift
             .gem-caches
             $GEM_HOME

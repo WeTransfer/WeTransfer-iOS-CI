@@ -287,14 +287,14 @@ lane :appium_build do |options|
     # Set timeout to prevent xcodebuild -list -project to take to much retries.
     ENV['FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT'] = '120'
     ENV['FASTLANE_XCODE_LIST_TIMEOUT'] = '120'
-
+    puts 'Am I going to gym'
     gym(
       scheme: scheme,
       configuration: 'Debug',
       xcconfig: options[:xcconfig] || ENV['BETA_XCCONFIG'],
       cloned_source_packages_path: 'SourcePackages'
     )
-
+    puts 'After gym'
     # Refresh key as it's only valid for 20 minutes and TestFlight can take a long time.
     # authenticate(use_app_manager_role: true)
     # upload_to_browserstack_app_live(

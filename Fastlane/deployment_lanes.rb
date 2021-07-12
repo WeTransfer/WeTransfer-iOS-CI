@@ -265,49 +265,37 @@ desc 'Creates a hotfix using the release lane. Should always be called on master
 lane :hotfix do
   release(hotfix: true)
 end
+
 ######### proposed lane begin
 lane :appium_build do |options|
-  xcodeproj = options[:xcodeproj] || ENV['XCODEPROJ']
-  target = options[:target] || ENV['XCODE_TARGET']
-  scheme = options[:scheme] || ENV['XCODE_SCHEME']
 
-  if is_changed_since_last_tag == false
-    tag_name = create_tag_name(xcodeproj: xcodeproj, target: target)
-    slack_message(message: 'A new Release is cancelled as there are no changes since the last available tag.', tag_name: tag_name)
-  else
-    clear_derived_data
-    build_number = update_build_number(xcodeproj: xcodeproj, target: target)
-    tag_name = create_tag_name(xcodeproj: xcodeproj, target: target)
+  clear_derived_data
+  # Set timeout to prevent xcodebuild -list -project to take to much retries.
+  ENV['FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT'] = '120'
+  ENV['FASTLANE_XCODE_LIST_TIMEOUT'] = '120'
 
-    if options[:ci] || ENV['CI'] == 'true'
-      certs(app_identifier: options[:app_identifiers] || ENV['APP_IDENTIFIERS'], type: 'development')
-      prepare_for_ci
-    end
+  gym(
+    scheme: scheme,
+    configuration: 'Debug',
+    export_method: 'development',
+    xcconfig: options[:xcconfig] || ENV['BETA_XCCONFIG'],
+    cloned_source_packages_path: 'SourcePackages'
+  )
 
-    # Set timeout to prevent xcodebuild -list -project to take to much retries.
-    ENV['FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT'] = '120'
-    ENV['FASTLANE_XCODE_LIST_TIMEOUT'] = '120'
-    puts 'Am I going to gym'
-    gym(
-      scheme: scheme,
-      configuration: 'Debug',
-      xcconfig: options[:xcconfig] || ENV['BETA_XCCONFIG'],
-      cloned_source_packages_path: 'SourcePackages'
-    )
-    puts 'After gym'
-    # Refresh key as it's only valid for 20 minutes and TestFlight can take a long time.
-    # authenticate(use_app_manager_role: true)
-    # upload_to_browserstack_app_live(
-    #   browserstack_username: ENV["BROWSERSTACK_USERNAME"],
-    #   browserstack_access_key: ENV["BROWSERSTACK_ACCESS_KEY"],
-    #   file_path: "PATH/TO/IPA"
-    # )
+  # Refresh key as it's only valid for 20 minutes and TestFlight can take a long time.
+  # authenticate(use_app_manager_role: true)
 
+  # upload_to_browserstack_app_automate(
+  #   browserstack_username: ENV["BROWSERSTACK_USERNAME"],
+  #   browserstack_access_key: ENV["BROWSERSTACK_ACCESS_KEY"],
+  #   file_path: "PATH/TO/IPA"
+  # )
 
-    slack_message(message: 'Appium test triggered', tag_name: tag_name, release_url: release_url)
-  end
+  # slack_message(message: 'Appium test triggered', tag_name: tag_name, release_url: release_url)
+
 end
 ######### proposed lane end
+
 desc 'Generates a JWT token used for JWT authorization with the App Store Connect API.'
 desc 'The JWT token is added to the shared lane context so that it is automatically loaded into actions that require it.'
 desc ''

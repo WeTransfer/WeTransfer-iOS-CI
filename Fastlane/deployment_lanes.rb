@@ -268,7 +268,7 @@ end
 
 desc 'Create a build for running tests on browser stack'
 lane :appium_build do |options|
-
+  scheme = options[:scheme] || ENV['XCODE_SCHEME']
   clear_derived_data
   # Set timeout to prevent xcodebuild -list -project to take to much retries.
   ENV['FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT'] = '120'
@@ -283,7 +283,6 @@ lane :appium_build do |options|
   )
 
   puts "IPA saved at #{ENV['IPA_OUTPUT_PATH']}"
-  sh "bash ./../Submodules/WeTransfer-iOS-CI/Scripts/test_setup.sh"
 end
 
 desc 'Generates a JWT token used for JWT authorization with the App Store Connect API.'

@@ -279,7 +279,7 @@ lane :appium_build do |options|
     configuration: 'Debug',
     export_method: 'development',
     xcconfig: options[:xcconfig] || ENV['BETA_XCCONFIG'],
-    cloned_source_packages_path: 'SourcePackages'
+    cloned_source_packages_path: '.build'
   )
 
   puts "IPA saved at #{ENV['IPA_OUTPUT_PATH']}"

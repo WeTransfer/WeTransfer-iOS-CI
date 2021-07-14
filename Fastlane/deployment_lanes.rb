@@ -274,6 +274,8 @@ lane :appium_build do |options|
   ENV['FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT'] = '120'
   ENV['FASTLANE_XCODE_LIST_TIMEOUT'] = '120'
 
+  certs(app_identifier: options[:app_identifiers] || ENV['APP_IDENTIFIERS'], type: 'development') if options[:ci] || ENV['CI'] == 'true'
+
   gym(
     scheme: scheme,
     configuration: 'Debug',
@@ -381,7 +383,7 @@ private_lane :certs do |options|
     keychain_password: (ENV['MATCH_KEYCHAIN_PASSWORD']).to_s,
     app_identifier: options[:app_identifier],
     force: true,
-    type: 'appstore'
+    type: options[:type] || 'appstore'
   )
 end
 

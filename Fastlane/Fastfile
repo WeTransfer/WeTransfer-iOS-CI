@@ -9,51 +9,10 @@ desc ' * **`package_name`**: The name of the package to test'
 desc ' * **`package_path`**: The path to the package'
 desc ''
 lane :test_package do |options|
-  # Set timeout to prevent xcodebuild -list -project to take to much retries.
-  ENV['FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT'] = '120'
-  ENV['FASTLANE_XCODE_LIST_TIMEOUT'] = '120'
+  UI.abort_with_message! "Package path is missing" unless options[:package_path]
+  UI.abort_with_message! "Package name is missing" unless options[:package_name]
 
-  begin
-    reports_dir = "#{ENV['PWD']}/build/reports"
-
-    ENV['XCPRETTY_JSON_FILE_OUTPUT'] = "#{reports_dir}/#{options[:package_name]}_Tests.json"
-
-    # This does not work yet, see: https://github.com/fastlane/fastlane/issues/17734
-    # device = options[:device] || "iPhone 11"
-    # scan(
-    #   scheme: options[:package_name],
-    #   xcodebuild_command: "cd #{ENV['PWD']}/#{options[:package_path]} && env NSUnbufferedIO=YES xcodebuild",
-    #   device: device,
-    #   code_coverage: true,
-    #   disable_concurrent_testing: true,
-    #   fail_build: false,
-    #   skip_slack: true,
-    #   output_types: "",
-    #   prelaunch_simulator: true,
-    #   xcargs: "-UseNewBuildSystem=YES",
-    #   include_simulator_logs: false, # Needed for this: https://github.com/fastlane/fastlane/issues/8909
-    #   formatter: "xcpretty-json-formatter",
-    #   result_bundle: true,
-    #   output_directory: "build/reports/",
-    #   cloned_source_packages_path: "SourcePackages",
-    #   disable_package_automatic_updates: true
-    # )
-
-    destination = 'platform=iOS Simulator,name=iPhone 11'
-    sourcePackagesDir = "#{ENV['PWD']}/.build"
-
-    disable_automatic_package_resolution = options.fetch(:disable_automatic_package_resolution, true)
-    extra_flags = disable_automatic_package_resolution ? '-disableAutomaticPackageResolution' : ''
-
-    # Set the result bundle path and delete an existing one if needed.
-    result_bundle_path = "#{reports_dir}/#{options[:package_name]}.xcresult"
-    FileUtils.remove_dir(result_bundle_path) if File.exist?(result_bundle_path)
-
-    # sh "cd #{ENV['PWD']}/#{options[:package_path]} && xcodebuild -showBuildSettings -clonedSourcePackagesDirPath #{sourcePackagesDir} -verbose"
-    sh "cd #{ENV['PWD']}/#{options[:package_path]} && xcodebuild -scheme #{options[:package_name]} -destination '#{destination}' -verbose -resultBundlePath '#{result_bundle_path}' -disable-concurrent-testing -enableCodeCoverage YES -UseNewBuildSystem=YES -clonedSourcePackagesDirPath #{sourcePackagesDir} #{extra_flags} test | xcpretty -f `xcpretty-json-formatter`"
-  rescue StandardError => e
-    UI.important("Tests failed for #{e}")
-  end
+  test_project(options)
 end
 
 desc 'Runs tests for an external project'
@@ -64,7 +23,7 @@ desc ' * **`project_path`**: The path to the project'
 desc ' * **`project_name`**: The name of the project'
 desc ' * **`destination`**: ..'
 lane :test_project do |options|
-  clear_derived_data
+  # clear_derived_data
 
   # Set timeout to prevent xcodebuild -list -project to take to much retries.
   ENV['FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT'] = '120'
@@ -74,9 +33,14 @@ lane :test_project do |options|
     ENV['XCPRETTY_JSON_FILE_OUTPUT'] = "build/reports/#{options[:scheme]}_Tests.json"
 
     device = options[:device] || 'iPhone 11'
+
+    if options[:package_path].nil?
+      project_path = "#{options[:project_path]}#{options[:project_name]}.xcodeproj"
+    end
+
     scan(
-      scheme: options[:scheme],
-      project: "#{options[:project_path]}#{options[:project_name]}.xcodeproj",
+      scheme: options[:scheme] || options[:package_name],
+      project: project_path,
       device: device,
       destination: options[:destination],
       code_coverage: true,
@@ -90,7 +54,8 @@ lane :test_project do |options|
       formatter: 'xcpretty-json-formatter',
       result_bundle: true,
       output_directory: 'build/reports/',
-      cloned_source_packages_path: '.build'
+      cloned_source_packages_path: '.build',
+      package_path: options[:package_path]
     )
   rescue StandardError => e
     UI.important("Tests failed for #{e}")

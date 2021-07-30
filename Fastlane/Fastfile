@@ -54,7 +54,7 @@ lane :test_project do |options|
       formatter: 'xcpretty-json-formatter',
       result_bundle: true,
       output_directory: 'build/reports/',
-      cloned_source_packages_path: 'SourcePackages',
+      cloned_source_packages_path: '.build',
       package_path: options[:package_path]
     )
   rescue StandardError => e

@@ -24,8 +24,11 @@ public enum XcodeSummaryReporter: XcodeSummaryReporting {
             /// Filter results from submodules
             guard !file.contains("Submodules/") && !result.message.contains("Submodules/") else { return false }
 
-            /// Filter results from submodules
+            /// Filter results from packages
             guard !file.contains("SourcePackages/") && !result.message.contains("SourcePackages/") else { return false }
+
+            /// Filter results from build folder
+            guard !file.contains(".build/") && !result.message.contains(".build/") else { return false }
 
             return true
         })

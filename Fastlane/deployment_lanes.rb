@@ -266,6 +266,27 @@ lane :hotfix do
   release(hotfix: true)
 end
 
+desc 'Create a build for running tests on browser stack'
+lane :appium_build do |options|
+  scheme = options[:scheme] || ENV['XCODE_SCHEME']
+  clear_derived_data
+  # Set timeout to prevent xcodebuild -list -project to take to much retries.
+  ENV['FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT'] = '120'
+  ENV['FASTLANE_XCODE_LIST_TIMEOUT'] = '120'
+
+  certs(app_identifier: options[:app_identifiers] || ENV['APP_IDENTIFIERS'], type: 'development') if options[:ci] || ENV['CI'] == 'true'
+
+  gym(
+    scheme: scheme,
+    configuration: 'Debug',
+    export_method: 'development',
+    xcconfig: options[:xcconfig] || ENV['BETA_XCCONFIG'],
+    cloned_source_packages_path: '.build'
+  )
+
+  puts "IPA saved at #{ENV['IPA_OUTPUT_PATH']}"
+end
+
 desc 'Generates a JWT token used for JWT authorization with the App Store Connect API.'
 desc 'The JWT token is added to the shared lane context so that it is automatically loaded into actions that require it.'
 desc ''
@@ -362,7 +383,7 @@ private_lane :certs do |options|
     keychain_password: (ENV['MATCH_KEYCHAIN_PASSWORD']).to_s,
     app_identifier: options[:app_identifier],
     force: true,
-    type: 'appstore'
+    type: options[:type] || 'appstore'
   )
 end
 

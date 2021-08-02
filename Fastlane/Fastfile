@@ -30,7 +30,7 @@ lane :test_project do |options|
   ENV['FASTLANE_XCODE_LIST_TIMEOUT'] = '120'
 
   begin
-    ENV['XCPRETTY_JSON_FILE_OUTPUT'] = "build/reports/#{options[:scheme]}_Tests.json"
+    ENV['XCPRETTY_JSON_FILE_OUTPUT'] = "build/reports/#{options[:scheme] || options[:package_name]}_Tests.json"
 
     device = options[:device] || 'iPhone 11'
 

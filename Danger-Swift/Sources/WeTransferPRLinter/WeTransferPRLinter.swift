@@ -3,6 +3,8 @@ import DangerXCodeSummary
 import Files
 import Foundation
 
+// danger:disable unowned_self
+
 public enum WeTransferPRLinter {
     public static func lint(using danger: DangerDSL = Danger(),
                             swiftLintExecutor: SwiftLintExecuting.Type = SwiftLintExecutor.self,

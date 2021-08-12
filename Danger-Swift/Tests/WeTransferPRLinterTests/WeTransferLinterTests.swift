@@ -4,6 +4,8 @@ import Files
 @testable import WeTransferPRLinter
 import XCTest
 
+// danger:disable unowned_self
+
 final class WeTransferLinterTests: XCTestCase {
     private var buildFolder: Folder!
 

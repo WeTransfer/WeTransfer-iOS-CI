@@ -1,16 +1,8 @@
-//
-//  Mocks.swift
-//  WeTransferPRLinterTests
-//
-//  Created by Antoine van der Lee on 09/01/2020.
-//
-
+@testable import Danger
 import Foundation
 @testable import WeTransferPRLinter
-@testable import Danger
 
 struct MockedSwiftLintExecutor: SwiftLintExecuting {
-
     static var lintedFiles: [String: [File]] = [:]
 
     static func lint(files: [File], configFile: String) {
@@ -19,7 +11,6 @@ struct MockedSwiftLintExecutor: SwiftLintExecuting {
 }
 
 struct MockedCoverageReporter: CoverageReporting {
-
     static var reportedXCResultBundlesNames: [String: [String]] = [:]
 
     static func reportCoverage(for xcResultBundle: XCResultBundle, excludedTargets: [String]) {

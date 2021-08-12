@@ -9,7 +9,8 @@ let package = Package(
         // Products define the executables and libraries produced by a package, and make them visible to other packages.
         .library(
             name: "WeTransferPRLinter",
-            targets: ["WeTransferPRLinter"])
+            targets: ["WeTransferPRLinter"]
+        )
     ],
     dependencies: [
         .package(url: "https://github.com/danger/swift", from: "3.0.0"),
@@ -20,9 +21,11 @@ let package = Package(
     targets: [
         .target(
             name: "WeTransferPRLinter",
-            dependencies: ["Danger", "DangerSwiftCoverage", "DangerXCodeSummary", "Files"]),
+            dependencies: ["Danger", "DangerSwiftCoverage", "DangerXCodeSummary", "Files"]
+        ),
         .testTarget(
             name: "WeTransferPRLinterTests",
-            dependencies: ["WeTransferPRLinter", "DangerFixtures"])
+            dependencies: ["WeTransferPRLinter", "DangerFixtures"]
+        )
     ]
 )

@@ -1,13 +1,10 @@
-// danger:disable unowned_self
-
-import XCTest
-@testable import WeTransferPRLinter
 @testable import Danger
 @testable import DangerFixtures
 import Files
+@testable import WeTransferPRLinter
+import XCTest
 
 final class WeTransferLinterTests: XCTestCase {
-
     private var buildFolder: Folder!
 
     override func setUp() {
@@ -80,8 +77,8 @@ final class WeTransferLinterTests: XCTestCase {
         WeTransferPRLinter.lint(using: danger, summaryReporter: summaryReporter, reportsPath: buildFolder.name)
 
         XCTAssertEqual(summaryReporter.reportedSummaryFiles.count, 2)
-        XCTAssertTrue(summaryReporter.reportedSummaryFiles.map { $0.name }.contains(rabbitSummaryFile.name))
-        XCTAssertTrue(summaryReporter.reportedSummaryFiles.map { $0.name }.contains(okapiSummaryFile.name))
+        XCTAssertTrue(summaryReporter.reportedSummaryFiles.map(\.name).contains(rabbitSummaryFile.name))
+        XCTAssertTrue(summaryReporter.reportedSummaryFiles.map(\.name).contains(okapiSummaryFile.name))
     }
 
     /// It should add the file name in front of the summary message.

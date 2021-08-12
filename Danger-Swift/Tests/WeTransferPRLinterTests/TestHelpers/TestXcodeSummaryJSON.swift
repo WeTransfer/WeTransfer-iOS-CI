@@ -1,10 +1,3 @@
-//
-//  TestXcodeSummaryJSON.swift
-//  WeTransferPRLinterTests
-//
-//  Created by Antoine van der Lee on 13/01/2020.
-//
-
 import Foundation
 
 /// Used for testing the Xcode Summary logic.

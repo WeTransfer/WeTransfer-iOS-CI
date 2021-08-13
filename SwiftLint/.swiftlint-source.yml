@@ -21,7 +21,6 @@ opt_in_rules:
   - first_where
   - identical_operands
   - joined_default_parameter
-  - modifier_order
   - object_literal
   - operator_usage_whitespace
   - overridden_super_call

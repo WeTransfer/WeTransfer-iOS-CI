@@ -3,3 +3,5 @@
 --disable unusedArguments
 --header strip
 --commas inline
+--selfrequired waitFor
+--selfrequired expectation

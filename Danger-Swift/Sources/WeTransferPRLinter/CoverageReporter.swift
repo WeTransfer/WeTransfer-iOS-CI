@@ -1,13 +1,6 @@
-//
-//  CoverageReporter.swift
-//  WeTransferPRLinter
-//
-//  Created by Antoine van der Lee on 09/01/2020.
-//
-
-import Foundation
 import DangerSwiftCoverage
 import Files
+import Foundation
 
 public typealias XCResultBundle = Folder
 

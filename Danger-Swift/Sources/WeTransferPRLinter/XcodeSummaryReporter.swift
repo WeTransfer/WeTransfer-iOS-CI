@@ -1,13 +1,6 @@
-//
-//  XcodeSummaryReporter.swift
-//  WeTransferPRLinter
-//
-//  Created by Antoine van der Lee on 13/01/2020.
-//
-
-import Foundation
 import DangerXCodeSummary
 import Files
+import Foundation
 
 public typealias XcodeSummaryContaining = File
 
@@ -20,15 +13,15 @@ public enum XcodeSummaryReporter: XcodeSummaryReporting {
         print("Generating Xcode Summary report for \(file.name)")
         let summary = XCodeSummary(filePath: file.path, resultsFilter: { result in
             guard let file = result.file else { return true }
-            
+
             /// Filter results from submodules
-            guard !file.contains("Submodules/") && !result.message.contains("Submodules/") else { return false }
+            guard !file.contains("Submodules/"), !result.message.contains("Submodules/") else { return false }
 
             /// Filter results from packages
-            guard !file.contains("SourcePackages/") && !result.message.contains("SourcePackages/") else { return false }
+            guard !file.contains("SourcePackages/"), !result.message.contains("SourcePackages/") else { return false }
 
             /// Filter results from build folder
-            guard !file.contains(".build/") && !result.message.contains(".build/") else { return false }
+            guard !file.contains(".build/"), !result.message.contains(".build/") else { return false }
 
             return true
         })
@@ -40,6 +33,7 @@ extension XcodeSummaryContaining {
     enum Error: Swift.Error {
         case updateSummaryContentFailed
     }
+
     /*
      Adds the file name in front of the summary message.
      E.g.:
@@ -51,13 +45,14 @@ extension XcodeSummaryContaining {
     func addFileNameToSummaryMessage() throws {
         guard
             var json = try JSONSerialization.jsonObject(with: try read(), options: []) as? [String: Any],
-            let summaryMessages = json["tests_summary_messages"] as? [String] else {
-                throw Error.updateSummaryContentFailed
+            let summaryMessages = json["tests_summary_messages"] as? [String]
+        else {
+            throw Error.updateSummaryContentFailed
         }
 
         let name = String(self.name.split(separator: "_").first ?? "")
         let updatedSummaryMessages = summaryMessages.map { summaryMessage in
-            return summaryMessage.replacingOccurrences(of: "Executed", with: "\(name): Executed")
+            summaryMessage.replacingOccurrences(of: "Executed", with: "\(name): Executed")
         }
 
         json["tests_summary_messages"] = updatedSummaryMessages

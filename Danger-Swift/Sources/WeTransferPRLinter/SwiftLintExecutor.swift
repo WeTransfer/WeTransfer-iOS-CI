@@ -1,12 +1,5 @@
-//
-//  SwiftLintExecutor.swift
-//  WeTransferPRLinter
-//
-//  Created by Antoine van der Lee on 09/01/2020.
-//
-
-import Foundation
 import Danger
+import Foundation
 
 /// Defines a type that's capable of executing SwiftLint.
 public protocol SwiftLintExecuting {

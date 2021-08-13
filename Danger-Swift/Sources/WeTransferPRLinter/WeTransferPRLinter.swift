@@ -1,9 +1,9 @@
-// danger:disable unowned_self
-
 import Danger
-import Foundation
-import Files
 import DangerXCodeSummary
+import Files
+import Foundation
+
+// danger:disable unowned_self
 
 public enum WeTransferPRLinter {
     public static func lint(using danger: DangerDSL = Danger(),
@@ -11,7 +11,8 @@ public enum WeTransferPRLinter {
                             summaryReporter: XcodeSummaryReporting.Type = XcodeSummaryReporter.self,
                             coverageReporter: CoverageReporting.Type = CoverageReporter.self,
                             reportsPath: String = "build/reports",
-                            swiftLintConfigsFolderPath: String? = nil) {
+                            swiftLintConfigsFolderPath: String? = nil)
+    {
         reportXcodeSummary(using: danger, summaryReporter: summaryReporter, reportsPath: reportsPath)
         reportCodeCoverage(using: danger, coverageReporter: coverageReporter, reportsPath: reportsPath)
         validatePRDescription(using: danger)
@@ -32,7 +33,7 @@ public enum WeTransferPRLinter {
                 return print("There were no files to create an Xcode Summary report for.")
             }
 
-            print("Found Summary Reports:\n- \(summaryFiles.map { $0.name }.joined(separator: "\n- "))")
+            print("Found Summary Reports:\n- \(summaryFiles.map(\.name).joined(separator: "\n- "))")
 
             summaryFiles.forEach { jsonFile in
                 try? jsonFile.addFileNameToSummaryMessage()
@@ -54,7 +55,7 @@ public enum WeTransferPRLinter {
                 return print("There were no files to create a code coverage report for.")
             }
 
-            print("Found the following reports:\n- \(xcResultBundles.map { $0.description }.joined(separator: "\n- "))")
+            print("Found the following reports:\n- \(xcResultBundles.map(\.description).joined(separator: "\n- "))")
             let testTargetsToExclude = xcResultBundles.map { "\($0.projectName)Tests" }
             xcResultBundles.forEach { xcResultBundle in
                 coverageReporter.reportCoverage(for: xcResultBundle, excludedTargets: testTargetsToExclude)
@@ -76,7 +77,7 @@ public enum WeTransferPRLinter {
     static func validateWorkInProgress(using danger: DangerDSL) {
         let hasWIPLabel = danger.github.issue.labels.contains(where: { $0.name.contains("WIP") })
         let hasWIPTitle = danger.github.pullRequest.title.contains("WIP")
-      
+
         guard hasWIPLabel || hasWIPTitle else {
             return
         }
@@ -116,7 +117,6 @@ public enum WeTransferPRLinter {
 }
 
 extension WeTransferPRLinter {
-
     /// Validates the added and modified files.
     static func validateFiles(using danger: DangerDSL) {
         let allFiles = Set(danger.git.createdFiles).union(danger.git.modifiedFiles)
@@ -167,7 +167,7 @@ extension WeTransferPRLinter {
                 lines[index + 1].contains("super"),
                 lines[index + 2].contains("}"),
                 !lines[index + 2].contains("{")
-                else { continue }
+            else { continue }
             danger.warn(message: "Override methods which only call super can be removed", file: file, line: index + 3)
         }
     }

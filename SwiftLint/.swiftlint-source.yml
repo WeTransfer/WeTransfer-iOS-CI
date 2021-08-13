@@ -5,6 +5,9 @@ disabled_rules: # Rule identifiers to exclude from running
   - force_cast
   - force_try
   - orphaned_doc_comment
+  - opening_brace
+  - switch_case_alignment
+  - trailing_comma
 opt_in_rules:
   - block_based_kvo
   - class_delegate_protocol
@@ -18,7 +21,6 @@ opt_in_rules:
   - first_where
   - identical_operands
   - joined_default_parameter
-  - modifier_order
   - object_literal
   - operator_usage_whitespace
   - overridden_super_call
@@ -29,15 +31,8 @@ opt_in_rules:
   - toggle_bool
   - type_contents_order
 syntactic_sugar: error
-trailing_comma: 
-  severity: error
-trailing_newline: error
-trailing_semicolon: error
-trailing_whitespace: error
 unused_closure_parameter: error
 unused_optional_binding: 
-  severity: error
-vertical_whitespace: 
   severity: error
 file_length:
   warning: 600
@@ -54,8 +49,6 @@ type_name:
     error: 60
 object_literal:
   color_literal: false
-trailing_whitespace:
-  ignores_empty_lines: true # This is such a hassle to do right and adds nothing
 type_contents_order:
   order:
     - case

@@ -468,11 +468,15 @@ private_lane :latest_github_non_candidate_tag do
   organisation = origin_name[0]
   repository = origin_name[1]
 
+  # We set the page size to the max of 100 releaser per page so that as a quick way 
+  # of avoiding pagination. This gives us more than enough release candidates for weekly or 
+  # a bi-weekly build train. This lane will fail when there were more then 99 pre-releases published since the 
+  # latest release. Because then the results won't return the lates non candidate release and thus we don't know the tag.
   result = github_api(
     server_url: 'https://api.github.com',
     api_token: ENV['DANGER_GITHUB_API_TOKEN'],
     http_method: 'GET',
-    path: "/repos/#{organisation}/#{repository}/releases"
+    path: "/repos/#{organisation}/#{repository}/releases?per_page=100"
   )
   latest_release = result[:json].find { |release| !release['name'].downcase.include? 'candidate' }
   latest_release['tag_name']

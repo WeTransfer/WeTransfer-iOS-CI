@@ -95,7 +95,7 @@ end
 desc 'Creates a new App Store Release'
 desc ''
 desc '- Fetches the latest Github Release'
-desc '- Merges the related tag into master'
+desc '- Merges the related tag into main'
 desc '- Updates the changelog, creates a PR to develop for this as well'
 desc '- Uses the changelog and creates a new Github App Store Release'
 desc '- Submits the build to App Store Connect and TestFlight'
@@ -181,7 +181,7 @@ lane :release do |options|
       api_token: ENV['DANGER_GITHUB_API_TOKEN'],
       repo: repo,
       title: "Merge release #{tag_name} into main",
-      base: 'master', # The branch to merge the changes into.
+      base: 'main', # The branch to merge the changes into.
       body: "Containing all the changes for our latest release: [#{tag_name}](#{release_url})."
     )
 
@@ -261,7 +261,7 @@ lane :release do |options|
   end
 end
 
-desc 'Creates a hotfix using the release lane. Should always be called on master'
+desc 'Creates a hotfix using the release lane. Should always be called on the main branch.'
 lane :hotfix do
   release(hotfix: true)
 end

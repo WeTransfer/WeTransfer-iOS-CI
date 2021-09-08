@@ -119,7 +119,7 @@ desc ' * **`groups`**: A list of TestFlight groups that should get access to the
 desc ' * **`hotfix`**: Whether the build is a hotfix release.'
 desc ''
 lane :release do |options|
-  # Get the latest released tag, merge it into master and push it to remote.
+  # Get the latest released tag, merge it into main and push it to remote.
   xcodeproj = options[:xcodeproj] || ENV['XCODEPROJ']
   target = options[:target] || ENV['XCODE_TARGET']
   scheme = options[:scheme] || ENV['XCODE_SCHEME']
@@ -141,7 +141,7 @@ lane :release do |options|
 
     branch_name = is_hotfix ? "hotfix/#{latest_release_tag}" : "release/#{latest_release_tag}"
 
-    sh "git branch #{branch_name} origin/master"
+    sh "git branch #{branch_name} origin/main"
     sh "git checkout #{branch_name}"
 
     sh "git merge -X theirs #{latest_release_tag}" unless is_hotfix
@@ -162,7 +162,7 @@ lane :release do |options|
     sh("git push origin #{branch_name}")
 
     release_latest_tag = is_hotfix ? latest_release_tag : last_non_candidate_tag
-    release_base_branch = is_hotfix ? 'master' : 'develop'
+    release_base_branch = is_hotfix ? 'main' : 'develop'
     release_output = sh("gitbuddy release -l #{release_latest_tag} -b #{release_base_branch} -c '../Changelog.md' --target-commitish #{target_commitish} --tag-name #{tag_name} --release-title '#{release_title}' --verbose")
     release_url = URI.extract(release_output).find { |url| url.include? 'releases/tag' }
     puts "Created release with URL: #{release_url}"
@@ -176,11 +176,11 @@ lane :release do |options|
 
     repo = git_repository_name
 
-    # Create a pull request for master to include the updated Changelog.md
+    # Create a pull request for main to include the updated Changelog.md
     create_pull_request(
       api_token: ENV['DANGER_GITHUB_API_TOKEN'],
       repo: repo,
-      title: "Merge release #{tag_name} into master",
+      title: "Merge release #{tag_name} into main",
       base: 'master', # The branch to merge the changes into.
       body: "Containing all the changes for our latest release: [#{tag_name}](#{release_url})."
     )

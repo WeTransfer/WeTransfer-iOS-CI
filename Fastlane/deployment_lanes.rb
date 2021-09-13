@@ -176,9 +176,6 @@ lane :release do |options|
 
     repo = git_repository_name
 
-    puts "HEAD"
-    sh("git rev-parse --abbrev-ref HEAD")
-
     # Create a pull request for main to include the updated Changelog.md
     create_pull_request(
       api_token: ENV['DANGER_GITHUB_API_TOKEN'],

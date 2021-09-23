@@ -15,6 +15,7 @@ disabled_rules: # Rule identifiers to exclude from running
   - opening_brace
   - switch_case_alignment
   - trailing_comma
+  - todo
 opt_in_rules:
   - empty_count
   - explicit_init

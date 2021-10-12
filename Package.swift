@@ -1,8 +1,8 @@
-// swift-tools-version:5.1
+// swift-tools-version:5.5
 import PackageDescription
 
 let package = Package(
-    name: "Coyote",
+    name: "WeTransfer-iOS-CI",
     products: [
         .library(name: "DangerDeps", type: .dynamic, targets: ["DangerDependencies"]) // dev
     ],

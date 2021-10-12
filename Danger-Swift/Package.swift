@@ -25,7 +25,7 @@ let package = Package(
         ),
         .testTarget(
             name: "WeTransferPRLinterTests",
-            dependencies: ["WeTransferPRLinter", "DangerFixtures"]
+            dependencies: ["WeTransferPRLinter", .product(name: "DangerFixtures", package: "Danger")]
         )
     ]
 )

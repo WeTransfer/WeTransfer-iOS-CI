@@ -67,6 +67,7 @@ workflows:
             set -x
 
             bundle exec fastlane unhide_spm_package_dev_dependencies
+            brew install danger/tap/danger-swift
             swift run danger-swift ci --cache-path .build --build-path .build
     - cache-push:
         run_if: true

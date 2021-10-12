@@ -41,6 +41,7 @@ workflows:
             #!/usr/bin/env bash
             bundle config set path 'vendor/bundle'
             bundle install
+            gem install cocoapods
 
             # Use the environment FASTLANE_TAG_RELEASE_LANE if available. Otherwise, fallback to "release_from_tag"
             lane=${FASTLANE_TAG_RELEASE_LANE:=release_from_tag}

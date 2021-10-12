@@ -13,7 +13,7 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(name: "Danger", url: "https://github.com/danger/swift", from: "3.0.0"),
+        .package(name: "danger-swift", url: "https://github.com/danger/swift", from: "3.0.0"),
         .package(name: "DangerSwiftCoverage", url: "https://github.com/f-meloni/danger-swift-coverage", from: "1.1.0"),
         .package(name: "DangerXCodeSummary", url: "https://github.com/f-meloni/danger-swift-xcodesummary", from: "1.2.1"),
         .package(name: "Files", url: "https://github.com/JohnSundell/Files", from: "4.1.1")
@@ -21,11 +21,11 @@ let package = Package(
     targets: [
         .target(
             name: "WeTransferPRLinter",
-            dependencies: ["Danger", "DangerSwiftCoverage", "DangerXCodeSummary", "Files"]
+            dependencies: [.product(name: "Danger", package: "danger-swift"), "DangerSwiftCoverage", "DangerXCodeSummary", "Files"]
         ),
         .testTarget(
             name: "WeTransferPRLinterTests",
-            dependencies: ["WeTransferPRLinter", .product(name: "DangerFixtures", package: "Danger")]
+            dependencies: ["WeTransferPRLinter", .product(name: "DangerFixtures", package: "danger-swift")]
         )
     ]
 )

@@ -6,14 +6,13 @@ import PackageDescription
 let package = Package(
     name: "WeTransferPRLinter",
     products: [
-        // Products define the executables and libraries produced by a package, and make them visible to other packages.
         .library(
             name: "WeTransferPRLinter",
             targets: ["WeTransferPRLinter"]
         )
     ],
     dependencies: [
-        .package(name: "danger-swift", url: "https://github.com/danger/swift", from: "3.0.0"),
+        .package(url: "https://github.com/danger/swift", .exact("3.10.2")),
         .package(name: "DangerSwiftCoverage", url: "https://github.com/f-meloni/danger-swift-coverage", from: "1.1.0"),
         .package(name: "DangerXCodeSummary", url: "https://github.com/f-meloni/danger-swift-xcodesummary", from: "1.2.1"),
         .package(name: "Files", url: "https://github.com/JohnSundell/Files", from: "4.1.1")
@@ -21,11 +20,19 @@ let package = Package(
     targets: [
         .target(
             name: "WeTransferPRLinter",
-            dependencies: [.product(name: "Danger", package: "danger-swift"), "DangerSwiftCoverage", "DangerXCodeSummary", "Files"]
-        ),
-        .testTarget(
-            name: "WeTransferPRLinterTests",
-            dependencies: ["WeTransferPRLinter", .product(name: "DangerFixtures", package: "danger-swift")]
-        )
+            dependencies: [
+                .product(name: "Danger", package: "swift"),
+                "DangerSwiftCoverage",
+                "DangerXCodeSummary",
+                "Files"
+            ]
+        )//,
+//        .testTarget(
+//            name: "WeTransferPRLinterTests",
+//            dependencies: [
+//                "WeTransferPRLinter",
+//                "DangerFixtures"
+//            ]
+//        )
     ]
 )

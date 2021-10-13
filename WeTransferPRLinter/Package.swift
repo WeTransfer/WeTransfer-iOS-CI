@@ -1,4 +1,4 @@
-// swift-tools-version:5.3
+// swift-tools-version:5.5
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -12,7 +12,7 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(url: "https://github.com/danger/swift", from: "3.12.0"),
+        .package(name: "danger-swift", url: "https://github.com/danger/swift", .exact("3.10.1")),
         .package(name: "DangerSwiftCoverage", url: "https://github.com/f-meloni/danger-swift-coverage", from: "1.1.0"),
         .package(name: "DangerXCodeSummary", url: "https://github.com/f-meloni/danger-swift-xcodesummary", from: "1.2.1"),
         .package(name: "Files", url: "https://github.com/JohnSundell/Files", from: "4.1.1")
@@ -21,7 +21,7 @@ let package = Package(
         .target(
             name: "WeTransferPRLinter",
             dependencies: [
-                .product(name: "Danger", package: "swift"),
+                .product(name: "Danger", package: "danger-swift"),
                 "DangerSwiftCoverage",
                 "DangerXCodeSummary",
                 "Files"
@@ -31,7 +31,7 @@ let package = Package(
             name: "WeTransferPRLinterTests",
             dependencies: [
                 "WeTransferPRLinter",
-                .product(name: "DangerFixtures", package: "swift")
+                .product(name: "DangerFixtures", package: "danger-swift")
             ]
         )
     ]

@@ -4,7 +4,7 @@ import PackageDescription
 let package = Package(
     name: "WeTransfer-iOS-CI",
     products: [
-        .library(name: "DangerDeps[CI]", type: .dynamic, targets: ["DangerDependencies"]) // dev
+        .library(name: "DangerDeps", type: .dynamic, targets: ["DangerDependencies"]) // dev
     ],
     dependencies: [
         .package(url: "https://github.com/danger/swift", from: "3.0.0"),

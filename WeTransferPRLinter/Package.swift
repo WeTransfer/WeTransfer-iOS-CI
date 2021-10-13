@@ -26,14 +26,13 @@ let package = Package(
                 "DangerXCodeSummary",
                 "Files"
             ]
+        ),
+        .testTarget(
+            name: "WeTransferPRLinterTests",
+            dependencies: [
+                "WeTransferPRLinter",
+                .product(name: "DangerFixtures", package: "swift")
+            ]
         )
-//        ,
-//        .testTarget(
-//            name: "WeTransferPRLinterTests",
-//            dependencies: [
-//                "WeTransferPRLinter",
-//                .product(name: "DangerFixtures", package: "swift")
-//            ]
-//        )
     ]
 )

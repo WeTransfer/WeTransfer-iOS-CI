@@ -46,6 +46,7 @@ workflows:
         - content: |-
             #!/usr/bin/env bash
             bundle config set --local path '.gem-caches'
+            bundle config set --local without 'cocoapods'
             bundle install
     - script:
         title: Run Fastlane

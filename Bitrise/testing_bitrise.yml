@@ -66,6 +66,7 @@ workflows:
             # debug log
             set -x
 
+            echo "running from a branch"
             bundle exec fastlane unhide_spm_package_dev_dependencies
             swift run danger-swift ci --cache-path .build --build-path .build
     - cache-push:

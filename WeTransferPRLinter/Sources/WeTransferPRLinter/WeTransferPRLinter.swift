@@ -14,7 +14,7 @@ public enum WeTransferPRLinter {
                             swiftLintConfigsFolderPath: String? = nil)
     {
         reportXcodeSummary(using: danger, summaryReporter: summaryReporter, reportsPath: reportsPath)
-        reportCodeCoverage(using: danger, coverageReporter: coverageReporter, reportsPath: reportsPath)
+        // reportCodeCoverage(using: danger, coverageReporter: coverageReporter, reportsPath: reportsPath)
         validatePRDescription(using: danger)
         validateWorkInProgress(using: danger)
         validateFiles(using: danger)

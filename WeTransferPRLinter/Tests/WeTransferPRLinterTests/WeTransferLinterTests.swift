@@ -91,7 +91,7 @@ final class WeTransferLinterTests: XCTestCase {
         let danger = githubWithFilesDSL()
         let summaryReporter = MockedXcodeSummaryReporter.self
         let summaryFile = try buildFolder.createFile(at: "WeTransfer-iOS-SDK-Package_Tests.json", contents: weTransferPackageJSONData)
-        WeTransferPRLinter.lint(using: danger, summaryReporter: summaryReporter, reportsPath: buildFolder.name)
+        WeTransferPRLinter.lint(using: danger, swiftLintExecutor: MockedSwiftLintExecutor.self, summaryReporter: summaryReporter, reportsPath: buildFolder.name)
         XCTAssertEqual(summaryReporter.reportedSummaryFiles.count, 1)
         let summaryFileContents = try summaryFile.readAsString()
         XCTAssertTrue(summaryFileContents.contains("Rabbit: Executed 964 tests, with 0 failures (0 unexpected) in 135.257 (135.775) seconds"))
@@ -107,9 +107,22 @@ final class WeTransferLinterTests: XCTestCase {
         let danger = githubWithFilesDSL()
         let summaryReporter = MockedXcodeSummaryReporter.self
 
-        WeTransferPRLinter.lint(using: danger, summaryReporter: summaryReporter, coverageReporter: MockedCoverageReporter.self, reportsPath: buildFolder.path)
+        WeTransferPRLinter.lint(using: danger, swiftLintExecutor: MockedSwiftLintExecutor.self, summaryReporter: summaryReporter, coverageReporter: MockedCoverageReporter.self, reportsPath: buildFolder.path)
         XCTAssertEqual(danger.messages.map { $0.message }, [
-            "Executed 793 tests, with 11 failures"
+            "Totally executed 793 tests, with 11 failures",
+            "ContentKitTests: Executed 148 tests, with 1 failures in 3.323 seconds",
+            "CoreExtensionsTests: Executed 60 tests, with 0 failures in 0.152 seconds",
+            "CoreUIKitTests: Executed 99 tests, with 0 failures in 3.413 seconds",
+            "DeeplinkingTests: Executed 10 tests, with 0 failures in 0.018 seconds",
+            "NetworkingTests: Executed 90 tests, with 0 failures in 5.234 seconds",
+            "OkapiFirebaseTests: Executed 11 tests, with 0 failures in 0.017 seconds",
+            "OkapiTests: Executed 20 tests, with 0 failures in 0.222 seconds",
+            "ReceivingTests: Executed 39 tests, with 0 failures in 0.237 seconds",
+            "SSOAuthenticationTests: Executed 14 tests, with 0 failures in 1.055 seconds",
+            "SpaceshipAPITests: Executed 102 tests, with 0 failures in 21.979 seconds",
+            "WeTransferAPITests: Executed 114 tests, with 6 failures in 70.232 seconds",
+            "StormTests: Executed 65 tests, with 4 failures in 47.340 seconds",
+            "MigrationKitTests: Executed 21 tests, with 0 failures in 2.109 seconds"
         ])
         XCTAssertEqual(danger.fails.count, 0)
     }
@@ -124,9 +137,10 @@ final class WeTransferLinterTests: XCTestCase {
         let danger = githubWithFilesDSL()
         let summaryReporter = MockedXcodeSummaryReporter.self
 
-        WeTransferPRLinter.lint(using: danger, summaryReporter: summaryReporter, coverageReporter: MockedCoverageReporter.self, reportsPath: buildFolder.path)
+        WeTransferPRLinter.lint(using: danger, swiftLintExecutor: MockedSwiftLintExecutor.self, summaryReporter: summaryReporter, coverageReporter: MockedCoverageReporter.self, reportsPath: buildFolder.path)
         XCTAssertEqual(danger.messages.map { $0.message }, [
-            "Executed 60 tests, with 1 failures"
+            "Totally executed 60 tests, with 1 failures",
+            "CoreExtensionsTests: Executed 60 tests, with 1 failures in 0.688 seconds"
         ])
         let testFailure = try XCTUnwrap(danger.fails.first)
         XCTAssertEqual(testFailure.message, "**OptionalExtensionsTests.testStringNilIfEmpty(): **<br />XCTAssertNotNil failed")

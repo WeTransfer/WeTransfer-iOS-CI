@@ -83,6 +83,62 @@ final class WeTransferLinterTests: XCTestCase {
         XCTAssertTrue(summaryReporter.reportedSummaryFiles.map(\.name).contains(okapiSummaryFile.name))
     }
 
+    func testXcodeSummaryReportingMultipleTestRuns() throws {
+        let weTransferPackageJSONData: Data = {
+            let url = Bundle.module.url(forResource: "Resources/WeTransfer-iOS-SDK-Package_Tests", withExtension: "json")!.copied()
+            return try! Data(contentsOf: url)
+        }()
+        let danger = githubWithFilesDSL()
+        let summaryReporter = MockedXcodeSummaryReporter.self
+        let summaryFile = try buildFolder.createFile(at: "WeTransfer-iOS-SDK-Package_Tests.json", contents: weTransferPackageJSONData)
+        WeTransferPRLinter.lint(using: danger, summaryReporter: summaryReporter, reportsPath: buildFolder.name)
+        XCTAssertEqual(summaryReporter.reportedSummaryFiles.count, 1)
+        let summaryFileContents = try summaryFile.readAsString()
+        XCTAssertTrue(summaryFileContents.contains("Rabbit: Executed 964 tests, with 0 failures (0 unexpected) in 135.257 (135.775) seconds"))
+    }
+
+    /// It should report XCResult files correctly when a package with multiple tests is executed.
+    func testXCResultSummaryReportingForFullPackageTesting() throws {
+        let xcResultFilename = "WeTransfer-iOS-SDK-Package.xcresult"
+        let xcResultFile = Bundle.module.url(forResource: "Resources/\(xcResultFilename)", withExtension: nil)!
+        let file = try Folder(path: xcResultFile.deletingLastPathComponent().path).subfolder(named: xcResultFilename)
+        try file.copy(to: buildFolder)
+
+        let danger = githubWithFilesDSL()
+        let summaryReporter = MockedXcodeSummaryReporter.self
+
+        WeTransferPRLinter.lint(using: danger, summaryReporter: summaryReporter, coverageReporter: MockedCoverageReporter.self, reportsPath: buildFolder.path)
+        XCTAssertEqual(danger.messages.map { $0.message }, [
+            "Executed 793 tests, with 11 failures"
+        ])
+        XCTAssertEqual(danger.fails.count, 0)
+    }
+
+    /// It should report XCResult files correctly when a single package test is executed.
+    func testXCResultSummaryReportingForSinglePackageTesting() throws {
+        let xcResultFilename = "CoreExtensions.xcresult"
+        let xcResultFile = Bundle.module.url(forResource: "Resources/\(xcResultFilename)", withExtension: nil)!
+        let file = try Folder(path: xcResultFile.deletingLastPathComponent().path).subfolder(named: xcResultFilename)
+        try file.copy(to: buildFolder)
+
+        let danger = githubWithFilesDSL()
+        let summaryReporter = MockedXcodeSummaryReporter.self
+
+        WeTransferPRLinter.lint(using: danger, summaryReporter: summaryReporter, coverageReporter: MockedCoverageReporter.self, reportsPath: buildFolder.path)
+        XCTAssertEqual(danger.messages.map { $0.message }, [
+            "Executed 60 tests, with 1 failures"
+        ])
+        let testFailure = try XCTUnwrap(danger.fails.first)
+        XCTAssertEqual(testFailure.message, "**OptionalExtensionsTests.testStringNilIfEmpty(): **<br />XCTAssertNotNil failed")
+        XCTAssertEqual(testFailure.file, "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/WeTransfer-iOS-SDK/CoreExtensions/Tests/CoreExtensionsTests/OptionalExtensionsTests.swift")
+        XCTAssertEqual(testFailure.line, 15)
+
+        let warning = try XCTUnwrap(danger.warnings.first)
+        XCTAssertEqual(warning.message, "Initialization of variable 'property' was never used; consider replacing with assignment to '_' or removing it")
+        XCTAssertEqual(warning.file, "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/WeTransfer-iOS-SDK/CoreExtensions/Sources/CoreExtensions/OptionalExtensions.swift")
+        XCTAssertEqual(warning.line, 15)
+    }
+
     /// It should add the file name in front of the summary message.
     func testFileNameInSummaryMessage() throws {
         let danger = githubWithFilesDSL()
@@ -330,4 +386,19 @@ final class WeTransferLinterTests: XCTestCase {
         ("testSwiftLintFileSplitting", testSwiftLintFileSplitting),
         ("testSwiftLintSkippingForNoSwiftFiles", testSwiftLintSkippingForNoSwiftFiles)
     ]
+}
+
+private extension URL {
+    /// Creates a copy of the file at the current URL to prevent the original file from being affected.
+    /// Files can get deleted after a test is cleaned up, making future tests fail.
+    func copied() -> URL {
+        guard isFileURL else { fatalError("Can't copy a non-file URL") }
+
+        let destinationDirectory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
+        try! FileManager.default.createDirectory(at: destinationDirectory, withIntermediateDirectories: false, attributes: nil)
+        let newFileURL = destinationDirectory.appendingPathComponent(lastPathComponent)
+        try! FileManager.default.copyItem(at: self, to: newFileURL)
+        assert(FileManager.default.fileExists(atPath: newFileURL.path), "Source file should exist")
+        return newFileURL
+    }
 }

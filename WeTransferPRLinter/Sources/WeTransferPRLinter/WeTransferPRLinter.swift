@@ -9,12 +9,14 @@ public enum WeTransferPRLinter {
     public static func lint(using danger: DangerDSL = Danger(),
                             swiftLintExecutor: SwiftLintExecuting.Type = SwiftLintExecutor.self,
                             summaryReporter: XcodeSummaryReporting.Type = XcodeSummaryReporter.self,
+                            xcResultSummaryReporter: XCResultSummaryReporter.Type = XCResultSummaryReporter.self,
                             coverageReporter: CoverageReporting.Type = CoverageReporter.self,
                             reportsPath: String = "build/reports",
                             swiftLintConfigsFolderPath: String? = nil)
     {
         reportXcodeSummary(using: danger, summaryReporter: summaryReporter, reportsPath: reportsPath)
-        // reportCodeCoverage(using: danger, coverageReporter: coverageReporter, reportsPath: reportsPath)
+        reportXCResultsSummary(using: danger, summaryReporter: xcResultSummaryReporter, reportsPath: reportsPath)
+        reportCodeCoverage(using: danger, coverageReporter: coverageReporter, reportsPath: reportsPath)
         validatePRDescription(using: danger)
         validateWorkInProgress(using: danger)
         validateFiles(using: danger)
@@ -41,6 +43,40 @@ public enum WeTransferPRLinter {
             }
         } catch {
             danger.warn("Xcode Summary failed with error: \(error).")
+        }
+    }
+
+    static func reportXCResultsSummary(using danger: DangerDSL, summaryReporter: XCResultSummaryReporting.Type, reportsPath: String) {
+        defer { print("\n") }
+
+        do {
+            let reportsFolder = try Folder(path: reportsPath)
+            let summaryFiles = reportsFolder.subfolders.filter { $0.extension == "xcresult" }
+
+            guard !summaryFiles.isEmpty else {
+                return print("There were no files to create an XCResult Summary report for.")
+            }
+
+            print("Found XCResult Summary Reports:\n- \(summaryFiles.map(\.name).joined(separator: "\n- "))")
+
+            summaryFiles.forEach { jsonFile in
+                summaryReporter.reportXCResultSummary(for: jsonFile, using: danger) { result in
+                    guard let file = result.file else { return true }
+
+                    /// Filter results from submodules
+                    guard !file.contains("Submodules/"), !result.message.contains("Submodules/") else { return false }
+
+                    /// Filter results from packages
+                    guard !file.contains("SourcePackages/"), !result.message.contains("SourcePackages/") else { return false }
+
+                    /// Filter results from build folder
+                    guard !file.contains(".build/"), !result.message.contains(".build/") else { return false }
+
+                    return true
+                }
+            }
+        } catch {
+            danger.warn("XCResult Summary failed with error: \(error).")
         }
     }
 

@@ -1,0 +1,1419 @@
+{
+  "warnings": [
+
+  ],
+  "ld_warnings": [
+
+  ],
+  "compile_warnings": [
+    {
+      "file_name": "Cipher.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/CryptoSwift/Sources/CryptoSwift/Cipher.swift:21:25",
+      "reason": "using 'class' keyword to define a class-constrained protocol is deprecated; use 'AnyObject' instead",
+      "line": "public protocol Cipher: class {",
+      "cursor": "                        ^~~~~"
+    },
+    {
+      "file_name": "Cipher.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/CryptoSwift/Sources/CryptoSwift/Cipher.swift:21:25",
+      "reason": "using 'class' keyword to define a class-constrained protocol is deprecated; use 'AnyObject' instead",
+      "line": "public protocol Cipher: class {",
+      "cursor": "                        ^~~~~"
+    },
+    {
+      "file_name": "Cipher.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/CryptoSwift/Sources/CryptoSwift/Cipher.swift:21:25",
+      "reason": "using 'class' keyword to define a class-constrained protocol is deprecated; use 'AnyObject' instead",
+      "line": "public protocol Cipher: class {",
+      "cursor": "                        ^~~~~"
+    },
+    {
+      "file_name": "Cipher.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/CryptoSwift/Sources/CryptoSwift/Cipher.swift:21:25",
+      "reason": "using 'class' keyword to define a class-constrained protocol is deprecated; use 'AnyObject' instead",
+      "line": "public protocol Cipher: class {",
+      "cursor": "                        ^~~~~"
+    },
+    {
+      "file_name": "Cipher.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/CryptoSwift/Sources/CryptoSwift/Cipher.swift:21:25",
+      "reason": "using 'class' keyword to define a class-constrained protocol is deprecated; use 'AnyObject' instead",
+      "line": "public protocol Cipher: class {",
+      "cursor": "                        ^~~~~"
+    },
+    {
+      "file_name": "Cipher.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/CryptoSwift/Sources/CryptoSwift/Cipher.swift:21:25",
+      "reason": "using 'class' keyword to define a class-constrained protocol is deprecated; use 'AnyObject' instead",
+      "line": "public protocol Cipher: class {",
+      "cursor": "                        ^~~~~"
+    },
+    {
+      "file_name": "Cipher.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/CryptoSwift/Sources/CryptoSwift/Cipher.swift:21:25",
+      "reason": "using 'class' keyword to define a class-constrained protocol is deprecated; use 'AnyObject' instead",
+      "line": "public protocol Cipher: class {",
+      "cursor": "                        ^~~~~"
+    },
+    {
+      "file_name": "Cipher.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/CryptoSwift/Sources/CryptoSwift/Cipher.swift:21:25",
+      "reason": "using 'class' keyword to define a class-constrained protocol is deprecated; use 'AnyObject' instead",
+      "line": "public protocol Cipher: class {",
+      "cursor": "                        ^~~~~"
+    },
+    {
+      "file_name": "Cipher.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/CryptoSwift/Sources/CryptoSwift/Cipher.swift:21:25",
+      "reason": "using 'class' keyword to define a class-constrained protocol is deprecated; use 'AnyObject' instead",
+      "line": "public protocol Cipher: class {",
+      "cursor": "                        ^~~~~"
+    },
+    {
+      "file_name": "Cipher.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/CryptoSwift/Sources/CryptoSwift/Cipher.swift:21:25",
+      "reason": "using 'class' keyword to define a class-constrained protocol is deprecated; use 'AnyObject' instead",
+      "line": "public protocol Cipher: class {",
+      "cursor": "                        ^~~~~"
+    },
+    {
+      "file_name": "Cryptors.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/CryptoSwift/Sources/CryptoSwift/Cryptors.swift:25:27",
+      "reason": "using 'class' keyword to define a class-constrained protocol is deprecated; use 'AnyObject' instead",
+      "line": "public protocol Cryptors: class {",
+      "cursor": "                          ^~~~~"
+    },
+    {
+      "file_name": "Cryptors.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/CryptoSwift/Sources/CryptoSwift/Cryptors.swift:25:27",
+      "reason": "using 'class' keyword to define a class-constrained protocol is deprecated; use 'AnyObject' instead",
+      "line": "public protocol Cryptors: class {",
+      "cursor": "                          ^~~~~"
+    },
+    {
+      "file_name": "Cryptors.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/CryptoSwift/Sources/CryptoSwift/Cryptors.swift:25:27",
+      "reason": "using 'class' keyword to define a class-constrained protocol is deprecated; use 'AnyObject' instead",
+      "line": "public protocol Cryptors: class {",
+      "cursor": "                          ^~~~~"
+    },
+    {
+      "file_name": "Cryptors.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/CryptoSwift/Sources/CryptoSwift/Cryptors.swift:25:27",
+      "reason": "using 'class' keyword to define a class-constrained protocol is deprecated; use 'AnyObject' instead",
+      "line": "public protocol Cryptors: class {",
+      "cursor": "                          ^~~~~"
+    },
+    {
+      "file_name": "Cryptors.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/CryptoSwift/Sources/CryptoSwift/Cryptors.swift:25:27",
+      "reason": "using 'class' keyword to define a class-constrained protocol is deprecated; use 'AnyObject' instead",
+      "line": "public protocol Cryptors: class {",
+      "cursor": "                          ^~~~~"
+    },
+    {
+      "file_name": "Cryptors.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/CryptoSwift/Sources/CryptoSwift/Cryptors.swift:25:27",
+      "reason": "using 'class' keyword to define a class-constrained protocol is deprecated; use 'AnyObject' instead",
+      "line": "public protocol Cryptors: class {",
+      "cursor": "                          ^~~~~"
+    },
+    {
+      "file_name": "Cryptors.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/CryptoSwift/Sources/CryptoSwift/Cryptors.swift:25:27",
+      "reason": "using 'class' keyword to define a class-constrained protocol is deprecated; use 'AnyObject' instead",
+      "line": "public protocol Cryptors: class {",
+      "cursor": "                          ^~~~~"
+    },
+    {
+      "file_name": "Cryptors.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/CryptoSwift/Sources/CryptoSwift/Cryptors.swift:25:27",
+      "reason": "using 'class' keyword to define a class-constrained protocol is deprecated; use 'AnyObject' instead",
+      "line": "public protocol Cryptors: class {",
+      "cursor": "                          ^~~~~"
+    },
+    {
+      "file_name": "Cryptors.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/CryptoSwift/Sources/CryptoSwift/Cryptors.swift:25:27",
+      "reason": "using 'class' keyword to define a class-constrained protocol is deprecated; use 'AnyObject' instead",
+      "line": "public protocol Cryptors: class {",
+      "cursor": "                          ^~~~~"
+    },
+    {
+      "file_name": "Cryptors.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/CryptoSwift/Sources/CryptoSwift/Cryptors.swift:25:27",
+      "reason": "using 'class' keyword to define a class-constrained protocol is deprecated; use 'AnyObject' instead",
+      "line": "public protocol Cryptors: class {",
+      "cursor": "                          ^~~~~"
+    },
+    {
+      "file_name": "SPTracker.m",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/snowplow-objc-tracker/Snowplow/SPTracker.m:173:39",
+      "reason": "'initWithForegroundTimeout:andBackgroundTimeout:andCheckInterval:andTracker:' is deprecated: Use `initWithForegroundTimeout:andBackgroundTimeout:andTracker:` instead. [-Wdeprecated-declarations]",
+      "line": "        _session = [[SPSession alloc] initWithForegroundTimeout:_foregroundTimeout",
+      "cursor": "                                      ^"
+    },
+    {
+      "file_name": "SPTracker.m",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/snowplow-objc-tracker/Snowplow/SPTracker.m:276:39",
+      "reason": "'initWithForegroundTimeout:andBackgroundTimeout:andCheckInterval:andTracker:' is deprecated: Use `initWithForegroundTimeout:andBackgroundTimeout:andTracker:` instead. [-Wdeprecated-declarations]",
+      "line": "        _session = [[SPSession alloc] initWithForegroundTimeout:_foregroundTimeout andBackgroundTimeout:_backgroundTimeout andCheckInterval:_checkInterval andTracker:self];",
+      "cursor": "                                                      ^"
+    },
+    {
+      "file_name": "SPTracker.m",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/snowplow-objc-tracker/Snowplow/SPTracker.m:309:19",
+      "reason": "'setCheckInterval:' is deprecated: setCheckInterval is deprecated as checkInterval no longer has any effect. [-Wdeprecated-declarations]",
+      "line": "        [_session setCheckInterval:checkInterval];",
+      "cursor": "                                                      ^"
+    },
+    {
+      "file_name": "SPSession.m",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/snowplow-objc-tracker/Snowplow/SPSession.m:72:18",
+      "reason": "'initWithForegroundTimeout:andBackgroundTimeout:andCheckInterval:' is deprecated: Use `initWithForegroundTimeout:andBackgroundTimeout:` instead. [-Wdeprecated-declarations]",
+      "line": "    return [self initWithForegroundTimeout:foregroundTimeout andBackgroundTimeout:backgroundTimeout andCheckInterval:15];",
+      "cursor": "                                                      ^"
+    },
+    {
+      "file_name": "SPSession.m",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/snowplow-objc-tracker/Snowplow/SPSession.m:76:18",
+      "reason": "'initWithForegroundTimeout:andBackgroundTimeout:andCheckInterval:andTracker:' is deprecated: Use `initWithForegroundTimeout:andBackgroundTimeout:andTracker:` instead. [-Wdeprecated-declarations]",
+      "line": "    return [self initWithForegroundTimeout:foregroundTimeout andBackgroundTimeout:backgroundTimeout andCheckInterval:15 andTracker:tracker];",
+      "cursor": "                                                      ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:924:21",
+      "reason": "'login(usernameOrEmail:password:multifactorCode:connection:scope:parameters:)' is deprecated: see login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "        return self.login(usernameOrEmail: username, password: password, multifactorCode: multifactorCode, connection: connection, scope: scope, parameters: parameters)",
+      "cursor": "                                                      ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1172:21",
+      "reason": "'signUp(email:username:password:connection:userMetadata:scope:parameters:)' is deprecated: use createUser(email:, username:, password:, connection:, userMetadata:) and then login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "        return self.signUp(email: email, username: username, password: password, connection: connection, userMetadata: userMetadata, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1261:21",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "        return self.loginSocial(token: token, connection: connection, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1322:21",
+      "reason": "'tokenExchange(withAppleAuthorizationCode:scope:audience:fullName:)' is deprecated: see login(appleAuthorizationCode authorizationCode:, fullName:, scope:, audience:)",
+      "line": "        return self.tokenExchange(withAppleAuthorizationCode: authCode, scope: scope, audience: audience, fullName: fullName)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:924:21",
+      "reason": "'login(usernameOrEmail:password:multifactorCode:connection:scope:parameters:)' is deprecated: see login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "        return self.login(usernameOrEmail: username, password: password, multifactorCode: multifactorCode, connection: connection, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1172:21",
+      "reason": "'signUp(email:username:password:connection:userMetadata:scope:parameters:)' is deprecated: use createUser(email:, username:, password:, connection:, userMetadata:) and then login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "        return self.signUp(email: email, username: username, password: password, connection: connection, userMetadata: userMetadata, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1261:21",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "        return self.loginSocial(token: token, connection: connection, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1322:21",
+      "reason": "'tokenExchange(withAppleAuthorizationCode:scope:audience:fullName:)' is deprecated: see login(appleAuthorizationCode authorizationCode:, fullName:, scope:, audience:)",
+      "line": "        return self.tokenExchange(withAppleAuthorizationCode: authCode, scope: scope, audience: audience, fullName: fullName)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:924:21",
+      "reason": "'login(usernameOrEmail:password:multifactorCode:connection:scope:parameters:)' is deprecated: see login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "        return self.login(usernameOrEmail: username, password: password, multifactorCode: multifactorCode, connection: connection, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1172:21",
+      "reason": "'signUp(email:username:password:connection:userMetadata:scope:parameters:)' is deprecated: use createUser(email:, username:, password:, connection:, userMetadata:) and then login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "        return self.signUp(email: email, username: username, password: password, connection: connection, userMetadata: userMetadata, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1261:21",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "        return self.loginSocial(token: token, connection: connection, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1322:21",
+      "reason": "'tokenExchange(withAppleAuthorizationCode:scope:audience:fullName:)' is deprecated: see login(appleAuthorizationCode authorizationCode:, fullName:, scope:, audience:)",
+      "line": "        return self.tokenExchange(withAppleAuthorizationCode: authCode, scope: scope, audience: audience, fullName: fullName)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:924:21",
+      "reason": "'login(usernameOrEmail:password:multifactorCode:connection:scope:parameters:)' is deprecated: see login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "        return self.login(usernameOrEmail: username, password: password, multifactorCode: multifactorCode, connection: connection, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1172:21",
+      "reason": "'signUp(email:username:password:connection:userMetadata:scope:parameters:)' is deprecated: use createUser(email:, username:, password:, connection:, userMetadata:) and then login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "        return self.signUp(email: email, username: username, password: password, connection: connection, userMetadata: userMetadata, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1261:21",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "        return self.loginSocial(token: token, connection: connection, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1322:21",
+      "reason": "'tokenExchange(withAppleAuthorizationCode:scope:audience:fullName:)' is deprecated: see login(appleAuthorizationCode authorizationCode:, fullName:, scope:, audience:)",
+      "line": "        return self.tokenExchange(withAppleAuthorizationCode: authCode, scope: scope, audience: audience, fullName: fullName)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:924:21",
+      "reason": "'login(usernameOrEmail:password:multifactorCode:connection:scope:parameters:)' is deprecated: see login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "        return self.login(usernameOrEmail: username, password: password, multifactorCode: multifactorCode, connection: connection, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1172:21",
+      "reason": "'signUp(email:username:password:connection:userMetadata:scope:parameters:)' is deprecated: use createUser(email:, username:, password:, connection:, userMetadata:) and then login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "        return self.signUp(email: email, username: username, password: password, connection: connection, userMetadata: userMetadata, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1261:21",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "        return self.loginSocial(token: token, connection: connection, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1322:21",
+      "reason": "'tokenExchange(withAppleAuthorizationCode:scope:audience:fullName:)' is deprecated: see login(appleAuthorizationCode authorizationCode:, fullName:, scope:, audience:)",
+      "line": "        return self.tokenExchange(withAppleAuthorizationCode: authCode, scope: scope, audience: audience, fullName: fullName)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:924:21",
+      "reason": "'login(usernameOrEmail:password:multifactorCode:connection:scope:parameters:)' is deprecated: see login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "        return self.login(usernameOrEmail: username, password: password, multifactorCode: multifactorCode, connection: connection, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1172:21",
+      "reason": "'signUp(email:username:password:connection:userMetadata:scope:parameters:)' is deprecated: use createUser(email:, username:, password:, connection:, userMetadata:) and then login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "        return self.signUp(email: email, username: username, password: password, connection: connection, userMetadata: userMetadata, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1261:21",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "        return self.loginSocial(token: token, connection: connection, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1322:21",
+      "reason": "'tokenExchange(withAppleAuthorizationCode:scope:audience:fullName:)' is deprecated: see login(appleAuthorizationCode authorizationCode:, fullName:, scope:, audience:)",
+      "line": "        return self.tokenExchange(withAppleAuthorizationCode: authCode, scope: scope, audience: audience, fullName: fullName)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:924:21",
+      "reason": "'login(usernameOrEmail:password:multifactorCode:connection:scope:parameters:)' is deprecated: see login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "        return self.login(usernameOrEmail: username, password: password, multifactorCode: multifactorCode, connection: connection, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1172:21",
+      "reason": "'signUp(email:username:password:connection:userMetadata:scope:parameters:)' is deprecated: use createUser(email:, username:, password:, connection:, userMetadata:) and then login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "        return self.signUp(email: email, username: username, password: password, connection: connection, userMetadata: userMetadata, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1261:21",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "        return self.loginSocial(token: token, connection: connection, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1322:21",
+      "reason": "'tokenExchange(withAppleAuthorizationCode:scope:audience:fullName:)' is deprecated: see login(appleAuthorizationCode authorizationCode:, fullName:, scope:, audience:)",
+      "line": "        return self.tokenExchange(withAppleAuthorizationCode: authCode, scope: scope, audience: audience, fullName: fullName)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:924:21",
+      "reason": "'login(usernameOrEmail:password:multifactorCode:connection:scope:parameters:)' is deprecated: see login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "        return self.login(usernameOrEmail: username, password: password, multifactorCode: multifactorCode, connection: connection, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1172:21",
+      "reason": "'signUp(email:username:password:connection:userMetadata:scope:parameters:)' is deprecated: use createUser(email:, username:, password:, connection:, userMetadata:) and then login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "        return self.signUp(email: email, username: username, password: password, connection: connection, userMetadata: userMetadata, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1261:21",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "        return self.loginSocial(token: token, connection: connection, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1322:21",
+      "reason": "'tokenExchange(withAppleAuthorizationCode:scope:audience:fullName:)' is deprecated: see login(appleAuthorizationCode authorizationCode:, fullName:, scope:, audience:)",
+      "line": "        return self.tokenExchange(withAppleAuthorizationCode: authCode, scope: scope, audience: audience, fullName: fullName)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:924:21",
+      "reason": "'login(usernameOrEmail:password:multifactorCode:connection:scope:parameters:)' is deprecated: see login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "        return self.login(usernameOrEmail: username, password: password, multifactorCode: multifactorCode, connection: connection, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1172:21",
+      "reason": "'signUp(email:username:password:connection:userMetadata:scope:parameters:)' is deprecated: use createUser(email:, username:, password:, connection:, userMetadata:) and then login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "        return self.signUp(email: email, username: username, password: password, connection: connection, userMetadata: userMetadata, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1261:21",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "        return self.loginSocial(token: token, connection: connection, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1322:21",
+      "reason": "'tokenExchange(withAppleAuthorizationCode:scope:audience:fullName:)' is deprecated: see login(appleAuthorizationCode authorizationCode:, fullName:, scope:, audience:)",
+      "line": "        return self.tokenExchange(withAppleAuthorizationCode: authCode, scope: scope, audience: audience, fullName: fullName)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:106:14",
+      "reason": "'signUp(email:username:password:connection:userMetadata:scope:parameters:)' is deprecated: use createUser(email:, username:, password:, connection:, userMetadata:) and then login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "            .signUp(email: email, username: username, password: password, connection: connection, userMetadata: userMetadata, scope: scope, parameters: parameters ?? [:])",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:146:29",
+      "reason": "'userInfo(token:)' is deprecated: see userInfo(withAccessToken accessToken:)",
+      "line": "        self.authentication.userInfo(token: token).start(handleResult(callback: callback))",
+      "cursor": "             ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:153:14",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "            .loginSocial(token: token, connection: connection, scope: scope, parameters: parameters ?? [:])",
+      "cursor": "                            ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:106:14",
+      "reason": "'signUp(email:username:password:connection:userMetadata:scope:parameters:)' is deprecated: use createUser(email:, username:, password:, connection:, userMetadata:) and then login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "            .signUp(email: email, username: username, password: password, connection: connection, userMetadata: userMetadata, scope: scope, parameters: parameters ?? [:])",
+      "cursor": "             ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:146:29",
+      "reason": "'userInfo(token:)' is deprecated: see userInfo(withAccessToken accessToken:)",
+      "line": "        self.authentication.userInfo(token: token).start(handleResult(callback: callback))",
+      "cursor": "             ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:153:14",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "            .loginSocial(token: token, connection: connection, scope: scope, parameters: parameters ?? [:])",
+      "cursor": "                            ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:106:14",
+      "reason": "'signUp(email:username:password:connection:userMetadata:scope:parameters:)' is deprecated: use createUser(email:, username:, password:, connection:, userMetadata:) and then login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "            .signUp(email: email, username: username, password: password, connection: connection, userMetadata: userMetadata, scope: scope, parameters: parameters ?? [:])",
+      "cursor": "             ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:146:29",
+      "reason": "'userInfo(token:)' is deprecated: see userInfo(withAccessToken accessToken:)",
+      "line": "        self.authentication.userInfo(token: token).start(handleResult(callback: callback))",
+      "cursor": "             ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:153:14",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "            .loginSocial(token: token, connection: connection, scope: scope, parameters: parameters ?? [:])",
+      "cursor": "                            ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:106:14",
+      "reason": "'signUp(email:username:password:connection:userMetadata:scope:parameters:)' is deprecated: use createUser(email:, username:, password:, connection:, userMetadata:) and then login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "            .signUp(email: email, username: username, password: password, connection: connection, userMetadata: userMetadata, scope: scope, parameters: parameters ?? [:])",
+      "cursor": "             ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:146:29",
+      "reason": "'userInfo(token:)' is deprecated: see userInfo(withAccessToken accessToken:)",
+      "line": "        self.authentication.userInfo(token: token).start(handleResult(callback: callback))",
+      "cursor": "             ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:153:14",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "            .loginSocial(token: token, connection: connection, scope: scope, parameters: parameters ?? [:])",
+      "cursor": "                            ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:106:14",
+      "reason": "'signUp(email:username:password:connection:userMetadata:scope:parameters:)' is deprecated: use createUser(email:, username:, password:, connection:, userMetadata:) and then login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "            .signUp(email: email, username: username, password: password, connection: connection, userMetadata: userMetadata, scope: scope, parameters: parameters ?? [:])",
+      "cursor": "             ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:146:29",
+      "reason": "'userInfo(token:)' is deprecated: see userInfo(withAccessToken accessToken:)",
+      "line": "        self.authentication.userInfo(token: token).start(handleResult(callback: callback))",
+      "cursor": "             ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:153:14",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "            .loginSocial(token: token, connection: connection, scope: scope, parameters: parameters ?? [:])",
+      "cursor": "                            ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:106:14",
+      "reason": "'signUp(email:username:password:connection:userMetadata:scope:parameters:)' is deprecated: use createUser(email:, username:, password:, connection:, userMetadata:) and then login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "            .signUp(email: email, username: username, password: password, connection: connection, userMetadata: userMetadata, scope: scope, parameters: parameters ?? [:])",
+      "cursor": "             ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:146:29",
+      "reason": "'userInfo(token:)' is deprecated: see userInfo(withAccessToken accessToken:)",
+      "line": "        self.authentication.userInfo(token: token).start(handleResult(callback: callback))",
+      "cursor": "             ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:153:14",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "            .loginSocial(token: token, connection: connection, scope: scope, parameters: parameters ?? [:])",
+      "cursor": "                            ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:106:14",
+      "reason": "'signUp(email:username:password:connection:userMetadata:scope:parameters:)' is deprecated: use createUser(email:, username:, password:, connection:, userMetadata:) and then login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "            .signUp(email: email, username: username, password: password, connection: connection, userMetadata: userMetadata, scope: scope, parameters: parameters ?? [:])",
+      "cursor": "             ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:146:29",
+      "reason": "'userInfo(token:)' is deprecated: see userInfo(withAccessToken accessToken:)",
+      "line": "        self.authentication.userInfo(token: token).start(handleResult(callback: callback))",
+      "cursor": "             ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:153:14",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "            .loginSocial(token: token, connection: connection, scope: scope, parameters: parameters ?? [:])",
+      "cursor": "                            ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:106:14",
+      "reason": "'signUp(email:username:password:connection:userMetadata:scope:parameters:)' is deprecated: use createUser(email:, username:, password:, connection:, userMetadata:) and then login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "            .signUp(email: email, username: username, password: password, connection: connection, userMetadata: userMetadata, scope: scope, parameters: parameters ?? [:])",
+      "cursor": "             ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:146:29",
+      "reason": "'userInfo(token:)' is deprecated: see userInfo(withAccessToken accessToken:)",
+      "line": "        self.authentication.userInfo(token: token).start(handleResult(callback: callback))",
+      "cursor": "             ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:153:14",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "            .loginSocial(token: token, connection: connection, scope: scope, parameters: parameters ?? [:])",
+      "cursor": "                            ^"
+    },
+    {
+      "file_name": "NativeAuth.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/NativeAuth.swift:121:37",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "                self.authentication.loginSocial(token: credentials.token, connection: self.connection, scope: self.scope, parameters: parameters)",
+      "cursor": "             ^"
+    },
+    {
+      "file_name": "NativeAuth.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/NativeAuth.swift:121:37",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "                self.authentication.loginSocial(token: credentials.token, connection: self.connection, scope: self.scope, parameters: parameters)",
+      "cursor": "                                    ^"
+    },
+    {
+      "file_name": "NativeAuth.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/NativeAuth.swift:121:37",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "                self.authentication.loginSocial(token: credentials.token, connection: self.connection, scope: self.scope, parameters: parameters)",
+      "cursor": "                                    ^"
+    },
+    {
+      "file_name": "NativeAuth.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/NativeAuth.swift:121:37",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "                self.authentication.loginSocial(token: credentials.token, connection: self.connection, scope: self.scope, parameters: parameters)",
+      "cursor": "                                    ^"
+    },
+    {
+      "file_name": "NativeAuth.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/NativeAuth.swift:121:37",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "                self.authentication.loginSocial(token: credentials.token, connection: self.connection, scope: self.scope, parameters: parameters)",
+      "cursor": "                                    ^"
+    },
+    {
+      "file_name": "NativeAuth.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/NativeAuth.swift:121:37",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "                self.authentication.loginSocial(token: credentials.token, connection: self.connection, scope: self.scope, parameters: parameters)",
+      "cursor": "                                    ^"
+    },
+    {
+      "file_name": "NativeAuth.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/NativeAuth.swift:121:37",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "                self.authentication.loginSocial(token: credentials.token, connection: self.connection, scope: self.scope, parameters: parameters)",
+      "cursor": "                                    ^"
+    },
+    {
+      "file_name": "NativeAuth.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/NativeAuth.swift:121:37",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "                self.authentication.loginSocial(token: credentials.token, connection: self.connection, scope: self.scope, parameters: parameters)",
+      "cursor": "                                    ^"
+    },
+    {
+      "file_name": "NativeAuth.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/NativeAuth.swift:121:37",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "                self.authentication.loginSocial(token: credentials.token, connection: self.connection, scope: self.scope, parameters: parameters)",
+      "cursor": "                                    ^"
+    },
+    {
+      "file_name": "Cipher.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/CryptoSwift/Sources/CryptoSwift/Cipher.swift:21:25",
+      "reason": "using 'class' keyword to define a class-constrained protocol is deprecated; use 'AnyObject' instead",
+      "line": "public protocol Cipher: class {",
+      "cursor": "                                    ^"
+    },
+    {
+      "file_name": "Cipher.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/CryptoSwift/Sources/CryptoSwift/Cipher.swift:21:25",
+      "reason": "using 'class' keyword to define a class-constrained protocol is deprecated; use 'AnyObject' instead",
+      "line": "public protocol Cipher: class {",
+      "cursor": "                        ^~~~~"
+    },
+    {
+      "file_name": "Cipher.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/CryptoSwift/Sources/CryptoSwift/Cipher.swift:21:25",
+      "reason": "using 'class' keyword to define a class-constrained protocol is deprecated; use 'AnyObject' instead",
+      "line": "public protocol Cipher: class {",
+      "cursor": "                        ^~~~~"
+    },
+    {
+      "file_name": "Cipher.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/CryptoSwift/Sources/CryptoSwift/Cipher.swift:21:25",
+      "reason": "using 'class' keyword to define a class-constrained protocol is deprecated; use 'AnyObject' instead",
+      "line": "public protocol Cipher: class {",
+      "cursor": "                        ^~~~~"
+    },
+    {
+      "file_name": "Cipher.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/CryptoSwift/Sources/CryptoSwift/Cipher.swift:21:25",
+      "reason": "using 'class' keyword to define a class-constrained protocol is deprecated; use 'AnyObject' instead",
+      "line": "public protocol Cipher: class {",
+      "cursor": "                        ^~~~~"
+    },
+    {
+      "file_name": "Cipher.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/CryptoSwift/Sources/CryptoSwift/Cipher.swift:21:25",
+      "reason": "using 'class' keyword to define a class-constrained protocol is deprecated; use 'AnyObject' instead",
+      "line": "public protocol Cipher: class {",
+      "cursor": "                        ^~~~~"
+    },
+    {
+      "file_name": "Cipher.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/CryptoSwift/Sources/CryptoSwift/Cipher.swift:21:25",
+      "reason": "using 'class' keyword to define a class-constrained protocol is deprecated; use 'AnyObject' instead",
+      "line": "public protocol Cipher: class {",
+      "cursor": "                        ^~~~~"
+    },
+    {
+      "file_name": "Cipher.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/CryptoSwift/Sources/CryptoSwift/Cipher.swift:21:25",
+      "reason": "using 'class' keyword to define a class-constrained protocol is deprecated; use 'AnyObject' instead",
+      "line": "public protocol Cipher: class {",
+      "cursor": "                        ^~~~~"
+    },
+    {
+      "file_name": "Cipher.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/CryptoSwift/Sources/CryptoSwift/Cipher.swift:21:25",
+      "reason": "using 'class' keyword to define a class-constrained protocol is deprecated; use 'AnyObject' instead",
+      "line": "public protocol Cipher: class {",
+      "cursor": "                        ^~~~~"
+    },
+    {
+      "file_name": "Cipher.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/CryptoSwift/Sources/CryptoSwift/Cipher.swift:21:25",
+      "reason": "using 'class' keyword to define a class-constrained protocol is deprecated; use 'AnyObject' instead",
+      "line": "public protocol Cipher: class {",
+      "cursor": "                        ^~~~~"
+    },
+    {
+      "file_name": "Cryptors.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/CryptoSwift/Sources/CryptoSwift/Cryptors.swift:25:27",
+      "reason": "using 'class' keyword to define a class-constrained protocol is deprecated; use 'AnyObject' instead",
+      "line": "public protocol Cryptors: class {",
+      "cursor": "                        ^~~~~"
+    },
+    {
+      "file_name": "Cryptors.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/CryptoSwift/Sources/CryptoSwift/Cryptors.swift:25:27",
+      "reason": "using 'class' keyword to define a class-constrained protocol is deprecated; use 'AnyObject' instead",
+      "line": "public protocol Cryptors: class {",
+      "cursor": "                          ^~~~~"
+    },
+    {
+      "file_name": "Cryptors.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/CryptoSwift/Sources/CryptoSwift/Cryptors.swift:25:27",
+      "reason": "using 'class' keyword to define a class-constrained protocol is deprecated; use 'AnyObject' instead",
+      "line": "public protocol Cryptors: class {",
+      "cursor": "                          ^~~~~"
+    },
+    {
+      "file_name": "Cryptors.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/CryptoSwift/Sources/CryptoSwift/Cryptors.swift:25:27",
+      "reason": "using 'class' keyword to define a class-constrained protocol is deprecated; use 'AnyObject' instead",
+      "line": "public protocol Cryptors: class {",
+      "cursor": "                          ^~~~~"
+    },
+    {
+      "file_name": "Cryptors.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/CryptoSwift/Sources/CryptoSwift/Cryptors.swift:25:27",
+      "reason": "using 'class' keyword to define a class-constrained protocol is deprecated; use 'AnyObject' instead",
+      "line": "public protocol Cryptors: class {",
+      "cursor": "                          ^~~~~"
+    },
+    {
+      "file_name": "Cryptors.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/CryptoSwift/Sources/CryptoSwift/Cryptors.swift:25:27",
+      "reason": "using 'class' keyword to define a class-constrained protocol is deprecated; use 'AnyObject' instead",
+      "line": "public protocol Cryptors: class {",
+      "cursor": "                          ^~~~~"
+    },
+    {
+      "file_name": "Cryptors.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/CryptoSwift/Sources/CryptoSwift/Cryptors.swift:25:27",
+      "reason": "using 'class' keyword to define a class-constrained protocol is deprecated; use 'AnyObject' instead",
+      "line": "public protocol Cryptors: class {",
+      "cursor": "                          ^~~~~"
+    },
+    {
+      "file_name": "Cryptors.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/CryptoSwift/Sources/CryptoSwift/Cryptors.swift:25:27",
+      "reason": "using 'class' keyword to define a class-constrained protocol is deprecated; use 'AnyObject' instead",
+      "line": "public protocol Cryptors: class {",
+      "cursor": "                          ^~~~~"
+    },
+    {
+      "file_name": "Cryptors.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/CryptoSwift/Sources/CryptoSwift/Cryptors.swift:25:27",
+      "reason": "using 'class' keyword to define a class-constrained protocol is deprecated; use 'AnyObject' instead",
+      "line": "public protocol Cryptors: class {",
+      "cursor": "                          ^~~~~"
+    },
+    {
+      "file_name": "Cryptors.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/CryptoSwift/Sources/CryptoSwift/Cryptors.swift:25:27",
+      "reason": "using 'class' keyword to define a class-constrained protocol is deprecated; use 'AnyObject' instead",
+      "line": "public protocol Cryptors: class {",
+      "cursor": "                          ^~~~~"
+    },
+    {
+      "file_name": "NativeAuth.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/NativeAuth.swift:121:37",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "                self.authentication.loginSocial(token: credentials.token, connection: self.connection, scope: self.scope, parameters: parameters)",
+      "cursor": "                          ^~~~~"
+    },
+    {
+      "file_name": "NativeAuth.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/NativeAuth.swift:121:37",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "                self.authentication.loginSocial(token: credentials.token, connection: self.connection, scope: self.scope, parameters: parameters)",
+      "cursor": "                                    ^"
+    },
+    {
+      "file_name": "NativeAuth.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/NativeAuth.swift:121:37",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "                self.authentication.loginSocial(token: credentials.token, connection: self.connection, scope: self.scope, parameters: parameters)",
+      "cursor": "                                    ^"
+    },
+    {
+      "file_name": "NativeAuth.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/NativeAuth.swift:121:37",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "                self.authentication.loginSocial(token: credentials.token, connection: self.connection, scope: self.scope, parameters: parameters)",
+      "cursor": "                                    ^"
+    },
+    {
+      "file_name": "NativeAuth.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/NativeAuth.swift:121:37",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "                self.authentication.loginSocial(token: credentials.token, connection: self.connection, scope: self.scope, parameters: parameters)",
+      "cursor": "                                    ^"
+    },
+    {
+      "file_name": "NativeAuth.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/NativeAuth.swift:121:37",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "                self.authentication.loginSocial(token: credentials.token, connection: self.connection, scope: self.scope, parameters: parameters)",
+      "cursor": "                                    ^"
+    },
+    {
+      "file_name": "NativeAuth.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/NativeAuth.swift:121:37",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "                self.authentication.loginSocial(token: credentials.token, connection: self.connection, scope: self.scope, parameters: parameters)",
+      "cursor": "                                    ^"
+    },
+    {
+      "file_name": "NativeAuth.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/NativeAuth.swift:121:37",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "                self.authentication.loginSocial(token: credentials.token, connection: self.connection, scope: self.scope, parameters: parameters)",
+      "cursor": "                                    ^"
+    },
+    {
+      "file_name": "NativeAuth.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/NativeAuth.swift:121:37",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "                self.authentication.loginSocial(token: credentials.token, connection: self.connection, scope: self.scope, parameters: parameters)",
+      "cursor": "                                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:924:21",
+      "reason": "'login(usernameOrEmail:password:multifactorCode:connection:scope:parameters:)' is deprecated: see login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "        return self.login(usernameOrEmail: username, password: password, multifactorCode: multifactorCode, connection: connection, scope: scope, parameters: parameters)",
+      "cursor": "                                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1172:21",
+      "reason": "'signUp(email:username:password:connection:userMetadata:scope:parameters:)' is deprecated: use createUser(email:, username:, password:, connection:, userMetadata:) and then login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "        return self.signUp(email: email, username: username, password: password, connection: connection, userMetadata: userMetadata, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1261:21",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "        return self.loginSocial(token: token, connection: connection, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1322:21",
+      "reason": "'tokenExchange(withAppleAuthorizationCode:scope:audience:fullName:)' is deprecated: see login(appleAuthorizationCode authorizationCode:, fullName:, scope:, audience:)",
+      "line": "        return self.tokenExchange(withAppleAuthorizationCode: authCode, scope: scope, audience: audience, fullName: fullName)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:924:21",
+      "reason": "'login(usernameOrEmail:password:multifactorCode:connection:scope:parameters:)' is deprecated: see login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "        return self.login(usernameOrEmail: username, password: password, multifactorCode: multifactorCode, connection: connection, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1172:21",
+      "reason": "'signUp(email:username:password:connection:userMetadata:scope:parameters:)' is deprecated: use createUser(email:, username:, password:, connection:, userMetadata:) and then login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "        return self.signUp(email: email, username: username, password: password, connection: connection, userMetadata: userMetadata, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1261:21",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "        return self.loginSocial(token: token, connection: connection, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1322:21",
+      "reason": "'tokenExchange(withAppleAuthorizationCode:scope:audience:fullName:)' is deprecated: see login(appleAuthorizationCode authorizationCode:, fullName:, scope:, audience:)",
+      "line": "        return self.tokenExchange(withAppleAuthorizationCode: authCode, scope: scope, audience: audience, fullName: fullName)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:924:21",
+      "reason": "'login(usernameOrEmail:password:multifactorCode:connection:scope:parameters:)' is deprecated: see login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "        return self.login(usernameOrEmail: username, password: password, multifactorCode: multifactorCode, connection: connection, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1172:21",
+      "reason": "'signUp(email:username:password:connection:userMetadata:scope:parameters:)' is deprecated: use createUser(email:, username:, password:, connection:, userMetadata:) and then login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "        return self.signUp(email: email, username: username, password: password, connection: connection, userMetadata: userMetadata, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1261:21",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "        return self.loginSocial(token: token, connection: connection, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1322:21",
+      "reason": "'tokenExchange(withAppleAuthorizationCode:scope:audience:fullName:)' is deprecated: see login(appleAuthorizationCode authorizationCode:, fullName:, scope:, audience:)",
+      "line": "        return self.tokenExchange(withAppleAuthorizationCode: authCode, scope: scope, audience: audience, fullName: fullName)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:924:21",
+      "reason": "'login(usernameOrEmail:password:multifactorCode:connection:scope:parameters:)' is deprecated: see login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "        return self.login(usernameOrEmail: username, password: password, multifactorCode: multifactorCode, connection: connection, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1172:21",
+      "reason": "'signUp(email:username:password:connection:userMetadata:scope:parameters:)' is deprecated: use createUser(email:, username:, password:, connection:, userMetadata:) and then login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "        return self.signUp(email: email, username: username, password: password, connection: connection, userMetadata: userMetadata, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1261:21",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "        return self.loginSocial(token: token, connection: connection, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1322:21",
+      "reason": "'tokenExchange(withAppleAuthorizationCode:scope:audience:fullName:)' is deprecated: see login(appleAuthorizationCode authorizationCode:, fullName:, scope:, audience:)",
+      "line": "        return self.tokenExchange(withAppleAuthorizationCode: authCode, scope: scope, audience: audience, fullName: fullName)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:924:21",
+      "reason": "'login(usernameOrEmail:password:multifactorCode:connection:scope:parameters:)' is deprecated: see login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "        return self.login(usernameOrEmail: username, password: password, multifactorCode: multifactorCode, connection: connection, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1172:21",
+      "reason": "'signUp(email:username:password:connection:userMetadata:scope:parameters:)' is deprecated: use createUser(email:, username:, password:, connection:, userMetadata:) and then login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "        return self.signUp(email: email, username: username, password: password, connection: connection, userMetadata: userMetadata, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1261:21",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "        return self.loginSocial(token: token, connection: connection, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1322:21",
+      "reason": "'tokenExchange(withAppleAuthorizationCode:scope:audience:fullName:)' is deprecated: see login(appleAuthorizationCode authorizationCode:, fullName:, scope:, audience:)",
+      "line": "        return self.tokenExchange(withAppleAuthorizationCode: authCode, scope: scope, audience: audience, fullName: fullName)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:924:21",
+      "reason": "'login(usernameOrEmail:password:multifactorCode:connection:scope:parameters:)' is deprecated: see login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "        return self.login(usernameOrEmail: username, password: password, multifactorCode: multifactorCode, connection: connection, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1172:21",
+      "reason": "'signUp(email:username:password:connection:userMetadata:scope:parameters:)' is deprecated: use createUser(email:, username:, password:, connection:, userMetadata:) and then login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "        return self.signUp(email: email, username: username, password: password, connection: connection, userMetadata: userMetadata, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1261:21",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "        return self.loginSocial(token: token, connection: connection, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1322:21",
+      "reason": "'tokenExchange(withAppleAuthorizationCode:scope:audience:fullName:)' is deprecated: see login(appleAuthorizationCode authorizationCode:, fullName:, scope:, audience:)",
+      "line": "        return self.tokenExchange(withAppleAuthorizationCode: authCode, scope: scope, audience: audience, fullName: fullName)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:924:21",
+      "reason": "'login(usernameOrEmail:password:multifactorCode:connection:scope:parameters:)' is deprecated: see login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "        return self.login(usernameOrEmail: username, password: password, multifactorCode: multifactorCode, connection: connection, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1172:21",
+      "reason": "'signUp(email:username:password:connection:userMetadata:scope:parameters:)' is deprecated: use createUser(email:, username:, password:, connection:, userMetadata:) and then login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "        return self.signUp(email: email, username: username, password: password, connection: connection, userMetadata: userMetadata, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1261:21",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "        return self.loginSocial(token: token, connection: connection, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1322:21",
+      "reason": "'tokenExchange(withAppleAuthorizationCode:scope:audience:fullName:)' is deprecated: see login(appleAuthorizationCode authorizationCode:, fullName:, scope:, audience:)",
+      "line": "        return self.tokenExchange(withAppleAuthorizationCode: authCode, scope: scope, audience: audience, fullName: fullName)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:924:21",
+      "reason": "'login(usernameOrEmail:password:multifactorCode:connection:scope:parameters:)' is deprecated: see login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "        return self.login(usernameOrEmail: username, password: password, multifactorCode: multifactorCode, connection: connection, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1172:21",
+      "reason": "'signUp(email:username:password:connection:userMetadata:scope:parameters:)' is deprecated: use createUser(email:, username:, password:, connection:, userMetadata:) and then login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "        return self.signUp(email: email, username: username, password: password, connection: connection, userMetadata: userMetadata, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1261:21",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "        return self.loginSocial(token: token, connection: connection, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1322:21",
+      "reason": "'tokenExchange(withAppleAuthorizationCode:scope:audience:fullName:)' is deprecated: see login(appleAuthorizationCode authorizationCode:, fullName:, scope:, audience:)",
+      "line": "        return self.tokenExchange(withAppleAuthorizationCode: authCode, scope: scope, audience: audience, fullName: fullName)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:924:21",
+      "reason": "'login(usernameOrEmail:password:multifactorCode:connection:scope:parameters:)' is deprecated: see login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "        return self.login(usernameOrEmail: username, password: password, multifactorCode: multifactorCode, connection: connection, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1172:21",
+      "reason": "'signUp(email:username:password:connection:userMetadata:scope:parameters:)' is deprecated: use createUser(email:, username:, password:, connection:, userMetadata:) and then login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "        return self.signUp(email: email, username: username, password: password, connection: connection, userMetadata: userMetadata, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1261:21",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "        return self.loginSocial(token: token, connection: connection, scope: scope, parameters: parameters)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "Authentication.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/Authentication.swift:1322:21",
+      "reason": "'tokenExchange(withAppleAuthorizationCode:scope:audience:fullName:)' is deprecated: see login(appleAuthorizationCode authorizationCode:, fullName:, scope:, audience:)",
+      "line": "        return self.tokenExchange(withAppleAuthorizationCode: authCode, scope: scope, audience: audience, fullName: fullName)",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:106:14",
+      "reason": "'signUp(email:username:password:connection:userMetadata:scope:parameters:)' is deprecated: use createUser(email:, username:, password:, connection:, userMetadata:) and then login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "            .signUp(email: email, username: username, password: password, connection: connection, userMetadata: userMetadata, scope: scope, parameters: parameters ?? [:])",
+      "cursor": "                    ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:146:29",
+      "reason": "'userInfo(token:)' is deprecated: see userInfo(withAccessToken accessToken:)",
+      "line": "        self.authentication.userInfo(token: token).start(handleResult(callback: callback))",
+      "cursor": "             ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:153:14",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "            .loginSocial(token: token, connection: connection, scope: scope, parameters: parameters ?? [:])",
+      "cursor": "                            ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:106:14",
+      "reason": "'signUp(email:username:password:connection:userMetadata:scope:parameters:)' is deprecated: use createUser(email:, username:, password:, connection:, userMetadata:) and then login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "            .signUp(email: email, username: username, password: password, connection: connection, userMetadata: userMetadata, scope: scope, parameters: parameters ?? [:])",
+      "cursor": "             ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:146:29",
+      "reason": "'userInfo(token:)' is deprecated: see userInfo(withAccessToken accessToken:)",
+      "line": "        self.authentication.userInfo(token: token).start(handleResult(callback: callback))",
+      "cursor": "             ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:153:14",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "            .loginSocial(token: token, connection: connection, scope: scope, parameters: parameters ?? [:])",
+      "cursor": "                            ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:106:14",
+      "reason": "'signUp(email:username:password:connection:userMetadata:scope:parameters:)' is deprecated: use createUser(email:, username:, password:, connection:, userMetadata:) and then login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "            .signUp(email: email, username: username, password: password, connection: connection, userMetadata: userMetadata, scope: scope, parameters: parameters ?? [:])",
+      "cursor": "             ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:146:29",
+      "reason": "'userInfo(token:)' is deprecated: see userInfo(withAccessToken accessToken:)",
+      "line": "        self.authentication.userInfo(token: token).start(handleResult(callback: callback))",
+      "cursor": "             ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:153:14",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "            .loginSocial(token: token, connection: connection, scope: scope, parameters: parameters ?? [:])",
+      "cursor": "                            ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:106:14",
+      "reason": "'signUp(email:username:password:connection:userMetadata:scope:parameters:)' is deprecated: use createUser(email:, username:, password:, connection:, userMetadata:) and then login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "            .signUp(email: email, username: username, password: password, connection: connection, userMetadata: userMetadata, scope: scope, parameters: parameters ?? [:])",
+      "cursor": "             ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:146:29",
+      "reason": "'userInfo(token:)' is deprecated: see userInfo(withAccessToken accessToken:)",
+      "line": "        self.authentication.userInfo(token: token).start(handleResult(callback: callback))",
+      "cursor": "             ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:153:14",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "            .loginSocial(token: token, connection: connection, scope: scope, parameters: parameters ?? [:])",
+      "cursor": "                            ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:106:14",
+      "reason": "'signUp(email:username:password:connection:userMetadata:scope:parameters:)' is deprecated: use createUser(email:, username:, password:, connection:, userMetadata:) and then login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "            .signUp(email: email, username: username, password: password, connection: connection, userMetadata: userMetadata, scope: scope, parameters: parameters ?? [:])",
+      "cursor": "             ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:146:29",
+      "reason": "'userInfo(token:)' is deprecated: see userInfo(withAccessToken accessToken:)",
+      "line": "        self.authentication.userInfo(token: token).start(handleResult(callback: callback))",
+      "cursor": "             ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:153:14",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "            .loginSocial(token: token, connection: connection, scope: scope, parameters: parameters ?? [:])",
+      "cursor": "                            ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:106:14",
+      "reason": "'signUp(email:username:password:connection:userMetadata:scope:parameters:)' is deprecated: use createUser(email:, username:, password:, connection:, userMetadata:) and then login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "            .signUp(email: email, username: username, password: password, connection: connection, userMetadata: userMetadata, scope: scope, parameters: parameters ?? [:])",
+      "cursor": "             ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:146:29",
+      "reason": "'userInfo(token:)' is deprecated: see userInfo(withAccessToken accessToken:)",
+      "line": "        self.authentication.userInfo(token: token).start(handleResult(callback: callback))",
+      "cursor": "             ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:153:14",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "            .loginSocial(token: token, connection: connection, scope: scope, parameters: parameters ?? [:])",
+      "cursor": "                            ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:106:14",
+      "reason": "'signUp(email:username:password:connection:userMetadata:scope:parameters:)' is deprecated: use createUser(email:, username:, password:, connection:, userMetadata:) and then login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "            .signUp(email: email, username: username, password: password, connection: connection, userMetadata: userMetadata, scope: scope, parameters: parameters ?? [:])",
+      "cursor": "             ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:146:29",
+      "reason": "'userInfo(token:)' is deprecated: see userInfo(withAccessToken accessToken:)",
+      "line": "        self.authentication.userInfo(token: token).start(handleResult(callback: callback))",
+      "cursor": "             ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:153:14",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "            .loginSocial(token: token, connection: connection, scope: scope, parameters: parameters ?? [:])",
+      "cursor": "                            ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:106:14",
+      "reason": "'signUp(email:username:password:connection:userMetadata:scope:parameters:)' is deprecated: use createUser(email:, username:, password:, connection:, userMetadata:) and then login(usernameOrEmail username:, password:, realm:, audience:, scope:)",
+      "line": "            .signUp(email: email, username: username, password: password, connection: connection, userMetadata: userMetadata, scope: scope, parameters: parameters ?? [:])",
+      "cursor": "             ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:146:29",
+      "reason": "'userInfo(token:)' is deprecated: see userInfo(withAccessToken accessToken:)",
+      "line": "        self.authentication.userInfo(token: token).start(handleResult(callback: callback))",
+      "cursor": "             ^"
+    },
+    {
+      "file_name": "_ObjectiveAuthenticationAPI.swift",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/Auth0.swift/Auth0/_ObjectiveAuthenticationAPI.swift:153:14",
+      "reason": "'loginSocial(token:connection:scope:parameters:)' is deprecated: not available for OIDC-conformant clients",
+      "line": "            .loginSocial(token: token, connection: connection, scope: scope, parameters: parameters ?? [:])",
+      "cursor": "                            ^"
+    },
+    {
+      "file_name": "SPTracker.m",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/snowplow-objc-tracker/Snowplow/SPTracker.m:173:39",
+      "reason": "'initWithForegroundTimeout:andBackgroundTimeout:andCheckInterval:andTracker:' is deprecated: Use `initWithForegroundTimeout:andBackgroundTimeout:andTracker:` instead. [-Wdeprecated-declarations]",
+      "line": "        _session = [[SPSession alloc] initWithForegroundTimeout:_foregroundTimeout",
+      "cursor": "             ^"
+    },
+    {
+      "file_name": "SPTracker.m",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/snowplow-objc-tracker/Snowplow/SPTracker.m:276:39",
+      "reason": "'initWithForegroundTimeout:andBackgroundTimeout:andCheckInterval:andTracker:' is deprecated: Use `initWithForegroundTimeout:andBackgroundTimeout:andTracker:` instead. [-Wdeprecated-declarations]",
+      "line": "        _session = [[SPSession alloc] initWithForegroundTimeout:_foregroundTimeout andBackgroundTimeout:_backgroundTimeout andCheckInterval:_checkInterval andTracker:self];",
+      "cursor": "                                                      ^"
+    },
+    {
+      "file_name": "SPTracker.m",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/snowplow-objc-tracker/Snowplow/SPTracker.m:309:19",
+      "reason": "'setCheckInterval:' is deprecated: setCheckInterval is deprecated as checkInterval no longer has any effect. [-Wdeprecated-declarations]",
+      "line": "        [_session setCheckInterval:checkInterval];",
+      "cursor": "                                                      ^"
+    },
+    {
+      "file_name": "SPSession.m",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/snowplow-objc-tracker/Snowplow/SPSession.m:72:18",
+      "reason": "'initWithForegroundTimeout:andBackgroundTimeout:andCheckInterval:' is deprecated: Use `initWithForegroundTimeout:andBackgroundTimeout:` instead. [-Wdeprecated-declarations]",
+      "line": "    return [self initWithForegroundTimeout:foregroundTimeout andBackgroundTimeout:backgroundTimeout andCheckInterval:15];",
+      "cursor": "                                                      ^"
+    },
+    {
+      "file_name": "SPSession.m",
+      "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/.build/checkouts/snowplow-objc-tracker/Snowplow/SPSession.m:76:18",
+      "reason": "'initWithForegroundTimeout:andBackgroundTimeout:andCheckInterval:andTracker:' is deprecated: Use `initWithForegroundTimeout:andBackgroundTimeout:andTracker:` instead. [-Wdeprecated-declarations]",
+      "line": "    return [self initWithForegroundTimeout:foregroundTimeout andBackgroundTimeout:backgroundTimeout andCheckInterval:15 andTracker:tracker];",
+      "cursor": "                                                      ^"
+    }
+  ],
+  "errors": [
+
+  ],
+  "compile_errors": [
+
+  ],
+  "file_missing_errors": [
+
+  ],
+  "undefined_symbols_errors": [
+
+  ],
+  "duplicate_symbols_errors": [
+
+  ],
+  "tests_failures": {
+    "ContentKitTests.ContentCreatorTests": [
+      {
+        "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/ContentKit/Tests/ContentKitTests/ContentCreatorTests.swift:699",
+        "reason": "failed - Creating invalid content should give an error.",
+        "test_case": "testUnsupportedErrorItemProviderWithoutSupportedFileRepresentation"
+      }
+    ],
+    "WeTransferAPITests.TransferCreatorTests": [
+      {
+        "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/WeTransferAPI/Tests/WeTransferAPITests/Sending/TransferCreatorTests.swift:153",
+        "reason": "Asynchronous wait failed: Exceeded timeout of 10 seconds, with unfulfilled expectations: \"\".",
+        "test_case": "testCancelDuringCreation"
+      },
+      {
+        "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/WeTransferAPI/Tests/WeTransferAPITests/Sending/TransferCreatorTests.swift:196",
+        "reason": "Asynchronous wait failed: Exceeded timeout of 10 seconds, with unfulfilled expectations: \"\".",
+        "test_case": "testCancelDuringFinalizing"
+      },
+      {
+        "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/WeTransferAPI/Tests/WeTransferAPITests/Sending/TransferCreatorTests.swift:171",
+        "reason": "Asynchronous wait failed: Exceeded timeout of 10 seconds, with unfulfilled expectations: \"\".",
+        "test_case": "testCancelDuringUploading"
+      },
+      {
+        "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/WeTransferAPI/Tests/WeTransferAPITests/Sending/TransferCreatorTests.swift:67",
+        "reason": "Asynchronous wait failed: Exceeded timeout of 10 seconds, with unfulfilled expectations: \"\".",
+        "test_case": "testErrorReportOnCreationEndpointFailing"
+      },
+      {
+        "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/WeTransferAPI/Tests/WeTransferAPITests/Sending/TransferCreatorTests.swift:105",
+        "reason": "Asynchronous wait failed: Exceeded timeout of 10 seconds, with unfulfilled expectations: \"\".",
+        "test_case": "testErrorReportOnFinalMetadataEndpointFailing"
+      },
+      {
+        "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/WeTransferAPI/Tests/WeTransferAPITests/Sending/TransferCreatorTests.swift:85",
+        "reason": "Asynchronous wait failed: Exceeded timeout of 10 seconds, with unfulfilled expectations: \"\".",
+        "test_case": "testErrorReportOnUploadFailing"
+      }
+    ],
+    "StormTests.StormTests": [
+      {
+        "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/Storm/Tests/StormTests/StormTests.swift:117",
+        "reason": "Asynchronous wait failed: Exceeded timeout of 10 seconds, with unfulfilled expectations: \"State should change to failed\".",
+        "test_case": "testCancellingUploadRequest"
+      },
+      {
+        "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/Storm/Tests/StormTests/StormTests.swift:48",
+        "reason": "Asynchronous wait failed: Exceeded timeout of 10 seconds, with unfulfilled expectations: \"State should change to failed\".",
+        "test_case": "testErrorResponseMessageParsing"
+      },
+      {
+        "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/Storm/Tests/StormTests/StormTests.swift:95",
+        "reason": "Asynchronous wait failed: Exceeded timeout of 10 seconds, with unfulfilled expectations: \"State should change to complete\".",
+        "test_case": "testPreventingDuplicateRequests"
+      },
+      {
+        "file_path": "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/Storm/Tests/StormTests/StormTests.swift:31",
+        "reason": "Asynchronous wait failed: Exceeded timeout of 10 seconds, with unfulfilled expectations: \"State should change to failed\".",
+        "test_case": "testUploadRequestMarkingAsFailed"
+      }
+    ]
+  },
+  "tests_summary_messages": [
+    "\t Executed 148 tests, with 1 failure (0 unexpected) in 3.299 (3.322) seconds\n",
+    "\t Executed 60 tests, with 0 failures (0 unexpected) in 0.134 (0.151) seconds\n",
+    "\t Executed 99 tests, with 0 failures (0 unexpected) in 3.342 (3.413) seconds\n",
+    "\t Executed 10 tests, with 0 failures (0 unexpected) in 0.015 (0.018) seconds\n",
+    "\t Executed 90 tests, with 0 failures (0 unexpected) in 5.214 (5.233) seconds\n",
+    "\t Executed 11 tests, with 0 failures (0 unexpected) in 0.014 (0.016) seconds\n",
+    "\t Executed 20 tests, with 0 failures (0 unexpected) in 0.215 (0.221) seconds\n",
+    "\t Executed 39 tests, with 0 failures (0 unexpected) in 0.226 (0.236) seconds\n",
+    "\t Executed 14 tests, with 0 failures (0 unexpected) in 1.050 (1.054) seconds\n",
+    "\t Executed 102 tests, with 0 failures (0 unexpected) in 21.959 (21.979) seconds\n",
+    "\t Executed 114 tests, with 6 failures (0 unexpected) in 70.214 (70.231) seconds\n",
+    "\t Executed 65 tests, with 4 failures (0 unexpected) in 47.302 (47.340) seconds\n",
+    "\t Executed 21 tests, with 0 failures (0 unexpected) in 2.105 (2.108) seconds\n"
+  ]
+}

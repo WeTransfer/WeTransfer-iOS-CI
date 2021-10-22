@@ -12,10 +12,11 @@ public enum WeTransferPRLinter {
                             xcResultSummaryReporter: XCResultSummaryReporter.Type = XCResultSummaryReporter.self,
                             coverageReporter: CoverageReporting.Type = CoverageReporter.self,
                             reportsPath: String = "build/reports",
-                            swiftLintConfigsFolderPath: String? = nil)
+                            swiftLintConfigsFolderPath: String? = nil,
+                            fileManager: FileManager = .default)
     {
         reportXcodeSummary(using: danger, summaryReporter: summaryReporter, reportsPath: reportsPath)
-        reportXCResultsSummary(using: danger, summaryReporter: xcResultSummaryReporter, reportsPath: reportsPath)
+        reportXCResultsSummary(using: danger, summaryReporter: xcResultSummaryReporter, reportsPath: reportsPath, fileManager: fileManager)
         reportCodeCoverage(using: danger, coverageReporter: coverageReporter, reportsPath: reportsPath)
         validatePRDescription(using: danger)
         validateWorkInProgress(using: danger)
@@ -46,7 +47,7 @@ public enum WeTransferPRLinter {
         }
     }
 
-    static func reportXCResultsSummary(using danger: DangerDSL, summaryReporter: XCResultSummaryReporting.Type, reportsPath: String) {
+    static func reportXCResultsSummary(using danger: DangerDSL, summaryReporter: XCResultSummaryReporting.Type, reportsPath: String, fileManager: FileManager) {
         defer { print("\n") }
 
         do {
@@ -60,7 +61,7 @@ public enum WeTransferPRLinter {
             print("Found XCResult Summary Reports:\n- \(summaryFiles.map(\.name).joined(separator: "\n- "))")
 
             summaryFiles.forEach { jsonFile in
-                summaryReporter.reportXCResultSummary(for: jsonFile, using: danger) { result in
+                summaryReporter.reportXCResultSummary(for: jsonFile, using: danger, fileManager: fileManager) { result in
                     guard let file = result.file else { return true }
 
                     /// Filter results from submodules

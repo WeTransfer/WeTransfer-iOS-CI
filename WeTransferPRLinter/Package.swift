@@ -15,10 +15,9 @@ let package = Package(
         )
     ],
     dependencies: [
-        //.package(name: "danger-swift", path: "../../../../../Forks/swift"),
+        // Local package is required for development since Danger does not support Swift 5.5 correctly yet with Danger-Plugin testing.
+//        .package(name: "danger-swift", path: "../../../../../Forks/swift"),
         .package(name: "danger-swift", url: "https://github.com/danger/swift", from: "3.12.1"),
-        .package(name: "DangerSwiftCoverage", url: "https://github.com/f-meloni/danger-swift-coverage", from: "1.1.0"),
-        .package(name: "DangerXCodeSummary", url: "https://github.com/f-meloni/danger-swift-xcodesummary", from: "1.2.1"),
         .package(name: "Files", url: "https://github.com/JohnSundell/Files", from: "4.1.1"),
         .package(name: "XCResultKit", url: "https://github.com/davidahouse/XCResultKit.git", from: "0.9.2")
     ],
@@ -27,8 +26,6 @@ let package = Package(
             name: "WeTransferPRLinter",
             dependencies: [
                 .product(name: "Danger", package: "danger-swift"),
-                "DangerSwiftCoverage",
-                "DangerXCodeSummary",
                 "Files",
                 "XCResultKit"
             ]

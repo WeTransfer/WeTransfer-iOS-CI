@@ -1,5 +1,4 @@
 import Danger
-import DangerXCodeSummary
 import Files
 import Foundation
 
@@ -8,43 +7,17 @@ import Foundation
 public enum WeTransferPRLinter {
     public static func lint(using danger: DangerDSL = Danger(),
                             swiftLintExecutor: SwiftLintExecuting.Type = SwiftLintExecutor.self,
-                            summaryReporter: XcodeSummaryReporting.Type = XcodeSummaryReporter.self,
                             xcResultSummaryReporter: XCResultSummaryReporter.Type = XCResultSummaryReporter.self,
-                            coverageReporter: CoverageReporting.Type = CoverageReporter.self,
                             reportsPath: String = "build/reports",
                             swiftLintConfigsFolderPath: String? = nil,
                             fileManager: FileManager = .default)
     {
-        reportXcodeSummary(using: danger, summaryReporter: summaryReporter, reportsPath: reportsPath)
         reportXCResultsSummary(using: danger, summaryReporter: xcResultSummaryReporter, reportsPath: reportsPath, fileManager: fileManager)
-        reportCodeCoverage(using: danger, coverageReporter: coverageReporter, reportsPath: reportsPath)
         validatePRDescription(using: danger)
         validateWorkInProgress(using: danger)
         validateFiles(using: danger)
         showBitriseBuildURL(using: danger)
         swiftLint(using: danger, executor: swiftLintExecutor, configsFolderPath: swiftLintConfigsFolderPath)
-    }
-
-    static func reportXcodeSummary(using danger: DangerDSL, summaryReporter: XcodeSummaryReporting.Type, reportsPath: String) {
-        defer { print("\n") }
-
-        do {
-            let reportsFolder = try Folder(path: reportsPath)
-            let summaryFiles = reportsFolder.files.filter { $0.extension == "json" }
-
-            guard !summaryFiles.isEmpty else {
-                return print("There were no files to create an Xcode Summary report for.")
-            }
-
-            print("Found Summary Reports:\n- \(summaryFiles.map(\.name).joined(separator: "\n- "))")
-
-            summaryFiles.forEach { jsonFile in
-                try? jsonFile.addFileNameToSummaryMessage()
-                summaryReporter.reportXcodeSummary(for: jsonFile)
-            }
-        } catch {
-            danger.warn("Xcode Summary failed with error: \(error).")
-        }
     }
 
     static func reportXCResultsSummary(using danger: DangerDSL, summaryReporter: XCResultSummaryReporting.Type, reportsPath: String, fileManager: FileManager) {
@@ -78,27 +51,6 @@ public enum WeTransferPRLinter {
             }
         } catch {
             danger.warn("XCResult Summary failed with error: \(error).")
-        }
-    }
-
-    static func reportCodeCoverage(using danger: DangerDSL, coverageReporter: CoverageReporting.Type, reportsPath: String) {
-        defer { print("\n") }
-
-        do {
-            let reports = try Folder(path: reportsPath).subfolders
-            let xcResultBundles = reports.filter { $0.extension == "xcresult" }
-
-            guard !xcResultBundles.isEmpty else {
-                return print("There were no files to create a code coverage report for.")
-            }
-
-            print("Found the following reports:\n- \(xcResultBundles.map(\.description).joined(separator: "\n- "))")
-            let testTargetsToExclude = xcResultBundles.map { "\($0.projectName)Tests" }
-            xcResultBundles.forEach { xcResultBundle in
-                coverageReporter.reportCoverage(for: xcResultBundle, excludedTargets: testTargetsToExclude)
-            }
-        } catch {
-            danger.warn("Code coverage generation failed with error: \(error).")
         }
     }
 

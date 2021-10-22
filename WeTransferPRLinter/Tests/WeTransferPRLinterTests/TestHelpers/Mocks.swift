@@ -9,19 +9,3 @@ struct MockedSwiftLintExecutor: SwiftLintExecuting {
         lintedFiles[configFile] = files
     }
 }
-
-struct MockedCoverageReporter: CoverageReporting {
-    static var reportedXCResultBundlesNames: [String: [String]] = [:]
-
-    static func reportCoverage(for xcResultBundle: XCResultBundle, excludedTargets: [String]) {
-        reportedXCResultBundlesNames[xcResultBundle.name] = excludedTargets
-    }
-}
-
-struct MockedXcodeSummaryReporter: XcodeSummaryReporting {
-    static var reportedSummaryFiles: [XcodeSummaryContaining] = []
-
-    static func reportXcodeSummary(for file: XcodeSummaryContaining) {
-        reportedSummaryFiles.append(file)
-    }
-}

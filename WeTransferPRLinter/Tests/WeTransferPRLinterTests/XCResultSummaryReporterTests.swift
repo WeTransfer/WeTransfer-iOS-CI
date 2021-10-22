@@ -19,67 +19,66 @@ final class XCResultSummartReporterTests: XCTestCase {
         XCTAssertNoThrow(try buildFolder.delete())
         resetDangerResults()
         MockedSwiftLintExecutor.lintedFiles = [:]
-        MockedCoverageReporter.reportedXCResultBundlesNames = [:]
-        MockedXcodeSummaryReporter.reportedSummaryFiles = []
         super.tearDown()
     }
 
-    /// It should report XCResult files correctly when a package with multiple tests is executed.
-    func testXCResultSummaryReportingForFullPackageTesting() throws {
-        let xcResultFilename = "WeTransfer-iOS-SDK-Package.xcresult"
+    func testXCResultSummaryReporting() throws {
+        let xcResultFilename = "Trainer_example_result.xcresult"
         let xcResultFile = Bundle.module.url(forResource: "Resources/\(xcResultFilename)", withExtension: nil)!
         let file = try Folder(path: xcResultFile.deletingLastPathComponent().path).subfolder(named: xcResultFilename)
         try file.copy(to: buildFolder)
 
         let danger = githubWithFilesDSL()
-        let summaryReporter = MockedXcodeSummaryReporter.self
+        let stubbedFileManager = StubbedFileManager()
+        stubbedFileManager.stubbedCurrentDirectoryPath = "/Users/josh/Projects/fastlane/"
 
-        WeTransferPRLinter.lint(using: danger, swiftLintExecutor: MockedSwiftLintExecutor.self, summaryReporter: summaryReporter, coverageReporter: MockedCoverageReporter.self, reportsPath: buildFolder.path)
+        WeTransferPRLinter.lint(using: danger, swiftLintExecutor: MockedSwiftLintExecutor.self, reportsPath: buildFolder.path, fileManager: stubbedFileManager)
+
         XCTAssertEqual(danger.messages.map { $0.message }, [
-            "Totally executed 793 tests, with 11 failures",
-            "ContentKitTests: Executed 148 tests, with 1 failures in 3.323 seconds",
-            "CoreExtensionsTests: Executed 60 tests, with 0 failures in 0.152 seconds",
-            "CoreUIKitTests: Executed 99 tests, with 0 failures in 3.413 seconds",
-            "DeeplinkingTests: Executed 10 tests, with 0 failures in 0.018 seconds",
-            "NetworkingTests: Executed 90 tests, with 0 failures in 5.234 seconds",
-            "OkapiFirebaseTests: Executed 11 tests, with 0 failures in 0.017 seconds",
-            "OkapiTests: Executed 20 tests, with 0 failures in 0.222 seconds",
-            "ReceivingTests: Executed 39 tests, with 0 failures in 0.237 seconds",
-            "SSOAuthenticationTests: Executed 14 tests, with 0 failures in 1.055 seconds",
-            "SpaceshipAPITests: Executed 102 tests, with 0 failures in 21.979 seconds",
-            "WeTransferAPITests: Executed 114 tests, with 6 failures in 70.232 seconds",
-            "StormTests: Executed 65 tests, with 4 failures in 47.340 seconds",
-            "MigrationKitTests: Executed 21 tests, with 0 failures in 2.109 seconds"
+            "Totally executed 7 tests, with 2 failures",
+            "TestUITests: Executed 1 tests, with 0 failures in 16.058 seconds",
+            "TestThisDude: Executed 6 tests, with 2 failures in 0.534 seconds"
         ])
-        XCTAssertEqual(danger.fails.count, 0)
+
+        XCTAssertEqual(danger.warnings.count, 2)
+        XCTAssertEqual(danger.warnings.map { $0.message}, [
+            "DEBUG_INFORMATION_FORMAT should be set to dwarf-with-dsym for all configurations. This could also be a timing issue, make sure the Fabric run script build phase is the last build phase and no other scripts have moved the dSYM from the location Xcode generated it. Unable to process Some Test App.app.dSYM at path /Users/josh/Library/Developer/Xcode/DerivedData/Test-appjhtkjaewuhlggerdwreapskfh/Build/Products/Debug-iphonesimulator/Some Test App.app.dSYM",
+            "Could not get code coverage report Trainer_example_result.xcresult"
+        ])
+        let warning = try XCTUnwrap(danger.warnings.first)
+        XCTAssertNil(warning.file)
+        XCTAssertNil(warning.line)
+
+        XCTAssertEqual(danger.fails.count, 2)
+        let failure = try XCTUnwrap(danger.fails.first)
+        XCTAssertEqual(failure.message, "**TestTests.testFailureJosh1():**<br/>XCTAssertTrue failed")
+        XCTAssertEqual(failure.file, "test-ios/TestTests/TestTests.swift")
+        XCTAssertEqual(failure.line, 36)
     }
 
-    /// It should report XCResult files correctly when a single package test is executed.
-    func testXCResultSummaryReportingForSinglePackageTesting() throws {
-        let xcResultFilename = "CoreExtensions.xcresult"
+    func testXCResultCoverageReporting() throws {
+        let xcResultFilename = "coverage_example.xcresult"
         let xcResultFile = Bundle.module.url(forResource: "Resources/\(xcResultFilename)", withExtension: nil)!
         let file = try Folder(path: xcResultFile.deletingLastPathComponent().path).subfolder(named: xcResultFilename)
         try file.copy(to: buildFolder)
 
         let danger = githubWithFilesDSL()
-        let summaryReporter = MockedXcodeSummaryReporter.self
         let stubbedFileManager = StubbedFileManager()
-        stubbedFileManager.stubbedCurrentDirectoryPath = "/Users/avanderlee/Documents/GIT-Projects/WeTransfer/WeTransfer-iOS-SDK/"
+        stubbedFileManager.stubbedCurrentDirectoryPath = "/Users/josh/Projects/fastlane/"
 
-        WeTransferPRLinter.lint(using: danger, swiftLintExecutor: MockedSwiftLintExecutor.self, summaryReporter: summaryReporter, coverageReporter: MockedCoverageReporter.self, reportsPath: buildFolder.path, fileManager: stubbedFileManager)
+        WeTransferPRLinter.lint(using: danger, swiftLintExecutor: MockedSwiftLintExecutor.self, reportsPath: buildFolder.path, fileManager: stubbedFileManager)
+
         XCTAssertEqual(danger.messages.map { $0.message }, [
-            "Totally executed 60 tests, with 1 failures",
-            "CoreExtensionsTests: Executed 60 tests, with 1 failures in 0.688 seconds"
+            "PRLinterAppTests: Executed 1 tests, with 0 failures in 0.004 seconds"
         ])
-        let testFailure = try XCTUnwrap(danger.fails.first)
-        XCTAssertEqual(testFailure.message, "**OptionalExtensionsTests.testStringNilIfEmpty():**<br/>XCTAssertNotNil failed")
-        XCTAssertEqual(testFailure.file, "CoreExtensions/Tests/CoreExtensionsTests/OptionalExtensionsTests.swift")
-        XCTAssertEqual(testFailure.line, 15)
 
-        let warning = try XCTUnwrap(danger.warnings.first)
-        XCTAssertEqual(warning.message, "Initialization of variable 'property' was never used; consider replacing with assignment to '_' or removing it")
-        XCTAssertEqual(warning.file, "CoreExtensions/Sources/CoreExtensions/OptionalExtensions.swift")
-        XCTAssertEqual(warning.line, 15)
+        let coverageReport = try XCTUnwrap(danger.markdowns.first)
+        XCTAssertEqual(coverageReport.message, """
+            ## Code Coverage Report
+            | Name | Coverage ||
+            | --- | --- | --- |
+            PRLinterApp.framework | 71.43% | ⚠️\n
+            """)
     }
 }
 

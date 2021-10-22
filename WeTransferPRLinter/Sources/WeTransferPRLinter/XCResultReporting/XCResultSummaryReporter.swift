@@ -19,6 +19,8 @@ public enum XCResultSummaryReporter: XCResultSummaryReporting {
         results.forEach { result in
             danger.report(result)
         }
+
+        XCResultCoverageReporter(resultFile: resultFile, danger: danger).report(minimumCoverage: 0.8)
     }
 
 }

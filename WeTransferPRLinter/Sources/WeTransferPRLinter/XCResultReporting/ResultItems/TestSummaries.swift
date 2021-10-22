@@ -4,8 +4,15 @@ import XCResultKit
 /// Creates test summary messages like:
 /// `StormTests: Executed 66 tests, with 0 failures in 9.181 seconds`
 extension ActionRecord: XCResultItemsConvertible {
+    func testPlanRunSummaries(resultFile: XCResultFile) -> ActionTestPlanRunSummaries? {
+        guard let testsReferenceID = actionResult.testsRef?.id, let testPlanRunSummaries = resultFile.getTestPlanRunSummaries(id: testsReferenceID) else {
+            return nil
+        }
+        return testPlanRunSummaries
+    }
+    
     func createResults(context: ResultGenerationContext) -> [XCResultItem] {
-        guard let testsReferenceID = actionResult.testsRef?.id, let testPlanRunSummaries = context.resultFile.getTestPlanRunSummaries(id: testsReferenceID) else {
+        guard let testPlanRunSummaries = testPlanRunSummaries(resultFile: context.resultFile) else {
             return []
         }
 

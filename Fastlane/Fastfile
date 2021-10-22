@@ -39,6 +39,7 @@ lane :test_project do |options|
     sourcePackagesDir = "#{ENV['PWD']}/.build"
 
     disable_automatic_package_resolution = options.fetch(:disable_automatic_package_resolution, false)
+    disable_concurrent_testing = options.fetch(:disable_concurrent_testing, true)
 
     scan(
       scheme: options[:scheme] || options[:package_name],
@@ -46,7 +47,7 @@ lane :test_project do |options|
       device: device,
       destination: options[:destination],
       code_coverage: true,
-      disable_concurrent_testing: true,
+      disable_concurrent_testing: disable_concurrent_testing,
       fail_build: false,
       skip_slack: true,
       output_types: '',

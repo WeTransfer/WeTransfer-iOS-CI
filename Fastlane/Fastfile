@@ -66,14 +66,12 @@ end
 
 desc 'Tests the WeTransferPRLinter Swift Package'
 lane :test_pr_linter do
-  spm(command: 'generate-xcodeproj', package_path: 'Danger-Swift')
-  test_project(
-    project_path: 'Danger-Swift/',
-    project_name: 'WeTransferPRLinter',
-    scheme: 'WeTransferPRLinter-Package',
-    device: nil,
-    destination: 'platform=macOS'
-  )
+  test_package(
+        package_name: 'WeTransferPRLinter',
+        package_path: 'WeTransferPRLinter/',
+        disable_automatic_package_resolution: false,
+        disable_concurrent_testing: false,
+        destination: 'platform=macOS')
 end
 
 desc 'Create a release from a tag triggered CI run'

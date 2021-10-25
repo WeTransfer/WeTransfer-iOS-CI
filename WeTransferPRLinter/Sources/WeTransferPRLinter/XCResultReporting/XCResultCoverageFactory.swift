@@ -17,7 +17,10 @@ struct XCResultCoverageReporter {
         }
 
         let testSummaries = invocationRecord.actions.map { $0.testPlanRunSummaries(resultFile: resultFile) }
-        let coverageTargets = testSummaries.compactMap { $0?.summaries.flatMap { $0.testableSummaries.compactMap { $0.targetName?.replacingOccurrences(of: "Tests", with: "") }}}.flatMap { $0 }
+        let testTargetNames = testSummaries.compactMap { $0?.summaries.flatMap { $0.testableSummaries.compactMap { $0.targetName }}}.flatMap { $0 }
+        let coverageTargets = testTargetNames.map { targetName -> String in
+            targetName.replacingOccurrences(of: "Tests", with: "")
+        }
 
         var markdown = "## Code Coverage Report\n"
         markdown += """
@@ -26,7 +29,7 @@ struct XCResultCoverageReporter {
         """
 
         markdown += coverage.targets.compactMap { target in
-            guard coverageTargets.contains(target.name) else { return nil }
+            guard coverageTargets.contains(target.coverageTargetName) else { return nil }
             return "\(target.name) | \(target.coverageDescription)% | \(target.lineCoverage > minimumCoverage ? "✅" : "⚠️")\n"
         }.joined()
 
@@ -38,5 +41,10 @@ extension CodeCoverageTarget {
     /// Converts e.g. `0.7142857142857143` into `71.43`.
     var coverageDescription: String {
         String(format:"%.2f", lineCoverage * 100)
+    }
+
+    /// Changes e.g. `PRLinterApp.framework` to `PRLinterApp`.
+    var coverageTargetName: String {
+        URL(fileURLWithPath: name).deletingPathExtension().lastPathComponent
     }
 }

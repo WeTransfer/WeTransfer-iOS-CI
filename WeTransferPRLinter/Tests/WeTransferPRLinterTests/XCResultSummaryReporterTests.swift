@@ -72,6 +72,7 @@ final class XCResultSummartReporterTests: XCTestCase {
             "PRLinterAppTests: Executed 1 tests, with 0 failures in 0.004 seconds"
         ])
 
+        XCTAssertEqual(danger.markdowns.count, 1)
         let coverageReport = try XCTUnwrap(danger.markdowns.first)
         XCTAssertEqual(coverageReport.message, """
             ## Code Coverage Report

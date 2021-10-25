@@ -16,7 +16,7 @@ public enum XCResultSummaryReporter: XCResultSummaryReporting {
 
         let resultFile = XCResultFile(url: file.url)
         let results = XCResultItemsFactory(resultFile: resultFile, resultsFilter: resultsFilter, fileManager: fileManager).make()
-        
+
         results.forEach { result in
             danger.report(result)
         }

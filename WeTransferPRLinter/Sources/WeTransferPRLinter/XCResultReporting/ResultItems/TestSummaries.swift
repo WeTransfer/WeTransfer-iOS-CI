@@ -10,7 +10,7 @@ extension ActionRecord: XCResultItemsConvertible {
         }
         return testPlanRunSummaries
     }
-    
+
     func createResults(context: ResultGenerationContext) -> [XCResultItem] {
         guard let testPlanRunSummaries = testPlanRunSummaries(resultFile: context.resultFile) else {
             return []
@@ -35,7 +35,7 @@ extension ActionTestableSummary: XCResultItemsConvertible {
             totalDuration += testSummaryGroup.duration
             return totalDuration
         }
-        return String(format:"%.3f", totalDuration)
+        return String(format: "%.3f", totalDuration)
     }
 
     var totalNumberOfFailingTests: Int {
@@ -80,4 +80,3 @@ extension ActionTestSummaryGroup {
         subtests.filter { $0.testStatus == "Failure" }.count + subtestGroups.totalNumberOfFailingTests
     }
 }
-

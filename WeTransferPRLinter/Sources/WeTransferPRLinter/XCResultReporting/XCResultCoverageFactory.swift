@@ -28,10 +28,12 @@ struct XCResultCoverageReporter {
         | --- | --- | --- |\n
         """
 
-        markdown += coverage.targets.compactMap { target in
-            guard coverageTargets.contains(target.coverageTargetName) else { return nil }
-            return "\(target.name) | \(target.coverageDescription)% | \(target.lineCoverage > minimumCoverage ? "✅" : "⚠️")\n"
-        }.joined()
+        markdown += coverage.targets
+            .compactMap { target in
+                guard coverageTargets.contains(target.coverageTargetName) else { return nil }
+                return "\(target.name) | \(target.coverageDescription)% | \(target.lineCoverage > minimumCoverage ? "✅" : "⚠️")\n"
+            }
+            .joined()
 
         danger.markdown(markdown)
     }

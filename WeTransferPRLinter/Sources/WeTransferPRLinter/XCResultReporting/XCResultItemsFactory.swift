@@ -4,11 +4,13 @@ import XCResultKit
 /// A filter that can be used to hide specific results based on certain conditions.
 public typealias ResultsFilter = (XCResultItem) -> Bool
 
+/// The context of generation which can be used to fetch information from for generating `XCResultItem` instances.
 struct ResultGenerationContext {
     let resultFile: XCResultFile
     let fileManager: FileManager
 }
 
+/// Generates `XCResultItem` instances from the input `XCResultFile`.
 struct XCResultItemsFactory {
     let resultFile: XCResultFile
     let resultsFilter: ResultsFilter?

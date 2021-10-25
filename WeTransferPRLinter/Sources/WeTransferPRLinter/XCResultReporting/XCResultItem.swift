@@ -1,5 +1,6 @@
 import Foundation
 
+/// Defines a result item that can be used to report into `Danger`.
 public struct XCResultItem: Equatable, Hashable {
     public enum Category {
         case warning, error, message

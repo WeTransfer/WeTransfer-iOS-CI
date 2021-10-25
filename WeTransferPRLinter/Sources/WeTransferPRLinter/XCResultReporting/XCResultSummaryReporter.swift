@@ -9,6 +9,7 @@ public protocol XCResultSummaryReporting {
     static func reportXCResultSummary(for file: XCResultSummaryContaining, using danger: DangerDSL, fileManager: FileManager, resultsFilter: ResultsFilter?)
 }
 
+/// Fetches `XCResultItem` instances and reports them into the given `DangerDSL`.
 public enum XCResultSummaryReporter: XCResultSummaryReporting {
     public static func reportXCResultSummary(for file: XCResultSummaryContaining, using danger: DangerDSL, fileManager: FileManager = .default, resultsFilter: ResultsFilter? = nil) {
         print("Generating XCResult Summary report for \(file.name)")

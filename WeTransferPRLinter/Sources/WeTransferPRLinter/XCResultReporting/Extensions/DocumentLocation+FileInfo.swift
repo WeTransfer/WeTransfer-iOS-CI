@@ -7,6 +7,11 @@ struct FileMetadata {
 }
 
 extension DocumentLocation {
+
+    /// Returns `FileMetadata` for URLs like: `▿ file:///Users/josh/Projects/fastlane/test-ios/TestTests/TestTests.swift#CharacterRangeLen=0&EndingLineNumber=36&StartingLineNumber=36`
+    /// by extracting the query parameters from it.
+    /// - Parameter fileManager: The file manager to use for fetching the current execution directory.
+    /// - Returns: The `FileMetadata` if it could be found.
     func fileMetadata(fileManager: FileManager = .default) -> FileMetadata? {
         guard let url = URL(string: url) else { return nil }
 

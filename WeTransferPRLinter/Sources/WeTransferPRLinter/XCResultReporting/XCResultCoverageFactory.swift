@@ -42,7 +42,7 @@ struct XCResultCoverageReporter {
 extension CodeCoverageTarget {
     /// Converts e.g. `0.7142857142857143` into `71.43`.
     var coverageDescription: String {
-        String(format:"%.2f", lineCoverage * 100)
+        String(format: "%.2f", lineCoverage * 100)
     }
 
     /// Changes e.g. `PRLinterApp.framework` to `PRLinterApp`.

@@ -10,13 +10,14 @@ public enum WeTransferPRLinter {
                             xcResultSummaryReporter: XCResultSummaryReporter.Type = XCResultSummaryReporter.self,
                             reportsPath: String = "build/reports",
                             swiftLintConfigsFolderPath: String? = nil,
-                            fileManager: FileManager = .default)
+                            fileManager: FileManager = .default,
+                            environmentVariables: [String: String] = ProcessInfo.processInfo.environment)
     {
         reportXCResultsSummary(using: danger, summaryReporter: xcResultSummaryReporter, reportsPath: reportsPath, fileManager: fileManager)
         validatePRDescription(using: danger)
         validateWorkInProgress(using: danger)
         validateFiles(using: danger)
-        showBitriseBuildURL(using: danger)
+        showBitriseBuildURL(using: danger, environmentVariables: environmentVariables)
         swiftLint(using: danger, executor: swiftLintExecutor, configsFolderPath: swiftLintConfigsFolderPath)
     }
 

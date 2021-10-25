@@ -32,7 +32,7 @@ final class XCResultSummartReporterTests: XCTestCase {
         let stubbedFileManager = StubbedFileManager()
         stubbedFileManager.stubbedCurrentDirectoryPath = "/Users/josh/Projects/fastlane/"
 
-        WeTransferPRLinter.lint(using: danger, swiftLintExecutor: MockedSwiftLintExecutor.self, reportsPath: buildFolder.path, fileManager: stubbedFileManager)
+        WeTransferPRLinter.lint(using: danger, swiftLintExecutor: MockedSwiftLintExecutor.self, reportsPath: buildFolder.path, fileManager: stubbedFileManager, environmentVariables: [:])
 
         XCTAssertEqual(danger.messages.map { $0.message }, [
             "Totally executed 7 tests, with 2 failures",
@@ -66,7 +66,7 @@ final class XCResultSummartReporterTests: XCTestCase {
         let stubbedFileManager = StubbedFileManager()
         stubbedFileManager.stubbedCurrentDirectoryPath = "/Users/josh/Projects/fastlane/"
 
-        WeTransferPRLinter.lint(using: danger, swiftLintExecutor: MockedSwiftLintExecutor.self, reportsPath: buildFolder.path, fileManager: stubbedFileManager)
+        WeTransferPRLinter.lint(using: danger, swiftLintExecutor: MockedSwiftLintExecutor.self, reportsPath: buildFolder.path, fileManager: stubbedFileManager, environmentVariables: [:])
 
         XCTAssertEqual(danger.messages.map { $0.message }, [
             "PRLinterAppTests: Executed 1 tests, with 0 failures in 0.004 seconds"

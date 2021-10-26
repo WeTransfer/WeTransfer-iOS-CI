@@ -38,16 +38,13 @@ lane :test_project do |options|
 
     sourcePackagesDir = "#{ENV['PWD']}/.build"
 
-    disable_automatic_package_resolution = options.fetch(:disable_automatic_package_resolution, false)
-    disable_concurrent_testing = options.fetch(:disable_concurrent_testing, true)
-
     scan(
       scheme: options[:scheme] || options[:package_name],
       project: project_path,
       device: device,
       destination: options[:destination],
       code_coverage: true,
-      disable_concurrent_testing: disable_concurrent_testing,
+      disable_concurrent_testing: options.fetch(:disable_concurrent_testing, true),
       fail_build: false,
       skip_slack: true,
       output_types: '',
@@ -57,7 +54,9 @@ lane :test_project do |options|
       result_bundle: true,
       output_directory: 'build/reports/',
       package_path: options[:package_path],
-      skip_package_dependencies_resolution: disable_automatic_package_resolution
+      build_for_testing: options.fetch(:build_for_testing, nil),
+      test_without_building: options.fetch(:test_without_building, nil),
+      skip_package_dependencies_resolution: options.fetch(:disable_automatic_package_resolution, false)
     )
   rescue StandardError => e
     UI.important("Tests failed for #{e}")

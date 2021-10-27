@@ -44,12 +44,12 @@ lane :test_project do |options|
       device: device,
       destination: options[:destination],
       code_coverage: true,
-      disable_concurrent_testing: options.fetch(:disable_concurrent_testing, true),
+      disable_concurrent_testing: true, # As of 27th October 2021, this seems to not be working anymore. We need `parallel-testing-enabled NO` instead.
       fail_build: false,
       skip_slack: true,
       output_types: '',
       prelaunch_simulator: true,
-      xcargs: "-clonedSourcePackagesDirPath #{sourcePackagesDir}",
+      xcargs: "-clonedSourcePackagesDirPath #{sourcePackagesDir} -parallel-testing-enabled NO",
       include_simulator_logs: false, # Needed for this: https://github.com/fastlane/fastlane/issues/8909
       result_bundle: true,
       output_directory: 'build/reports/',

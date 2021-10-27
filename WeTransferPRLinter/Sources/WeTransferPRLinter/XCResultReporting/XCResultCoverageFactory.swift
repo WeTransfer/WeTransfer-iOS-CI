@@ -15,7 +15,7 @@ struct XCResultCoverageReporter {
 
         resultFiles.forEach { resultFile in
             guard let coverage = resultFile.getCodeCoverage() else {
-                danger.warn("Could not get code coverage report \(resultFile.url.lastPathComponent)")
+                print("Could not get code coverage report \(resultFile.url.lastPathComponent)")
                 return
             }
 

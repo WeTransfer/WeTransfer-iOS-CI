@@ -13,12 +13,37 @@ public enum WeTransferPRLinter {
                             fileManager: FileManager = .default,
                             environmentVariables: [String: String] = ProcessInfo.processInfo.environment)
     {
-        reportXCResultsSummary(using: danger, summaryReporter: xcResultSummaryReporter, reportsPath: reportsPath, fileManager: fileManager)
-        validatePRDescription(using: danger)
-        validateWorkInProgress(using: danger)
-        validateFiles(using: danger)
-        showBitriseBuildURL(using: danger, environmentVariables: environmentVariables)
-        swiftLint(using: danger, executor: swiftLintExecutor, configsFolderPath: swiftLintConfigsFolderPath)
+
+        measure(taskName: "XCResults Summary") {
+            reportXCResultsSummary(using: danger, summaryReporter: xcResultSummaryReporter, reportsPath: reportsPath, fileManager: fileManager)
+        }
+
+        measure(taskName: "PR Description Validation") {
+            validatePRDescription(using: danger)
+        }
+
+        measure(taskName: "Validating Work in Progress") {
+            validateWorkInProgress(using: danger)
+        }
+
+        measure(taskName: "Validating Files") {
+            validateFiles(using: danger)
+        }
+
+        measure(taskName: "Bitrise URL showing") {
+            showBitriseBuildURL(using: danger, environmentVariables: environmentVariables)
+        }
+
+        measure(taskName: "SwiftLint") {
+            swiftLint(using: danger, executor: swiftLintExecutor, configsFolderPath: swiftLintConfigsFolderPath)
+        }
+    }
+
+    private static func measure(taskName: String, task: () -> Void) {
+        let startDate = Date()
+        task()
+        let differenceInSeconds = Int(Date().timeIntervalSince(startDate))
+        print("Finished executing \(taskName) in \(differenceInSeconds) seconds")
     }
 
     static func reportXCResultsSummary(using danger: DangerDSL, summaryReporter: XCResultSummaryReporting.Type, reportsPath: String, fileManager: FileManager) {

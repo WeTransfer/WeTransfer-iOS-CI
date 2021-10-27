@@ -26,8 +26,8 @@ lane :test_project do |options|
   # clear_derived_data
 
   # Set timeout to prevent xcodebuild -list -project to take to much retries.
-  ENV['FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT'] = '120'
-  ENV['FASTLANE_XCODE_LIST_TIMEOUT'] = '120'
+  ENV['FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT'] = '30'
+  ENV['FASTLANE_XCODE_LIST_TIMEOUT'] = '30'
 
   begin
     device = options[:device] || 'iPhone 13'

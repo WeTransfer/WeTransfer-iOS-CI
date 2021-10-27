@@ -59,8 +59,12 @@ final class XCResultSummartReporterTests: XCTestCase {
     func testXCResultCoverageReporting() throws {
         let xcResultFilename = "coverage_example.xcresult"
         let xcResultFile = Bundle.module.url(forResource: "Resources/\(xcResultFilename)", withExtension: nil)!
-        let file = try Folder(path: xcResultFile.deletingLastPathComponent().path).subfolder(named: xcResultFilename)
-        try file.copy(to: buildFolder)
+        let xcResultFileTwo = xcResultFile.copied(newFileName: "coverage_example_two.xcresult")
+        let fileOne = try Folder(path: xcResultFile.deletingLastPathComponent().path).subfolder(named: xcResultFilename)
+        try fileOne.copy(to: buildFolder)
+
+        let fileTwo = try Folder(path: xcResultFileTwo.deletingLastPathComponent().path).subfolder(named: "coverage_example_two.xcresult")
+        try fileTwo.copy(to: buildFolder)
 
         let danger = githubWithFilesDSL()
         let stubbedFileManager = StubbedFileManager()
@@ -69,15 +73,17 @@ final class XCResultSummartReporterTests: XCTestCase {
         WeTransferPRLinter.lint(using: danger, swiftLintExecutor: MockedSwiftLintExecutor.self, reportsPath: buildFolder.path, fileManager: stubbedFileManager, environmentVariables: [:])
 
         XCTAssertEqual(danger.messages.map { $0.message }, [
+            "PRLinterAppTests: Executed 1 tests, with 0 failures in 0.004 seconds",
             "PRLinterAppTests: Executed 1 tests, with 0 failures in 0.004 seconds"
-        ])
+        ], "Both reports should be handled")
 
-        XCTAssertEqual(danger.markdowns.count, 1)
+        XCTAssertEqual(danger.markdowns.count, 1, "Coverage reports should be combined")
         let coverageReport = try XCTUnwrap(danger.markdowns.first)
         XCTAssertEqual(coverageReport.message, """
             ## Code Coverage Report
             | Name | Coverage ||
             | --- | --- | --- |
+            PRLinterApp.framework | 71.43% | ⚠️
             PRLinterApp.framework | 71.43% | ⚠️\n
             """)
     }
@@ -86,12 +92,12 @@ final class XCResultSummartReporterTests: XCTestCase {
 private extension URL {
     /// Creates a copy of the file at the current URL to prevent the original file from being affected.
     /// Files can get deleted after a test is cleaned up, making future tests fail.
-    func copied() -> URL {
+    func copied(newFileName: String? = nil) -> URL {
         guard isFileURL else { fatalError("Can't copy a non-file URL") }
 
         let destinationDirectory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
         try! FileManager.default.createDirectory(at: destinationDirectory, withIntermediateDirectories: false, attributes: nil)
-        let newFileURL = destinationDirectory.appendingPathComponent(lastPathComponent)
+        let newFileURL = destinationDirectory.appendingPathComponent(newFileName ?? lastPathComponent)
         try! FileManager.default.copyItem(at: self, to: newFileURL)
         assert(FileManager.default.fileExists(atPath: newFileURL.path), "Source file should exist")
         return newFileURL

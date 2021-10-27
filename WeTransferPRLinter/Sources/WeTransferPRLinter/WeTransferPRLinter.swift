@@ -51,29 +51,27 @@ public enum WeTransferPRLinter {
 
         do {
             let reportsFolder = try Folder(path: reportsPath)
-            let summaryFiles = reportsFolder.subfolders.filter { $0.extension == "xcresult" }
+            let xcResultFiles = reportsFolder.subfolders.filter { $0.extension == "xcresult" }
 
-            guard !summaryFiles.isEmpty else {
+            guard !xcResultFiles.isEmpty else {
                 return print("There were no files to create an XCResult Summary report for.")
             }
 
-            print("Found XCResult Summary Reports:\n- \(summaryFiles.map(\.name).joined(separator: "\n- "))")
+            print("Found XCResult Summary Reports:\n- \(xcResultFiles.map(\.name).joined(separator: "\n- "))")
 
-            summaryFiles.forEach { jsonFile in
-                summaryReporter.reportXCResultSummary(for: jsonFile, using: danger, fileManager: fileManager) { result in
-                    guard let file = result.file else { return true }
+            summaryReporter.reportXCResultSummary(for: xcResultFiles, using: danger, fileManager: fileManager) { result in
+                guard let file = result.file else { return true }
 
-                    /// Filter results from submodules
-                    guard !file.contains("Submodules/"), !result.message.contains("Submodules/") else { return false }
+                /// Filter results from submodules
+                guard !file.contains("Submodules/"), !result.message.contains("Submodules/") else { return false }
 
-                    /// Filter results from packages
-                    guard !file.contains("SourcePackages/"), !result.message.contains("SourcePackages/") else { return false }
+                /// Filter results from packages
+                guard !file.contains("SourcePackages/"), !result.message.contains("SourcePackages/") else { return false }
 
-                    /// Filter results from build folder
-                    guard !file.contains(".build/"), !result.message.contains(".build/") else { return false }
+                /// Filter results from build folder
+                guard !file.contains(".build/"), !result.message.contains(".build/") else { return false }
 
-                    return true
-                }
+                return true
             }
         } catch {
             danger.warn("XCResult Summary failed with error: \(error).")

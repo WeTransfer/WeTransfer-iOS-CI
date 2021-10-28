@@ -1,7 +1,7 @@
+import Danger
 import Files
 import Foundation
 import XCResultKit
-import Danger
 
 public typealias XCResultSummaryContaining = Folder
 
@@ -12,7 +12,6 @@ public protocol XCResultSummaryReporting {
 /// Fetches `XCResultItem` instances and reports them into the given `DangerDSL`.
 public enum XCResultSummaryReporter: XCResultSummaryReporting {
     public static func reportXCResultSummary(for files: [XCResultSummaryContaining], using danger: DangerDSL, fileManager: FileManager = .default, resultsFilter: ResultsFilter? = nil) {
-
         let resultFiles = files.map { file in
             XCResultFile(url: file.url)
         }
@@ -28,5 +27,4 @@ public enum XCResultSummaryReporter: XCResultSummaryReporting {
 
         XCResultCoverageReporter(resultFiles: resultFiles, danger: danger).report(minimumCoverage: 0.8)
     }
-
 }

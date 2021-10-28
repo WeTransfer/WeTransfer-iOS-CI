@@ -17,6 +17,6 @@ let package = Package(
         .target(name: "DangerDependencies", dependencies: [
             .product(name: "Danger", package: "danger-swift"),
             .product(name: "WeTransferPRLinter", package: "WeTransferPRLinter")
-        ], path: "DangerFakeSources", sources: ["DangerFakeSource.swift"]),
+        ], path: "DangerFakeSources", sources: ["DangerFakeSource.swift"])
     ]
 )

@@ -1,5 +1,5 @@
-import XCResultKit
 import Foundation
+import XCResultKit
 
 /// Defines a type that can be converted into `XCResultItem` instances.
 protocol XCResultItemsConvertible {

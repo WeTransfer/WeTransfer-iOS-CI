@@ -53,6 +53,8 @@ lane :test_project do |options|
       include_simulator_logs: false, # Needed for this: https://github.com/fastlane/fastlane/issues/8909
       result_bundle: true,
       output_directory: 'build/reports/',
+      buildlog_path: 'build/logs',
+      derived_data_path: 'build/derived_data',
       package_path: options[:package_path],
       build_for_testing: options.fetch(:build_for_testing, nil),
       test_without_building: options.fetch(:test_without_building, nil),

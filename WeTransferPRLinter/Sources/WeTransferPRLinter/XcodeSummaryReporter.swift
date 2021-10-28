@@ -50,7 +50,7 @@ extension XcodeSummaryContaining {
             throw Error.updateSummaryContentFailed
         }
 
-        let name = String(self.name.split(separator: "_").first ?? "")
+        let name = String(name.split(separator: "_").first ?? "")
         let updatedSummaryMessages = summaryMessages.map { summaryMessage in
             summaryMessage.replacingOccurrences(of: "Executed", with: "\(name): Executed")
         }

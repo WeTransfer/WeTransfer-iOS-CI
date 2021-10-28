@@ -13,7 +13,6 @@ public enum WeTransferPRLinter {
                             fileManager: FileManager = .default,
                             environmentVariables: [String: String] = ProcessInfo.processInfo.environment)
     {
-
         measure(taskName: "XCResults Summary") {
             reportXCResultsSummary(using: danger, summaryReporter: xcResultSummaryReporter, reportsPath: reportsPath, fileManager: fileManager)
         }

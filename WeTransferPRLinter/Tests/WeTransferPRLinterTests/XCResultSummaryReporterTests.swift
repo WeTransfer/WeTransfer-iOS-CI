@@ -34,14 +34,14 @@ final class XCResultSummartReporterTests: XCTestCase {
 
         WeTransferPRLinter.lint(using: danger, swiftLintExecutor: MockedSwiftLintExecutor.self, reportsPath: buildFolder.path, fileManager: stubbedFileManager, environmentVariables: [:])
 
-        XCTAssertEqual(danger.messages.map { $0.message }, [
+        XCTAssertEqual(danger.messages.map(\.message), [
             "Totally executed 7 tests, with 2 failures",
             "TestUITests: Executed 1 tests, with 0 failures in 16.058 seconds",
             "TestThisDude: Executed 6 tests, with 2 failures in 0.534 seconds"
         ])
 
         XCTAssertEqual(danger.warnings.count, 2)
-        XCTAssertEqual(danger.warnings.map { $0.message}, [
+        XCTAssertEqual(danger.warnings.map(\.message), [
             "DEBUG_INFORMATION_FORMAT should be set to dwarf-with-dsym for all configurations. This could also be a timing issue, make sure the Fabric run script build phase is the last build phase and no other scripts have moved the dSYM from the location Xcode generated it. Unable to process Some Test App.app.dSYM at path /Users/josh/Library/Developer/Xcode/DerivedData/Test-appjhtkjaewuhlggerdwreapskfh/Build/Products/Debug-iphonesimulator/Some Test App.app.dSYM",
             "Could not get code coverage report Trainer_example_result.xcresult"
         ])
@@ -72,7 +72,7 @@ final class XCResultSummartReporterTests: XCTestCase {
 
         WeTransferPRLinter.lint(using: danger, swiftLintExecutor: MockedSwiftLintExecutor.self, reportsPath: buildFolder.path, fileManager: stubbedFileManager, environmentVariables: [:])
 
-        XCTAssertEqual(danger.messages.map { $0.message }, [
+        XCTAssertEqual(danger.messages.map(\.message), [
             "PRLinterAppTests: Executed 1 tests, with 0 failures in 0.004 seconds",
             "PRLinterAppTests: Executed 1 tests, with 0 failures in 0.004 seconds"
         ], "Both reports should be handled")
@@ -80,12 +80,12 @@ final class XCResultSummartReporterTests: XCTestCase {
         XCTAssertEqual(danger.markdowns.count, 1, "Coverage reports should be combined")
         let coverageReport = try XCTUnwrap(danger.markdowns.first)
         XCTAssertEqual(coverageReport.message, """
-            ## Code Coverage Report
-            | Name | Coverage ||
-            | --- | --- | --- |
-            PRLinterApp.framework | 71.43% | ⚠️
-            PRLinterApp.framework | 71.43% | ⚠️\n
-            """)
+        ## Code Coverage Report
+        | Name | Coverage ||
+        | --- | --- | --- |
+        PRLinterApp.framework | 71.43% | ⚠️
+        PRLinterApp.framework | 71.43% | ⚠️\n
+        """)
     }
 }
 
@@ -108,6 +108,6 @@ private final class StubbedFileManager: FileManager {
     var stubbedCurrentDirectoryPath: String!
 
     override var currentDirectoryPath: String {
-        return stubbedCurrentDirectoryPath
+        stubbedCurrentDirectoryPath
     }
 }

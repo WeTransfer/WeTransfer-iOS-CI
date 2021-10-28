@@ -1,6 +1,6 @@
+import Danger
 import Foundation
 import XCResultKit
-import Danger
 
 struct XCResultCoverageReporter {
     let resultFiles: [XCResultFile]
@@ -24,7 +24,7 @@ struct XCResultCoverageReporter {
             }
 
             let testSummaries = invocationRecord.actions.map { $0.testPlanRunSummaries(resultFile: resultFile) }
-            let testTargetNames = testSummaries.compactMap { $0?.summaries.flatMap { $0.testableSummaries.compactMap { $0.targetName }}}.flatMap { $0 }
+            let testTargetNames = testSummaries.compactMap { $0?.summaries.flatMap { $0.testableSummaries.compactMap(\.targetName) }}.flatMap { $0 }
             let coverageTargets = testTargetNames.map { targetName -> String in
                 targetName.replacingOccurrences(of: "Tests", with: "")
             }

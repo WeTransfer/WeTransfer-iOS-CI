@@ -1,8 +1,7 @@
-import Foundation
 import Danger
+import Foundation
 
 extension DangerDSL {
-
     /// Reports the given result item based on the available metadata like file and line number.
     /// - Parameter resultItem: The result item to report to Danger.
     func report(_ resultItem: XCResultItem) {

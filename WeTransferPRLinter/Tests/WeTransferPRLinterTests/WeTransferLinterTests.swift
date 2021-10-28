@@ -19,8 +19,6 @@ final class WeTransferLinterTests: XCTestCase {
         XCTAssertNoThrow(try buildFolder.delete())
         resetDangerResults()
         MockedSwiftLintExecutor.lintedFiles = [:]
-        MockedCoverageReporter.reportedXCResultBundlesNames = [:]
-        MockedXcodeSummaryReporter.reportedSummaryFiles = []
         super.tearDown()
     }
 
@@ -31,74 +29,6 @@ final class WeTransferLinterTests: XCTestCase {
 
         XCTAssertEqual(danger.warnings.count, 0)
         XCTAssertEqual(danger.fails.count, 0)
-    }
-
-    /// It should report code coverage for each xcresult file.
-    func testCodeCoverageReport() throws {
-        let danger = githubWithFilesDSL()
-        let coverageReporter = MockedCoverageReporter.self
-        let rabbitXCResultFileName = try buildFolder.createSubfolder(named: "Rabbit.test_result.xcresult").name
-        let okapiXCResultFileName = try buildFolder.createSubfolder(named: "Okapi.test_result.xcresult").name
-        WeTransferPRLinter.lint(using: danger, coverageReporter: coverageReporter, reportsPath: buildFolder.name)
-
-        XCTAssertEqual(coverageReporter.reportedXCResultBundlesNames.count, 2)
-        XCTAssertTrue(coverageReporter.reportedXCResultBundlesNames.keys.contains(rabbitXCResultFileName))
-        XCTAssertTrue(coverageReporter.reportedXCResultBundlesNames.keys.contains(okapiXCResultFileName))
-    }
-
-    /// It should exclude project test targets for coverage.
-    func testCodeCoverageTestTargetExclusion() throws {
-        let danger = githubWithFilesDSL()
-        let coverageReporter = MockedCoverageReporter.self
-        let rabbitXCResultFileName = try buildFolder.createSubfolder(named: "Rabbit.test_result.xcresult").name
-        let okapiXCResultFileName = try buildFolder.createSubfolder(named: "Okapi.test_result.xcresult").name
-        let wetransferPRLinterXCResultFileName = try buildFolder.createSubfolder(named: "WeTransferPRLinter-Package.test_result.xcresult").name
-        WeTransferPRLinter.lint(using: danger, coverageReporter: coverageReporter, reportsPath: buildFolder.name)
-
-        let expectedExcludedTargets = ["OkapiTests", "RabbitTests", "WeTransferPRLinterTests"]
-        XCTAssertEqual(coverageReporter.reportedXCResultBundlesNames.count, 3)
-        XCTAssertEqual(coverageReporter.reportedXCResultBundlesNames[rabbitXCResultFileName], expectedExcludedTargets)
-        XCTAssertEqual(coverageReporter.reportedXCResultBundlesNames[okapiXCResultFileName], expectedExcludedTargets)
-        XCTAssertEqual(coverageReporter.reportedXCResultBundlesNames[wetransferPRLinterXCResultFileName], expectedExcludedTargets)
-    }
-
-    /// It should report an error if code coverage creation failed.
-    func testCodeCoverageFailed() throws {
-        let danger = githubWithFilesDSL()
-        WeTransferPRLinter.reportCodeCoverage(using: danger, coverageReporter: MockedCoverageReporter.self, reportsPath: "build/reports")
-        XCTAssertEqual(danger.warnings.count, 1)
-        XCTAssertTrue(danger.warnings.first?.message.contains("Code coverage generation failed with error") == true)
-    }
-
-    /// It should report a summary for each Xcode Summary file.
-    func testXcodeSummaryReporting() throws {
-        let danger = githubWithFilesDSL()
-        let summaryReporter = MockedXcodeSummaryReporter.self
-        let rabbitSummaryFile = try buildFolder.createFile(at: "Rabbit_Tests.json")
-        let okapiSummaryFile = try buildFolder.createFile(at: "Okapi_Tests.json")
-        WeTransferPRLinter.lint(using: danger, summaryReporter: summaryReporter, reportsPath: buildFolder.name)
-
-        XCTAssertEqual(summaryReporter.reportedSummaryFiles.count, 2)
-        XCTAssertTrue(summaryReporter.reportedSummaryFiles.map(\.name).contains(rabbitSummaryFile.name))
-        XCTAssertTrue(summaryReporter.reportedSummaryFiles.map(\.name).contains(okapiSummaryFile.name))
-    }
-
-    /// It should add the file name in front of the summary message.
-    func testFileNameInSummaryMessage() throws {
-        let danger = githubWithFilesDSL()
-        let summaryReporter = MockedXcodeSummaryReporter.self
-        let summaryFile = try buildFolder.createFile(at: "Rabbit_Tests.json", contents: TestXcodeSummaryJSON.data(using: .utf8))
-        WeTransferPRLinter.lint(using: danger, summaryReporter: summaryReporter, reportsPath: buildFolder.name)
-        let summaryFileContents = try summaryFile.readAsString()
-        XCTAssertTrue(summaryFileContents.contains("Rabbit: Executed 964 tests, with 0 failures (0 unexpected) in 135.257 (135.775) seconds"))
-    }
-
-    /// It should report an error if Xcode Summary reporting failes.
-    func testXcodeSummaryReportingFailed() throws {
-        let danger = githubWithFilesDSL()
-        WeTransferPRLinter.reportXcodeSummary(using: danger, summaryReporter: MockedXcodeSummaryReporter.self, reportsPath: "build/reports")
-        XCTAssertEqual(danger.warnings.count, 1)
-        XCTAssertTrue(danger.warnings.first?.message.contains("Xcode Summary failed with error") == true)
     }
 
     /// It should warn for an empty PR description.
@@ -301,33 +231,19 @@ final class WeTransferLinterTests: XCTestCase {
 
         XCTAssertEqual(mockedSwiftLintExecutor.lintedFiles, [:])
     }
+}
 
-    static var allTests = [
-        ("testAllGood", testAllGood),
-        ("testCodeCoverageReport", testCodeCoverageReport),
-        ("testCodeCoverageTestTargetExclusion", testCodeCoverageTestTargetExclusion),
-        ("testCodeCoverageFailed", testCodeCoverageFailed),
-        ("testXcodeSummaryReporting", testXcodeSummaryReporting),
-        ("testFileNameInSummaryMessage", testFileNameInSummaryMessage),
-        ("testXcodeSummaryReportingFailed", testXcodeSummaryReportingFailed),
-        ("testEmptyPRDescription", testEmptyPRDescription),
-        ("testNonEmptyPRDescription", testNonEmptyPRDescription),
-        ("testWorkInProgressLabel", testWorkInProgressLabel),
-        ("testWorkInProgressTitle", testWorkInProgressTitle),
-        ("testFinalClass", testFinalClass),
-        ("testFinalClassDisabled", testFinalClassDisabled),
-        ("testNotFinalForOpenClass", testNotFinalForOpenClass),
-        ("testNotFinalForComments", testNotFinalForComments),
-        ("testUnownedSelfUsage", testUnownedSelfUsage),
-        ("testUnownedSelfDisabled", testUnownedSelfDisabled),
-        ("testEmptyMethodOverrides", testEmptyMethodOverrides),
-        ("testClosureMethodOverrides", testClosureMethodOverrides),
-        ("testMarkUsage", testMarkUsage),
-        ("testMarkUsageSmallFiles", testMarkUsageSmallFiles),
-        ("testMarkAlreadyUsed", testMarkAlreadyUsed),
-        ("testMarkUsageInTests", testMarkUsageInTests),
-        ("testBitriseURL", testBitriseURL),
-        ("testSwiftLintFileSplitting", testSwiftLintFileSplitting),
-        ("testSwiftLintSkippingForNoSwiftFiles", testSwiftLintSkippingForNoSwiftFiles)
-    ]
+private extension URL {
+    /// Creates a copy of the file at the current URL to prevent the original file from being affected.
+    /// Files can get deleted after a test is cleaned up, making future tests fail.
+    func copied() -> URL {
+        guard isFileURL else { fatalError("Can't copy a non-file URL") }
+
+        let destinationDirectory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
+        try! FileManager.default.createDirectory(at: destinationDirectory, withIntermediateDirectories: false, attributes: nil)
+        let newFileURL = destinationDirectory.appendingPathComponent(lastPathComponent)
+        try! FileManager.default.copyItem(at: self, to: newFileURL)
+        assert(FileManager.default.fileExists(atPath: newFileURL.path), "Source file should exist")
+        return newFileURL
+    }
 }

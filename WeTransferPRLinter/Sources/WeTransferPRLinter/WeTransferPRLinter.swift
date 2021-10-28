@@ -1,5 +1,4 @@
 import Danger
-import DangerXCodeSummary
 import Files
 import Foundation
 
@@ -8,60 +7,74 @@ import Foundation
 public enum WeTransferPRLinter {
     public static func lint(using danger: DangerDSL = Danger(),
                             swiftLintExecutor: SwiftLintExecuting.Type = SwiftLintExecutor.self,
-                            summaryReporter: XcodeSummaryReporting.Type = XcodeSummaryReporter.self,
-                            coverageReporter: CoverageReporting.Type = CoverageReporter.self,
+                            xcResultSummaryReporter: XCResultSummaryReporter.Type = XCResultSummaryReporter.self,
                             reportsPath: String = "build/reports",
-                            swiftLintConfigsFolderPath: String? = nil)
+                            swiftLintConfigsFolderPath: String? = nil,
+                            fileManager: FileManager = .default,
+                            environmentVariables: [String: String] = ProcessInfo.processInfo.environment)
     {
-        reportXcodeSummary(using: danger, summaryReporter: summaryReporter, reportsPath: reportsPath)
-        reportCodeCoverage(using: danger, coverageReporter: coverageReporter, reportsPath: reportsPath)
-        validatePRDescription(using: danger)
-        validateWorkInProgress(using: danger)
-        validateFiles(using: danger)
-        showBitriseBuildURL(using: danger)
-        swiftLint(using: danger, executor: swiftLintExecutor, configsFolderPath: swiftLintConfigsFolderPath)
+
+        measure(taskName: "XCResults Summary") {
+            reportXCResultsSummary(using: danger, summaryReporter: xcResultSummaryReporter, reportsPath: reportsPath, fileManager: fileManager)
+        }
+
+        measure(taskName: "PR Description Validation") {
+            validatePRDescription(using: danger)
+        }
+
+        measure(taskName: "Validating Work in Progress") {
+            validateWorkInProgress(using: danger)
+        }
+
+        measure(taskName: "Validating Files") {
+            validateFiles(using: danger)
+        }
+
+        measure(taskName: "Bitrise URL showing") {
+            showBitriseBuildURL(using: danger, environmentVariables: environmentVariables)
+        }
+
+        measure(taskName: "SwiftLint") {
+            swiftLint(using: danger, executor: swiftLintExecutor, configsFolderPath: swiftLintConfigsFolderPath)
+        }
     }
 
-    static func reportXcodeSummary(using danger: DangerDSL, summaryReporter: XcodeSummaryReporting.Type, reportsPath: String) {
+    private static func measure(taskName: String, task: () -> Void) {
+        let startDate = Date()
+        task()
+        let differenceInSeconds = Int(Date().timeIntervalSince(startDate))
+        print("Finished executing \(taskName) in \(differenceInSeconds) seconds")
+    }
+
+    static func reportXCResultsSummary(using danger: DangerDSL, summaryReporter: XCResultSummaryReporting.Type, reportsPath: String, fileManager: FileManager) {
         defer { print("\n") }
 
         do {
             let reportsFolder = try Folder(path: reportsPath)
-            let summaryFiles = reportsFolder.files.filter { $0.extension == "json" }
+            let xcResultFiles = reportsFolder.subfolders.filter { $0.extension == "xcresult" }
 
-            guard !summaryFiles.isEmpty else {
-                return print("There were no files to create an Xcode Summary report for.")
+            guard !xcResultFiles.isEmpty else {
+                return print("There were no files to create an XCResult Summary report for.")
             }
 
-            print("Found Summary Reports:\n- \(summaryFiles.map(\.name).joined(separator: "\n- "))")
+            print("Found XCResult Summary Reports:\n- \(xcResultFiles.map(\.name).joined(separator: "\n- "))")
 
-            summaryFiles.forEach { jsonFile in
-                try? jsonFile.addFileNameToSummaryMessage()
-                summaryReporter.reportXcodeSummary(for: jsonFile)
-            }
-        } catch {
-            danger.warn("Xcode Summary failed with error: \(error).")
-        }
-    }
+            summaryReporter.reportXCResultSummary(for: xcResultFiles, using: danger, fileManager: fileManager) { result in
+                guard let file = result.file else { return true }
 
-    static func reportCodeCoverage(using danger: DangerDSL, coverageReporter: CoverageReporting.Type, reportsPath: String) {
-        defer { print("\n") }
+                /// Filter results from submodules
+                guard !file.contains("Submodules/"), !result.message.contains("Submodules/") else { return false }
 
-        do {
-            let reports = try Folder(path: reportsPath).subfolders
-            let xcResultBundles = reports.filter { $0.extension == "xcresult" }
+                /// Filter results from packages
+                guard !file.contains("SourcePackages/"), !result.message.contains("SourcePackages/") else { return false }
 
-            guard !xcResultBundles.isEmpty else {
-                return print("There were no files to create a code coverage report for.")
-            }
+                /// Filter results from build folder
+                guard !file.contains(".build/"), !result.message.contains(".build/") else { return false }
 
-            print("Found the following reports:\n- \(xcResultBundles.map(\.description).joined(separator: "\n- "))")
-            let testTargetsToExclude = xcResultBundles.map { "\($0.projectName)Tests" }
-            xcResultBundles.forEach { xcResultBundle in
-                coverageReporter.reportCoverage(for: xcResultBundle, excludedTargets: testTargetsToExclude)
+                return true
             }
         } catch {
-            danger.warn("Code coverage generation failed with error: \(error).")
+            danger.warn("XCResult Summary failed with error: \(error).")
         }
     }
 

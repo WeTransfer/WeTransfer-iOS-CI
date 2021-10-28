@@ -26,17 +26,17 @@ lane :test_project do |options|
   # clear_derived_data
 
   # Set timeout to prevent xcodebuild -list -project to take to much retries.
-  ENV['FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT'] = '120'
-  ENV['FASTLANE_XCODE_LIST_TIMEOUT'] = '120'
+  ENV['FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT'] = '30'
+  ENV['FASTLANE_XCODE_LIST_TIMEOUT'] = '30'
 
   begin
-    ENV['XCPRETTY_JSON_FILE_OUTPUT'] = "build/reports/#{options[:scheme] || options[:package_name]}_Tests.json"
-
-    device = options[:device] || 'iPhone 11'
+    device = options[:device] || 'iPhone 13'
 
     if options[:package_path].nil?
       project_path = "#{options[:project_path]}#{options[:project_name]}.xcodeproj"
     end
+
+    sourcePackagesDir = "#{ENV['PWD']}/.build"
 
     scan(
       scheme: options[:scheme] || options[:package_name],
@@ -44,18 +44,22 @@ lane :test_project do |options|
       device: device,
       destination: options[:destination],
       code_coverage: true,
-      disable_concurrent_testing: true,
+      disable_concurrent_testing: true, # As of 27th October 2021, this seems to not be working anymore. We need `parallel-testing-enabled NO` instead.
       fail_build: false,
       skip_slack: true,
       output_types: '',
       prelaunch_simulator: true,
-      xcargs: '-UseNewBuildSystem=YES',
+      xcargs: "-clonedSourcePackagesDirPath #{sourcePackagesDir} -parallel-testing-enabled NO",
       include_simulator_logs: false, # Needed for this: https://github.com/fastlane/fastlane/issues/8909
-      formatter: 'xcpretty-json-formatter',
       result_bundle: true,
       output_directory: 'build/reports/',
-      cloned_source_packages_path: '.build',
-      package_path: options[:package_path]
+      buildlog_path: 'build/logs', # Set buildlog and derived data path to fix permission issues on Bitrise
+      derived_data_path: 'build/derived_data', # Set buildlog and derived data path to fix permission issues on Bitrise
+      package_path: options[:package_path],
+      build_for_testing: options.fetch(:build_for_testing, nil),
+      test_without_building: options.fetch(:test_without_building, nil),
+      disable_package_automatic_updates: true, # Makes xcodebuild -showBuildSettings more reliable too.
+      skip_package_dependencies_resolution: options.fetch(:disable_automatic_package_resolution, false)
     )
   rescue StandardError => e
     UI.important("Tests failed for #{e}")
@@ -64,14 +68,12 @@ end
 
 desc 'Tests the WeTransferPRLinter Swift Package'
 lane :test_pr_linter do
-  spm(command: 'generate-xcodeproj', package_path: 'Danger-Swift')
-  test_project(
-    project_path: 'Danger-Swift/',
-    project_name: 'WeTransferPRLinter',
-    scheme: 'WeTransferPRLinter-Package',
-    device: nil,
-    destination: 'platform=macOS'
-  )
+  test_package(
+        package_name: 'WeTransferPRLinter',
+        package_path: 'WeTransferPRLinter/',
+        disable_automatic_package_resolution: false,
+        disable_concurrent_testing: false,
+        destination: 'platform=macOS')
 end
 
 desc 'Create a release from a tag triggered CI run'

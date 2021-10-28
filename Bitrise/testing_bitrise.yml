@@ -33,28 +33,13 @@ workflows:
             # git config --global url."git@github.com:".insteadOf "https://github.com/"
             for ip in $(dig @8.8.8.8 github.com +short); do ssh-keyscan github.com,$ip; ssh-keyscan $ip; done 2>/dev/null >> ~/.ssh/known_hosts
     - script:
-        title: Setup caching for GEMs
-        inputs:
-        - content: |-
-            #!/bin/bash
-            set -ev
-            envman add --key GEM_HOME --value "$(gem environment gemdir)"
-    - bitrise-step-install-bundler: {}
-    - script:
-        title: Bundle install (with cache)
-        inputs:
-        - content: |-
-            #!/usr/bin/env bash
-            bundle config set --local path '.gem-caches'
-            bundle install
-    - script:
         title: Run Fastlane
         inputs:
         - content: |-
             #!/usr/bin/env bash
             # Use the environment FASTLANE_LANE if available. Otherwise, fallback to "test"
             lane=${FASTLANE_LANE:=test}
-            bundle exec fastlane $lane
+            fastlane $lane
     - script:
         title: Run Danger
         deps:
@@ -66,7 +51,8 @@ workflows:
             # debug log
             set -x
 
-            bundle exec fastlane unhide_spm_package_dev_dependencies
+            echo "running from a branch"
+            fastlane unhide_spm_package_dev_dependencies
             swift run danger-swift ci --cache-path .build --build-path .build
     - cache-push:
         run_if: true
@@ -74,5 +60,3 @@ workflows:
         - cache_paths: |
             $BITRISE_CACHE_DIR
             .build
-            .gem-caches
-            $GEM_HOME

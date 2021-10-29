@@ -14,12 +14,12 @@ lane :test_package do |options|
 
   # test_project(options)
 
-  command = 'xcodebuild'
+  command = "set -o pipefail && cd #{ENV['PWD']} && xcodebuild"
   command += " -scheme #{options[:package_name]}"
   command += " -destination 'platform=iOS Simulator,name=iPhone 13'"
   command += " -derivedDataPath build/derived_data"
   command += " -resultBundlePath 'build/reports/#{options[:package_name]}.xcresult'"
-  command += " -disable-concurrent-testing -enableCodeCoverage YES"
+  command += " -disable-concurrent-destination-testing -enableCodeCoverage YES"
   command += " -clonedSourcePackagesDirPath #{ENV['PWD']}/.build"
   command += " -parallel-testing-enabled NO"
 
@@ -30,6 +30,8 @@ lane :test_package do |options|
   end
 
   sh(command)
+  # [15:22:34]: $ set -o pipefail && cd /Users/vagrant/git && env NSUnbufferedIO=YES xcodebuild -scheme WeTransfer-iOS-SDK-Package -destination 'platform=iOS Simulator,id=F5810D22-FE42-4ACE-A3EA-F7592F3EE45F' -derivedDataPath build/derived_data -resultBundlePath 'build/reports/WeTransfer-iOS-SDK-Package.xcresult' -disable-concurrent-testing -enableCodeCoverage YES -clonedSourcePackagesDirPath /Users/vagrant/git/.build -parallel-testing-enabled NO build-for-testing | tee '/Users/vagrant/git/build/logs/WeTransfer-iOS-SDK-Package.log' | xcpretty  --report junit --output '/var/folders/g2/xnd8hpjs50v433gfrybz2nxh0000gn/T/junit_report20211028-1766-14zno4m' 
+
   # xcodebuild -scheme WeTransfer-iOS-SDK-Package -destination 'platform=iOS Simulator,id=F5810D22-FE42-4ACE-A3EA-F7592F3EE45F' -derivedDataPath build/derived_data -resultBundlePath 'build/reports/WeTransfer-iOS-SDK-Package.xcresult' -disable-concurrent-testing -enableCodeCoverage YES -clonedSourcePackagesDirPath /Users/vagrant/git/.build -parallel-testing-enabled NO build-for-testing | tee '/Users/vagrant/git/build/logs/WeTransfer-iOS-SDK-Package.log' | xcpretty  --report junit --output '/var/folders/g2/xnd8hpjs50v433gfrybz2nxh0000gn/T/junit_report20211028-1766-14zno4m' 
     # xcodebuild -scheme CoreExtensions -destination 'platform=iOS Simulator,id=F5810D22-FE42-4ACE-A3EA-F7592F3EE45F' -derivedDataPath build/derived_data -resultBundlePath 'build/reports/CoreExtensions.xcresult' -disable-concurrent-testing -enableCodeCoverage YES -clonedSourcePackagesDirPath /Users/vagrant/git/.build -parallel-testing-enabled NO test-without-building | tee '/Users/vagrant/git/build/logs/CoreExtensions.log' | xcpretty  --report junit --output '/var/folders/g2/xnd8hpjs50v433gfrybz2nxh0000gn/T/junit_report20211028-1766-cr2e2u' 
     # sh("xcodebuild -scheme CredentialStorageHost -project '#{ENV['PWD']}/CredentialStorage/Testing Project/CredentialStorage.xcodeproj' -derivedDataPath build/derived_data -destination 'platform=iOS Simulator,name=iPhone 13' \ -resultBundlePath '#{ENV['PWD']}/build/reports/CredentialStorageHost.xcresult' -disable-concurrent-destination-testing -enableCodeCoverage YES -clonedSourcePackagesDirPath #{sourcePackagesDir} -parallel-testing-enabled NO build test")

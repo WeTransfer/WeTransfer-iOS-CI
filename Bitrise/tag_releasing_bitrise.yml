@@ -39,13 +39,11 @@ workflows:
         inputs:
         - content: |-
             #!/usr/bin/env bash
-            bundle config set path 'vendor/bundle'
-            bundle install
             gem install cocoapods
 
             # Use the environment FASTLANE_TAG_RELEASE_LANE if available. Otherwise, fallback to "release_from_tag"
             lane=${FASTLANE_TAG_RELEASE_LANE:=release_from_tag}
-            bundle exec fastlane $lane
+            fastlane $lane
     - cache-push:
         run_if: true
         inputs:
@@ -55,4 +53,3 @@ workflows:
             $BREW_MINT
             $BREW_OPT_MINT
             .build
-            ./vendor-> ./Gemfile.lock #gem installation directory

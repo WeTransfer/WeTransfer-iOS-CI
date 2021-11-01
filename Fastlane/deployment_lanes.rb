@@ -53,6 +53,9 @@ lane :beta do |options|
       cloned_source_packages_path: 'SourcePackages'
     )
 
+    # Refresh key as it's only valid for 20 minutes and gym can take a long time.
+    authenticate(use_app_manager_role: true)
+
     # Create a new GitHub release
     last_non_candidate_tag = latest_github_non_candidate_tag
     release_title = "#{tag_name} - App Store Release Candidate"
@@ -63,8 +66,6 @@ lane :beta do |options|
     # Create the change log
     changelog = sh("gitbuddy changelog -b develop -s #{last_non_candidate_tag}")
     stripped_changelog = strip_markdown_url(input: changelog)
-    # Refresh key as it's only valid for 20 minutes and TestFlight can take a long time.
-    authenticate(use_app_manager_role: true)
 
     begin
       testflight(

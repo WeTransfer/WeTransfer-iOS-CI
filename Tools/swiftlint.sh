@@ -1,4 +1,8 @@
 #!/bin/bash
+if [[ $(uname -p) == 'arm' ]]; then
+    export PATH="$PATH:/opt/homebrew/bin"
+fi
+
 if [ -z "$CI" ]; then
     set -e
 

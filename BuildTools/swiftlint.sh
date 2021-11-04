@@ -6,7 +6,7 @@ fi
 if [ -z "$CI" ]; then
     set -e
 
-    BASEDIR=$(dirname "$0") # Sets the folder to WeTransfer-iOS-CI/Tools/
+    BASEDIR=$(dirname "$0") # Sets the folder to WeTransfer-iOS-CI/BuildTools/
     execution_directory="$(pwd)"
     count=0
     export SRCROOT="$(pwd)"

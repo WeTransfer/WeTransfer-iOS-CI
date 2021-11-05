@@ -109,7 +109,7 @@ public enum WeTransferPRLinter {
     static func swiftLint(using danger: DangerDSL, executor: SwiftLintExecuting.Type = SwiftLintExecutor.self, configsFolderPath: String? = nil) {
         defer { print("\n") }
 
-        let configsFolderPath = configsFolderPath ?? "\(danger.utils.exec("pwd"))/Submodules/WeTransfer-iOS-CI/SwiftLint"
+        let configsFolderPath = configsFolderPath ?? "\(danger.utils.exec("pwd"))/Submodules/WeTransfer-iOS-CI/BuildTools"
         print("Starting SwiftLint...")
 
         let files = danger.git.createdFiles + danger.git.modifiedFiles

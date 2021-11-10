@@ -1,6 +1,6 @@
 #!/bin/bash
 if [[ $(uname -p) == 'arm' ]]; then
-    export PATH="$PATH:/opt/homebrew/bin"
+    export PATH=/usr/local/bin:$PATH
 fi
 
 if [ -z "$CI" ]; then

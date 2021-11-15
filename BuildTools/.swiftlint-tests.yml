@@ -27,6 +27,7 @@ opt_in_rules:
   - prohibited_super_call
   - redundant_nil_coalescing
   - switch_case_on_newline
+  - xct_specific_matcher
 syntactic_sugar: error
 unused_closure_parameter: error
 unused_optional_binding:

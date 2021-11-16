@@ -231,6 +231,17 @@ final class WeTransferLinterTests: XCTestCase {
 
         XCTAssertEqual(mockedSwiftLintExecutor.lintedFiles, [:])
     }
+
+    func testXCResultFileMissing() {
+        let danger = githubWithFilesDSL(created: [], fileMap: [:])
+        WeTransferPRLinter.reportXCResultsSummary(using: danger, summaryReporter: XCResultSummaryReporter.self, reportsPath: "file://faky/url", fileManager: .default)
+
+        XCTAssertEqual(danger.warnings.count, 0)
+        XCTAssertEqual(danger.messages.count, 1)
+        XCTAssertEqual(danger.messages.map(\.message), [
+            "No tests found for the current changes"
+        ])
+    }
 }
 
 private extension URL {

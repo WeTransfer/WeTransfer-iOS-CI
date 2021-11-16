@@ -56,6 +56,31 @@ final class XCResultSummartReporterTests: XCTestCase {
         XCTAssertEqual(failure.line, 36)
     }
 
+    func testNotReportingRetriedSucceedingTest() throws {
+        let xcResultFilename = "flaky_test_example.xcresult"
+        let xcResultFile = Bundle.module.url(forResource: "Resources/\(xcResultFilename)", withExtension: nil)!
+        let file = try Folder(path: xcResultFile.deletingLastPathComponent().path).subfolder(named: xcResultFilename)
+        try file.copy(to: buildFolder)
+
+        let danger = githubWithFilesDSL()
+        let stubbedFileManager = StubbedFileManager()
+        stubbedFileManager.stubbedCurrentDirectoryPath = "/Users/avanderlee/Developer/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/"
+
+        WeTransferPRLinter.lint(using: danger, swiftLintExecutor: MockedSwiftLintExecutor.self, reportsPath: buildFolder.path, fileManager: stubbedFileManager, environmentVariables: [:])
+
+        XCTAssertEqual(danger.messages.map(\.message), [
+            "OkapiFirebaseTests: Executed 13 tests, with 0 failures in 0.059 seconds"
+        ])
+
+        XCTAssertEqual(danger.warnings.count, 1)
+        XCTAssertEqual(danger.warnings.map(\.message), [
+            "Failed to generate coverage for target \'OkapiFirebaseTests\' at paths (\n    \"/Users/avanderlee/Developer/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-SDK/build/derived_data/Build/Products/Debug-iphonesimulator/OkapiFirebaseTests.xctest/OkapiFirebaseTests\"\n): No object file for requested architecture"
+        ])
+
+        XCTAssertEqual(danger.fails.count, 0)
+        XCTAssertEqual(danger.fails.map(\.message), [])
+    }
+
     func testXCResultCoverageReporting() throws {
         let xcResultFilename = "coverage_example.xcresult"
         let xcResultFile = Bundle.module.url(forResource: "Resources/\(xcResultFilename)", withExtension: nil)!

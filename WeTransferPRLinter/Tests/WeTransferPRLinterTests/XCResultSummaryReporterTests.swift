@@ -35,8 +35,8 @@ final class XCResultSummartReporterTests: XCTestCase {
         WeTransferPRLinter.lint(using: danger, swiftLintExecutor: MockedSwiftLintExecutor.self, reportsPath: buildFolder.path, fileManager: stubbedFileManager, environmentVariables: [:])
 
         XCTAssertEqual(danger.messages.map(\.message), [
-            "TestUITests: Executed 1 tests, with 0 failures in 16.058 seconds",
-            "TestThisDude: Executed 6 tests, with 2 failures in 0.534 seconds"
+            "TestUITests: Executed 1 tests, with 0 failures and 0 retried tests in 16.058 seconds",
+            "TestThisDude: Executed 6 tests, with 2 failures and 0 retried tests in 0.534 seconds"
         ])
 
         XCTAssertEqual(danger.warnings.count, 1)
@@ -98,8 +98,8 @@ final class XCResultSummartReporterTests: XCTestCase {
         WeTransferPRLinter.lint(using: danger, swiftLintExecutor: MockedSwiftLintExecutor.self, reportsPath: buildFolder.path, fileManager: stubbedFileManager, environmentVariables: [:])
 
         XCTAssertEqual(danger.messages.map(\.message), [
-            "PRLinterAppTests: Executed 10 tests, with 1 failures in 0.097 seconds",
-            "PRLinterAppTests: Executed 10 tests, with 1 failures in 0.097 seconds"
+            "PRLinterAppTests: Executed 10 tests, with 1 failures and 1 retried tests in 0.097 seconds",
+            "PRLinterAppTests: Executed 10 tests, with 1 failures and 1 retried tests in 0.097 seconds"
         ], "Both reports should be handled")
 
         XCTAssertEqual(danger.markdowns.count, 1, "Coverage reports should be combined")

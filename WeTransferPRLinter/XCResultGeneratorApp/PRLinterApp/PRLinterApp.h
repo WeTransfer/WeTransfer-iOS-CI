@@ -1,10 +1,3 @@
-//
-//  PRLinterApp.h
-//  PRLinterApp
-//
-//  Created by Antoine van der Lee on 22/10/2021.
-//
-
 #import <Foundation/Foundation.h>
 
 //! Project version number for PRLinterApp.

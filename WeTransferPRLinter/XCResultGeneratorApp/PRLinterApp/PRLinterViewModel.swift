@@ -1,10 +1,3 @@
-//
-//  PRLinterViewModel.swift
-//  PRLinterApp
-//
-//  Created by Antoine van der Lee on 22/10/2021.
-//
-
 import Foundation
 
 struct PRLinterViewModel {

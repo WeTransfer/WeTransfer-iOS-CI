@@ -28,6 +28,8 @@ final class XCResultSummartReporterTests: XCTestCase {
         let file = try Folder(path: xcResultFile.deletingLastPathComponent().path).subfolder(named: xcResultFilename)
         try file.copy(to: buildFolder)
 
+        print(NSString(string: String(data: try! JSONSerialization.data(withJSONObject: [:], options: .prettyPrinted), encoding: .utf8)!))
+
         let danger = githubWithFilesDSL()
         let stubbedFileManager = StubbedFileManager()
         stubbedFileManager.stubbedCurrentDirectoryPath = "/Users/josh/Projects/fastlane/"
@@ -62,12 +64,12 @@ final class XCResultSummartReporterTests: XCTestCase {
 
         let danger = githubWithFilesDSL()
         let stubbedFileManager = StubbedFileManager()
-        stubbedFileManager.stubbedCurrentDirectoryPath = "/Users/avanderlee/Developer/GIT-Projects/WeTransfer/PRLinterApp/"
+        stubbedFileManager.stubbedCurrentDirectoryPath = "/Users/avanderlee/Developer/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-CI/WeTransferPRLinter/XCResultGeneratorApp/"
 
         WeTransferPRLinter.lint(using: danger, swiftLintExecutor: MockedSwiftLintExecutor.self, reportsPath: buildFolder.path, fileManager: stubbedFileManager, environmentVariables: [:])
 
         XCTAssertEqual(danger.messages.map(\.message), [
-            "PRLinterAppTests: Executed 6 tests, with 1 failures in 0.337 seconds"
+            "PRLinterAppTests: Executed 10 tests, with 1 failures in 0.097 seconds"
         ], "It should only report the actual failed test, instead of also the retried succeeded one")
 
         XCTAssertEqual(danger.warnings.count, 0)
@@ -90,13 +92,14 @@ final class XCResultSummartReporterTests: XCTestCase {
 
         let danger = githubWithFilesDSL()
         let stubbedFileManager = StubbedFileManager()
-        stubbedFileManager.stubbedCurrentDirectoryPath = "/Users/josh/Projects/fastlane/"
+        stubbedFileManager.stubbedCurrentDirectoryPath = "/Users/avanderlee/Developer/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-CI/WeTransferPRLinter/XCResultGeneratorApp"
 
         WeTransferPRLinter.lint(using: danger, swiftLintExecutor: MockedSwiftLintExecutor.self, reportsPath: buildFolder.path, fileManager: stubbedFileManager, environmentVariables: [:])
 
         XCTAssertEqual(danger.messages.map(\.message), [
-            "PRLinterAppTests: Executed 6 tests, with 1 failures in 0.337 seconds",
-            "PRLinterAppTests: Executed 6 tests, with 1 failures in 0.337 seconds"], "Both reports should be handled")
+            "PRLinterAppTests: Executed 10 tests, with 1 failures in 0.097 seconds",
+            "PRLinterAppTests: Executed 10 tests, with 1 failures in 0.097 seconds"
+        ], "Both reports should be handled")
 
         XCTAssertEqual(danger.markdowns.count, 1, "Coverage reports should be combined")
         let coverageReport = try XCTUnwrap(danger.markdowns.first)

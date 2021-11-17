@@ -39,6 +39,11 @@ extension ActionTestPlanRunSummaries {
     var retriedTestIdentifiers: Set<String> {
         Set<String>(summaries.flatMap { $0.testableSummaries.flatMap { $0.retriedTestIdentifiers }})
     }
+
+    /// - Returns: Metadata for all tests that were skipped.
+    var skippedTests: [ActionTestMetadata] {
+        summaries.flatMap { $0.testableSummaries.flatMap { $0.skippedTests }}
+    }
 }
 
 extension ActionTestableSummary: XCResultItemsConvertible {
@@ -48,6 +53,10 @@ extension ActionTestableSummary: XCResultItemsConvertible {
 
     var retriedTestIdentifiers: Set<String> {
         tests.retriedTestIdentifiers
+    }
+
+    var skippedTests: [ActionTestMetadata] {
+        tests.skippedTests
     }
 
     var totalNumberOfTests: Int {
@@ -69,7 +78,7 @@ extension ActionTestableSummary: XCResultItemsConvertible {
 
     func createResults(context: ResultGenerationContext) -> [XCResultItem] {
         guard let targetName = targetName else { return [] }
-        let message = "\(targetName): Executed \(totalNumberOfTests) tests, with \(totalNumberOfFailingTests) failures and \(retriedTestIdentifiers.count) retried tests in \(totalDuration) seconds"
+        let message = "\(targetName): Executed \(totalNumberOfTests) tests (\(totalNumberOfFailingTests) failed, \(retriedTestIdentifiers.count) retried, \(skippedTests.count) skipped) in \(totalDuration) seconds"
         return [XCResultItem(message: message, category: .message)]
     }
 }
@@ -94,6 +103,12 @@ extension Array where Element == ActionTestSummaryGroup {
             identifiers.union(testSummaryGroup.retriedTestIdentifiers)
         }
     }
+
+    var skippedTests: [ActionTestMetadata] {
+        reduce([]) { skippedTests, testSummaryGroup in
+            skippedTests + testSummaryGroup.skippedTests
+        }
+    }
 }
 
 extension ActionTestSummaryGroup {
@@ -108,6 +123,10 @@ extension ActionTestSummaryGroup {
     var retriedTestIdentifiers: Set<String> {
         subtests.retriedTestIdentifiers.union(subtestGroups.retriedTestIdentifiers)
     }
+
+    var skippedTests: [ActionTestMetadata] {
+        subtests.skipped + subtestGroups.skippedTests
+    }
 }
 
 extension Array where Element == ActionTestMetadata {
@@ -116,6 +135,10 @@ extension Array where Element == ActionTestMetadata {
     }
     private var failedIdentifiers: Set<String> {
         Set<String>(filter { $0.testStatus == "Failure" }.map { $0.identifier })
+    }
+
+    var skipped: [ActionTestMetadata] {
+        filter { $0.testStatus == "Skipped" }
     }
 
     var failedTestIdentifiers: Set<String> {

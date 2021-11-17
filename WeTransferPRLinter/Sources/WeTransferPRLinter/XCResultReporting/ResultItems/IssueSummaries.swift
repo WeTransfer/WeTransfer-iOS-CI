@@ -26,7 +26,7 @@ extension Array where Element == TestFailureIssueSummary {
         let failedTestIdentifiers = testPlanRunSummaries.failedTestIdentifiers
         let retriedTestIdentifiers = testPlanRunSummaries.retriedTestIdentifiers
 
-        return compactMap { testFailureIssueSummary -> [XCResultItem]? in
+        let failedAndRetryResults = compactMap { testFailureIssueSummary -> [XCResultItem]? in
             let identifier = testFailureIssueSummary.testCaseName.replacingOccurrences(of: ".", with: "/")
             if retriedTestIdentifiers.contains(identifier) {
                 return testFailureIssueSummary.createTestRetriedResult(context: context, testPlanRunSummaries: testPlanRunSummaries)
@@ -36,6 +36,27 @@ extension Array where Element == TestFailureIssueSummary {
 
             return nil
         }.flatMap { $0 }
+        let skippedResults: [XCResultItem] = testPlanRunSummaries.skippedTests.compactMap { actionTestMetadata -> [XCResultItem]? in
+            guard let summaryRef = actionTestMetadata.summaryRef else {
+                return nil
+            }
+            guard let actionTestSummary = context.resultFile.getActionTestSummary(id: summaryRef.id) else {
+                return nil
+            }
+            return actionTestSummary.createResults(context: context)
+        }.flatMap { $0 }
+
+        return failedAndRetryResults + skippedResults
+    }
+}
+
+extension ActionTestSummary: XCResultItemsConvertible {
+    func createResults(context: ResultGenerationContext) -> [XCResultItem] {
+        guard let title = activitySummaries.first?.title else {
+            return []
+        }
+        let message = "**\(identifier):**<br/>\(title)"
+        return [XCResultItem(message: message, category: .warning)]
     }
 }
 

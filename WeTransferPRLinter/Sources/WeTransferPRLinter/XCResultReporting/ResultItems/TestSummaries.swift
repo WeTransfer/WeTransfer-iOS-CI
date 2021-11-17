@@ -31,18 +31,17 @@ extension ActionRecord: XCResultItemsConvertible {
 extension ActionTestPlanRunSummaries {
     /// - Returns: A set of identifiers for tests that failed, even after retrying.
     var failedTestIdentifiers: Set<String> {
-        Set<String>(summaries.flatMap { $0.testableSummaries.flatMap { $0.failedTestIdentifiers }})
+        Set<String>(summaries.flatMap { $0.testableSummaries.flatMap(\.failedTestIdentifiers) })
     }
-
 
     /// - Returns: A set of identifiers for the tests that were retried.
     var retriedTestIdentifiers: Set<String> {
-        Set<String>(summaries.flatMap { $0.testableSummaries.flatMap { $0.retriedTestIdentifiers }})
+        Set<String>(summaries.flatMap { $0.testableSummaries.flatMap(\.retriedTestIdentifiers) })
     }
 
     /// - Returns: Metadata for all tests that were skipped.
     var skippedTests: [ActionTestMetadata] {
-        summaries.flatMap { $0.testableSummaries.flatMap { $0.skippedTests }}
+        summaries.flatMap { $0.testableSummaries.flatMap(\.skippedTests) }
     }
 }
 
@@ -131,10 +130,11 @@ extension ActionTestSummaryGroup {
 
 extension Array where Element == ActionTestMetadata {
     private var successIdentifiers: Set<String> {
-        Set<String>(filter { $0.testStatus == "Success" }.map { $0.identifier })
+        Set<String>(filter { $0.testStatus == "Success" }.map(\.identifier))
     }
+
     private var failedIdentifiers: Set<String> {
-        Set<String>(filter { $0.testStatus == "Failure" }.map { $0.identifier })
+        Set<String>(filter { $0.testStatus == "Failure" }.map(\.identifier))
     }
 
     var skipped: [ActionTestMetadata] {
@@ -143,11 +143,11 @@ extension Array where Element == ActionTestMetadata {
 
     var failedTestIdentifiers: Set<String> {
         /// Substract success identifiers to filter out retried tests.
-        return failedIdentifiers.subtracting(successIdentifiers)
+        failedIdentifiers.subtracting(successIdentifiers)
     }
 
     var retriedTestIdentifiers: Set<String> {
         /// Tests that succeeded eventually intersect with failed tests.
-        return successIdentifiers.intersection(failedIdentifiers)
+        successIdentifiers.intersection(failedIdentifiers)
     }
 }

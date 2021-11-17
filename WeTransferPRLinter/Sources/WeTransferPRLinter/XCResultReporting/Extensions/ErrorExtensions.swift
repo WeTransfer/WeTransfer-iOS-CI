@@ -1,5 +1,5 @@
-import Foundation
 import Files
+import Foundation
 
 extension LocationError {
     var isMissingError: Bool {

@@ -1,8 +1,7 @@
-import XCTest
 @testable import PRLinterApp
+import XCTest
 
 class PRLinterViewModelTests: XCTestCase {
-
     func testSuccessExample() {
         let viewModel = PRLinterViewModel()
         XCTAssertEqual(viewModel.printDescription(), "Antoine and age: 30")

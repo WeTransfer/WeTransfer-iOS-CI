@@ -11,7 +11,7 @@ extension ResultIssueSummaries {
     func createResults(context: ResultGenerationContext, testPlanRunSummaries: ActionTestPlanRunSummaries) -> [XCResultItem] {
         var results: [XCResultItem] = []
         results.append(contentsOf: testFailureSummaries
-                        .createResults(context: context, testPlanRunSummaries: testPlanRunSummaries))
+            .createResults(context: context, testPlanRunSummaries: testPlanRunSummaries))
         results.append(contentsOf: errorSummaries.createResults(category: .error, context: context))
         results.append(contentsOf: warningSummaries.createResults(category: .warning, context: context))
         return results

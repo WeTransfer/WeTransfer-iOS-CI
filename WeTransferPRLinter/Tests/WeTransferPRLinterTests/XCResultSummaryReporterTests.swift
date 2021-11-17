@@ -67,10 +67,13 @@ final class XCResultSummartReporterTests: XCTestCase {
         WeTransferPRLinter.lint(using: danger, swiftLintExecutor: MockedSwiftLintExecutor.self, reportsPath: buildFolder.path, fileManager: stubbedFileManager, environmentVariables: [:])
 
         XCTAssertEqual(danger.messages.map(\.message), [
-            "PRLinterAppTests: Executed 10 tests, with 1 failures in 0.097 seconds"
+            "PRLinterAppTests: Executed 10 tests, with 1 failures and 1 retried tests in 0.097 seconds"
         ], "It should only report the actual failed test, instead of also the retried succeeded one")
 
-        XCTAssertEqual(danger.warnings.count, 0)
+        XCTAssertEqual(danger.warnings.count, 1)
+        XCTAssertEqual(danger.warnings.map(\.message), [
+            "**PRLinterViewModelTests.testFlaky() succeeded after retry:**<br/>XCTAssertTrue failed"
+        ], "It should report a retried test including the retry count")
 
         XCTAssertEqual(danger.fails.count, 1)
         XCTAssertEqual(danger.fails.map(\.message), [

@@ -29,14 +29,25 @@ extension ActionRecord: XCResultItemsConvertible {
 }
 
 extension ActionTestPlanRunSummaries {
+    /// - Returns: A set of identifiers for tests that failed, even after retrying.
     var failedTestIdentifiers: Set<String> {
         Set<String>(summaries.flatMap { $0.testableSummaries.flatMap { $0.failedTestIdentifiers }})
+    }
+
+
+    /// - Returns: A set of identifiers for the tests that were retried.
+    var retriedTestIdentifiers: Set<String> {
+        Set<String>(summaries.flatMap { $0.testableSummaries.flatMap { $0.retriedTestIdentifiers }})
     }
 }
 
 extension ActionTestableSummary: XCResultItemsConvertible {
     var failedTestIdentifiers: Set<String> {
         tests.failedTestIdentifiers
+    }
+
+    var retriedTestIdentifiers: Set<String> {
+        tests.retriedTestIdentifiers
     }
 
     var totalNumberOfTests: Int {
@@ -58,7 +69,7 @@ extension ActionTestableSummary: XCResultItemsConvertible {
 
     func createResults(context: ResultGenerationContext) -> [XCResultItem] {
         guard let targetName = targetName else { return [] }
-        let message = "\(targetName): Executed \(totalNumberOfTests) tests, with \(totalNumberOfFailingTests) failures in \(totalDuration) seconds"
+        let message = "\(targetName): Executed \(totalNumberOfTests) tests, with \(totalNumberOfFailingTests) failures and \(retriedTestIdentifiers.count) retried tests in \(totalDuration) seconds"
         return [XCResultItem(message: message, category: .message)]
     }
 }
@@ -77,6 +88,12 @@ extension Array where Element == ActionTestSummaryGroup {
             identifiers.union(testSummaryGroup.failedTestIdentifiers)
         }
     }
+
+    var retriedTestIdentifiers: Set<String> {
+        reduce([]) { identifiers, testSummaryGroup in
+            identifiers.union(testSummaryGroup.retriedTestIdentifiers)
+        }
+    }
 }
 
 extension ActionTestSummaryGroup {
@@ -87,14 +104,27 @@ extension ActionTestSummaryGroup {
     var failedTestIdentifiers: Set<String> {
         subtests.failedTestIdentifiers.union(subtestGroups.failedTestIdentifiers)
     }
+
+    var retriedTestIdentifiers: Set<String> {
+        subtests.retriedTestIdentifiers.union(subtestGroups.retriedTestIdentifiers)
+    }
 }
 
 extension Array where Element == ActionTestMetadata {
-    var failedTestIdentifiers: Set<String> {
-        let successIdentifiers = Set<String>(filter { $0.testStatus == "Success" }.map { $0.identifier })
-        let failedIdentifiers = Set<String>(filter { $0.testStatus == "Failure" }.map { $0.identifier })
+    private var successIdentifiers: Set<String> {
+        Set<String>(filter { $0.testStatus == "Success" }.map { $0.identifier })
+    }
+    private var failedIdentifiers: Set<String> {
+        Set<String>(filter { $0.testStatus == "Failure" }.map { $0.identifier })
+    }
 
+    var failedTestIdentifiers: Set<String> {
         /// Substract success identifiers to filter out retried tests.
         return failedIdentifiers.subtracting(successIdentifiers)
+    }
+
+    var retriedTestIdentifiers: Set<String> {
+        /// Tests that succeeded eventually intersect with failed tests.
+        return successIdentifiers.intersection(failedIdentifiers)
     }
 }

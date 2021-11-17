@@ -19,10 +19,7 @@ extension ActionsInvocationRecord: XCResultItemsConvertible {
             /// Metrics like total tests.
             metrics,
 
-            /// Warnings, errors, test failures.
-            issues,
-
-            /// Test summaries.
+            /// Test summaries, warnings, errors, test failures.
             actions
         ]
         return resultFactories.flatMap { $0.createResults(context: context) }

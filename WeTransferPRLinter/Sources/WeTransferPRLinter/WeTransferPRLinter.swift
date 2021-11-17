@@ -72,6 +72,8 @@ public enum WeTransferPRLinter {
 
                 return true
             }
+        } catch let error as LocationError where error.isMissingError {
+            danger.message("No tests found for the current changes")
         } catch {
             danger.warn("XCResult Summary failed with error: \(error).")
         }

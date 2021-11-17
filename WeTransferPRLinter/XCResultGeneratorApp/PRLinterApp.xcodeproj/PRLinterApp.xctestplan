@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "BD9EC0F2-3F21-40C1-AB2B-6FD3A210418C",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "testRepetitionMode" : "fixedIterations"
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:PRLinterApp.xcodeproj",
+        "identifier" : "84810A252722E47E0043C88B",
+        "name" : "PRLinterAppTests"
+      }
+    }
+  ],
+  "version" : 1
+}

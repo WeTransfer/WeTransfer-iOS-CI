@@ -28,8 +28,6 @@ final class XCResultSummartReporterTests: XCTestCase {
         let file = try Folder(path: xcResultFile.deletingLastPathComponent().path).subfolder(named: xcResultFilename)
         try file.copy(to: buildFolder)
 
-        print(NSString(string: String(data: try! JSONSerialization.data(withJSONObject: [:], options: .prettyPrinted), encoding: .utf8)!))
-
         let danger = githubWithFilesDSL()
         let stubbedFileManager = StubbedFileManager()
         stubbedFileManager.stubbedCurrentDirectoryPath = "/Users/josh/Projects/fastlane/"

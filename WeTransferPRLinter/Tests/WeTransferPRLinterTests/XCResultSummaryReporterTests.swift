@@ -35,15 +35,13 @@ final class XCResultSummartReporterTests: XCTestCase {
         WeTransferPRLinter.lint(using: danger, swiftLintExecutor: MockedSwiftLintExecutor.self, reportsPath: buildFolder.path, fileManager: stubbedFileManager, environmentVariables: [:])
 
         XCTAssertEqual(danger.messages.map(\.message), [
-            "Totally executed 7 tests, with 2 failures",
             "TestUITests: Executed 1 tests, with 0 failures in 16.058 seconds",
             "TestThisDude: Executed 6 tests, with 2 failures in 0.534 seconds"
         ])
 
-        XCTAssertEqual(danger.warnings.count, 2)
+        XCTAssertEqual(danger.warnings.count, 1)
         XCTAssertEqual(danger.warnings.map(\.message), [
-            "DEBUG_INFORMATION_FORMAT should be set to dwarf-with-dsym for all configurations. This could also be a timing issue, make sure the Fabric run script build phase is the last build phase and no other scripts have moved the dSYM from the location Xcode generated it. Unable to process Some Test App.app.dSYM at path /Users/josh/Library/Developer/Xcode/DerivedData/Test-appjhtkjaewuhlggerdwreapskfh/Build/Products/Debug-iphonesimulator/Some Test App.app.dSYM",
-            "Could not get code coverage report Trainer_example_result.xcresult"
+            "DEBUG_INFORMATION_FORMAT should be set to dwarf-with-dsym for all configurations. This could also be a timing issue, make sure the Fabric run script build phase is the last build phase and no other scripts have moved the dSYM from the location Xcode generated it. Unable to process Some Test App.app.dSYM at path /Users/josh/Library/Developer/Xcode/DerivedData/Test-appjhtkjaewuhlggerdwreapskfh/Build/Products/Debug-iphonesimulator/Some Test App.app.dSYM"
         ])
         let warning = try XCTUnwrap(danger.warnings.first)
         XCTAssertNil(warning.file)
@@ -56,25 +54,49 @@ final class XCResultSummartReporterTests: XCTestCase {
         XCTAssertEqual(failure.line, 36)
     }
 
-    func testXCResultCoverageReporting() throws {
-        let xcResultFilename = "coverage_example.xcresult"
+    func testNotReportingRetriedSucceedingTest() throws {
+        let xcResultFilename = "coverage_fail_flaky_skip_example.xcresult"
         let xcResultFile = Bundle.module.url(forResource: "Resources/\(xcResultFilename)", withExtension: nil)!
-        let xcResultFileTwo = xcResultFile.copied(newFileName: "coverage_example_two.xcresult")
-        let fileOne = try Folder(path: xcResultFile.deletingLastPathComponent().path).subfolder(named: xcResultFilename)
-        try fileOne.copy(to: buildFolder)
-
-        let fileTwo = try Folder(path: xcResultFileTwo.deletingLastPathComponent().path).subfolder(named: "coverage_example_two.xcresult")
-        try fileTwo.copy(to: buildFolder)
+        let file = try Folder(path: xcResultFile.deletingLastPathComponent().path).subfolder(named: xcResultFilename)
+        try file.copy(to: buildFolder)
 
         let danger = githubWithFilesDSL()
         let stubbedFileManager = StubbedFileManager()
-        stubbedFileManager.stubbedCurrentDirectoryPath = "/Users/josh/Projects/fastlane/"
+        stubbedFileManager.stubbedCurrentDirectoryPath = "/Users/avanderlee/Developer/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-CI/WeTransferPRLinter/XCResultGeneratorApp/"
 
         WeTransferPRLinter.lint(using: danger, swiftLintExecutor: MockedSwiftLintExecutor.self, reportsPath: buildFolder.path, fileManager: stubbedFileManager, environmentVariables: [:])
 
         XCTAssertEqual(danger.messages.map(\.message), [
-            "PRLinterAppTests: Executed 1 tests, with 0 failures in 0.004 seconds",
-            "PRLinterAppTests: Executed 1 tests, with 0 failures in 0.004 seconds"
+            "PRLinterAppTests: Executed 10 tests, with 1 failures in 0.097 seconds"
+        ], "It should only report the actual failed test, instead of also the retried succeeded one")
+
+        XCTAssertEqual(danger.warnings.count, 0)
+
+        XCTAssertEqual(danger.fails.count, 1)
+        XCTAssertEqual(danger.fails.map(\.message), [
+            "**PRLinterViewModelTests.testFailingExample():**<br/>XCTAssertEqual failed: (\"Antoine and age: 30\") is not equal to (\"Antoine and age: 22\")"
+        ])
+    }
+
+    func testXCResultCoverageReporting() throws {
+        let xcResultFilename = "coverage_fail_flaky_skip_example.xcresult"
+        let xcResultFile = Bundle.module.url(forResource: "Resources/\(xcResultFilename)", withExtension: nil)!
+        let xcResultFileTwo = xcResultFile.copied(newFileName: "coverage_fail_flaky_skip_example_two.xcresult")
+        let fileOne = try Folder(path: xcResultFile.deletingLastPathComponent().path).subfolder(named: xcResultFilename)
+        try fileOne.copy(to: buildFolder)
+
+        let fileTwo = try Folder(path: xcResultFileTwo.deletingLastPathComponent().path).subfolder(named: "coverage_fail_flaky_skip_example_two.xcresult")
+        try fileTwo.copy(to: buildFolder)
+
+        let danger = githubWithFilesDSL()
+        let stubbedFileManager = StubbedFileManager()
+        stubbedFileManager.stubbedCurrentDirectoryPath = "/Users/avanderlee/Developer/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-CI/WeTransferPRLinter/XCResultGeneratorApp"
+
+        WeTransferPRLinter.lint(using: danger, swiftLintExecutor: MockedSwiftLintExecutor.self, reportsPath: buildFolder.path, fileManager: stubbedFileManager, environmentVariables: [:])
+
+        XCTAssertEqual(danger.messages.map(\.message), [
+            "PRLinterAppTests: Executed 10 tests, with 1 failures in 0.097 seconds",
+            "PRLinterAppTests: Executed 10 tests, with 1 failures in 0.097 seconds"
         ], "Both reports should be handled")
 
         XCTAssertEqual(danger.markdowns.count, 1, "Coverage reports should be combined")

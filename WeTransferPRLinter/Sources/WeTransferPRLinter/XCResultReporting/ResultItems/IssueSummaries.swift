@@ -7,13 +7,25 @@ import XCResultKit
 /// failed - Creating invalid content should give an error.
 ///
 /// CoreExtensions/Sources/CoreExtensions/OptionalExtensions.swift#L15 - Initialization of variable 'property' was never used; consider replacing with assignment to '_' or removing it
-extension ResultIssueSummaries: XCResultItemsConvertible {
-    func createResults(context: ResultGenerationContext) -> [XCResultItem] {
+extension ResultIssueSummaries {
+    func createResults(context: ResultGenerationContext, testPlanRunSummaries: ActionTestPlanRunSummaries) -> [XCResultItem] {
         var results: [XCResultItem] = []
-        results.append(contentsOf: testFailureSummaries.createResults(context: context))
+        results.append(contentsOf: testFailureSummaries
+                        .filterSuccessfulRetries(context: context, testPlanRunSummaries: testPlanRunSummaries)
+                        .createResults(context: context))
         results.append(contentsOf: errorSummaries.createResults(category: .error, context: context))
         results.append(contentsOf: warningSummaries.createResults(category: .warning, context: context))
         return results
+    }
+}
+
+extension Array where Element == TestFailureIssueSummary {
+    func filterSuccessfulRetries(context: ResultGenerationContext, testPlanRunSummaries: ActionTestPlanRunSummaries) -> [TestFailureIssueSummary] {
+        let failedTestIdentifiers = testPlanRunSummaries.failedTestIdentifiers
+        return filter { testFailureIssueSummary in
+            let identifier = testFailureIssueSummary.testCaseName.replacingOccurrences(of: ".", with: "/")
+            return failedTestIdentifiers.contains(identifier)
+        }
     }
 }
 

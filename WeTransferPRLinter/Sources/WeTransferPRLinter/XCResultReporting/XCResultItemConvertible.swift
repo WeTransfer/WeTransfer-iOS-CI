@@ -15,16 +15,10 @@ extension Array: XCResultItemsConvertible where Element: XCResultItemsConvertibl
 /// Combine all available summaries and return them as a collection of results.
 extension ActionsInvocationRecord: XCResultItemsConvertible {
     func createResults(context: ResultGenerationContext) -> [XCResultItem] {
-        let resultFactories: [XCResultItemsConvertible] = [
-            /// Metrics like total tests.
-            metrics,
-
-            /// Warnings, errors, test failures.
-            issues,
-
-            /// Test summaries.
-            actions
-        ]
-        return resultFactories.flatMap { $0.createResults(context: context) }
+        /// Test summaries, warnings, errors, and failures.
+        let actionsResults = actions.createResults(context: context)
+        let warnings = issues.warningSummaries.createResults(category: .warning, context: context)
+        let errors = issues.errorSummaries.createResults(category: .error, context: context)
+        return actionsResults + warnings + errors
     }
 }

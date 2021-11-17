@@ -16,15 +16,29 @@ extension ActionRecord: XCResultItemsConvertible {
             return []
         }
 
-        return testPlanRunSummaries.summaries.flatMap { testPlanRunSummary in
+        let issueResultItems = actionResult.issues.createResults(context: context, testPlanRunSummaries: testPlanRunSummaries)
+
+        let testPlanResultItems = testPlanRunSummaries.summaries.flatMap { testPlanRunSummary in
             testPlanRunSummary.testableSummaries.flatMap { actionTestableSummary in
                 actionTestableSummary.createResults(context: context)
             }
         }
+
+        return issueResultItems + testPlanResultItems
+    }
+}
+
+extension ActionTestPlanRunSummaries {
+    var failedTestIdentifiers: Set<String> {
+        Set<String>(summaries.flatMap { $0.testableSummaries.flatMap { $0.failedTestIdentifiers }})
     }
 }
 
 extension ActionTestableSummary: XCResultItemsConvertible {
+    var failedTestIdentifiers: Set<String> {
+        tests.failedTestIdentifiers
+    }
+
     var totalNumberOfTests: Int {
         tests.totalNumberOfTests
     }
@@ -39,11 +53,7 @@ extension ActionTestableSummary: XCResultItemsConvertible {
     }
 
     var totalNumberOfFailingTests: Int {
-        tests.reduce(0) { totalCount, testSummaryGroup in
-            var totalCount = totalCount
-            totalCount += testSummaryGroup.totalNumberOfFailingTests
-            return totalCount
-        }
+        failedTestIdentifiers.count
     }
 
     func createResults(context: ResultGenerationContext) -> [XCResultItem] {
@@ -62,11 +72,9 @@ extension Array where Element == ActionTestSummaryGroup {
         }
     }
 
-    var totalNumberOfFailingTests: Int {
-        reduce(0) { totalCount, testSummaryGroup in
-            var totalCount = totalCount
-            totalCount += testSummaryGroup.totalNumberOfFailingTests
-            return totalCount
+    var failedTestIdentifiers: Set<String> {
+        reduce([]) { identifiers, testSummaryGroup in
+            identifiers.union(testSummaryGroup.failedTestIdentifiers)
         }
     }
 }
@@ -76,7 +84,17 @@ extension ActionTestSummaryGroup {
         subtests.count + subtestGroups.totalNumberOfTests
     }
 
-    var totalNumberOfFailingTests: Int {
-        subtests.filter { $0.testStatus == "Failure" }.count + subtestGroups.totalNumberOfFailingTests
+    var failedTestIdentifiers: Set<String> {
+        subtests.failedTestIdentifiers.union(subtestGroups.failedTestIdentifiers)
+    }
+}
+
+extension Array where Element == ActionTestMetadata {
+    var failedTestIdentifiers: Set<String> {
+        let successIdentifiers = Set<String>(filter { $0.testStatus == "Success" }.map { $0.identifier })
+        let failedIdentifiers = Set<String>(filter { $0.testStatus == "Failure" }.map { $0.identifier })
+
+        /// Substract success identifiers to filter out retried tests.
+        return failedIdentifiers.subtracting(successIdentifiers)
     }
 }

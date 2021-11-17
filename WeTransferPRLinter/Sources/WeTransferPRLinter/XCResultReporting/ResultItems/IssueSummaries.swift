@@ -11,8 +11,7 @@ extension ResultIssueSummaries {
     func createResults(context: ResultGenerationContext, testPlanRunSummaries: ActionTestPlanRunSummaries) -> [XCResultItem] {
         var results: [XCResultItem] = []
         results.append(contentsOf: testFailureSummaries
-                        .filterSuccessfulRetries(context: context, testPlanRunSummaries: testPlanRunSummaries)
-                        .createResults(context: context))
+                        .createResults(context: context, testPlanRunSummaries: testPlanRunSummaries))
         results.append(contentsOf: errorSummaries.createResults(category: .error, context: context))
         results.append(contentsOf: warningSummaries.createResults(category: .warning, context: context))
         return results
@@ -20,20 +19,37 @@ extension ResultIssueSummaries {
 }
 
 extension Array where Element == TestFailureIssueSummary {
-    func filterSuccessfulRetries(context: ResultGenerationContext, testPlanRunSummaries: ActionTestPlanRunSummaries) -> [TestFailureIssueSummary] {
+    /// Test Failure Summaries contain all failed tests, even if they succeeded after retry.
+    /// We can use this method to filter out retried tests and don't report them as failure,
+    /// but instead show them as a warning.
+    func createResults(context: ResultGenerationContext, testPlanRunSummaries: ActionTestPlanRunSummaries) -> [XCResultItem] {
         let failedTestIdentifiers = testPlanRunSummaries.failedTestIdentifiers
-        return filter { testFailureIssueSummary in
+        let retriedTestIdentifiers = testPlanRunSummaries.retriedTestIdentifiers
+
+        return compactMap { testFailureIssueSummary -> [XCResultItem]? in
             let identifier = testFailureIssueSummary.testCaseName.replacingOccurrences(of: ".", with: "/")
-            return failedTestIdentifiers.contains(identifier)
-        }
+            if retriedTestIdentifiers.contains(identifier) {
+                return testFailureIssueSummary.createTestRetriedResult(context: context, testPlanRunSummaries: testPlanRunSummaries)
+            } else if failedTestIdentifiers.contains(identifier) {
+                return testFailureIssueSummary.createTestFailureResult(context: context, testPlanRunSummaries: testPlanRunSummaries)
+            }
+
+            return nil
+        }.flatMap { $0 }
     }
 }
 
-extension TestFailureIssueSummary: XCResultItemsConvertible {
-    func createResults(context: ResultGenerationContext) -> [XCResultItem] {
+extension TestFailureIssueSummary {
+    func createTestFailureResult(context: ResultGenerationContext, testPlanRunSummaries: ActionTestPlanRunSummaries) -> [XCResultItem] {
         let message = "**\(testCaseName):**<br/>\(message)"
         let fileMetadata = documentLocationInCreatingWorkspace?.fileMetadata(fileManager: context.fileManager)
         return [XCResultItem(message: message, file: fileMetadata?.filename, line: fileMetadata?.line, category: .error)]
+    }
+
+    func createTestRetriedResult(context: ResultGenerationContext, testPlanRunSummaries: ActionTestPlanRunSummaries) -> [XCResultItem] {
+        let message = "**\(testCaseName) succeeded after retry:**<br/>\(message)"
+        let fileMetadata = documentLocationInCreatingWorkspace?.fileMetadata(fileManager: context.fileManager)
+        return [XCResultItem(message: message, file: fileMetadata?.filename, line: fileMetadata?.line, category: .warning)]
     }
 }
 

@@ -10,7 +10,7 @@ let package = Package(
         .library(name: "DangerDeps", type: .dynamic, targets: ["DangerDependencies"])
     ],
     dependencies: [
-        .package(name: "danger-swift", url: "https://github.com/danger/swift", from: "3.12.1"),
+        .package(name: "danger-swift", url: "https://github.com/danger/swift", from: "3.12.3"),
         .package(path: "WeTransferPRLinter")
     ],
     targets: [

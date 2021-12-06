@@ -34,6 +34,23 @@ unused_optional_binding:
   severity: error
 object_literal:
   color_literal: false
+
+custom_rules:
+  overridden_only_calls_super:
+    included: ".*.swift"
+    regex: 'override func [^\n]*\{\n(\s*super\.[^\n]*\n(\s*\/\/[^\n]*\n)*|(\s*\/\/[^\n]*\n)+)\s*\}'
+    message: "Overridden methods which only call super can be removed"
+
+  final_class:
+    included: ".*.swift"
+    regex: "^class|^private class|^public class"
+    message: "Consider using final for this class, or use a struct"
+
+  unowned_self:
+    included: ".*.swift"
+    regex: "unowned self"
+    message: "It is safer to use weak instead of unowned"
+
 excluded:
   - ${SRCROOT}/Carthage
   - ${SRCROOT}/.build

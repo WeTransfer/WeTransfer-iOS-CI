@@ -132,30 +132,6 @@ final class WeTransferLinterTests: XCTestCase {
         XCTAssertEqual(danger.warnings.count, 0)
     }
 
-    /// It should warn for empty method overrides.
-    func testEmptyMethodOverrides() {
-        let danger = DangerDSL(testSettings: [:])
-        WeTransferPRLinter.validateEmptyMethodOverrides(using: danger, file: "File.swift", lines: [
-            "override func viewDidLoad() {",
-            "super.viewDidLoad()",
-            "}"
-        ])
-        XCTAssertEqual(danger.warnings.count, 1)
-        XCTAssertEqual(danger.warnings.first?.message, "Override methods which only call super can be removed")
-    }
-
-    /// It should not warn for method overrides including closures.
-    func testClosureMethodOverrides() {
-        let danger = DangerDSL(testSettings: [:])
-        WeTransferPRLinter.validateEmptyMethodOverrides(using: danger, file: "File.swift", lines: [
-            "override func viewDidLoad() {",
-            "super.viewDidLoad()",
-            "guard let download = self.download else { return }",
-            "}"
-        ])
-        XCTAssertEqual(danger.warnings.count, 0)
-    }
-
     /// It should warn for using Mark in big files without any mark.
     func testMarkUsage() {
         let danger = DangerDSL(testSettings: [:])

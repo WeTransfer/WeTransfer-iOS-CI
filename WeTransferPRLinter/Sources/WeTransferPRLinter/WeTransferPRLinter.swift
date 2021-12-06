@@ -140,7 +140,6 @@ extension WeTransferPRLinter {
             let lines = danger.utils.readFile(file).components(separatedBy: .newlines)
             validateFinalClasses(using: danger, file: file, lines: lines)
             validateUnownedSelf(using: danger, file: file, lines: lines)
-            validateEmptyMethodOverrides(using: danger, file: file, lines: lines)
             validateMarkUsage(using: danger, file: file, lines: lines)
         }
     }
@@ -169,20 +168,6 @@ extension WeTransferPRLinter {
             guard !line.contains("danger:disable unowned_self") else { return }
             guard line.contains("unowned self") else { continue }
             danger.warn(message: "It is safer to use weak instead of unowned", file: file, line: index + 1)
-        }
-    }
-
-    /// Warns if a method override contains no addtional code.
-    static func validateEmptyMethodOverrides(using danger: DangerDSL, file: Danger.File, lines: [String]) {
-        for (index, line) in lines.enumerated() {
-            guard
-                line.contains("override"), !line.contains("\"override"), // To make sure it's not true for linting this repo.
-                line.contains("func"),
-                lines[index + 1].contains("super"),
-                lines[index + 2].contains("}"),
-                !lines[index + 2].contains("{")
-            else { continue }
-            danger.warn(message: "Override methods which only call super can be removed", file: file, line: index + 3)
         }
     }
 

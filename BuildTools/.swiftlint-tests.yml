@@ -51,3 +51,5 @@ excluded:
   - Example/*/${PROJECT_NAME} # App Store Connect SDK structure
   - ${SRCROOT}/Pods
   - ${SRCROOT}/Sources # Folder for open source projects
+  - ${SRCROOT}/*/Sources
+  - ${SRCROOT}/*/*/Sources

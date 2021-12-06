@@ -90,3 +90,4 @@ excluded:
   - ${SRCROOT}/.rbenv
   - ${SRCROOT}/*/*/*/*/main.swift # App Store Connect SDK structure
   - ${SRCROOT}/*/*/Tests # App Store Connect SDK structure
+  - ${SRCROOT}/*/*/*/*/PackageJSON.swift

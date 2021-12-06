@@ -84,10 +84,10 @@ excluded:
   - ${SRCROOT}/bundle
   - ${SRCROOT}/scripts/genstrings.swift
   - ${SRCROOT}/danger/DangerTests.swift
-  - ${SRCROOT}/*Tests
   - ${SRCROOT}/*UITests
   - ${SRCROOT}/Tests
+  - ${SRCROOT}/*Tests
+  - ${SRCROOT}/*/Tests
   - ${SRCROOT}/.rbenv
   - ${SRCROOT}/*/*/*/*/main.swift # App Store Connect SDK structure
   - ${SRCROOT}/*/*/Tests # App Store Connect SDK structure
-  - ${SRCROOT}/*/Tests

@@ -76,6 +76,11 @@ custom_rules:
     regex: "^class|^private class|^public class"
     message: "Consider using final for this class or use a struct"
 
+  unowned_self:
+    included: ".*.swift"
+    regex: "unowned self"
+    message: "It is safer to use weak instead of unowned"
+
 included:
   - ${SRCROOT}
   - ${SRCROOT}/../Sources

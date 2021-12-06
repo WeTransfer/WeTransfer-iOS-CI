@@ -143,15 +143,6 @@ extension WeTransferPRLinter {
         }
     }
 
-    /// Warns if unowned is used. It's safer to use weak.
-    static func validateUnownedSelf(using danger: DangerDSL, file: Danger.File, lines: [String]) {
-        for (index, line) in lines.enumerated() {
-            guard !line.contains("danger:disable unowned_self") else { return }
-            guard line.contains("unowned self") else { continue }
-            danger.warn(message: "It is safer to use weak instead of unowned", file: file, line: index + 1)
-        }
-    }
-
     /// Warns if a big files is containing any MARK comments.
     static func validateMarkUsage(using danger: DangerDSL, file: Danger.File, lines: [String], minimumLinesCount: Int = 200) {
         guard !file.lowercased().contains("test"), lines.count >= minimumLinesCount else { return }

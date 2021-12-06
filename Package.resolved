@@ -2,24 +2,6 @@
   "object": {
     "pins": [
       {
-        "package": "DangerSwiftCoverage",
-        "repositoryURL": "https://github.com/f-meloni/danger-swift-coverage",
-        "state": {
-          "branch": null,
-          "revision": "6a21a6e595e2b13443428942ce128b3ba6b827ee",
-          "version": "1.2.1"
-        }
-      },
-      {
-        "package": "DangerXCodeSummary",
-        "repositoryURL": "https://github.com/f-meloni/danger-swift-xcodesummary",
-        "state": {
-          "branch": null,
-          "revision": "289d5136cead3d4b1eae509acc3f0b044252fc6c",
-          "version": "1.2.1"
-        }
-      },
-      {
         "package": "Files",
         "repositoryURL": "https://github.com/JohnSundell/Files",
         "state": {
@@ -60,8 +42,8 @@
         "repositoryURL": "https://github.com/danger/swift",
         "state": {
           "branch": null,
-          "revision": "a0e52b44fc3a22b6642413aaeb1f3b58ce78a359",
-          "version": "3.12.0"
+          "revision": "c1bba33f705ca0fd4a0022997c8b696210083755",
+          "version": "3.12.3"
         }
       },
       {
@@ -71,6 +53,15 @@
           "branch": null,
           "revision": "200046c93f6d5d78a6d72bfd9c0b27a95e9c0a2b",
           "version": "1.2.0"
+        }
+      },
+      {
+        "package": "XCResultKit",
+        "repositoryURL": "https://github.com/davidahouse/XCResultKit.git",
+        "state": {
+          "branch": null,
+          "revision": "49eec74ea00687dccb55903c717905b822923172",
+          "version": "0.9.2"
         }
       }
     ]

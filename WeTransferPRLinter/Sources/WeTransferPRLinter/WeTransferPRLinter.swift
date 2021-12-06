@@ -138,7 +138,6 @@ extension WeTransferPRLinter {
 
         swiftFiles.forEach { file in
             let lines = danger.utils.readFile(file).components(separatedBy: .newlines)
-            validateUnownedSelf(using: danger, file: file, lines: lines)
             validateMarkUsage(using: danger, file: file, lines: lines)
         }
     }

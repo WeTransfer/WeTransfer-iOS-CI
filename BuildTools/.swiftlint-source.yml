@@ -74,7 +74,7 @@ custom_rules:
   final_class:
     included: ".*.swift"
     regex: "^class|^private class|^public class"
-    message: "Consider using final for this class or use a struct"
+    message: "Consider using final for this class, or use a struct"
 
   unowned_self:
     included: ".*.swift"

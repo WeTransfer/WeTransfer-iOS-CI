@@ -138,27 +138,8 @@ extension WeTransferPRLinter {
 
         swiftFiles.forEach { file in
             let lines = danger.utils.readFile(file).components(separatedBy: .newlines)
-            validateFinalClasses(using: danger, file: file, lines: lines)
             validateUnownedSelf(using: danger, file: file, lines: lines)
             validateMarkUsage(using: danger, file: file, lines: lines)
-        }
-    }
-
-    /// Warns and asks to use "final" in front of a non-final class.
-    static func validateFinalClasses(using danger: DangerDSL, file: Danger.File, lines: [String]) {
-        var isMultilineComment = false
-
-        for (index, line) in lines.enumerated() {
-            guard !line.contains("danger:disable final_class") else { return }
-            if line.contains("/**") {
-                isMultilineComment = true
-            }
-            if line.contains("*/") {
-                isMultilineComment = false
-            }
-            guard !isMultilineComment, line.shouldBeFinalClass else { continue }
-
-            danger.warn(message: "Consider using final for this class or use a struct (final_class)", file: file, line: index + 1)
         }
     }
 

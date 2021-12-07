@@ -125,18 +125,6 @@ final class WeTransferLinterTests: XCTestCase {
         XCTAssertEqual(danger.messages.first?.message, "View more details on <a href=\"\(bitriseURL)\" target=\"_blank\">Bitrise</a>")
     }
 
-    /// It should correctly split files into test and non-test files.
-    func testSwiftLintFileSplitting() {
-        let danger = githubWithFilesDSL(created: ["ViewModel.swift", "ViewModelTests.swift", "Changelog.md", "RubyTests.rb"], fileMap: [:])
-        let mockedSwiftLintExecutor = MockedSwiftLintExecutor.self
-        WeTransferPRLinter.swiftLint(using: danger, executor: mockedSwiftLintExecutor)
-
-        let nonTestFiles = mockedSwiftLintExecutor.lintedFiles.first(where: { !$0.key.contains("tests") })?.value
-        let testFiles = mockedSwiftLintExecutor.lintedFiles.first(where: { $0.key.contains("tests") })?.value
-        XCTAssertEqual(nonTestFiles, ["ViewModel.swift"])
-        XCTAssertEqual(testFiles, ["ViewModelTests.swift"])
-    }
-
     /// It should not trigger SwiftLint if there's no files to lint.
     func testSwiftLintSkippingForNoSwiftFiles() {
         let danger = githubWithFilesDSL(created: ["Changelog.md", "RubyTests.rb"], fileMap: [:])

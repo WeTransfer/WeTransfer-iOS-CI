@@ -107,7 +107,7 @@ public enum WeTransferPRLinter {
         danger.message("View more details on <a href=\"\(bitriseURL)\" target=\"_blank\">Bitrise</a>")
     }
 
-    /// Triggers SwiftLint and makes use of specific configuration for tests and non-tests.
+    /// Triggers SwiftLint.
     static func swiftLint(using danger: DangerDSL, executor: SwiftLintExecuting.Type = SwiftLintExecutor.self, configsFolderPath: String? = nil) {
         defer { print("\n") }
 
@@ -115,17 +115,11 @@ public enum WeTransferPRLinter {
         print("Starting SwiftLint...")
 
         let files = danger.git.createdFiles + danger.git.modifiedFiles
-        let nonTestFiles = files.filter { !$0.lowercased().contains("test") && $0.fileType == .swift }
-        let testFiles = files.filter { $0.lowercased().contains("test") && $0.fileType == .swift }
+        let swiftFiles = files.filter { $0.fileType == .swift }
 
-        if !nonTestFiles.isEmpty {
-            print("Linting non-test files:\n- \(nonTestFiles.joined(separator: "\n- "))")
-            executor.lint(files: nonTestFiles, configFile: "\(configsFolderPath)/.swiftlint-source.yml")
-        }
-
-        if !testFiles.isEmpty {
-            print("Linting test files:\n- \(testFiles.joined(separator: "\n- "))")
-            executor.lint(files: testFiles, configFile: "\(configsFolderPath)/.swiftlint-tests.yml")
+        if !swiftFiles.isEmpty {
+            print("Linting files:\n- \(swiftFiles.joined(separator: "\n- "))")
+            executor.lint(files: swiftFiles, configFile: "\(configsFolderPath)/.swiftlint.yml")
         }
     }
 }

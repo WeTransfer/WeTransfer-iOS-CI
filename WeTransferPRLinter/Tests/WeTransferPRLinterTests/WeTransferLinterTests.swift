@@ -70,92 +70,6 @@ final class WeTransferLinterTests: XCTestCase {
         XCTAssertEqual(danger.warnings.first?.message, "PR is classed as Work in Progress")
     }
 
-    /// It should warn for not using final with classes.
-    func testFinalClass() {
-        let danger = githubWithFilesDSL(created: ["file.swift"], fileMap: ["file.swift": "class MyCustomType {"])
-        WeTransferPRLinter.validateFiles(using: danger)
-        XCTAssertEqual(danger.warnings.count, 1)
-        XCTAssertEqual(danger.warnings.first?.message, "Consider using final for this class or use a struct (final_class)")
-    }
-
-    /// It should not warn for not using final with classes if the rule is disabled.
-    func testFinalClassDisabled() {
-        let danger = DangerDSL(testSettings: [:])
-        WeTransferPRLinter.validateFinalClasses(using: danger, file: "File.swift", lines: [
-            "danger:disable final_class",
-            "class MyCustomType {"
-        ])
-        XCTAssertEqual(danger.warnings.count, 0)
-    }
-
-    /// It should not warn for not using final with open classes.
-    func testNotFinalForOpenClass() {
-        let danger = DangerDSL(testSettings: [:])
-        WeTransferPRLinter.validateFinalClasses(using: danger, file: "File.swift", lines: [
-            "open class MyCustomType {"
-        ])
-        XCTAssertEqual(danger.warnings.count, 0)
-    }
-
-    /// It should not warn for not using final inside comments.
-    func testNotFinalForComments() {
-        let danger = DangerDSL(testSettings: [:])
-        WeTransferPRLinter.validateFinalClasses(using: danger, file: "File.swift", lines: [
-            "fatalError(\"Subclasses must implement `execute` without overriding super.\")",
-            "/**",
-            "This class",
-            "*/",
-            "/// class",
-            "// class"
-        ])
-        XCTAssertEqual(danger.warnings.count, 0)
-    }
-
-    /// It should warn for using unowned self.
-    func testUnownedSelfUsage() {
-        let danger = DangerDSL(testSettings: [:])
-        WeTransferPRLinter.validateUnownedSelf(using: danger, file: "File.swift", lines: [
-            "[weak self]",
-            "[unowned self] _ in"
-        ])
-        XCTAssertEqual(danger.warnings.count, 1)
-        XCTAssertEqual(danger.warnings.first?.message, "It is safer to use weak instead of unowned")
-    }
-
-    /// It should not warn for unowned self if the rule is disabled.
-    func testUnownedSelfDisabled() {
-        let danger = DangerDSL(testSettings: [:])
-        WeTransferPRLinter.validateUnownedSelf(using: danger, file: "File.swift", lines: [
-            "danger:disable unowned_self",
-            "[unowned self] _ in"
-        ])
-        XCTAssertEqual(danger.warnings.count, 0)
-    }
-
-    /// It should warn for empty method overrides.
-    func testEmptyMethodOverrides() {
-        let danger = DangerDSL(testSettings: [:])
-        WeTransferPRLinter.validateEmptyMethodOverrides(using: danger, file: "File.swift", lines: [
-            "override func viewDidLoad() {",
-            "super.viewDidLoad()",
-            "}"
-        ])
-        XCTAssertEqual(danger.warnings.count, 1)
-        XCTAssertEqual(danger.warnings.first?.message, "Override methods which only call super can be removed")
-    }
-
-    /// It should not warn for method overrides including closures.
-    func testClosureMethodOverrides() {
-        let danger = DangerDSL(testSettings: [:])
-        WeTransferPRLinter.validateEmptyMethodOverrides(using: danger, file: "File.swift", lines: [
-            "override func viewDidLoad() {",
-            "super.viewDidLoad()",
-            "guard let download = self.download else { return }",
-            "}"
-        ])
-        XCTAssertEqual(danger.warnings.count, 0)
-    }
-
     /// It should warn for using Mark in big files without any mark.
     func testMarkUsage() {
         let danger = DangerDSL(testSettings: [:])
@@ -209,18 +123,6 @@ final class WeTransferLinterTests: XCTestCase {
         WeTransferPRLinter.showBitriseBuildURL(using: danger, environmentVariables: ["BITRISE_BUILD_URL": bitriseURL])
         XCTAssertEqual(danger.messages.count, 1)
         XCTAssertEqual(danger.messages.first?.message, "View more details on <a href=\"\(bitriseURL)\" target=\"_blank\">Bitrise</a>")
-    }
-
-    /// It should correctly split files into test and non-test files.
-    func testSwiftLintFileSplitting() {
-        let danger = githubWithFilesDSL(created: ["ViewModel.swift", "ViewModelTests.swift", "Changelog.md", "RubyTests.rb"], fileMap: [:])
-        let mockedSwiftLintExecutor = MockedSwiftLintExecutor.self
-        WeTransferPRLinter.swiftLint(using: danger, executor: mockedSwiftLintExecutor)
-
-        let nonTestFiles = mockedSwiftLintExecutor.lintedFiles.first(where: { !$0.key.contains("tests") })?.value
-        let testFiles = mockedSwiftLintExecutor.lintedFiles.first(where: { $0.key.contains("tests") })?.value
-        XCTAssertEqual(nonTestFiles, ["ViewModel.swift"])
-        XCTAssertEqual(testFiles, ["ViewModelTests.swift"])
     }
 
     /// It should not trigger SwiftLint if there's no files to lint.

@@ -107,7 +107,7 @@ public enum WeTransferPRLinter {
         danger.message("View more details on <a href=\"\(bitriseURL)\" target=\"_blank\">Bitrise</a>")
     }
 
-    /// Triggers SwiftLint and makes use of specific configuration for tests and non-tests.
+    /// Triggers SwiftLint.
     static func swiftLint(using danger: DangerDSL, executor: SwiftLintExecuting.Type = SwiftLintExecutor.self, configsFolderPath: String? = nil) {
         defer { print("\n") }
 
@@ -115,17 +115,11 @@ public enum WeTransferPRLinter {
         print("Starting SwiftLint...")
 
         let files = danger.git.createdFiles + danger.git.modifiedFiles
-        let nonTestFiles = files.filter { !$0.lowercased().contains("test") && $0.fileType == .swift }
-        let testFiles = files.filter { $0.lowercased().contains("test") && $0.fileType == .swift }
+        let swiftFiles = files.filter { $0.fileType == .swift }
 
-        if !nonTestFiles.isEmpty {
-            print("Linting non-test files:\n- \(nonTestFiles.joined(separator: "\n- "))")
-            executor.lint(files: nonTestFiles, configFile: "\(configsFolderPath)/.swiftlint-source.yml")
-        }
-
-        if !testFiles.isEmpty {
-            print("Linting test files:\n- \(testFiles.joined(separator: "\n- "))")
-            executor.lint(files: testFiles, configFile: "\(configsFolderPath)/.swiftlint-tests.yml")
+        if !swiftFiles.isEmpty {
+            print("Linting files:\n- \(swiftFiles.joined(separator: "\n- "))")
+            executor.lint(files: swiftFiles, configFile: "\(configsFolderPath)/.swiftlint.yml")
         }
     }
 }
@@ -138,51 +132,7 @@ extension WeTransferPRLinter {
 
         swiftFiles.forEach { file in
             let lines = danger.utils.readFile(file).components(separatedBy: .newlines)
-            validateFinalClasses(using: danger, file: file, lines: lines)
-            validateUnownedSelf(using: danger, file: file, lines: lines)
-            validateEmptyMethodOverrides(using: danger, file: file, lines: lines)
             validateMarkUsage(using: danger, file: file, lines: lines)
-        }
-    }
-
-    /// Warns and asks to use "final" in front of a non-final class.
-    static func validateFinalClasses(using danger: DangerDSL, file: Danger.File, lines: [String]) {
-        var isMultilineComment = false
-
-        for (index, line) in lines.enumerated() {
-            guard !line.contains("danger:disable final_class") else { return }
-            if line.contains("/**") {
-                isMultilineComment = true
-            }
-            if line.contains("*/") {
-                isMultilineComment = false
-            }
-            guard !isMultilineComment, line.shouldBeFinalClass else { continue }
-
-            danger.warn(message: "Consider using final for this class or use a struct (final_class)", file: file, line: index + 1)
-        }
-    }
-
-    /// Warns if unowned is used. It's safer to use weak.
-    static func validateUnownedSelf(using danger: DangerDSL, file: Danger.File, lines: [String]) {
-        for (index, line) in lines.enumerated() {
-            guard !line.contains("danger:disable unowned_self") else { return }
-            guard line.contains("unowned self") else { continue }
-            danger.warn(message: "It is safer to use weak instead of unowned", file: file, line: index + 1)
-        }
-    }
-
-    /// Warns if a method override contains no addtional code.
-    static func validateEmptyMethodOverrides(using danger: DangerDSL, file: Danger.File, lines: [String]) {
-        for (index, line) in lines.enumerated() {
-            guard
-                line.contains("override"), !line.contains("\"override"), // To make sure it's not true for linting this repo.
-                line.contains("func"),
-                lines[index + 1].contains("super"),
-                lines[index + 2].contains("}"),
-                !lines[index + 2].contains("{")
-            else { continue }
-            danger.warn(message: "Override methods which only call super can be removed", file: file, line: index + 3)
         }
     }
 

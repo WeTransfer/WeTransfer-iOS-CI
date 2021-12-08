@@ -34,7 +34,7 @@ opt_in_rules:
   - multiline_function_chains
 syntactic_sugar: error
 unused_closure_parameter: error
-unused_optional_binding: 
+unused_optional_binding:
   severity: error
 file_length:
   warning: 600
@@ -65,10 +65,22 @@ type_contents_order:
     - [subscript, other_method, ib_action]
     - type_method
 
-included:
-  - ${SRCROOT}
-  - ${SRCROOT}/../Sources
-  - ${SRCROOT}/../../Sources
+custom_rules:
+  overridden_only_calls_super:
+    included: ".*.swift"
+    regex: 'override func [^\n]*\{\n(\s*super\.[^\n]*\n(\s*\/\/[^\n]*\n)*|(\s*\/\/[^\n]*\n)+)\s*\}'
+    message: "Overridden methods which only call super can be removed"
+
+  final_class:
+    included: ".*.swift"
+    regex: "^class|^private class|^public class|^internal class"
+    message: "Consider using final for this class, or use a struct"
+
+  unowned_self:
+    included: ".*.swift"
+    regex: "unowned self"
+    message: "It is safer to use weak instead of unowned"
+
 excluded:
   # We add ../../../ to work with the way Danger is expanding paths based on the config file.
   - ${SRCROOT}/Carthage
@@ -85,9 +97,6 @@ excluded:
   - ${SRCROOT}/scripts/genstrings.swift
   - ${SRCROOT}/danger/DangerTests.swift
   - ${SRCROOT}/*UITests
-  - ${SRCROOT}/Tests
-  - ${SRCROOT}/*Tests
-  - ${SRCROOT}/*/Tests
   - ${SRCROOT}/.rbenv
   - ${SRCROOT}/*/*/*/*/main.swift # App Store Connect SDK structure
-  - ${SRCROOT}/*/*/Tests # App Store Connect SDK structure
+  - ${SRCROOT}/*/*/*/*/PackageJSON.swift

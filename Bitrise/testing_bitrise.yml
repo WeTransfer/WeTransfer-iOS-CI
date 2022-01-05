@@ -21,7 +21,7 @@ workflows:
             fi
 
             # Get the latest master branch for WeTransfer-iOS-CI if the submodule exists
-            git submodule update --remote --no-fetch Submodules/WeTransfer-iOS-CI
+            # git submodule update --remote --no-fetch Submodules/WeTransfer-iOS-CI
         title: Update WeTransfer-iOS-CI submodule
     - script:
         title: Force SSH
@@ -53,10 +53,15 @@ workflows:
 
             echo "running from a branch"
             fastlane unhide_spm_package_dev_dependencies
-            swift run danger-swift ci --cache-path .build --build-path .build
+            swift run danger-swift ci --cache-path .danger-build --build-path .danger-build
     - cache-push:
         run_if: true
         inputs:
         - cache_paths: |
             $BITRISE_CACHE_DIR
+            # .build is for regular Xcode runs
+            # .danger-build is for Danger SPM builds
+            # We cache them separately as Danger would otherwise remove packages from regular Xcode builds
+            # making the cache no longer work.
             .build
+            .danger-build

@@ -53,7 +53,7 @@ workflows:
 
             echo "running from a branch"
             fastlane unhide_spm_package_dev_dependencies
-            swift run danger-swift ci --cache-path .danger-build --build-path .danger-build
+            swift run danger-swift ci --cache-path .build --build-path .build
     - cache-push:
         run_if: true
         inputs:

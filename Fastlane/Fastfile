@@ -15,7 +15,7 @@ lane :test_package do |options|
   if options.fetch(:build_for_testing, false) == false 
     test_project(options)
   else 
-    command = "set -o pipefail && cd #{ENV['PWD']} && xcodebuild"
+    command = "set -o pipefail && cd #{ENV['PWD']} && env NSUnbufferedIO=YES xcodebuild"
     command += " -scheme #{options[:package_name]}"
     command += " -destination 'platform=iOS Simulator,name=iPhone 13'"
     command += " -derivedDataPath build/derived_data"

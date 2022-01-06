@@ -209,5 +209,27 @@ Then there is two ways you can start using the deployment lanes. The first one i
 
 The provisioning lanes help you with provisioning related task such as code signing and device management. To use them all you need to do is import `provisioning_lanes.rb` from this repo into the Fastfile.
 
+## Running Bitrise locally
+Make sure to have your `Bitrise.yml` locally inside your repo and then just run `bitrise run <workflow_local>` after adding the following local testing workflow:
+
+```
+  <workflow_name>_local:
+    steps:
+    - script:
+        title: Setup environment variables
+        inputs:
+        - content: |-
+            #!/bin/bash
+            # Change these for your current local session.
+            export BITRISE_IO="fake_bitrise"
+            export BITRISEIO_GIT_REPOSITORY_OWNER="WeTransfer"                                                                                       
+            export BITRISEIO_GIT_REPOSITORY_SLUG="WeTransfer-iOS-SDK"                                                                                
+            export BITRISE_PULL_REQUEST=452                                                                                                          
+
+            bitrise run <workflow_name>
+```
+
+Doing so allows you to run Bitrise workflows locally which will even update the Danger messages in GitHub itself.
+
 ## License
 WeTransfer-iOS-CI is available under the MIT license. See the LICENSE file for more info.

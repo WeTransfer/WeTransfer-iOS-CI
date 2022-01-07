@@ -111,12 +111,11 @@ public enum WeTransferPRLinter {
     static func swiftLint(using danger: DangerDSL, executor: SwiftLintExecuting.Type = SwiftLintExecutor.self, configsFolderPath: String? = nil, fileManager: FileManager) {
         defer { print("\n") }
 
-        let backupConfigsFolderPath = "\(fileManager.currentDirectoryPath)/Submodules/WeTransfer-iOS-CI/BuildTools"
         let configsFolderPath: String = {
             if let configsFolderPath = configsFolderPath, fileManager.fileExists(atPath: configsFolderPath, isDirectory: nil) {
                 return configsFolderPath
             } else {
-                return backupConfigsFolderPath
+                return "\(fileManager.currentDirectoryPath)/Submodules/WeTransfer-iOS-CI/BuildTools"
             }
         }()
         print("Starting SwiftLint from \(configsFolderPath)...")

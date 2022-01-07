@@ -54,7 +54,6 @@ workflows:
             set -x
 
             echo "running from a branch"
-            fastlane unhide_spm_package_dev_dependencies
             
             # By changing directory into WeTransfer-iOS-CI, we can run Danger from there.
             # Caching is still done per repository which is why we add the build and cache paths.
@@ -62,8 +61,13 @@ workflows:
             # The Dangerfile.swift from within the WeTransfer-iOS-CI repo is used.
             #
             # This all allows us to not define Danger dependencies in every repo. It also optimises reusing the SPM cache on CI systems.
-            cd Submodules/WeTransfer-iOS-CI
-            swift run danger-swift ci --cache-path ../../.build --build-path ../../.build --cwd ../../
+
+            if [[ $(basename "$PWD") == 'WeTransfer-iOS-CI' ]]; then
+                swift run danger-swift ci --cache-path .build --build-path .build
+            else
+                cd Submodules/WeTransfer-iOS-CI
+                swift run danger-swift ci --cache-path ../../.build --build-path ../../.build --cwd ../../
+            fi
     - cache-push:
         run_if: true
         inputs:

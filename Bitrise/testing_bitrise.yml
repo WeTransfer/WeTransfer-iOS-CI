@@ -62,7 +62,7 @@ workflows:
             #
             # This all allows us to not define Danger dependencies in every repo. It also optimises reusing the SPM cache on CI systems.
 
-            if [[ $(basename "$PWD") == 'WeTransfer-iOS-CI' ]]; then
+            if [[ $(git remote show origin -n | grep h.URL | sed 's/.*://;s/.git$//') == 'WeTransfer/WeTransfer-iOS-CI' ]]; then
                 swift run danger-swift ci --cache-path .build --build-path .build
             else
                 cd Submodules/WeTransfer-iOS-CI

@@ -14,7 +14,7 @@ workflows:
         - content: |-
             #!/usr/bin/env bash
             if [ "$GITHUB_PR_IS_DRAFT" = true ] ; then
-                echo 'Cancelling run since the PR is in draft'
+                echo 'Cancelling CI run since the PR is in draft'
                 exit 1
             fi
     - cache-pull: {}

@@ -5,3 +5,4 @@ node_modules
 build
 *.xcodeproj
 Fastlane/report.xml
+Fastlane/README.md

@@ -21,7 +21,7 @@ lane :test_package do |options|
     command += " -derivedDataPath build/derived_data"
     command += " -resultBundlePath 'build/reports/#{options[:package_name]}.xcresult'"
     command += " -disable-concurrent-destination-testing -enableCodeCoverage YES"
-    command += " -clonedSourcePackagesDirPath #{ENV['PWD']}/.build"
+    command += " -clonedSourcePackagesDirPath #{ENV['PWD']}/.spm-build"
     command += " -parallel-testing-enabled NO"
 
     if options.fetch(:build_for_testing, false) == true 
@@ -55,7 +55,7 @@ lane :test_project do |options|
       project_path = "#{options[:project_path]}#{options[:project_name]}.xcodeproj"
     end
 
-    sourcePackagesDir = "#{ENV['PWD']}/.build"
+    sourcePackagesDir = "#{ENV['PWD']}/.spm-build"
 
     scan(
       scheme: options[:scheme] || options[:package_name],

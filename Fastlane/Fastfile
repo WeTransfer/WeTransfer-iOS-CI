@@ -68,7 +68,7 @@ lane :test_project do |options|
       skip_slack: true,
       output_types: '',
       disable_xcpretty: true,
-      suppress_xcode_output: true,
+      suppress_xcode_output: false,
       prelaunch_simulator: true,
       xcargs: "-clonedSourcePackagesDirPath #{sourcePackagesDir} -parallel-testing-enabled NO -retry-tests-on-failure -test-iterations 3",
       include_simulator_logs: false, # Needed for this: https://github.com/fastlane/fastlane/issues/8909

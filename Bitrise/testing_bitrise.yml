@@ -8,6 +8,14 @@ trigger_map:
 workflows:
   wetransfer_pr_testing:
     steps:
+    - script@1:
+        title: Skip running for Draft PRs
+        inputs:
+        - content: |-
+            #!/usr/bin/env bash
+            if [ "$GITHUB_PR_IS_DRAFT" = true ] ; then
+            exit 0
+            fi
     - cache-pull: {}
     - script:
         run_if: .IsCI

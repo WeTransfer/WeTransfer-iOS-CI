@@ -81,3 +81,4 @@ workflows:
         - cache_paths: |
             $BITRISE_CACHE_DIR
             .build
+            .spm-build

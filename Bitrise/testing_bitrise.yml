@@ -8,8 +8,18 @@ trigger_map:
 workflows:
   wetransfer_pr_testing:
     steps:
+    - script@1:
+        title: Skip running for Draft PRs
+        inputs:
+        - content: |-
+            #!/usr/bin/env bash
+            if [ "$GITHUB_PR_IS_DRAFT" = true ] ; then
+                echo 'Cancelling CI run since the PR is in draft'
+                exit 1
+            fi
     - cache-pull: {}
     - script:
+        run_if: .IsCI
         inputs:
         - content: |-
             #!/usr/bin/env bash
@@ -24,6 +34,7 @@ workflows:
             git submodule update --remote --no-fetch Submodules/WeTransfer-iOS-CI
         title: Update WeTransfer-iOS-CI submodule
     - script:
+        run_if: .IsCI
         title: Force SSH
         inputs:
         - content: |-
@@ -51,12 +62,23 @@ workflows:
             # debug log
             set -x
 
-            echo "running from a branch"
-            fastlane unhide_spm_package_dev_dependencies
-            swift run danger-swift ci --cache-path .build --build-path .build
+            # By changing directory into WeTransfer-iOS-CI, we can run Danger from there.
+            # Caching is still done per repository which is why we add the build and cache paths.
+            # --cwd makes sure to run Danger in the current repository directory
+            # The Dangerfile.swift from within the WeTransfer-iOS-CI repo is used.
+            #
+            # This all allows us to not define Danger dependencies in every repo. It also optimises reusing the SPM cache on CI systems.
+            
+            if [ "$BITRISEIO_GIT_REPOSITORY_SLUG" == "WeTransfer-iOS-CI" ]; then
+                swift run danger-swift ci --cache-path .build --build-path .build
+            else
+                cd Submodules/WeTransfer-iOS-CI
+                swift run danger-swift ci --cache-path ../../.build --build-path ../../.build --cwd ../../
+            fi
     - cache-push:
         run_if: true
         inputs:
         - cache_paths: |
             $BITRISE_CACHE_DIR
             .build
+            .spm-build

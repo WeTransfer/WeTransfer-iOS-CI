@@ -129,9 +129,32 @@ final class WeTransferLinterTests: XCTestCase {
     func testSwiftLintSkippingForNoSwiftFiles() {
         let danger = githubWithFilesDSL(created: ["Changelog.md", "RubyTests.rb"], fileMap: [:])
         let mockedSwiftLintExecutor = MockedSwiftLintExecutor.self
-        WeTransferPRLinter.swiftLint(using: danger, executor: mockedSwiftLintExecutor)
+        let stubbedFileManager = StubbedFileManager()
+        stubbedFileManager.stubbedCurrentDirectoryPath = "/Users/tcook/GIT-Projects/WeTransfer"
+        WeTransferPRLinter.swiftLint(using: danger, executor: mockedSwiftLintExecutor, fileManager: stubbedFileManager)
 
         XCTAssertEqual(mockedSwiftLintExecutor.lintedFiles, [:])
+    }
+
+    func testSwiftLintBackupConfigsFolder() {
+        let danger = githubWithFilesDSL(created: ["File.swift"], fileMap: [:])
+        let mockedSwiftLintExecutor = MockedSwiftLintExecutor.self
+        let stubbedFileManager = StubbedFileManager()
+        stubbedFileManager.stubbedCurrentDirectoryPath = "/Users/tcook/GIT-Projects/WeTransfer"
+        WeTransferPRLinter.swiftLint(using: danger, executor: mockedSwiftLintExecutor, fileManager: stubbedFileManager)
+
+        XCTAssertEqual(mockedSwiftLintExecutor.lintedFiles.keys.first, "/Users/tcook/GIT-Projects/WeTransfer/Submodules/WeTransfer-iOS-CI/BuildTools/.swiftlint.yml")
+    }
+
+    func testSwiftLintFromGivenConfigsFolder() {
+        let danger = githubWithFilesDSL(created: ["File.swift"], fileMap: [:])
+        let mockedSwiftLintExecutor = MockedSwiftLintExecutor.self
+        let stubbedFileManager = StubbedFileManager()
+        stubbedFileManager.fileExists = true
+        let customPath = "/Users/avanderlee/Projects/"
+        WeTransferPRLinter.swiftLint(using: danger, executor: mockedSwiftLintExecutor, configsFolderPath: customPath, fileManager: stubbedFileManager)
+
+        XCTAssertEqual(mockedSwiftLintExecutor.lintedFiles.keys.first, "\(customPath)/.swiftlint.yml")
     }
 
     func testXCResultFileMissing() {
@@ -141,7 +164,7 @@ final class WeTransferLinterTests: XCTestCase {
         XCTAssertEqual(danger.warnings.count, 0)
         XCTAssertEqual(danger.messages.count, 1)
         XCTAssertEqual(danger.messages.map(\.message), [
-            "No tests found for the current changes"
+            "No tests found for the current changes in file://faky/url"
         ])
     }
 }

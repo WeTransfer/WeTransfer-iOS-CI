@@ -130,10 +130,15 @@ private extension URL {
     }
 }
 
-private final class StubbedFileManager: FileManager {
+final class StubbedFileManager: FileManager {
     var stubbedCurrentDirectoryPath: String!
+    var fileExists: Bool = false
 
     override var currentDirectoryPath: String {
         stubbedCurrentDirectoryPath
+    }
+
+    override func fileExists(atPath path: String, isDirectory: UnsafeMutablePointer<ObjCBool>?) -> Bool {
+        fileExists
     }
 }

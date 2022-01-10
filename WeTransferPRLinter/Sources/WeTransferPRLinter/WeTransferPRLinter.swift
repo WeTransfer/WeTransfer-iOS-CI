@@ -34,7 +34,7 @@ public enum WeTransferPRLinter {
         }
 
         measure(taskName: "SwiftLint") {
-            swiftLint(using: danger, executor: swiftLintExecutor, configsFolderPath: swiftLintConfigsFolderPath)
+            swiftLint(using: danger, executor: swiftLintExecutor, configsFolderPath: swiftLintConfigsFolderPath, fileManager: fileManager)
         }
     }
 
@@ -73,7 +73,7 @@ public enum WeTransferPRLinter {
                 return true
             }
         } catch let error as LocationError where error.isMissingError {
-            danger.message("No tests found for the current changes")
+            danger.message("No tests found for the current changes in \(reportsPath)")
         } catch {
             danger.warn("XCResult Summary failed with error: \(error).")
         }
@@ -108,11 +108,17 @@ public enum WeTransferPRLinter {
     }
 
     /// Triggers SwiftLint.
-    static func swiftLint(using danger: DangerDSL, executor: SwiftLintExecuting.Type = SwiftLintExecutor.self, configsFolderPath: String? = nil) {
+    static func swiftLint(using danger: DangerDSL, executor: SwiftLintExecuting.Type = SwiftLintExecutor.self, configsFolderPath: String? = nil, fileManager: FileManager) {
         defer { print("\n") }
 
-        let configsFolderPath = configsFolderPath ?? "\(danger.utils.exec("pwd"))/Submodules/WeTransfer-iOS-CI/BuildTools"
-        print("Starting SwiftLint...")
+        let configsFolderPath: String = {
+            if let configsFolderPath = configsFolderPath, fileManager.fileExists(atPath: configsFolderPath, isDirectory: nil) {
+                return configsFolderPath
+            } else {
+                return "\(fileManager.currentDirectoryPath)/Submodules/WeTransfer-iOS-CI/BuildTools"
+            }
+        }()
+        print("Starting SwiftLint from \(configsFolderPath)...")
 
         let files = danger.git.createdFiles + danger.git.modifiedFiles
         let swiftFiles = files.filter { $0.fileType == .swift }
@@ -120,6 +126,8 @@ public enum WeTransferPRLinter {
         if !swiftFiles.isEmpty {
             print("Linting files:\n- \(swiftFiles.joined(separator: "\n- "))")
             executor.lint(files: swiftFiles, configFile: "\(configsFolderPath)/.swiftlint.yml")
+        } else {
+            print("No files found to lint")
         }
     }
 }

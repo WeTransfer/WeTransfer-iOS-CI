@@ -1,0 +1,69 @@
+---
+format_version: '8'
+default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
+project_type: ios
+trigger_map:
+- pull_request_source_branch: "*"
+  workflow: wetransfer_pr_testing
+- tag: "*"
+  workflow: wetransfer_tag_releasing
+workflows:
+  wetransfer_pr_testing_local:
+    steps:
+    - script:
+        title: Setup environment variables
+        inputs:
+        - content: |-
+            #!/bin/bash
+            # Change these for your current local session.
+            export BITRISE_IO="fake_bitrise"
+            export BITRISEIO_GIT_REPOSITORY_OWNER="WeTransfer"                                                                                       
+            export BITRISEIO_GIT_REPOSITORY_SLUG="WeTransfer-iOS-CI"                                                                                
+            export BITRISE_PULL_REQUEST=117
+
+            bitrise run wetransfer_pr_testing
+  wetransfer_pr_testing:
+    steps:
+    - activate-ssh-key:
+        run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
+    - git-clone: {}
+    - script@1.1.6:
+        inputs:
+        - content: |-
+            #!/usr/bin/env bash
+            # fail if any commands fails
+            set -e
+            # debug log
+            set -x
+            env
+    - script:
+        title: Continue from WeTransfer-iOS-CI repo
+        inputs:
+        - content: |-
+            #!/bin/bash
+            set -ex
+            bitrise run --config ./Bitrise/testing_bitrise.yml "${BITRISE_TRIGGERED_WORKFLOW_ID}"
+    envs:
+    - opts:
+        is_expand: false
+      FASTLANE_LANE: test_pr_linter
+  wetransfer_tag_releasing:
+    steps:
+    - activate-ssh-key:
+        run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
+    - script:
+        title: Force SSH
+        inputs:
+        - content: |-
+            #!/usr/bin/env bash
+            # As we work with submodules, make sure we use SSH for this config so we can push our PR later on.
+            # See for more info: https://discuss.bitrise.io/t/git-force-to-use-ssh-url-instead-of-https-for-github-com/4384
+            git config --global url."git@github.com:".insteadOf "https://github.com/"
+    - git-clone: {}
+    - script:
+        title: Continue from WeTransfer-iOS-CI repo
+        inputs:
+        - content: |-
+            #!/bin/bash
+            set -ex
+            bitrise run --config ./Bitrise/tag_releasing_bitrise.yml "${BITRISE_TRIGGERED_WORKFLOW_ID}"

@@ -212,7 +212,7 @@ The provisioning lanes help you with provisioning related task such as code sign
 ## Running Bitrise locally
 Make sure to have your `Bitrise.yml` locally inside your repo and then just run `bitrise run <workflow_local>` after adding the following local testing workflow:
 
-```
+```yaml
   <workflow_name>_local:
     steps:
     - script:

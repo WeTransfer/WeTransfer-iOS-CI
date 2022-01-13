@@ -58,17 +58,24 @@ public enum WeTransferPRLinter {
 
             print("Found XCResult Summary Reports:\n- \(xcResultFiles.map(\.name).joined(separator: "\n- "))")
 
+            let pathsToFilter: [String] = [
+                "Submodules/",
+                "SourcePackages/",
+                ".build/",
+                ".spm-build/"
+            ]
+
             summaryReporter.reportXCResultSummary(for: xcResultFiles, using: danger, fileManager: fileManager) { result in
                 guard let file = result.file else { return true }
 
-                /// Filter results from submodules
-                guard !file.contains("Submodules/"), !result.message.contains("Submodules/") else { return false }
-
-                /// Filter results from packages
-                guard !file.contains("SourcePackages/"), !result.message.contains("SourcePackages/") else { return false }
-
-                /// Filter results from build folder
-                guard !file.contains(".build/"), !result.message.contains(".build/") else { return false }
+                /// Filter specific paths to make sure we don't display results from
+                /// vendor packages, SPM packages, etc.
+                for pathToFilter in pathsToFilter {
+                    guard file.contains(pathToFilter) else {
+                        continue
+                    }
+                    return false
+                }
 
                 return true
             }
@@ -118,7 +125,9 @@ public enum WeTransferPRLinter {
                 return "\(fileManager.currentDirectoryPath)/Submodules/WeTransfer-iOS-CI/BuildTools"
             }
         }()
-        print("Starting SwiftLint from \(configsFolderPath)...")
+        print("Starting SwiftLint with configs folder path: \(configsFolderPath)...")
+        let srcRoot = ProcessInfo.processInfo.environment["SRCROOT"]
+        print("SRC Root for SwiftLint exclusions is \(srcRoot ?? "-")")
 
         let files = danger.git.createdFiles + danger.git.modifiedFiles
         let swiftFiles = files.filter { $0.fileType == .swift }

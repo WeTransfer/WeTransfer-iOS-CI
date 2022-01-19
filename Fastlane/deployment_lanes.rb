@@ -2,6 +2,7 @@
 
 require 'spaceship'
 require 'uri'
+require 'json'
 
 desc 'Creates a new release candidate'
 desc ''
@@ -59,13 +60,14 @@ lane :beta do |options|
     # Create a new GitHub release
     last_non_candidate_tag = latest_github_non_candidate_tag
     release_title = "#{tag_name} - App Store Release Candidate"
-    release_output = sh("gitbuddy release -l #{last_non_candidate_tag} -b develop --skip-comments --use-pre-release --target-commitish develop --tag-name #{tag_name} --release-title '#{release_title}'")
-    release_url = URI.extract(release_output).find { |url| url.include? 'releases/tag' }
-    puts "Created release with URL: #{release_url}"
+    release_output = sh("gitbuddy release -l #{last_non_candidate_tag} -b develop --skip-comments --json --use-pre-release --target-commitish develop --tag-name #{tag_name} --release-title '#{release_title}'")
+    release_json = JSON.parse(release_output)
 
-    # Create the change log
-    changelog = sh("gitbuddy changelog -b develop -s #{last_non_candidate_tag}")
+    release_url = release_json['url']
+    changelog = release_json['changelog']
     stripped_changelog = strip_markdown_url(input: changelog)
+
+    puts "Created release with URL: #{release_url}"
 
     begin
       testflight(
@@ -164,12 +166,14 @@ lane :release do |options|
 
     release_latest_tag = is_hotfix ? latest_release_tag : last_non_candidate_tag
     release_base_branch = is_hotfix ? 'main' : 'develop'
-    release_output = sh("gitbuddy release -l #{release_latest_tag} -b #{release_base_branch} -c '../Changelog.md' --target-commitish #{target_commitish} --tag-name #{tag_name} --release-title '#{release_title}' --verbose")
-    release_url = URI.extract(release_output).find { |url| url.include? 'releases/tag' }
-    puts "Created release with URL: #{release_url}"
+    release_output = sh("gitbuddy release -l #{release_latest_tag} -b #{release_base_branch} -c '../Changelog.md' --target-commitish #{target_commitish} --tag-name #{tag_name} --release-title '#{release_title}' --verbose --json")
+    release_json = JSON.parse(release_output)
 
-    changelog = sh("gitbuddy changelog -b #{release_base_branch} -s #{release_latest_tag}")
+    release_url = release_json['url']
+    changelog = release_json['changelog']
     stripped_changelog = strip_markdown_url(input: changelog)
+
+    puts "Created release with URL: #{release_url}"
 
     # Push the updated changelog.
     sh('git commit -a -m "Created a new release"')

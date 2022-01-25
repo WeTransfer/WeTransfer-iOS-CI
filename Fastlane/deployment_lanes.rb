@@ -258,6 +258,11 @@ lane :release do |options|
       }
     )
 
+    # Delete 1 pre-release found before the release we just created.
+    # This is temporarily set to 1 to test out. We can eventually increase this number slowly
+    # so we will eventually clean up all pre-releases.
+    sh("gitbuddy tagDeletion -u #{tag_name} -l 1 --prerelease-only --verbose")
+
     # Currently doesn't work because as you can't download dsyms with an API key
     # upload_dsyms
 

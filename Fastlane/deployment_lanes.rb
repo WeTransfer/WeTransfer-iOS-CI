@@ -223,6 +223,11 @@ lane :release do |options|
     # Refresh key as it's only valid for 20 minutes and TestFlight can take a long time.
     authenticate(use_app_manager_role: true)
 
+    stripped_changelog.prepend("This build has been submitted to the App Store.\n\n")
+    testflight_groups = options[:groups] || ENV['TESTFLIGHT_GROUPS_RELEASE']
+
+    puts "Creating a TestFlight build which will be available to these groups: #{testflight_groups}"
+
     testflight(
       beta_app_review_info: {
         contact_email: options[:contact_email] || ENV['BETA_CONTACT_EMAIL'],
@@ -234,7 +239,7 @@ lane :release do |options|
       },
       skip_waiting_for_build_processing: false,
       skip_submission: true,
-      groups: options[:groups] || ENV['TESTFLIGHT_GROUPS_RELEASE'],
+      groups: testflight_groups,
       changelog: stripped_changelog,
       team_id: options[:team_id] || ENV['FASTLANE_ITC_TEAM_ID'],
       verbose: true

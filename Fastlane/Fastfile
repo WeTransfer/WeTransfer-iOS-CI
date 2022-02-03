@@ -11,27 +11,7 @@ desc ''
 lane :test_package do |options|
   UI.abort_with_message! "Package path is missing" unless options[:package_path]
   UI.abort_with_message! "Package name is missing" unless options[:package_name]
-
-  if options.fetch(:build_for_testing, false) == false 
-    test_project(options)
-  else 
-    command = "set -o pipefail && cd #{ENV['PWD']} && env NSUnbufferedIO=YES xcodebuild"
-    command += " -scheme #{options[:package_name]}"
-    command += " -destination 'platform=iOS Simulator,name=iPhone 13'"
-    command += " -derivedDataPath build/derived_data"
-    command += " -resultBundlePath 'build/reports/#{options[:package_name]}.xcresult'"
-    command += " -disable-concurrent-destination-testing -enableCodeCoverage YES"
-    command += " -clonedSourcePackagesDirPath #{ENV['PWD']}/.spm-build"
-    command += " -parallel-testing-enabled NO"
-
-    if options.fetch(:build_for_testing, false) == true 
-      command += " build-for-testing"
-    elsif options.fetch(:test_without_building, false) == true
-      command += " test-without-building"
-    end
-
-    sh(command)
-  end
+  test_project(options)
 end
 
 desc 'Runs tests for an external project'

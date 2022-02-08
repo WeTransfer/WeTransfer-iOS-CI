@@ -166,7 +166,7 @@ lane :release do |options|
 
     release_latest_tag = is_hotfix ? latest_release_tag : last_non_candidate_tag
     release_base_branch = is_hotfix ? 'main' : 'develop'
-    release_output = sh("gitbuddy release -l #{release_latest_tag} -b #{release_base_branch} -c '../Changelog.md' --target-commitish #{target_commitish} --tag-name #{tag_name} --release-title '#{release_title}' --json")
+    release_output = sh("gitbuddy release -l #{release_latest_tag} -b #{release_base_branch} -c '../Changelog.md' --changelog-to-tag #{latest_release_tag} --target-commitish #{target_commitish} --tag-name #{tag_name} --release-title '#{release_title}' --json")
     release_json = JSON.parse(release_output)
 
     release_url = release_json['url']

@@ -132,7 +132,7 @@ private extension URL {
 
 final class StubbedFileManager: FileManager {
     var stubbedCurrentDirectoryPath: String!
-    var fileExists: Bool = false
+    var fileExists = false
 
     override var currentDirectoryPath: String {
         stubbedCurrentDirectoryPath

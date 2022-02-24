@@ -63,7 +63,11 @@ lane :test_project do |options|
       skip_package_dependencies_resolution: options.fetch(:disable_automatic_package_resolution, false)
     )
   rescue StandardError => e
-    UI.important("Tests failed for #{e}")
+    if options.fetch(:raise_exception_on_failure, false)
+      raise e
+    else
+      UI.important("Tests failed for #{e}")
+    end
   end
 end
 

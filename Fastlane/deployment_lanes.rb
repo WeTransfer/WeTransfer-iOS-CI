@@ -444,7 +444,7 @@ private_lane :ensure_release_is_needed do |options|
   preparing_app_version = current_preparing_app_version(app_identifier: options[:app_identifier])
 
   if preparing_app_version.nil?
-    message = 'Weekly release cancelled as App Store Connect does not contain a preparing app version'
+    message = 'Release cancelled as App Store Connect does not contain a preparing app version. Please go to App Store Connect and add a version to prepare for subsmission.'
     UI.important message
     slack(
       message: message,

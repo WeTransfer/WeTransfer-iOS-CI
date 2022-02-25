@@ -17,6 +17,11 @@ workflows:
                 echo 'Cancelling CI run since the PR is in draft'
                 exit 1
             fi
+
+            if [[ "$BITRISE_GIT_BRANCH" == *"smartling-content"* ]]; then
+                echo 'Cancelling CI run since the PR is for translations only'
+                exit 1
+            fi
     - cache-pull: {}
     - script:
         run_if: .IsCI

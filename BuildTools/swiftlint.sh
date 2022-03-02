@@ -1,9 +1,8 @@
 #!/bin/bash
-if [[ $(uname -p) == 'arm' ]]; then
-    export PATH="$PATH:/opt/homebrew/bin:/usr/local/bin"
-fi
 
 if [ -z "$CI" ]; then
+    export PATH="$PATH:/opt/homebrew/bin:/usr/local/bin"
+
     set -e
 
     BASEDIR=$(dirname "$0") # Sets the folder to WeTransfer-iOS-CI/BuildTools/

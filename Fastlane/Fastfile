@@ -98,7 +98,7 @@ lane :release_from_tag do
   sh "git checkout release/#{latest_tag}"
   sh "git merge -X theirs #{latest_tag}"
 
-  release_output = sh('mint run gitbuddy release -c "../Changelog.md"')
+  release_output = sh('mint run --silent gitbuddy release -c "../Changelog.md"')
   release_url = URI.extract(release_output).find { |url| url.include? 'releases/tag' }
   puts "Created release with URL: #{release_url}"
 

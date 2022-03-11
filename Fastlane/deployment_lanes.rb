@@ -60,7 +60,7 @@ lane :beta do |options|
     # Create a new GitHub release
     last_non_candidate_tag = latest_github_non_candidate_tag
     release_title = "#{tag_name} - App Store Release Candidate"
-    release_output = sh("mint run gitbuddy release -l #{last_non_candidate_tag} -b develop --skip-comments --json --use-pre-release --target-commitish develop --tag-name #{tag_name} --release-title '#{release_title}' --verbose")
+    release_output = sh("gitbuddy release -l #{last_non_candidate_tag} -b develop --skip-comments --json --use-pre-release --target-commitish develop --tag-name #{tag_name} --release-title '#{release_title}'")
     release_json = JSON.parse(release_output)
 
     release_url = release_json['url']
@@ -166,8 +166,8 @@ lane :release do |options|
     release_latest_tag = is_hotfix ? latest_release_tag : last_non_candidate_tag
     release_base_branch = is_hotfix ? 'main' : 'develop'
     target_commitish = branch_name
-
-    release_output = sh("mint run gitbuddy release -l #{release_latest_tag} -b #{release_base_branch} -c '../Changelog.md' --changelogToTag #{latest_release_tag} --target-commitish #{target_commitish} --tag-name #{tag_name} --release-title '#{release_title}' --json")
+    
+    release_output = sh("gitbuddy release -l #{release_latest_tag} -b #{release_base_branch} -c '../Changelog.md' --changelogToTag #{latest_release_tag} --target-commitish #{target_commitish} --tag-name #{tag_name} --release-title '#{release_title}' --json")
     release_json = JSON.parse(release_output)
 
     release_url = release_json['url']
@@ -267,7 +267,7 @@ lane :release do |options|
     # Delete 1 pre-release found before the release we just created.
     # This is temporarily set to 1 to test out. We can eventually increase this number slowly
     # so we will eventually clean up all pre-releases.
-    sh("mint run gitbuddy tagDeletion -u #{tag_name} -l 1 --prerelease-only --verbose")
+    sh("gitbuddy tagDeletion -u #{tag_name} -l 1 --prerelease-only --verbose")
 
     # Currently doesn't work because as you can't download dsyms with an API key
     # upload_dsyms
@@ -486,9 +486,9 @@ private_lane :latest_github_non_candidate_tag do
   organisation = origin_name[0]
   repository = origin_name[1]
 
-  # We set the page size to the max of 100 releaser per page so that as a quick way
-  # of avoiding pagination. This gives us more than enough release candidates for weekly or
-  # a bi-weekly build train. This lane will fail when there were more then 99 pre-releases published since the
+  # We set the page size to the max of 100 releaser per page so that as a quick way 
+  # of avoiding pagination. This gives us more than enough release candidates for weekly or 
+  # a bi-weekly build train. This lane will fail when there were more then 99 pre-releases published since the 
   # latest release. Because then the results won't return the lates non candidate release and thus we don't know the tag.
   result = github_api(
     server_url: 'https://api.github.com',

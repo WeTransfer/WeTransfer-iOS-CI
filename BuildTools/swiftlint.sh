@@ -6,7 +6,6 @@ if [ -z "$CI" ]; then
     set -e
 
     BASEDIR=$(dirname "$0") # Sets the folder to WeTransfer-iOS-CI/BuildTools/
-
     MINT_FILE_PATH=$BASEDIR/Mintfile
     SWIFT_LINT=SwiftLint
     SWIFT_LINT_VERSION=$(grep -F $SWIFT_LINT $MINT_FILE_PATH)

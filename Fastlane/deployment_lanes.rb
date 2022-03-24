@@ -60,7 +60,7 @@ lane :beta do |options|
     # Create a new GitHub release
     last_non_candidate_tag = latest_github_non_candidate_tag
     release_title = "#{tag_name} - App Store Release Candidate"
-    release_output = sh("mint run --silent gitbuddy release -l #{last_non_candidate_tag} -b develop --skip-comments --json --use-pre-release --target-commitish develop --tag-name #{tag_name} --release-title '#{release_title}'")
+    release_output = sh("mint run --silent gitbuddy release -l #{last_non_candidate_tag} -b develop --skip-comments --json --use-pre-release --target-commitish #{branch_name} --tag-name #{tag_name} --release-title '#{release_title}'")
     release_json = JSON.parse(release_output)
 
     release_url = release_json['url']
@@ -485,7 +485,7 @@ private_lane :latest_github_non_candidate_tag do
   organisation = origin_name[0]
   repository = origin_name[1]
 
-  # We set the page size to the max of 100 releaser per page so that as a quick way
+  # We set the page size to the max of 100 releases per page so that as a quick way
   # of avoiding pagination. This gives us more than enough release candidates for weekly or
   # a bi-weekly build train. This lane will fail when there were more then 99 pre-releases published since the
   # latest release. Because then the results won't return the lates non candidate release and thus we don't know the tag.

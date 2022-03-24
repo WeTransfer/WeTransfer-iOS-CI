@@ -60,7 +60,7 @@ lane :beta do |options|
     # Create a new GitHub release
     last_non_candidate_tag = latest_github_non_candidate_tag
     release_title = "#{tag_name} - App Store Release Candidate"
-    release_output = sh("mint run --silent gitbuddy release -l #{last_non_candidate_tag} -b develop --skip-comments --json --use-pre-release --target-commitish develop --tag-name #{tag_name} --release-title '#{release_title}'")
+    release_output = sh("mint run --silent gitbuddy release -l #{last_non_candidate_tag} -b develop --skip-comments --json --use-pre-release --target-commitish #{branch_name} --tag-name #{tag_name} --release-title '#{release_title}'")
     release_json = JSON.parse(release_output)
 
     release_url = release_json['url']

@@ -57,9 +57,10 @@ lane :beta do |options|
     # Refresh key as it's only valid for 20 minutes and gym can take a long time.
     authenticate(use_app_manager_role: true)
 
+    # Get the name of the current git branch.
     branch_name = ENV['BITRISE_GIT_BRANCH']
-    if branch_name?
-      branch_name = "develop"
+    if branch_name.nil? || branch_name.empty?
+      branch_name = git_branch
     end
 
     # Create a new GitHub release

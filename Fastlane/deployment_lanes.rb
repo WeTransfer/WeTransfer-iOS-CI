@@ -57,6 +57,11 @@ lane :beta do |options|
     # Refresh key as it's only valid for 20 minutes and gym can take a long time.
     authenticate(use_app_manager_role: true)
 
+    branch_name = ENV['BITRISE_GIT_BRANCH']
+    if branch_name?
+      branch_name = "develop"
+    end
+
     # Create a new GitHub release
     last_non_candidate_tag = latest_github_non_candidate_tag
     release_title = "#{tag_name} - App Store Release Candidate"

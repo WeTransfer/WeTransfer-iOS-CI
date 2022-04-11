@@ -5,7 +5,10 @@ import XCResultKit
 /// `StormTests: Executed 66 tests, with 0 failures in 9.181 seconds`
 extension ActionRecord: XCResultItemsConvertible {
     func testPlanRunSummaries(resultFile: XCResultFile) -> ActionTestPlanRunSummaries? {
-        guard let testsReferenceID = actionResult.testsRef?.id, let testPlanRunSummaries = resultFile.getTestPlanRunSummaries(id: testsReferenceID) else {
+        guard
+            let testsReferenceID = actionResult.testsRef?.id,
+            let testPlanRunSummaries = resultFile.getTestPlanRunSummaries(id: testsReferenceID)
+        else {
             return nil
         }
         return testPlanRunSummaries
@@ -16,7 +19,10 @@ extension ActionRecord: XCResultItemsConvertible {
             return []
         }
 
-        let issueResultItems = actionResult.issues.createResults(context: context, testPlanRunSummaries: testPlanRunSummaries)
+        let issueResultItems = actionResult.issues.createResults(
+            context: context,
+            testPlanRunSummaries: testPlanRunSummaries
+        )
 
         let testPlanResultItems = testPlanRunSummaries.summaries.flatMap { testPlanRunSummary in
             testPlanRunSummary.testableSummaries.flatMap { actionTestableSummary in
@@ -77,7 +83,11 @@ extension ActionTestableSummary: XCResultItemsConvertible {
 
     func createResults(context: ResultGenerationContext) -> [XCResultItem] {
         guard let targetName = targetName else { return [] }
-        let message = "\(targetName): Executed \(totalNumberOfTests) tests (\(totalNumberOfFailingTests) failed, \(retriedTestIdentifiers.count) retried, \(skippedTests.count) skipped) in \(totalDuration) seconds"
+        let message = "\(targetName): Executed \(totalNumberOfTests) tests "
+            + "(\(totalNumberOfFailingTests) failed, "
+            + "\(retriedTestIdentifiers.count) retried, "
+            + "\(skippedTests.count) skipped) "
+            + "in \(totalDuration) seconds"
         return [XCResultItem(message: message, category: .message)]
     }
 }

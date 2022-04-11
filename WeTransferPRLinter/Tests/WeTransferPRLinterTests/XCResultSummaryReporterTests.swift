@@ -32,7 +32,13 @@ final class XCResultSummartReporterTests: XCTestCase {
         let stubbedFileManager = StubbedFileManager()
         stubbedFileManager.stubbedCurrentDirectoryPath = "/Users/josh/Projects/fastlane/"
 
-        WeTransferPRLinter.lint(using: danger, swiftLintExecutor: MockedSwiftLintExecutor.self, reportsPath: buildFolder.path, fileManager: stubbedFileManager, environmentVariables: [:])
+        WeTransferPRLinter.lint(
+            using: danger,
+            swiftLintExecutor: MockedSwiftLintExecutor.self,
+            reportsPath: buildFolder.path,
+            fileManager: stubbedFileManager,
+            environmentVariables: [:]
+        )
 
         XCTAssertEqual(danger.messages.map(\.message), [
             "TestUITests: Executed 1 tests (0 failed, 0 retried, 0 skipped) in 16.058 seconds",
@@ -62,9 +68,17 @@ final class XCResultSummartReporterTests: XCTestCase {
 
         let danger = githubWithFilesDSL()
         let stubbedFileManager = StubbedFileManager()
-        stubbedFileManager.stubbedCurrentDirectoryPath = "/Users/avanderlee/Developer/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-CI/WeTransferPRLinter/XCResultGeneratorApp/"
+        stubbedFileManager
+            .stubbedCurrentDirectoryPath =
+            "/Users/avanderlee/Developer/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-CI/WeTransferPRLinter/XCResultGeneratorApp/"
 
-        WeTransferPRLinter.lint(using: danger, swiftLintExecutor: MockedSwiftLintExecutor.self, reportsPath: buildFolder.path, fileManager: stubbedFileManager, environmentVariables: [:])
+        WeTransferPRLinter.lint(
+            using: danger,
+            swiftLintExecutor: MockedSwiftLintExecutor.self,
+            reportsPath: buildFolder.path,
+            fileManager: stubbedFileManager,
+            environmentVariables: [:]
+        )
 
         XCTAssertEqual(danger.messages.map(\.message), [
             "PRLinterAppTests: Executed 10 tests (1 failed, 1 retried, 1 skipped) in 0.097 seconds"
@@ -89,14 +103,23 @@ final class XCResultSummartReporterTests: XCTestCase {
         let fileOne = try Folder(path: xcResultFile.deletingLastPathComponent().path).subfolder(named: xcResultFilename)
         try fileOne.copy(to: buildFolder)
 
-        let fileTwo = try Folder(path: xcResultFileTwo.deletingLastPathComponent().path).subfolder(named: "coverage_fail_flaky_skip_example_two.xcresult")
+        let fileTwo = try Folder(path: xcResultFileTwo.deletingLastPathComponent().path)
+            .subfolder(named: "coverage_fail_flaky_skip_example_two.xcresult")
         try fileTwo.copy(to: buildFolder)
 
         let danger = githubWithFilesDSL()
         let stubbedFileManager = StubbedFileManager()
-        stubbedFileManager.stubbedCurrentDirectoryPath = "/Users/avanderlee/Developer/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-CI/WeTransferPRLinter/XCResultGeneratorApp"
+        stubbedFileManager
+            .stubbedCurrentDirectoryPath =
+            "/Users/avanderlee/Developer/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-CI/WeTransferPRLinter/XCResultGeneratorApp"
 
-        WeTransferPRLinter.lint(using: danger, swiftLintExecutor: MockedSwiftLintExecutor.self, reportsPath: buildFolder.path, fileManager: stubbedFileManager, environmentVariables: [:])
+        WeTransferPRLinter.lint(
+            using: danger,
+            swiftLintExecutor: MockedSwiftLintExecutor.self,
+            reportsPath: buildFolder.path,
+            fileManager: stubbedFileManager,
+            environmentVariables: [:]
+        )
 
         XCTAssertEqual(danger.messages.map(\.message), [
             "PRLinterAppTests: Executed 10 tests (1 failed, 1 retried, 1 skipped) in 0.097 seconds",
@@ -121,8 +144,15 @@ private extension URL {
     func copied(newFileName: String? = nil) -> URL {
         guard isFileURL else { fatalError("Can't copy a non-file URL") }
 
-        let destinationDirectory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
-        try! FileManager.default.createDirectory(at: destinationDirectory, withIntermediateDirectories: false, attributes: nil)
+        let destinationDirectory = FileManager.default.temporaryDirectory.appendingPathComponent(
+            UUID().uuidString,
+            isDirectory: true
+        )
+        try! FileManager.default.createDirectory(
+            at: destinationDirectory,
+            withIntermediateDirectories: false,
+            attributes: nil
+        )
         let newFileURL = destinationDirectory.appendingPathComponent(newFileName ?? lastPathComponent)
         try! FileManager.default.copyItem(at: self, to: newFileURL)
         assert(FileManager.default.fileExists(atPath: newFileURL.path), "Source file should exist")

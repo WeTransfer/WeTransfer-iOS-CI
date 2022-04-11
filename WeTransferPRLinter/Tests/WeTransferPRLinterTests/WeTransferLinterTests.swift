@@ -25,7 +25,11 @@ final class WeTransferLinterTests: XCTestCase {
     /// It should not create any warnings or errors if nothing is wrong.
     func testAllGood() {
         let danger = githubWithFilesDSL()
-        WeTransferPRLinter.lint(using: danger, swiftLintExecutor: MockedSwiftLintExecutor.self, reportsPath: buildFolder.name)
+        WeTransferPRLinter.lint(
+            using: danger,
+            swiftLintExecutor: MockedSwiftLintExecutor.self,
+            reportsPath: buildFolder.name
+        )
 
         XCTAssertEqual(danger.warnings.count, 0)
         XCTAssertEqual(danger.fails.count, 0)
@@ -79,7 +83,10 @@ final class WeTransferLinterTests: XCTestCase {
             "}"
         ], minimumLinesCount: 2)
         XCTAssertEqual(danger.warnings.count, 1)
-        XCTAssertEqual(danger.warnings.first?.message, "Consider to place some `MARK:` lines for File.swift, which is over 2 lines big.")
+        XCTAssertEqual(
+            danger.warnings.first?.message,
+            "Consider to place some `MARK:` lines for File.swift, which is over 2 lines big."
+        )
     }
 
     /// It should not warn for using Mark in small files without any mark.
@@ -122,7 +129,10 @@ final class WeTransferLinterTests: XCTestCase {
         let bitriseURL = "www.fakeurl.com"
         WeTransferPRLinter.showBitriseBuildURL(using: danger, environmentVariables: ["BITRISE_BUILD_URL": bitriseURL])
         XCTAssertEqual(danger.messages.count, 1)
-        XCTAssertEqual(danger.messages.first?.message, "View more details on <a href=\"\(bitriseURL)\" target=\"_blank\">Bitrise</a>")
+        XCTAssertEqual(
+            danger.messages.first?.message,
+            "View more details on <a href=\"\(bitriseURL)\" target=\"_blank\">Bitrise</a>"
+        )
     }
 
     /// It should not trigger SwiftLint if there's no files to lint.
@@ -143,7 +153,10 @@ final class WeTransferLinterTests: XCTestCase {
         stubbedFileManager.stubbedCurrentDirectoryPath = "/Users/tcook/GIT-Projects/WeTransfer"
         WeTransferPRLinter.swiftLint(using: danger, executor: mockedSwiftLintExecutor, fileManager: stubbedFileManager)
 
-        XCTAssertEqual(mockedSwiftLintExecutor.lintedFiles.keys.first, "/Users/tcook/GIT-Projects/WeTransfer/Submodules/WeTransfer-iOS-CI/BuildTools/.swiftlint.yml")
+        XCTAssertEqual(
+            mockedSwiftLintExecutor.lintedFiles.keys.first,
+            "/Users/tcook/GIT-Projects/WeTransfer/Submodules/WeTransfer-iOS-CI/BuildTools/.swiftlint.yml"
+        )
     }
 
     func testSwiftLintFromGivenConfigsFolder() {
@@ -152,14 +165,24 @@ final class WeTransferLinterTests: XCTestCase {
         let stubbedFileManager = StubbedFileManager()
         stubbedFileManager.fileExists = true
         let customPath = "/Users/avanderlee/Projects/"
-        WeTransferPRLinter.swiftLint(using: danger, executor: mockedSwiftLintExecutor, configsFolderPath: customPath, fileManager: stubbedFileManager)
+        WeTransferPRLinter.swiftLint(
+            using: danger,
+            executor: mockedSwiftLintExecutor,
+            configsFolderPath: customPath,
+            fileManager: stubbedFileManager
+        )
 
         XCTAssertEqual(mockedSwiftLintExecutor.lintedFiles.keys.first, "\(customPath)/.swiftlint.yml")
     }
 
     func testXCResultFileMissing() {
         let danger = githubWithFilesDSL(created: [], fileMap: [:])
-        WeTransferPRLinter.reportXCResultsSummary(using: danger, summaryReporter: XCResultSummaryReporter.self, reportsPath: "file://faky/url", fileManager: .default)
+        WeTransferPRLinter.reportXCResultsSummary(
+            using: danger,
+            summaryReporter: XCResultSummaryReporter.self,
+            reportsPath: "file://faky/url",
+            fileManager: .default
+        )
 
         XCTAssertEqual(danger.warnings.count, 0)
         XCTAssertEqual(danger.messages.count, 1)
@@ -175,8 +198,15 @@ private extension URL {
     func copied() -> URL {
         guard isFileURL else { fatalError("Can't copy a non-file URL") }
 
-        let destinationDirectory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
-        try! FileManager.default.createDirectory(at: destinationDirectory, withIntermediateDirectories: false, attributes: nil)
+        let destinationDirectory = FileManager.default.temporaryDirectory.appendingPathComponent(
+            UUID().uuidString,
+            isDirectory: true
+        )
+        try! FileManager.default.createDirectory(
+            at: destinationDirectory,
+            withIntermediateDirectories: false,
+            attributes: nil
+        )
         let newFileURL = destinationDirectory.appendingPathComponent(lastPathComponent)
         try! FileManager.default.copyItem(at: self, to: newFileURL)
         assert(FileManager.default.fileExists(atPath: newFileURL.path), "Source file should exist")

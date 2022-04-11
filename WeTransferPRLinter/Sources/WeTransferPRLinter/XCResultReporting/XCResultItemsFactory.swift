@@ -18,7 +18,10 @@ struct XCResultItemsFactory {
 
     func make() -> [XCResultItem] {
         guard let invocationRecord = resultFile.getInvocationRecord() else {
-            return [XCResultItem(message: "Could not get invocation record for \(resultFile.url.lastPathComponent)", category: .warning)]
+            return [XCResultItem(
+                message: "Could not get invocation record for \(resultFile.url.lastPathComponent)",
+                category: .warning
+            )]
         }
 
         let context = ResultGenerationContext(resultFile: resultFile, fileManager: fileManager)

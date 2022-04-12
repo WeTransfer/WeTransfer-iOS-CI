@@ -36,7 +36,7 @@ workflows:
             fi
 
             # Get the latest master branch for WeTransfer-iOS-CI if the submodule exists
-            git submodule update --remote --no-fetch Submodules/WeTransfer-iOS-CI
+            # git submodule update --remote --no-fetch Submodules/WeTransfer-iOS-CI
         title: Update WeTransfer-iOS-CI submodule
     - script:
         run_if: .IsCI
@@ -80,6 +80,13 @@ workflows:
                 cd Submodules/WeTransfer-iOS-CI
                 swift run danger-swift ci --cache-path ../../.build --build-path ../../.build --cwd ../../
             fi
+    - deploy-to-bitrise-io@2:
+        inputs:
+        - notify_user_groups: none
+        - is_enable_public_page: 'false'
+        - is_compress: 'true'
+        - debug_mode: 'true'
+        - deploy_path: build/reports/
     - cache-push:
         run_if: true
         inputs:

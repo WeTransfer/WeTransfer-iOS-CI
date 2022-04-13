@@ -86,7 +86,7 @@ workflows:
         - is_enable_public_page: 'false'
         - is_compress: 'true'
         - debug_mode: 'true'
-        - deploy_path: build/reports/
+        - deploy_path: build/
     - cache-push:
         run_if: true
         inputs:

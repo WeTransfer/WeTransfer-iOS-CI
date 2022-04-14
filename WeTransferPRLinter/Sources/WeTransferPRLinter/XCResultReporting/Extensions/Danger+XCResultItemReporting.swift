@@ -8,11 +8,11 @@ extension DangerDSL {
         if let file = resultItem.file, let line = resultItem.line {
             switch resultItem.category {
             case .message:
-                message(message: resultItem.message, file: file, line: line)
+                message(message: resultItem.message)
             case .error:
-                fail(message: resultItem.message, file: file, line: line)
+                fail(message: resultItem.message)
             case .warning:
-                warn(message: resultItem.message, file: file, line: line)
+                warn(message: resultItem.message)
             }
         } else {
             switch resultItem.category {

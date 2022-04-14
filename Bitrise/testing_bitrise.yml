@@ -80,6 +80,14 @@ workflows:
                 cd Submodules/WeTransfer-iOS-CI
                 swift run danger-swift ci --cache-path ../../.build --build-path ../../.build --cwd ../../
             fi
+    - deploy-to-bitrise-io@2:
+        is_skippable: true
+        inputs:
+        - notify_user_groups: none
+        - is_enable_public_page: 'false'
+        - is_compress: 'true'
+        - debug_mode: 'true'
+        - deploy_path: build/reports/
     - cache-push:
         run_if: true
         inputs:

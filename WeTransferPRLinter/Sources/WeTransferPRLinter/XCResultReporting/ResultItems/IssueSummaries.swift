@@ -63,21 +63,21 @@ extension ActionTestSummary: XCResultItemsConvertible {
 extension TestFailureIssueSummary {
     func createTestFailureResult(context: ResultGenerationContext, testPlanRunSummaries: ActionTestPlanRunSummaries) -> [XCResultItem] {
         let message = "**\(testCaseName):**<br/>\(message)"
-        let fileMetadata = documentLocationInCreatingWorkspace?.fileMetadata(fileManager: context.fileManager)
-        return [XCResultItem(message: message, file: fileMetadata?.filename, line: fileMetadata?.line, category: .error)]
+        let _ = documentLocationInCreatingWorkspace?.fileMetadata(fileManager: context.fileManager)
+        return [XCResultItem(message: message, category: .error)]
     }
 
     func createTestRetriedResult(context: ResultGenerationContext, testPlanRunSummaries: ActionTestPlanRunSummaries) -> [XCResultItem] {
         let message = "**\(testCaseName) succeeded after retry:**<br/>\(message)"
-        let fileMetadata = documentLocationInCreatingWorkspace?.fileMetadata(fileManager: context.fileManager)
-        return [XCResultItem(message: message, file: fileMetadata?.filename, line: fileMetadata?.line, category: .warning)]
+        let _ = documentLocationInCreatingWorkspace?.fileMetadata(fileManager: context.fileManager)
+        return [XCResultItem(message: message, category: .warning)]
     }
 }
 
 extension IssueSummary {
     func createResults(category: XCResultItem.Category, context: ResultGenerationContext) -> [XCResultItem] {
-        let fileMetadata = documentLocationInCreatingWorkspace?.fileMetadata(fileManager: context.fileManager)
-        return [XCResultItem(message: message, file: fileMetadata?.filename, line: fileMetadata?.line, category: category)]
+        let _ = documentLocationInCreatingWorkspace?.fileMetadata(fileManager: context.fileManager)
+        return [XCResultItem(message: message, category: category)]
     }
 }
 

@@ -74,11 +74,13 @@ public enum WeTransferPRLinter {
                     guard file.contains(pathToFilter) else {
                         continue
                     }
+                    print("Filtered out \(file) for filtered path \(pathToFilter)")
                     return false
                 }
 
                 return true
             }
+            print("Finished reporting XCResult summaries.")
         } catch let error as LocationError where error.isMissingError {
             danger.message("No tests found for the current changes in \(reportsPath)")
         } catch {

@@ -54,3 +54,28 @@ lane :slack_message do |options|
     }
   )
 end
+
+desc 'Runs danger locally for the given PR ID.'
+lane :run_danger_locally do
+  pr_id = prompt(text: 'Enter the pull request identifier: ', ci_input: "3")
+  
+  origin_name = git_repository_name.split('/')
+  organisation = origin_name[0]
+  repository = origin_name[1]
+
+  ENV["BITRISE_IO"] = "random-value-does-not-matter"
+  ENV["BITRISEIO_GIT_REPOSITORY_OWNER"] = organisation
+  ENV["BITRISEIO_GIT_REPOSITORY_SLUG"] = repository
+  ENV["BITRISE_PULL_REQUEST"] = pr_id
+  
+  # By changing directory into WeTransfer-iOS-CI, we can run Danger from there.
+  # Caching is still done per repository which is why we add the build and cache paths.
+  # --cwd makes sure to run Danger in the current repository directory
+  # The Dangerfile.swift from within the WeTransfer-iOS-CI repo is used.
+  #
+  # This all allows us to not define Danger dependencies in every repo. It also optimises reusing the SPM cache on CI systems.
+  sh("cd #{ENV['PWD']}/Submodules/WeTransfer-iOS-CI && danger-swift ci --cache-path ../../.build --build-path ../../.build --cwd ../../ --verbose")
+
+  # Reset so that Fastlane don't thinks we're a CI anymore.
+  ENV["BITRISE_IO"] = nil
+end

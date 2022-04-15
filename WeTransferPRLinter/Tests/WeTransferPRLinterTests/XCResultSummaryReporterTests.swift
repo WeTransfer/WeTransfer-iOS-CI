@@ -51,9 +51,12 @@ final class XCResultSummartReporterTests: XCTestCase {
         let failure = try XCTUnwrap(danger.fails.first)
         XCTAssertEqual(failure.message, "**TestTests.testFailureJosh1():**<br/>XCTAssertTrue failed")
 
-        // Enable once inline reporting works again.
-        // XCTAssertEqual(failure.file, "test-ios/TestTests/TestTests.swift")
-        // XCTAssertEqual(failure.line, 36)
+        // This is expected to fail since GitHub currently doesn't support file and line reporting.
+        // This test should succeed again once we re-enable line reporting.
+        XCTExpectFailure {
+            XCTAssertEqual(failure.file, "test-ios/TestTests/TestTests.swift")
+            XCTAssertEqual(failure.line, 36)
+        }
     }
 
     func testNotReportingRetriedSucceedingTest() throws {
@@ -82,6 +85,26 @@ final class XCResultSummartReporterTests: XCTestCase {
         XCTAssertEqual(danger.fails.map(\.message), [
             "**PRLinterViewModelTests.testFailingExample():**<br/>XCTAssertEqual failed: (\"Antoine and age: 30\") is not equal to (\"Antoine and age: 22\")"
         ])
+    }
+
+    func testFilteringWarnings() throws {
+        let xcResultFilename = "transfer_warnings_example.xcresult"
+        let xcResultFile = Bundle.module.url(forResource: "Resources/\(xcResultFilename)", withExtension: nil)!
+        let file = try Folder(path: xcResultFile.deletingLastPathComponent().path).subfolder(named: xcResultFilename)
+        try file.copy(to: buildFolder)
+
+        let danger = githubWithFilesDSL()
+        let stubbedFileManager = StubbedFileManager()
+        stubbedFileManager.stubbedCurrentDirectoryPath = "/Users/avanderlee/Developer/GIT-Projects/WeTransfer/Mule/Submodules/WeTransfer-iOS-CI/WeTransferPRLinter/XCResultGeneratorApp/"
+
+        WeTransferPRLinter.lint(using: danger, swiftLintExecutor: MockedSwiftLintExecutor.self, reportsPath: buildFolder.path, fileManager: stubbedFileManager, environmentVariables: [:])
+
+        XCTAssertEqual(danger.messages.map(\.message), [
+            "TransferTests: Executed 519 tests (0 failed, 0 retried, 0 skipped) in 39.226 seconds"
+        ], "It should only report the actual failed test, instead of also the retried succeeded one")
+
+        XCTAssertEqual(danger.warnings.count, 0)
+        XCTAssertEqual(danger.fails.count, 0)
     }
 
     func testXCResultCoverageReporting() throws {

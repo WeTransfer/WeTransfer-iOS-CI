@@ -66,7 +66,9 @@ public enum WeTransferPRLinter {
             ]
 
             summaryReporter.reportXCResultSummary(for: xcResultFiles, using: danger, fileManager: fileManager) { result in
-                guard let file = result.file else { return true }
+                guard let file = result.file else {
+                    return true
+                }
 
                 /// Filter specific paths to make sure we don't display results from
                 /// vendor packages, SPM packages, etc.

@@ -59,7 +59,6 @@ lane :test_project do |options|
       include_simulator_logs: false, # Needed for this: https://github.com/fastlane/fastlane/issues/8909
       result_bundle: true,
       output_directory: "#{ENV['PWD']}/build/reports/",
-      buildlog_path: "#{ENV['PWD']}/build/logs", # Set buildlog and derived data path to fix permission issues on Bitrise
       derived_data_path: "#{ENV['PWD']}/build/derived_data", # Set buildlog and derived data path to fix permission issues on Bitrise
       package_path: options[:package_path],
       build_for_testing: options.fetch(:build_for_testing, nil),

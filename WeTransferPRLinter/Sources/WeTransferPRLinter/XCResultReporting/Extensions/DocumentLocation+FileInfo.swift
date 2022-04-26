@@ -7,6 +7,7 @@ struct FileMetadata {
 }
 
 extension DocumentLocation {
+    // swiftlint:disable:next line_length
     /// Returns `FileMetadata` for URLs like: `▿ file:///Users/josh/Projects/fastlane/test-ios/TestTests/TestTests.swift#CharacterRangeLen=0&EndingLineNumber=36&StartingLineNumber=36`
     /// by extracting the query parameters from it.
     /// - Parameter fileManager: The file manager to use for fetching the current execution directory.

@@ -47,6 +47,7 @@ final class XCResultSummartReporterTests: XCTestCase {
 
         XCTAssertEqual(danger.warnings.count, 1)
         XCTAssertEqual(danger.warnings.map(\.message), [
+            // swiftlint:disable:next line_length
             "DEBUG_INFORMATION_FORMAT should be set to dwarf-with-dsym for all configurations. This could also be a timing issue, make sure the Fabric run script build phase is the last build phase and no other scripts have moved the dSYM from the location Xcode generated it. Unable to process Some Test App.app.dSYM at path /Users/josh/Library/Developer/Xcode/DerivedData/Test-appjhtkjaewuhlggerdwreapskfh/Build/Products/Debug-iphonesimulator/Some Test App.app.dSYM"
         ])
         let warning = try XCTUnwrap(danger.warnings.first)
@@ -96,6 +97,7 @@ final class XCResultSummartReporterTests: XCTestCase {
 
         XCTAssertEqual(danger.fails.count, 1)
         XCTAssertEqual(danger.fails.map(\.message), [
+            // swiftlint:disable:next line_length
             "**PRLinterViewModelTests.testFailingExample():**<br/>XCTAssertEqual failed: (\"Antoine and age: 30\") is not equal to (\"Antoine and age: 22\")"
         ])
     }

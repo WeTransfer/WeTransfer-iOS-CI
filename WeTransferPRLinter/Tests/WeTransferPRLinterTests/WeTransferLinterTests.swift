@@ -143,7 +143,10 @@ final class WeTransferLinterTests: XCTestCase {
         stubbedFileManager.stubbedCurrentDirectoryPath = "/Users/tcook/GIT-Projects/WeTransfer"
         WeTransferPRLinter.swiftLint(using: danger, executor: mockedSwiftLintExecutor, fileManager: stubbedFileManager)
 
-        XCTAssertEqual(mockedSwiftLintExecutor.lintedFiles.keys.first, "/Users/tcook/GIT-Projects/WeTransfer/Submodules/WeTransfer-iOS-CI/BuildTools/.swiftlint.yml")
+        XCTAssertEqual(
+            mockedSwiftLintExecutor.lintedFiles.keys.first,
+            "/Users/tcook/GIT-Projects/WeTransfer/Submodules/WeTransfer-iOS-CI/BuildTools/.swiftlint.yml"
+        )
     }
 
     func testSwiftLintFromGivenConfigsFolder() {
@@ -152,14 +155,24 @@ final class WeTransferLinterTests: XCTestCase {
         let stubbedFileManager = StubbedFileManager()
         stubbedFileManager.fileExists = true
         let customPath = "/Users/avanderlee/Projects/"
-        WeTransferPRLinter.swiftLint(using: danger, executor: mockedSwiftLintExecutor, configsFolderPath: customPath, fileManager: stubbedFileManager)
+        WeTransferPRLinter.swiftLint(
+            using: danger,
+            executor: mockedSwiftLintExecutor,
+            configsFolderPath: customPath,
+            fileManager: stubbedFileManager
+        )
 
         XCTAssertEqual(mockedSwiftLintExecutor.lintedFiles.keys.first, "\(customPath)/.swiftlint.yml")
     }
 
     func testXCResultFileMissing() {
         let danger = githubWithFilesDSL(created: [], fileMap: [:])
-        WeTransferPRLinter.reportXCResultsSummary(using: danger, summaryReporter: XCResultSummaryReporter.self, reportsPath: "file://faky/url", fileManager: .default)
+        WeTransferPRLinter.reportXCResultsSummary(
+            using: danger,
+            summaryReporter: XCResultSummaryReporter.self,
+            reportsPath: "file://faky/url",
+            fileManager: .default
+        )
 
         XCTAssertEqual(danger.warnings.count, 0)
         XCTAssertEqual(danger.messages.count, 1)

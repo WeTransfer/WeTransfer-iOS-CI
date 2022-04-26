@@ -5,16 +5,22 @@ import Foundation
 // danger:disable unowned_self
 
 public enum WeTransferPRLinter {
-    public static func lint(using danger: DangerDSL = Danger(),
-                            swiftLintExecutor: SwiftLintExecuting.Type = SwiftLintExecutor.self,
-                            xcResultSummaryReporter: XCResultSummaryReporter.Type = XCResultSummaryReporter.self,
-                            reportsPath: String = "build/reports",
-                            swiftLintConfigsFolderPath: String? = nil,
-                            fileManager: FileManager = .default,
-                            environmentVariables: [String: String] = ProcessInfo.processInfo.environment)
-    {
+    public static func lint(
+        using danger: DangerDSL = Danger(),
+        swiftLintExecutor: SwiftLintExecuting.Type = SwiftLintExecutor.self,
+        xcResultSummaryReporter: XCResultSummaryReporter.Type = XCResultSummaryReporter.self,
+        reportsPath: String = "build/reports",
+        swiftLintConfigsFolderPath: String? = nil,
+        fileManager: FileManager = .default,
+        environmentVariables: [String: String] = ProcessInfo.processInfo.environment
+    ) {
         measure(taskName: "XCResults Summary") {
-            reportXCResultsSummary(using: danger, summaryReporter: xcResultSummaryReporter, reportsPath: reportsPath, fileManager: fileManager)
+            reportXCResultsSummary(
+                using: danger,
+                summaryReporter: xcResultSummaryReporter,
+                reportsPath: reportsPath,
+                fileManager: fileManager
+            )
         }
 
         measure(taskName: "PR Description Validation") {
@@ -45,7 +51,12 @@ public enum WeTransferPRLinter {
         print("Finished executing \(taskName) in \(differenceInSeconds) seconds")
     }
 
-    static func reportXCResultsSummary(using danger: DangerDSL, summaryReporter: XCResultSummaryReporting.Type, reportsPath: String, fileManager: FileManager) {
+    static func reportXCResultsSummary(
+        using danger: DangerDSL,
+        summaryReporter: XCResultSummaryReporting.Type,
+        reportsPath: String,
+        fileManager: FileManager
+    ) {
         defer { print("\n") }
 
         do {
@@ -119,7 +130,12 @@ public enum WeTransferPRLinter {
     }
 
     /// Triggers SwiftLint.
-    static func swiftLint(using danger: DangerDSL, executor: SwiftLintExecuting.Type = SwiftLintExecutor.self, configsFolderPath: String? = nil, fileManager: FileManager) {
+    static func swiftLint(
+        using danger: DangerDSL,
+        executor: SwiftLintExecuting.Type = SwiftLintExecutor.self,
+        configsFolderPath: String? = nil,
+        fileManager: FileManager
+    ) {
         defer { print("\n") }
 
         let configsFolderPath: String = {

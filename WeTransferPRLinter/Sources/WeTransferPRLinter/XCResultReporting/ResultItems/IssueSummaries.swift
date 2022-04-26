@@ -38,7 +38,8 @@ extension Array where Element == TestFailureIssueSummary {
             }
 
             return nil
-        }.flatMap { $0 }
+        }
+        .flatMap { $0 }
         let skippedResults: [XCResultItem] = testPlanRunSummaries.skippedTests.compactMap { actionTestMetadata -> [XCResultItem]? in
             guard let summaryRef = actionTestMetadata.summaryRef else {
                 return nil
@@ -47,7 +48,8 @@ extension Array where Element == TestFailureIssueSummary {
                 return nil
             }
             return actionTestSummary.createResults(context: context)
-        }.flatMap { $0 }
+        }
+        .flatMap { $0 }
 
         return failedAndRetryResults + skippedResults
     }

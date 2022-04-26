@@ -11,7 +11,7 @@ public enum SwiftLintExecutor: SwiftLintExecuting {
     public static func lint(files: [Danger.File], configFile: String) {
         SwiftLint.lint(
             .files(files),
-            inline: true,
+            inline: false,
             configFile: configFile,
             quiet: true
         )

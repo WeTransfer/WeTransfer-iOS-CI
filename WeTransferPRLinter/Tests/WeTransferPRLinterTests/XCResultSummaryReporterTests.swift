@@ -5,7 +5,6 @@ import Files
 import XCTest
 
 // danger:disable unowned_self
-
 final class XCResultSummartReporterTests: XCTestCase {
     private var buildFolder: Folder!
 

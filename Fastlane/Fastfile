@@ -23,6 +23,10 @@ desc ' * **`project_name`**: The name of the project'
 desc ' * **`destination`**: ..'
 lane :test_project do |options|
   clear_derived_data
+  
+  # Remove any leftover reports before running so CI won't fail due to an existing file.
+  # This also helps for local running this workflow frequently.
+  sh("rm -rf #{ENV['PWD']}/build/reports")
 
   # Set timeout to prevent xcodebuild -list -project to take to much retries.
   ENV['FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT'] = '30'

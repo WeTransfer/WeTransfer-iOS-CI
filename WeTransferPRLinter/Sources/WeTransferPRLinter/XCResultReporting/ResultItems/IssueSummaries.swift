@@ -6,7 +6,8 @@ import XCResultKit
 /// **ContentCreatorTests.testUnsupportedErrorItemProviderWithoutSupportedFileRepresentation():**
 /// failed - Creating invalid content should give an error.
 ///
-/// CoreExtensions/Sources/CoreExtensions/OptionalExtensions.swift#L15 - Initialization of variable 'property' was never used; consider replacing with assignment to '_' or removing it
+/// CoreExtensions/Sources/CoreExtensions/OptionalExtensions.swift#L15 - Initialization of variable 'property' was never used; consider
+/// replacing with assignment to '_' or removing it
 extension ResultIssueSummaries {
     func createResults(context: ResultGenerationContext, testPlanRunSummaries: ActionTestPlanRunSummaries) -> [XCResultItem] {
         var results: [XCResultItem] = []

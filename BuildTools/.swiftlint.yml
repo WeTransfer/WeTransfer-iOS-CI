@@ -39,11 +39,11 @@ line_length:
   warning: 140
   error: 160
 file_length:
-  warning: 600
-  error: 1200
+  warning: 660
+  error: 1320
 function_body_length:
-  warning: 50
-  error: 70
+  warning: 60
+  error: 90
 type_body_length:
   warning: 300
   error: 400

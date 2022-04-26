@@ -6,12 +6,15 @@ import XCResultKit
 /// **ContentCreatorTests.testUnsupportedErrorItemProviderWithoutSupportedFileRepresentation():**
 /// failed - Creating invalid content should give an error.
 ///
-/// CoreExtensions/Sources/CoreExtensions/OptionalExtensions.swift#L15 - Initialization of variable 'property' was never used; consider replacing with assignment to '_' or removing it
+/// CoreExtensions/Sources/CoreExtensions/OptionalExtensions.swift#L15 - Initialization of variable 'property' was never used; consider
+/// replacing with assignment to '_' or removing it
 extension ResultIssueSummaries {
     func createResults(context: ResultGenerationContext, testPlanRunSummaries: ActionTestPlanRunSummaries) -> [XCResultItem] {
         var results: [XCResultItem] = []
-        results.append(contentsOf: testFailureSummaries
-            .createResults(context: context, testPlanRunSummaries: testPlanRunSummaries))
+        results.append(contentsOf: testFailureSummaries.createResults(
+            context: context,
+            testPlanRunSummaries: testPlanRunSummaries
+        ))
         results.append(contentsOf: errorSummaries.createResults(category: .error, context: context))
         results.append(contentsOf: warningSummaries.createResults(category: .warning, context: context))
         return results
@@ -35,7 +38,8 @@ extension Array where Element == TestFailureIssueSummary {
             }
 
             return nil
-        }.flatMap { $0 }
+        }
+        .flatMap { $0 }
         let skippedResults: [XCResultItem] = testPlanRunSummaries.skippedTests.compactMap { actionTestMetadata -> [XCResultItem]? in
             guard let summaryRef = actionTestMetadata.summaryRef else {
                 return nil
@@ -44,7 +48,8 @@ extension Array where Element == TestFailureIssueSummary {
                 return nil
             }
             return actionTestSummary.createResults(context: context)
-        }.flatMap { $0 }
+        }
+        .flatMap { $0 }
 
         return failedAndRetryResults + skippedResults
     }

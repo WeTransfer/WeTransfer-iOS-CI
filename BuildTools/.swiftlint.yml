@@ -1,5 +1,4 @@
 disabled_rules: # Rule identifiers to exclude from running
-  - line_length # Documentation can exceed line lengths
   - identifier_name
   - force_unwrapping
   - force_cast
@@ -36,12 +35,15 @@ syntactic_sugar: error
 unused_closure_parameter: error
 unused_optional_binding:
   severity: error
+line_length:
+  warning: 140
+  error: 160
 file_length:
-  warning: 600
-  error: 1200
+  warning: 660
+  error: 1320
 function_body_length:
-  warning: 50
-  error: 70
+  warning: 60
+  error: 90
 type_body_length:
   warning: 300
   error: 400

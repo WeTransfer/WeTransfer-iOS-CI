@@ -6,12 +6,22 @@ import XCResultKit
 public typealias XCResultSummaryContaining = Folder
 
 public protocol XCResultSummaryReporting {
-    static func reportXCResultSummary(for files: [XCResultSummaryContaining], using danger: DangerDSL, fileManager: FileManager, resultsFilter: ResultsFilter?)
+    static func reportXCResultSummary(
+        for files: [XCResultSummaryContaining],
+        using danger: DangerDSL,
+        fileManager: FileManager,
+        resultsFilter: ResultsFilter?
+    )
 }
 
 /// Fetches `XCResultItem` instances and reports them into the given `DangerDSL`.
 public enum XCResultSummaryReporter: XCResultSummaryReporting {
-    public static func reportXCResultSummary(for files: [XCResultSummaryContaining], using danger: DangerDSL, fileManager: FileManager = .default, resultsFilter: ResultsFilter? = nil) {
+    public static func reportXCResultSummary(
+        for files: [XCResultSummaryContaining],
+        using danger: DangerDSL,
+        fileManager: FileManager = .default,
+        resultsFilter: ResultsFilter? = nil
+    ) {
         let resultFiles = files.map { file in
             XCResultFile(url: file.url)
         }

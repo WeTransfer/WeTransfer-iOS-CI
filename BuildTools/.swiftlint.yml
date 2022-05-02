@@ -45,8 +45,8 @@ function_body_length:
   warning: 60
   error: 90
 type_body_length:
-  warning: 300
-  error: 400
+  warning: 400
+  error: 500
 type_name:
   max_length: # warning and error
     warning: 50

@@ -31,74 +31,75 @@ lane :beta do |options|
   scheme = options[:scheme] || ENV['XCODE_SCHEME']
 
   if is_changed_since_last_tag == false
-    tag_name = create_tag_name(xcodeproj: xcodeproj, target: target)
-    slack_message(message: 'A new Release is cancelled as there are no changes since the last available tag.', tag_name: tag_name)
-  else
-    clear_derived_data
-    build_number = update_build_number(xcodeproj: xcodeproj, target: target)
-    tag_name = create_tag_name(xcodeproj: xcodeproj, target: target)
-
-    if options[:ci] || ENV['CI'] == 'true'
-      certs(app_identifier: options[:app_identifiers] || ENV['APP_IDENTIFIERS'])
-      prepare_for_ci
-    end
-
-    # Set timeout to prevent xcodebuild -list -project to take to much retries.
-    ENV['FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT'] = '120'
-    ENV['FASTLANE_XCODE_LIST_TIMEOUT'] = '120'
-
-    gym(
-      scheme: scheme,
-      configuration: 'Release',
-      xcconfig: options[:xcconfig] || ENV['BETA_XCCONFIG'],
-      cloned_source_packages_path: 'SourcePackages'
-    )
-
-    # Refresh key as it's only valid for 20 minutes and gym can take a long time.
-    authenticate(use_app_manager_role: true)
-
-    # Get the name of the current git branch.
-    branch_name = ENV['BITRISE_GIT_BRANCH']
-    if branch_name.nil? || branch_name.empty?
-      branch_name = git_branch
-    end
-
-    # Create a new GitHub release
-    last_non_candidate_tag = latest_github_non_candidate_tag
-    release_title = "#{tag_name} - App Store Release Candidate"
-    release_output = sh("mint run --silent gitbuddy release -l #{last_non_candidate_tag} -b develop --skip-comments --json --use-pre-release --target-commitish #{branch_name} --tag-name #{tag_name} --release-title '#{release_title}'")
-    release_json = JSON.parse(release_output)
-
-    release_url = release_json['url']
-    changelog = release_json['changelog']
-    stripped_changelog = strip_markdown_url(input: changelog)
-
-    puts "Created release with URL: #{release_url}"
-
-    begin
-      testflight(
-        beta_app_review_info: {
-          contact_email: options[:contact_email] || ENV['BETA_CONTACT_EMAIL'],
-          contact_first_name: options[:contact_first_name] || ENV['BETA_CONTACT_FIRST_NAME'],
-          contact_last_name: options[:contact_last_name] || ENV['BETA_CONTACT_LAST_NAME'],
-          contact_phone: options[:contact_phone] || ENV['BETA_CONTACT_PHONE'],
-          demo_account_name: options[:demo_account_name] || ENV['BETA_DEMO_ACCOUNT_NAME'],
-          demo_account_password: options[:demo_account_password] || ENV['BETA_DEMO_ACCOUNT_PASSWORD']
-        },
-        skip_waiting_for_build_processing: false,
-        skip_submission: false,
-        groups: options[:groups] || ENV['TESTFLIGHT_GROUPS_BETA'],
-        changelog: stripped_changelog,
-        team_id: options[:team_id] || ENV['FASTLANE_ITC_TEAM_ID']
-      )
-    rescue StandardError => e
-      raise e unless e.message.include?('Another build is in review')
-
-      UI.important('TestFlight delivery failed because a build is already in review, but continuing anyway!')
-    end
-
-    slack_message(message: 'A new Release Candidate has been published.', tag_name: tag_name, release_url: release_url)
+    releaseCanceledMessage = 'A new Release is cancelled as there are no changes since the last available tag.'
+    slack_message(message: releaseCanceledMessage, tag_name: tag_name)
+    UI.user_error!(releaseCanceledMessage)
   end
+
+  clear_derived_data
+  build_number = update_build_number(xcodeproj: xcodeproj, target: target)
+  tag_name = create_tag_name(xcodeproj: xcodeproj, target: target)
+
+  if options[:ci] || ENV['CI'] == 'true'
+    certs(app_identifier: options[:app_identifiers] || ENV['APP_IDENTIFIERS'])
+    prepare_for_ci
+  end
+
+  # Set timeout to prevent xcodebuild -list -project to take to much retries.
+  ENV['FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT'] = '120'
+  ENV['FASTLANE_XCODE_LIST_TIMEOUT'] = '120'
+
+  gym(
+    scheme: scheme,
+    configuration: 'Release',
+    xcconfig: options[:xcconfig] || ENV['BETA_XCCONFIG'],
+    cloned_source_packages_path: 'SourcePackages'
+  )
+
+  # Refresh key as it's only valid for 20 minutes and gym can take a long time.
+  authenticate(use_app_manager_role: true)
+
+  # Get the name of the current git branch.
+  branch_name = ENV['BITRISE_GIT_BRANCH']
+  if branch_name.nil? || branch_name.empty?
+    branch_name = git_branch
+  end
+
+  # Create a new GitHub release
+  last_non_candidate_tag = latest_github_non_candidate_tag
+  release_title = "#{tag_name} - App Store Release Candidate"
+  release_output = sh("mint run --silent gitbuddy release -l #{last_non_candidate_tag} -b develop --skip-comments --json --use-pre-release --target-commitish #{branch_name} --tag-name #{tag_name} --release-title '#{release_title}'")
+  release_json = JSON.parse(release_output)
+
+  release_url = release_json['url']
+  changelog = release_json['changelog']
+  stripped_changelog = strip_markdown_url(input: changelog)
+
+  puts "Created release with URL: #{release_url}"
+
+  begin
+    testflight(
+      beta_app_review_info: {
+        contact_email: options[:contact_email] || ENV['BETA_CONTACT_EMAIL'],
+        contact_first_name: options[:contact_first_name] || ENV['BETA_CONTACT_FIRST_NAME'],
+        contact_last_name: options[:contact_last_name] || ENV['BETA_CONTACT_LAST_NAME'],
+        contact_phone: options[:contact_phone] || ENV['BETA_CONTACT_PHONE'],
+        demo_account_name: options[:demo_account_name] || ENV['BETA_DEMO_ACCOUNT_NAME'],
+        demo_account_password: options[:demo_account_password] || ENV['BETA_DEMO_ACCOUNT_PASSWORD']
+      },
+      skip_waiting_for_build_processing: false,
+      skip_submission: false,
+      groups: options[:groups] || ENV['TESTFLIGHT_GROUPS_BETA'],
+      changelog: stripped_changelog,
+      team_id: options[:team_id] || ENV['FASTLANE_ITC_TEAM_ID']
+    )
+  rescue StandardError => e
+    raise e unless e.message.include?('Another build is in review')
+
+    UI.important('TestFlight delivery failed because a build is already in review, but continuing anyway!')
+  end
+
+  slack_message(message: 'A new Release Candidate has been published.', tag_name: tag_name, release_url: release_url)
 end
 
 desc 'Creates a new App Store Release'

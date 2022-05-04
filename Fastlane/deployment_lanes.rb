@@ -87,8 +87,6 @@ lane :beta do |options|
         demo_account_name: options[:demo_account_name] || ENV['BETA_DEMO_ACCOUNT_NAME'],
         demo_account_password: options[:demo_account_password] || ENV['BETA_DEMO_ACCOUNT_PASSWORD']
       },
-      skip_waiting_for_build_processing: false,
-      skip_submission: false,
       groups: options[:groups] || ENV['TESTFLIGHT_GROUPS_BETA'],
       changelog: stripped_changelog,
       team_id: options[:team_id] || ENV['FASTLANE_ITC_TEAM_ID']

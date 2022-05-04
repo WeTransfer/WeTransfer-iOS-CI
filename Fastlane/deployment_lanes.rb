@@ -77,6 +77,8 @@ lane :beta do |options|
 
   puts "Created release with URL: #{release_url}"
 
+  puts "[Debug]: #{stripped_changelog}"
+
   # begin
     testflight(
       beta_app_review_info: {

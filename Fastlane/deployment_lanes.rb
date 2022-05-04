@@ -77,7 +77,7 @@ lane :beta do |options|
 
   puts "Created release with URL: #{release_url}"
 
-  begin
+  # begin
     testflight(
       beta_app_review_info: {
         contact_email: options[:contact_email] || ENV['BETA_CONTACT_EMAIL'],
@@ -93,11 +93,11 @@ lane :beta do |options|
       changelog: stripped_changelog,
       team_id: options[:team_id] || ENV['FASTLANE_ITC_TEAM_ID']
     )
-  rescue StandardError => e
-    raise e unless e.message.include?('Another build is in review')
-
-    UI.important('TestFlight delivery failed because a build is already in review, but continuing anyway!')
-  end
+  # rescue StandardError => e
+  #   raise e unless e.message.include?('Another build is in review')
+  #
+  #   UI.important('TestFlight delivery failed because a build is already in review, but continuing anyway!')
+  # end
 
   slack_message(message: 'A new Release Candidate has been published.', tag_name: tag_name, release_url: release_url)
 end

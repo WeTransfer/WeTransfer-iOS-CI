@@ -32,7 +32,7 @@ lane :beta do |options|
 
   if is_changed_since_last_tag == false
     releaseCanceledMessage = 'A new Release is cancelled as there are no changes since the last available tag.'
-    slack_message(message: releaseCanceledMessage, tag_name: tag_name)
+    # slack_message(message: releaseCanceledMessage, tag_name: tag_name)
     UI.user_error!(releaseCanceledMessage)
   end
 
@@ -97,7 +97,7 @@ lane :beta do |options|
   #   UI.important('TestFlight delivery failed because a build is already in review, but continuing anyway!')
   # end
 
-  slack_message(message: 'A new Release Candidate has been published.', tag_name: tag_name, release_url: release_url)
+  # slack_message(message: 'A new Release Candidate has been published.', tag_name: tag_name, release_url: release_url)
 end
 
 desc 'Creates a new App Store Release'

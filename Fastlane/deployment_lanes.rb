@@ -32,7 +32,7 @@ lane :beta do |options|
 
   if is_changed_since_last_tag == false
     slack_message(message: 'A new Release is cancelled as there are no changes since the last available tag.', tag_name: tag_name)
-    break
+    next
   end
 
   clear_derived_data

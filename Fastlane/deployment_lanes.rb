@@ -39,6 +39,8 @@ lane :beta do |options|
   build_number = update_build_number(xcodeproj: xcodeproj, target: target)
   tag_name = create_tag_name(xcodeproj: xcodeproj, target: target)
 
+  UI.message "Proceeding to build app version: #{tag_name}"
+
   if options[:ci] || ENV['CI'] == 'true'
     certs(app_identifier: options[:app_identifiers] || ENV['APP_IDENTIFIERS'])
     prepare_for_ci

@@ -79,6 +79,7 @@ lane :beta do |options|
   release_url = release_json['url']
   changelog = release_json['changelog']
   stripped_changelog = strip_markdown_url(input: changelog)
+  truncated_changelog = truncate(stripped_changelog, 3900) # 4000 characters is the maximum allowed by Apple
 
   UI.message "Created release with URL: #{release_url}"
 
@@ -93,7 +94,7 @@ lane :beta do |options|
         demo_account_password: options[:demo_account_password] || ENV['BETA_DEMO_ACCOUNT_PASSWORD']
       },
       groups: options[:groups] || ENV['TESTFLIGHT_GROUPS_BETA'],
-      changelog: stripped_changelog,
+      changelog: truncated_changelog,
       team_id: options[:team_id] || ENV['FASTLANE_ITC_TEAM_ID']
     )
   rescue StandardError => e
@@ -236,6 +237,8 @@ lane :release do |options|
     authenticate(use_app_manager_role: true)
 
     stripped_changelog.prepend("This build has been submitted to the App Store.\n\n")
+    truncated_changelog = truncate(stripped_changelog, 3900) # 4000 characters is the maximum allowed by Apple
+
     testflight_groups = options[:groups] || ENV['TESTFLIGHT_GROUPS_RELEASE']
 
     UI.message "Creating a TestFlight build which will be available to these groups: #{testflight_groups}"
@@ -252,7 +255,7 @@ lane :release do |options|
       skip_waiting_for_build_processing: false,
       skip_submission: true,
       groups: testflight_groups,
-      changelog: stripped_changelog,
+      changelog: truncated_changelog,
       team_id: options[:team_id] || ENV['FASTLANE_ITC_TEAM_ID'],
       verbose: true
     )
@@ -537,4 +540,15 @@ end
 # Checks if the current environment is CI.
 def is_running_on_CI(options)
   options[:ci] || ENV['CI'] == 'true'
+end
+
+# Truncates a given string to a certain length and adds a truncation mark in the
+# end if the string is long enough.
+def truncate(string, max)
+  truncation_mark = '...'
+  if string.length > max
+    max > truncation_mark.length ? "#{string[0...max-truncation_mark.length]}#{truncation_mark}" : "#{string[0...max]}"
+  else
+    string
+  end
 end

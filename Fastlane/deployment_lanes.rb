@@ -42,7 +42,7 @@ lane :beta do |options|
 
   UI.message "Proceeding to build app version: #{tag_name}"
 
-  if options[:ci] || ENV['CI'] == 'true'
+  if is_running_on_CI(options)
     certs(app_identifier: options[:app_identifiers] || ENV['APP_IDENTIFIERS'])
     prepare_for_ci
   end
@@ -213,7 +213,7 @@ lane :release do |options|
     # Create and submit the actual build.
     clear_derived_data
 
-    certs(app_identifier: options[:app_identifiers] || ENV['APP_IDENTIFIERS']) if options[:ci] || ENV['CI'] == 'true'
+    certs(app_identifier: options[:app_identifiers] || ENV['APP_IDENTIFIERS']) if is_running_on_CI(options)
 
     prepare_for_ci
 
@@ -300,7 +300,7 @@ lane :appium_build do |options|
   ENV['FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT'] = '120'
   ENV['FASTLANE_XCODE_LIST_TIMEOUT'] = '120'
 
-  certs(app_identifier: options[:app_identifiers] || ENV['APP_IDENTIFIERS'], type: 'development') if options[:ci] || ENV['CI'] == 'true'
+  certs(app_identifier: options[:app_identifiers] || ENV['APP_IDENTIFIERS'], type: 'development') if is_running_on_CI(options)
 
   gym(
     scheme: scheme,
@@ -527,4 +527,11 @@ private_lane :create_tag_name do |options|
   version_number = get_version_number(xcodeproj: options[:xcodeproj], target: options[:target])
   build_number = get_build_number(xcodeproj: options[:xcodeproj])
   tag_name = version_number + 'b' + build_number
+end
+
+## Helper
+
+# Checks if the current environment is CI.
+def is_running_on_CI(options)
+  options[:ci] || ENV['CI'] == 'true'
 end

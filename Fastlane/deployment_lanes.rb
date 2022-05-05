@@ -36,7 +36,10 @@ lane :beta do |options|
     next
   end
 
-  clear_derived_data
+  if is_running_on_CI(options)
+    clear_derived_data
+  end
+
   build_number = update_build_number(xcodeproj: xcodeproj, target: target)
   tag_name = create_tag_name(xcodeproj: xcodeproj, target: target)
 

@@ -166,8 +166,8 @@ lane :release do |options|
     release_title = is_hotfix ? "#{tag_name} - App Store Hotfix Release" : "#{tag_name} - App Store Release"
 
     # Push the changes to our release branch so we can create a tag from it
-    sh('git commit -a -m "Created a new release"')
-    sh("git push origin #{branch_name}")
+    sh 'git commit -a -m "Created a new release"'
+    sh "git push origin #{branch_name}"
 
     release_latest_tag = is_hotfix ? latest_release_tag : last_non_candidate_tag
     release_base_branch = is_hotfix ? 'main' : 'develop'
@@ -182,8 +182,8 @@ lane :release do |options|
     UI.message "Created release with URL: #{release_url}"
 
     # Push the updated changelog.
-    sh('git commit -a -m "Created a new release"')
-    sh("git push origin #{branch_name}")
+    sh 'git commit -a -m "Created a new release"'
+    sh "git push origin #{branch_name}"
 
     repo = git_repository_name
 
@@ -272,7 +272,7 @@ lane :release do |options|
     # Delete 1 pre-release found before the release we just created.
     # This is temporarily set to 1 to test out. We can eventually increase this number slowly
     # so we will eventually clean up all pre-releases.
-    sh("mint run gitbuddy tagDeletion -u #{tag_name} -l 1 --prerelease-only --verbose")
+    sh "mint run gitbuddy tagDeletion -u #{tag_name} -l 1 --prerelease-only --verbose"
 
     # Currently doesn't work because as you can't download dsyms with an API key
     # upload_dsyms

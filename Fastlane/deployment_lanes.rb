@@ -31,9 +31,8 @@ lane :beta do |options|
   scheme = options[:scheme] || ENV['XCODE_SCHEME']
 
   if is_changed_since_last_tag == false
-    releaseCanceledMessage = 'A new Release is cancelled as there are no changes since the last available tag.'
-    # slack_message(message: releaseCanceledMessage, tag_name: tag_name)
-    UI.user_error!(releaseCanceledMessage)
+    slack_message(message: 'A new Release is cancelled as there are no changes since the last available tag.', tag_name: tag_name)
+    break
   end
 
   clear_derived_data

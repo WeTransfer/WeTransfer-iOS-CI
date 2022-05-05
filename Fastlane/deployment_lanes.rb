@@ -99,7 +99,9 @@ lane :beta do |options|
     UI.important "TestFlight delivery failed because a build is already in review, but continuing anyway!"
   end
 
-  slack_message(message: 'A new Release Candidate has been published.', tag_name: tag_name, release_url: release_url)
+  success_message = 'A new Release Candidate has been published.'
+  UI.success "#{success_message} #{tag_name}"
+  slack_message(message: success_message, tag_name: tag_name, release_url: release_url)
 end
 
 desc 'Creates a new App Store Release'

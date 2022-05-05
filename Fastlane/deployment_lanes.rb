@@ -76,7 +76,7 @@ lane :beta do |options|
   changelog = release_json['changelog']
   stripped_changelog = strip_markdown_url(input: changelog)
 
-  puts "Created release with URL: #{release_url}"
+  UI.message "Created release with URL: #{release_url}"
 
   begin
     testflight(
@@ -179,7 +179,7 @@ lane :release do |options|
     changelog = release_json['changelog']
     stripped_changelog = strip_markdown_url(input: changelog)
 
-    puts "Created release with URL: #{release_url}"
+    UI.message "Created release with URL: #{release_url}"
 
     # Push the updated changelog.
     sh('git commit -a -m "Created a new release"')
@@ -232,7 +232,7 @@ lane :release do |options|
     stripped_changelog.prepend("This build has been submitted to the App Store.\n\n")
     testflight_groups = options[:groups] || ENV['TESTFLIGHT_GROUPS_RELEASE']
 
-    puts "Creating a TestFlight build which will be available to these groups: #{testflight_groups}"
+    UI.message "Creating a TestFlight build which will be available to these groups: #{testflight_groups}"
 
     testflight(
       beta_app_review_info: {
@@ -307,7 +307,7 @@ lane :appium_build do |options|
     cloned_source_packages_path: '.build'
   )
 
-  puts "IPA saved at #{ENV['IPA_OUTPUT_PATH']}"
+  UI.message "IPA saved at #{ENV['IPA_OUTPUT_PATH']}"
 end
 
 desc 'Generates a JWT token used for JWT authorization with the App Store Connect API.'
@@ -345,7 +345,7 @@ private_lane :is_changed_since_last_tag do
   sh "git fetch --tags origin #{ENV['BITRISE_GIT_BRANCH']} --no-recurse-submodules"
   last_tag = last_git_tag
   changes = sh "git diff --name-only HEAD #{last_tag}"
-  puts "Is local HEAD changed since last tag #{last_tag}: #{!changes.empty?}"
+  UI.message "Is local HEAD changed since last tag #{last_tag}: #{!changes.empty?}"
   is_changed = !changes.empty?
 end
 
@@ -371,14 +371,14 @@ private_lane :update_build_number do |options|
   test_flight_build_number = latest_testflight_build_number(version: version_number)
 
   if new_build_number <= latest_app_store_build_number
-    puts 'git build number is smaller than the build number of the latest release'
-    puts "Using the latest release build number #{latest_app_store_build_number} + 1"
+    UI.message 'git build number is smaller than the build number of the latest release'
+    UI.message "Using the latest release build number #{latest_app_store_build_number} + 1"
     new_build_number = latest_app_store_build_number + 1
   end
 
   if new_build_number <= test_flight_build_number
-    puts 'git build number is smaller than test flight build number'
-    puts "Using the TestFlight build number #{test_flight_build_number} + 1"
+    UI.message 'git build number is smaller than test flight build number'
+    UI.message "Using the TestFlight build number #{test_flight_build_number} + 1"
     new_build_number = test_flight_build_number + 1
   end
 
@@ -416,7 +416,7 @@ desc '#### Options'
 desc ' * **`app_identifier`**: The bundle identifier of the app for which to fetch the preparing version number'
 desc ''
 private_lane :current_preparing_app_version do |options|
-  puts 'fetching highest version on App Store Connect...'
+  UI.message 'fetching highest version on App Store Connect...'
 
   token = Spaceship::ConnectAPI::Token.create(Actions.lane_context[SharedValues::APP_STORE_CONNECT_API_KEY])
   Spaceship::ConnectAPI.token = token
@@ -424,16 +424,16 @@ private_lane :current_preparing_app_version do |options|
   app = Spaceship::ConnectAPI::App.find(options[:app_identifier])
 
   if app.nil?
-    puts 'App not found'
+    UI.message 'App not found'
     next
   end
 
   if app.get_edit_app_store_version.nil?
-    puts 'No preparing version number found'
+    UI.message 'No preparing version number found'
     next
   end
 
-  puts "Latest perparing version is #{app.get_edit_app_store_version.version_string}"
+  UI.message "Latest perparing version is #{app.get_edit_app_store_version.version_string}"
 
   app.get_edit_app_store_version.version_string
 end

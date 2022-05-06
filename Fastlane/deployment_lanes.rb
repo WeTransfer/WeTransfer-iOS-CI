@@ -33,72 +33,79 @@ lane :beta do |options|
   if is_changed_since_last_tag == false
     tag_name = create_tag_name(xcodeproj: xcodeproj, target: target)
     slack_message(message: 'A new Release is cancelled as there are no changes since the last available tag.', tag_name: tag_name)
-  else
-    clear_derived_data
-    build_number = update_build_number(xcodeproj: xcodeproj, target: target)
-    tag_name = create_tag_name(xcodeproj: xcodeproj, target: target)
-
-    if options[:ci] || ENV['CI'] == 'true'
-      certs(app_identifier: options[:app_identifiers] || ENV['APP_IDENTIFIERS'])
-      prepare_for_ci
-    end
-
-    # Set timeout to prevent xcodebuild -list -project to take to much retries.
-    ENV['FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT'] = '120'
-    ENV['FASTLANE_XCODE_LIST_TIMEOUT'] = '120'
-
-    gym(
-      scheme: scheme,
-      configuration: 'Release',
-      xcconfig: options[:xcconfig] || ENV['BETA_XCCONFIG'],
-      cloned_source_packages_path: 'SourcePackages'
-    )
-
-    # Refresh key as it's only valid for 20 minutes and gym can take a long time.
-    authenticate(use_app_manager_role: true)
-
-    # Get the name of the current git branch.
-    branch_name = ENV['BITRISE_GIT_BRANCH']
-    if branch_name.nil? || branch_name.empty?
-      branch_name = git_branch
-    end
-
-    # Create a new GitHub release
-    last_non_candidate_tag = latest_github_non_candidate_tag
-    release_title = "#{tag_name} - App Store Release Candidate"
-    release_output = sh("mint run --silent gitbuddy release -l #{last_non_candidate_tag} -b develop --skip-comments --json --use-pre-release --target-commitish #{branch_name} --tag-name #{tag_name} --release-title '#{release_title}'")
-    release_json = JSON.parse(release_output)
-
-    release_url = release_json['url']
-    changelog = release_json['changelog']
-    stripped_changelog = strip_markdown_url(input: changelog)
-
-    puts "Created release with URL: #{release_url}"
-
-    begin
-      testflight(
-        beta_app_review_info: {
-          contact_email: options[:contact_email] || ENV['BETA_CONTACT_EMAIL'],
-          contact_first_name: options[:contact_first_name] || ENV['BETA_CONTACT_FIRST_NAME'],
-          contact_last_name: options[:contact_last_name] || ENV['BETA_CONTACT_LAST_NAME'],
-          contact_phone: options[:contact_phone] || ENV['BETA_CONTACT_PHONE'],
-          demo_account_name: options[:demo_account_name] || ENV['BETA_DEMO_ACCOUNT_NAME'],
-          demo_account_password: options[:demo_account_password] || ENV['BETA_DEMO_ACCOUNT_PASSWORD']
-        },
-        skip_waiting_for_build_processing: false,
-        skip_submission: false,
-        groups: options[:groups] || ENV['TESTFLIGHT_GROUPS_BETA'],
-        changelog: stripped_changelog,
-        team_id: options[:team_id] || ENV['FASTLANE_ITC_TEAM_ID']
-      )
-    rescue StandardError => e
-      raise e unless e.message.include?('Another build is in review')
-
-      UI.important('TestFlight delivery failed because a build is already in review, but continuing anyway!')
-    end
-
-    slack_message(message: 'A new Release Candidate has been published.', tag_name: tag_name, release_url: release_url)
+    next
   end
+
+  if is_running_on_CI(options)
+    clear_derived_data
+  end
+
+  build_number = update_build_number(xcodeproj: xcodeproj, target: target)
+  tag_name = create_tag_name(xcodeproj: xcodeproj, target: target)
+
+  UI.message "Proceeding to build app version: #{tag_name}"
+
+  if is_running_on_CI(options)
+    certs(app_identifier: options[:app_identifiers] || ENV['APP_IDENTIFIERS'])
+    prepare_for_ci
+  end
+
+  # Set timeout to prevent xcodebuild -list -project to take to much retries.
+  ENV['FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT'] = '120'
+  ENV['FASTLANE_XCODE_LIST_TIMEOUT'] = '120'
+
+  gym(
+    scheme: scheme,
+    configuration: 'Release',
+    xcconfig: options[:xcconfig] || ENV['BETA_XCCONFIG'],
+    cloned_source_packages_path: 'SourcePackages'
+  )
+
+  # Refresh key as it's only valid for 20 minutes and gym can take a long time.
+  authenticate(use_app_manager_role: true)
+
+  # Get the name of the current git branch.
+  branch_name = ENV['BITRISE_GIT_BRANCH']
+  if branch_name.nil? || branch_name.empty?
+    branch_name = git_branch
+  end
+
+  # Create a new GitHub release
+  last_non_candidate_tag = latest_github_non_candidate_tag
+  release_title = "#{tag_name} - App Store Release Candidate"
+  release_output = sh("mint run --silent gitbuddy release -l #{last_non_candidate_tag} -b develop --skip-comments --json --use-pre-release --target-commitish #{branch_name} --tag-name #{tag_name} --release-title '#{release_title}'")
+  release_json = JSON.parse(release_output)
+
+  release_url = release_json['url']
+  changelog = release_json['changelog']
+  stripped_changelog = strip_markdown_url(input: changelog)
+  truncated_changelog = truncate(stripped_changelog, 3900) # 4000 characters is the maximum allowed by Apple
+
+  UI.message "Created release with URL: #{release_url}"
+
+  begin
+    testflight(
+      beta_app_review_info: {
+        contact_email: options[:contact_email] || ENV['BETA_CONTACT_EMAIL'],
+        contact_first_name: options[:contact_first_name] || ENV['BETA_CONTACT_FIRST_NAME'],
+        contact_last_name: options[:contact_last_name] || ENV['BETA_CONTACT_LAST_NAME'],
+        contact_phone: options[:contact_phone] || ENV['BETA_CONTACT_PHONE'],
+        demo_account_name: options[:demo_account_name] || ENV['BETA_DEMO_ACCOUNT_NAME'],
+        demo_account_password: options[:demo_account_password] || ENV['BETA_DEMO_ACCOUNT_PASSWORD']
+      },
+      groups: options[:groups] || ENV['TESTFLIGHT_GROUPS_BETA'],
+      changelog: truncated_changelog,
+      team_id: options[:team_id] || ENV['FASTLANE_ITC_TEAM_ID']
+    )
+  rescue StandardError => e
+    raise e unless e.message.include?('Another build is in review')
+
+    UI.important "TestFlight delivery failed because a build is already in review, but continuing anyway!"
+  end
+
+  success_message = 'A new Release Candidate has been published.'
+  UI.success "#{success_message} #{tag_name}"
+  slack_message(message: success_message, tag_name: tag_name, release_url: release_url)
 end
 
 desc 'Creates a new App Store Release'
@@ -166,8 +173,8 @@ lane :release do |options|
     release_title = is_hotfix ? "#{tag_name} - App Store Hotfix Release" : "#{tag_name} - App Store Release"
 
     # Push the changes to our release branch so we can create a tag from it
-    sh('git commit -a -m "Created a new release"')
-    sh("git push origin #{branch_name}")
+    sh 'git commit -a -m "Created a new release"'
+    sh "git push origin #{branch_name}"
 
     release_latest_tag = is_hotfix ? latest_release_tag : last_non_candidate_tag
     release_base_branch = is_hotfix ? 'main' : 'develop'
@@ -179,11 +186,11 @@ lane :release do |options|
     changelog = release_json['changelog']
     stripped_changelog = strip_markdown_url(input: changelog)
 
-    puts "Created release with URL: #{release_url}"
+    UI.message "Created release with URL: #{release_url}"
 
     # Push the updated changelog.
-    sh('git commit -a -m "Created a new release"')
-    sh("git push origin #{branch_name}")
+    sh 'git commit -a -m "Created a new release"'
+    sh "git push origin #{branch_name}"
 
     repo = git_repository_name
 
@@ -210,7 +217,7 @@ lane :release do |options|
     # Create and submit the actual build.
     clear_derived_data
 
-    certs(app_identifier: options[:app_identifiers] || ENV['APP_IDENTIFIERS']) if options[:ci] || ENV['CI'] == 'true'
+    certs(app_identifier: options[:app_identifiers] || ENV['APP_IDENTIFIERS']) if is_running_on_CI(options)
 
     prepare_for_ci
 
@@ -230,9 +237,11 @@ lane :release do |options|
     authenticate(use_app_manager_role: true)
 
     stripped_changelog.prepend("This build has been submitted to the App Store.\n\n")
+    truncated_changelog = truncate(stripped_changelog, 3900) # 4000 characters is the maximum allowed by Apple
+
     testflight_groups = options[:groups] || ENV['TESTFLIGHT_GROUPS_RELEASE']
 
-    puts "Creating a TestFlight build which will be available to these groups: #{testflight_groups}"
+    UI.message "Creating a TestFlight build which will be available to these groups: #{testflight_groups}"
 
     testflight(
       beta_app_review_info: {
@@ -246,7 +255,7 @@ lane :release do |options|
       skip_waiting_for_build_processing: false,
       skip_submission: true,
       groups: testflight_groups,
-      changelog: stripped_changelog,
+      changelog: truncated_changelog,
       team_id: options[:team_id] || ENV['FASTLANE_ITC_TEAM_ID'],
       verbose: true
     )
@@ -272,7 +281,7 @@ lane :release do |options|
     # Delete 1 pre-release found before the release we just created.
     # This is temporarily set to 1 to test out. We can eventually increase this number slowly
     # so we will eventually clean up all pre-releases.
-    sh("mint run gitbuddy tagDeletion -u #{tag_name} -l 1 --prerelease-only --verbose")
+    sh "mint run gitbuddy tagDeletion -u #{tag_name} -l 1 --prerelease-only --verbose"
 
     # Currently doesn't work because as you can't download dsyms with an API key
     # upload_dsyms
@@ -297,7 +306,7 @@ lane :appium_build do |options|
   ENV['FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT'] = '120'
   ENV['FASTLANE_XCODE_LIST_TIMEOUT'] = '120'
 
-  certs(app_identifier: options[:app_identifiers] || ENV['APP_IDENTIFIERS'], type: 'development') if options[:ci] || ENV['CI'] == 'true'
+  certs(app_identifier: options[:app_identifiers] || ENV['APP_IDENTIFIERS'], type: 'development') if is_running_on_CI(options)
 
   gym(
     scheme: scheme,
@@ -307,7 +316,7 @@ lane :appium_build do |options|
     cloned_source_packages_path: '.build'
   )
 
-  puts "IPA saved at #{ENV['IPA_OUTPUT_PATH']}"
+  UI.message "IPA saved at #{ENV['IPA_OUTPUT_PATH']}"
 end
 
 desc 'Generates a JWT token used for JWT authorization with the App Store Connect API.'
@@ -345,7 +354,7 @@ private_lane :is_changed_since_last_tag do
   sh "git fetch --tags origin #{ENV['BITRISE_GIT_BRANCH']} --no-recurse-submodules"
   last_tag = last_git_tag
   changes = sh "git diff --name-only HEAD #{last_tag}"
-  puts "Is local HEAD changed since last tag #{last_tag}: #{!changes.empty?}"
+  UI.message "Is local HEAD changed since last tag #{last_tag}: #{!changes.empty?}"
   is_changed = !changes.empty?
 end
 
@@ -371,14 +380,14 @@ private_lane :update_build_number do |options|
   test_flight_build_number = latest_testflight_build_number(version: version_number)
 
   if new_build_number <= latest_app_store_build_number
-    puts 'git build number is smaller than the build number of the latest release'
-    puts "Using the latest release build number #{latest_app_store_build_number} + 1"
+    UI.message 'git build number is smaller than the build number of the latest release'
+    UI.message "Using the latest release build number #{latest_app_store_build_number} + 1"
     new_build_number = latest_app_store_build_number + 1
   end
 
   if new_build_number <= test_flight_build_number
-    puts 'git build number is smaller than test flight build number'
-    puts "Using the TestFlight build number #{test_flight_build_number} + 1"
+    UI.message 'git build number is smaller than test flight build number'
+    UI.message "Using the TestFlight build number #{test_flight_build_number} + 1"
     new_build_number = test_flight_build_number + 1
   end
 
@@ -416,7 +425,7 @@ desc '#### Options'
 desc ' * **`app_identifier`**: The bundle identifier of the app for which to fetch the preparing version number'
 desc ''
 private_lane :current_preparing_app_version do |options|
-  puts 'fetching highest version on App Store Connect...'
+  UI.message 'fetching highest version on App Store Connect...'
 
   token = Spaceship::ConnectAPI::Token.create(Actions.lane_context[SharedValues::APP_STORE_CONNECT_API_KEY])
   Spaceship::ConnectAPI.token = token
@@ -424,16 +433,16 @@ private_lane :current_preparing_app_version do |options|
   app = Spaceship::ConnectAPI::App.find(options[:app_identifier])
 
   if app.nil?
-    puts 'App not found'
+    UI.message 'App not found'
     next
   end
 
   if app.get_edit_app_store_version.nil?
-    puts 'No preparing version number found'
+    UI.message 'No preparing version number found'
     next
   end
 
-  puts "Latest perparing version is #{app.get_edit_app_store_version.version_string}"
+  UI.message "Latest perparing version is #{app.get_edit_app_store_version.version_string}"
 
   app.get_edit_app_store_version.version_string
 end
@@ -524,4 +533,22 @@ private_lane :create_tag_name do |options|
   version_number = get_version_number(xcodeproj: options[:xcodeproj], target: options[:target])
   build_number = get_build_number(xcodeproj: options[:xcodeproj])
   tag_name = version_number + 'b' + build_number
+end
+
+## Helper
+
+# Checks if the current environment is CI.
+def is_running_on_CI(options)
+  options[:ci] || ENV['CI'] == 'true'
+end
+
+# Truncates a given string to a certain length and adds a truncation mark in the
+# end if the string is long enough.
+def truncate(string, max)
+  truncation_mark = '...'
+  if string.length > max
+    max > truncation_mark.length ? "#{string[0...max-truncation_mark.length]}#{truncation_mark}" : "#{string[0...max]}"
+  else
+    string
+  end
 end

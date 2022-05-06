@@ -32,7 +32,9 @@ lane :beta do |options|
 
   if is_changed_since_last_tag == false
     tag_name = create_tag_name(xcodeproj: xcodeproj, target: target)
-    slack_message(message: 'A new Release is cancelled as there are no changes since the last available tag.', tag_name: tag_name)
+    cancel_message = 'A new Release is cancelled as there are no changes since the last available tag.'
+    UI.important cancel_message
+    slack_message(message: cancel_message, tag_name: tag_name)
     next
   end
 

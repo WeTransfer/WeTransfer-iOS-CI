@@ -536,21 +536,3 @@ private_lane :create_tag_name do |options|
   build_number = get_build_number(xcodeproj: options[:xcodeproj])
   tag_name = version_number + 'b' + build_number
 end
-
-## Helper
-
-# Checks if the current environment is CI.
-def is_running_on_CI(options)
-  options[:ci] || ENV['CI'] == 'true'
-end
-
-# Truncates a given string to a certain length and adds a truncation mark in the
-# end if the string is long enough.
-def truncate(string, max)
-  truncation_mark = '...'
-  if string.length > max
-    max > truncation_mark.length ? "#{string[0...max-truncation_mark.length]}#{truncation_mark}" : "#{string[0...max]}"
-  else
-    string
-  end
-end

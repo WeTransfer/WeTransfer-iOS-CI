@@ -8,6 +8,49 @@ trigger_map:
 workflows:
   wetransfer_pr_testing:
     steps:
+    - script:
+        title: Assign PR author
+        inputs:
+        - content: |-
+            #!/bin/bash
+
+            REPOSITORY_NAME=$(cut -d '.' -f1 <<< $(cut -d '/' -f2 <<< ${GIT_REPOSITORY_URL}))
+            ISSUE_URL="https://api.github.com/repos/${BITRISEIO_GIT_REPOSITORY_OWNER}/${REPOSITORY_NAME}/issues/${BITRISE_PULL_REQUEST}"
+            HEADER="Accept: application/vnd.github.v3+json"
+
+            PR_ASSIGNESS=$(
+              curl \
+                -s \
+                -u ${GITBUDDY_ACCESS_TOKEN} \
+                -H ${HEADER} \
+                ${ISSUE_URL} \
+                | jq -r '.assignees[] | .login'
+            )
+
+            if [ -z ${PR_ASSIGNESS} ]; then
+              echo "PR assignees is empty. Continuing..."
+            else
+              echo "PR assignees is not empty. Nothing to do here..."
+              exit 0
+            fi
+
+            PR_AUTHOR=$(
+              curl \
+                -s \
+                -u ${GITBUDDY_ACCESS_TOKEN} \
+                -H ${HEADER} \
+                ${ISSUE_URL} \
+                | jq -r .user.login
+            )
+
+            curl \
+              -s \
+              -u ${GITBUDDY_ACCESS_TOKEN} \
+              -X POST \
+              -H ${HEADER} \
+              ${ISSUE_URL}/assignees \
+              -d '{"assignees":["'${PR_AUTHOR}'"]}' \
+              &> /dev/null
     - script@1:
         title: Skip running for Draft PRs
         inputs:
@@ -73,7 +116,7 @@ workflows:
             # The Dangerfile.swift from within the WeTransfer-iOS-CI repo is used.
             #
             # This all allows us to not define Danger dependencies in every repo. It also optimises reusing the SPM cache on CI systems.
-            
+
             if [ "$BITRISEIO_GIT_REPOSITORY_SLUG" == "WeTransfer-iOS-CI" ]; then
                 swift run danger-swift ci --cache-path .build --build-path .build
             else

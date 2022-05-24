@@ -28,6 +28,7 @@ end
 # * tag_name - adds the tag name at the end of the given slack message.
 # * success - was this build successful? (true/false) Default is true.
 # * default_payloads - Specifies default payloads to include. Pass an empty array to suppress all the default payloads ([:git_branch]).
+# * additional_payloads - Additional payloads to be added to the slack message. A hash is expected.
 # * release_url - URL to be added as payload.
 def slack_message(message, options = {})
   return if message.empty?
@@ -45,6 +46,7 @@ def slack_message(message, options = {})
   default_payloads = options[:default_payloads] ? options[:default_payloads] : [:git_branch]
   slack_payload = {}
   slack_payload['Release URL'] = options[:release_url] if options[:release_url] && !options[:release_url].empty?
+  slack_payloads.merge!(options[:additional_payloads]) if options[:additional_payloads]
 
   slack(
     message: slack_message,

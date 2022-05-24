@@ -1,6 +1,7 @@
 # rubocop:disable Layout/LineLength
 
 require 'uri'
+import "./helper.rb"
 
 desc 'Runs tests for a specific package'
 desc ''
@@ -23,7 +24,7 @@ desc ' * **`project_name`**: The name of the project'
 desc ' * **`destination`**: ..'
 lane :test_project do |options|
   clear_derived_data
-  
+
   # Remove any leftover reports before running so CI won't fail due to an existing file.
   # This also helps for local running this workflow frequently.
   sh("rm -rf #{ENV['PWD']}/build/reports")

@@ -3,7 +3,6 @@
 require 'spaceship'
 require 'uri'
 require 'json'
-import "helper.rb"
 
 desc 'Creates a new release candidate'
 desc ''

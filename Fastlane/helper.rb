@@ -24,6 +24,7 @@ end
 # It is required to create an incoming Webhook for Slack and set this as an environment variable `SLACK_URL`.
 #
 # ==== Options
+# * type - adds an emoji to easier identify the messages context ([:error, :info, :release_build, :submitted]).
 # * tag_name - adds the tag name at the end of the given slack message.
 # * success - was this build successful? (true/false) Default is true.
 # * default_payloads - Specifies default payloads to include. Pass an empty array to suppress all the default payloads ([:git_branch]).
@@ -31,7 +32,15 @@ end
 def slack_message(message, options = {})
   return if message.empty?
 
-  slack_message = message << (options[:tag_name] && !options[:tag_name].empty? ? " (#{options[:tag_name]})" : "")
+  supported_types = {
+    error: ":x: ",
+    info: ":large_blue_circle: ",
+    release_build: ":tada: ",
+    submitted: ":rocket: "
+  }
+
+  slack_message_tag = " (#{options[:tag_name]})" if options[:tag_name] && !options[:tag_name].empty?
+  slack_message = "#{supported_types[options[:type]]}#{message}#{slack_message_tag}"
   slack_success = !!options[:success] == options[:success] ? options[:success] : true
   default_payloads = options[:default_payloads] ? options[:default_payloads] : [:git_branch]
   slack_payload = {}

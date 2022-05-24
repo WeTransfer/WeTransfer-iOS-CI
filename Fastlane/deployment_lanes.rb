@@ -35,7 +35,7 @@ lane :beta do |options|
     tag_name = create_tag_name(xcodeproj: xcodeproj, target: target)
     cancel_message = 'A new Release is cancelled as there are no changes since the last available tag.'
     UI.important cancel_message
-    slack_message(":large_blue_circle: #{cancel_message}", tag_name: tag_name, default_payloads: [])
+    slack_message(cancel_message, type: :info, tag_name: tag_name, default_payloads: [])
     next
   end
 
@@ -108,7 +108,7 @@ lane :beta do |options|
 
   success_message = 'A new Release Candidate has been published.'
   UI.success "#{success_message} (#{tag_name})"
-  slack_message(":tada: #{success_message}", tag_name: tag_name, release_url: release_url)
+  slack_message(success_message, type: :release_build, tag_name: tag_name, release_url: release_url)
 end
 
 desc 'Creates a new App Store Release'
@@ -292,7 +292,7 @@ lane :release do |options|
     release_type = is_hotfix ? 'hotfix' : 'release'
     success_message = "A new #{release_type} has been submitted to the App Store."
     UI.success "#{success_message} (#{tag_name})"
-    slack_message(":rocket: #{success_message}", tag_name: tag_name, release_url: release_url)
+    slack_message(success_message, type: :submitted, tag_name: tag_name, release_url: release_url)
   rescue StandardError => e
     UI.error e
   end

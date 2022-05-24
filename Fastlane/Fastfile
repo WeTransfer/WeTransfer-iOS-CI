@@ -1,7 +1,6 @@
 # rubocop:disable Layout/LineLength
 
 require 'uri'
-import "./helper.rb"
 
 desc 'Runs tests for a specific package'
 desc ''

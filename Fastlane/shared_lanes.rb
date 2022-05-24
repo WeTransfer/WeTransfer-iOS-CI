@@ -36,29 +36,10 @@ lane :latest_github_release do
   result[:json]['tag_name']
 end
 
-desc 'Posts a message about the status of a build to Slack'
-desc 'It is required to create an incoming Webhook for Slack and set this as an environment variable `SLACK_URL`'
-desc ''
-desc '#### Options'
-desc ' * **`message**`: The message to post to Slack'
-desc ' * **`tag_name**`: The name of the tag associated with the build'
-desc ' * **`release_url`**: The url to a GH release.'
-desc ''
-lane :slack_message do |options|
-  slack(
-    message: "#{options[:message]} (#{options[:tag_name]})",
-    success: true,
-    default_payloads: %i[git_branch last_git_commit_message],
-    payload: {
-      'Release URL' => options[:release_url]
-    }
-  )
-end
-
 desc 'Runs danger locally for the given PR ID.'
 lane :run_danger_locally do
   pr_id = prompt(text: 'Enter the pull request identifier: ', ci_input: "3")
-  
+
   origin_name = git_repository_name.split('/')
   organisation = origin_name[0]
   repository = origin_name[1]
@@ -67,7 +48,7 @@ lane :run_danger_locally do
   ENV["BITRISEIO_GIT_REPOSITORY_OWNER"] = organisation
   ENV["BITRISEIO_GIT_REPOSITORY_SLUG"] = repository
   ENV["BITRISE_PULL_REQUEST"] = pr_id
-  
+
   # By changing directory into WeTransfer-iOS-CI, we can run Danger from there.
   # Caching is still done per repository which is why we add the build and cache paths.
   # --cwd makes sure to run Danger in the current repository directory

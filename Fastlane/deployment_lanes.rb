@@ -3,6 +3,7 @@
 require 'spaceship'
 require 'uri'
 require 'json'
+import "helper.rb"
 
 desc 'Creates a new release candidate'
 desc ''
@@ -34,7 +35,7 @@ lane :beta do |options|
     tag_name = create_tag_name(xcodeproj: xcodeproj, target: target)
     cancel_message = 'A new Release is cancelled as there are no changes since the last available tag.'
     UI.important cancel_message
-    slack_message(message: cancel_message, tag_name: tag_name)
+    slack_message(cancel_message, type: :info, tag_name: tag_name, default_payloads: [])
     next
   end
 
@@ -106,8 +107,8 @@ lane :beta do |options|
   end
 
   success_message = 'A new Release Candidate has been published.'
-  UI.success "#{success_message} #{tag_name}"
-  slack_message(message: success_message, tag_name: tag_name, release_url: release_url)
+  UI.success "#{success_message} (#{tag_name})"
+  slack_message(success_message, type: :release_build, tag_name: tag_name, release_url: release_url)
 end
 
 desc 'Creates a new App Store Release'
@@ -289,7 +290,9 @@ lane :release do |options|
     # upload_dsyms
 
     release_type = is_hotfix ? 'hotfix' : 'release'
-    slack_message(message: "A new #{release_type} has been submitted to the App Store.", tag_name: tag_name, release_url: release_url)
+    success_message = "A new #{release_type} has been submitted to the App Store."
+    UI.success "#{success_message} (#{tag_name})"
+    slack_message(success_message, type: :submitted, tag_name: tag_name, release_url: release_url)
   rescue StandardError => e
     UI.error e
   end
@@ -535,22 +538,4 @@ private_lane :create_tag_name do |options|
   version_number = get_version_number(xcodeproj: options[:xcodeproj], target: options[:target])
   build_number = get_build_number(xcodeproj: options[:xcodeproj])
   tag_name = version_number + 'b' + build_number
-end
-
-## Helper
-
-# Checks if the current environment is CI.
-def is_running_on_CI(options)
-  options[:ci] || ENV['CI'] == 'true'
-end
-
-# Truncates a given string to a certain length and adds a truncation mark in the
-# end if the string is long enough.
-def truncate(string, max)
-  truncation_mark = '...'
-  if string.length > max
-    max > truncation_mark.length ? "#{string[0...max-truncation_mark.length]}#{truncation_mark}" : "#{string[0...max]}"
-  else
-    string
-  end
 end

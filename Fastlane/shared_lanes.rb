@@ -116,3 +116,18 @@ def slack_message(message, options = {})
     payload: slack_payload
   )
 end
+
+# Shared method for handling errors that are being raised during fastlane deployment.
+# Errors being raised on the test lane (PR tests) will be ignore, because they could lead to too much spam on the slack channel.
+def handle_error(lane, exception)
+  return if lane == :test # Do not report errors on PR tests.
+  slack_message(
+    "Something went wrong with the deployment on lane: #{lane}.",
+    type: :error,
+    success: false,
+    additional_payloads: {
+      "Bitrise build" => ENV['BITRISE_BUILD_URL'],
+      "Error Info" => exception.error_info.to_s
+    }
+  )
+end

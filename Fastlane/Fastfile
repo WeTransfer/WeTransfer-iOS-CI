@@ -190,3 +190,12 @@ lane :pr_changes_contains_path do |options|
 
   changes_contains_path
 end
+
+error do |lane, exception|
+  # Makes sure we clean up the tag and the release branch if release_from_tag failed, to allow future releases
+  if lane.eql?(:release_from_tag)
+    latest_tag = ENV['BITRISE_GIT_TAG']
+    sh "git push origin --delete release/#{latest_tag}"
+    sh "git push origin --delete #{latest_tag}"
+  end
+end

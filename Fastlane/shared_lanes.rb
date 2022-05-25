@@ -96,7 +96,7 @@ def slack_message(message, options = {})
 
   supported_types = {
     error: ":x: ",
-    info: ":large_blue_circle: ",
+    info: ":information_source: ",
     release_build: ":tada: ",
     submitted: ":rocket: "
   }

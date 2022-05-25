@@ -193,8 +193,19 @@ end
 
 lane :clean_up_release_from_tag do |options|
   latest_tag = ENV['BITRISE_GIT_TAG']
-  sh "git push origin --delete release/#{latest_tag}"
-  sh "git push origin --delete #{latest_tag}"
+
+  latest_release_branch = "release/#{latest_tag}"
+  if `git ls-remote --heads origin #{latest_release_branch}`.empty?
+    puts "Branch #{latest_release_branch} doesn't exist. Nothing to delete."
+  else
+    sh "git push origin --delete #{latest_release_branch}"
+  end
+
+  if `git ls-remote --tags origin #{latest_tag}`.empty?
+    puts "Tag #{latest_tag} doesn't exist. Nothing to delete."
+  else
+    sh "git push origin --delete #{latest_tag}"
+  end
 end
 
 error do |lane, exception|

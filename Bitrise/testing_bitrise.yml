@@ -15,7 +15,7 @@ workflows:
             #!/bin/bash
 
             # We can have both HTTPS and SSH urls.
-            # HTTS: https://github.com/WeTransfer/WeTransfer-iOS-CI.git
+            # HTTPS: https://github.com/WeTransfer/WeTransfer-iOS-CI.git
             # SSH: git@github.com:WeTransfer/Mule.git
             #
             # Given the difference in URLs, the shared component is the last one (e.g. Mule.git).

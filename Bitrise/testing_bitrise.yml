@@ -28,7 +28,7 @@ workflows:
             #   - Input: IC-SOi-refsnarTeW/refsnarTeW/moc
             #   - Sectioned: [1: IC-SOi-refsnarTeW]/[2: refsnarTeW]/[3: moc]
             # And lastly, we revert the result one more time, as the result will be reversed otherwise.
-            REPOSITORY_NAME=$(cut -d '/' -f1 <<< $(cut -d '.' -f2 <<< ${GIT_REPOSITORY_URL} | rev) | rev)
+            REPOSITORY_NAME=$(echo ${GIT_REPOSITORY_URL} | rev | cut -d '.' -f2 | cut -d '/' -f1 | rev)
             ISSUE_URL="https://api.github.com/repos/${BITRISEIO_GIT_REPOSITORY_OWNER}/${REPOSITORY_NAME}/issues/${BITRISE_PULL_REQUEST}"
             HEADER="Accept: application/vnd.github.v3+json"
 

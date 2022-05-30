@@ -117,10 +117,33 @@ def slack_message(message, options = {})
   )
 end
 
+lane :clean_up_release_from_tag do |options|
+  latest_tag = ENV['BITRISE_GIT_TAG']
+
+  latest_release_branch = "release/#{latest_tag}"
+  if `git ls-remote --heads origin #{latest_release_branch}`.empty?
+    puts "Branch #{latest_release_branch} doesn't exist. Nothing to delete."
+  else
+    sh "git push origin --delete #{latest_release_branch}"
+  end
+
+  if `git ls-remote --tags origin #{latest_tag}`.empty?
+    puts "Tag #{latest_tag} doesn't exist. Nothing to delete."
+  else
+    sh "git push origin --delete #{latest_tag}"
+  end
+end
+
 # Shared method for handling errors that are being raised during fastlane deployment.
 # Errors being raised on the test lane (PR tests) will be ignore, because they could lead to too much spam on the slack channel.
 def handle_error(lane, exception)
   return if lane == :test # Do not report errors on PR tests.
+
+  # Makes sure we clean up the tag and the release branch if release_from_tag failed, to allow future releases
+  if lane.eql?(:release_from_tag)
+    clean_up_release_from_tag
+  end
+
   slack_message(
     "Something went wrong with the deployment on lane: #{lane}.",
     type: :error,

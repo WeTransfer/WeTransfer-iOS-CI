@@ -191,26 +191,6 @@ lane :pr_changes_contains_path do |options|
   changes_contains_path
 end
 
-lane :clean_up_release_from_tag do |options|
-  latest_tag = ENV['BITRISE_GIT_TAG']
-
-  latest_release_branch = "release/#{latest_tag}"
-  if `git ls-remote --heads origin #{latest_release_branch}`.empty?
-    puts "Branch #{latest_release_branch} doesn't exist. Nothing to delete."
-  else
-    sh "git push origin --delete #{latest_release_branch}"
-  end
-
-  if `git ls-remote --tags origin #{latest_tag}`.empty?
-    puts "Tag #{latest_tag} doesn't exist. Nothing to delete."
-  else
-    sh "git push origin --delete #{latest_tag}"
-  end
-end
-
 error do |lane, exception|
-  # Makes sure we clean up the tag and the release branch if release_from_tag failed, to allow future releases
-  if lane.eql?(:release_from_tag)
-    clean_up_release_from_tag
-  end
+  handle_error(lane, exception)
 end

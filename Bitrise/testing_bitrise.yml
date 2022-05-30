@@ -14,7 +14,7 @@ workflows:
         - content: |-
             #!/bin/bash
 
-            REPOSITORY_NAME=$(cut -d '.' -f1 <<< $(cut -d '/' -f2 <<< ${GIT_REPOSITORY_URL}))
+            REPOSITORY_NAME=$(cut -d '/' -f1 <<< $(cut -d '.' -f2 <<< ${GIT_REPOSITORY_URL} | rev) | rev)
             ISSUE_URL="https://api.github.com/repos/${BITRISEIO_GIT_REPOSITORY_OWNER}/${REPOSITORY_NAME}/issues/${BITRISE_PULL_REQUEST}"
             HEADER="Accept: application/vnd.github.v3+json"
 

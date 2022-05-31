@@ -122,13 +122,13 @@ lane :clean_up_release_from_tag do |options|
 
   latest_release_branch = "release/#{latest_tag}"
   if `git ls-remote --heads origin #{latest_release_branch}`.empty?
-    puts "Branch #{latest_release_branch} doesn't exist. Nothing to delete."
+    UI.message "Branch #{latest_release_branch} doesn't exist. Nothing to delete."
   else
     sh "git push origin --delete #{latest_release_branch}"
   end
 
   if `git ls-remote --tags origin #{latest_tag}`.empty?
-    puts "Tag #{latest_tag} doesn't exist. Nothing to delete."
+    UI.message "Tag #{latest_tag} doesn't exist. Nothing to delete."
   else
     sh "git push origin --delete #{latest_tag}"
   end
@@ -140,7 +140,7 @@ def handle_error(lane, exception)
   return if lane == :test # Do not report errors on PR tests.
 
   # Makes sure we clean up the tag and the release branch if release_from_tag failed, to allow future releases
-  if lane.eql?(:release_from_tag)
+  if lane == :release_from_tag
     clean_up_release_from_tag
   end
 

@@ -191,6 +191,7 @@ lane :pr_changes_contains_path do |options|
   changes_contains_path
 end
 
+# This block will get executed when an error occurs, in any of the blocks (before_all, the lane itself or after_all).
 error do |lane, exception|
   handle_error(lane, exception)
 end

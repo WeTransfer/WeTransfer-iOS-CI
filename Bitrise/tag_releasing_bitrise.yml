@@ -44,6 +44,15 @@ workflows:
             # Use the environment FASTLANE_TAG_RELEASE_LANE if available. Otherwise, fallback to "release_from_tag"
             lane=${FASTLANE_TAG_RELEASE_LANE:=release_from_tag}
             fastlane $lane
+    - script:
+        title: Clean up after failure
+        is_always_run: true
+        run_if: .IsBuildFailed
+        inputs:
+        - content: |-
+            #!/usr/bin/env bash
+
+            fastlane clean_up_release_from_tag
     - cache-push:
         run_if: true
         inputs:

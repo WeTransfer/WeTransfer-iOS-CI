@@ -140,9 +140,7 @@ def handle_error(lane, exception)
   return if lane == :test # Do not report errors on PR tests.
 
   # Makes sure we clean up the tag and the release branch if release_from_tag failed, to allow future releases
-  if lane == :release_from_tag
-    clean_up_release_from_tag
-  end
+  clean_up_release_from_tag if lane == :release_from_tag
 
   slack_message(
     "Something went wrong with the deployment on lane: #{lane}.",

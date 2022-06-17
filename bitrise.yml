@@ -74,3 +74,11 @@ workflows:
         title: New marketing version
         inputs:
         - content: ./Submodules/WeTransfer-iOS-CI/bin/new_marketing_version.sh
+    - script:
+        title: TestFlight release
+        inputs:
+        - content: |-
+            #!/bin/bash
+            set -ex
+
+            bitrise run --config ./bitrise.yml "TestFlight_Release"

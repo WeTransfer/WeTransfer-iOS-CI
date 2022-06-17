@@ -69,9 +69,7 @@ workflows:
             bitrise run --config ./Bitrise/tag_releasing_bitrise.yml "${BITRISE_TRIGGERED_WORKFLOW_ID}"
   update_marketing_version:
     steps:
-    - activate-ssh-key:
-        run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
-    - git-clone: {}
+    # This step expects `activate-ssh-key` and `git-clone` to be run beforehand
     - script:
         title: New marketing version
         inputs:

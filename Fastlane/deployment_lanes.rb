@@ -172,7 +172,7 @@ lane :release do |options|
 
     # Create a new Github Release, which also merges the Changelog.md
     tag_name = create_tag_name(xcodeproj: xcodeproj, target: target)
-    release_title = is_hotfix ? "#{tag_name} - App Store Hotfix Release" : "#{tag_name} - Release"
+    release_title = is_hotfix ? "#{tag_name} - Release (hotfix)" : "#{tag_name} - Release"
 
     # Push the changes to our release branch so we can create a tag from it
     sh 'git commit -a -m "Created a new release"'

@@ -12,8 +12,5 @@ if [ -z "$CI" ]; then
         xcrun --sdk macosx mint bootstrap -m $MINT_FILE_PATH
     fi
 
-    git diff --diff-filter=d --staged --name-only | grep -e '\(.*\).swift$' | while read file; do
-        xcrun --sdk macosx mint run -m $MINT_FILE_PATH $SWIFT_FORMAT --config "$BASEDIR/.swiftformat" "${file}";
-        git add "$file";
-    done
+    xcrun --sdk macosx mint run -m $MINT_FILE_PATH $SWIFT_FORMAT --config "$BASEDIR/.swiftformat" .
 fi

@@ -32,7 +32,7 @@ lane :beta do |options|
 
   if is_changed_since_last_tag == false
     tag_name = create_tag_name(xcodeproj: xcodeproj, target: target)
-    cancel_message = 'A new Release is cancelled as there are no changes since the last available tag.'
+    cancel_message = 'A new Beta build has been cancelled as there are no changes since the last available tag.'
     UI.important cancel_message
     slack_message(cancel_message, type: :info, tag_name: tag_name, default_payloads: [])
     next
@@ -105,7 +105,7 @@ lane :beta do |options|
     UI.important "TestFlight delivery failed because a build is already in review, but continuing anyway!"
   end
 
-  success_message = 'A new Release Candidate has been published.'
+  success_message = 'A new Beta has been published.'
   UI.success "#{success_message} (#{tag_name})"
   slack_message(success_message, type: :release_build, tag_name: tag_name, release_url: release_url)
 end
@@ -288,7 +288,7 @@ lane :release do |options|
     # Currently doesn't work because as you can't download dsyms with an API key
     # upload_dsyms
 
-    release_type = is_hotfix ? 'hotfix' : 'release'
+    release_type = is_hotfix ? 'Release (hotfix)' : 'Release'
     success_message = "A new #{release_type} has been submitted to the App Store."
     UI.success "#{success_message} (#{tag_name})"
     slack_message(success_message, type: :submitted, tag_name: tag_name, release_url: release_url)

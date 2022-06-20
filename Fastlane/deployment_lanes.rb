@@ -255,7 +255,7 @@ lane :release do |options|
         demo_account_password: options[:demo_account_password] || ENV['BETA_DEMO_ACCOUNT_PASSWORD']
       },
       skip_waiting_for_build_processing: false,
-      skip_submission: true,
+      skip_submission: false, # Ensure distributing the release build to TestFlight groups.
       groups: testflight_groups,
       changelog: truncated_changelog,
       team_id: options[:team_id] || ENV['FASTLANE_ITC_TEAM_ID'],

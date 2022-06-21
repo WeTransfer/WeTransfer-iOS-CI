@@ -32,7 +32,7 @@ lane :beta do |options|
 
   if is_changed_since_last_tag == false
     tag_name = create_tag_name(xcodeproj: xcodeproj, target: target)
-    cancel_message = 'A new Release is cancelled as there are no changes since the last available tag.'
+    cancel_message = 'A new Beta build has been cancelled as there are no changes since the last available tag.'
     UI.important cancel_message
     slack_message(cancel_message, type: :info, tag_name: tag_name, default_payloads: [])
     next
@@ -74,7 +74,7 @@ lane :beta do |options|
 
   # Create a new GitHub release
   last_non_candidate_tag = latest_github_non_candidate_tag
-  release_title = "#{tag_name} - App Store Release Candidate"
+  release_title = "#{tag_name} - Beta"
   release_output = sh("mint run --silent gitbuddy release -l #{last_non_candidate_tag} -b develop --skip-comments --json --use-pre-release --target-commitish #{branch_name} --tag-name #{tag_name} --release-title '#{release_title}'")
   release_json = JSON.parse(release_output)
 
@@ -105,7 +105,7 @@ lane :beta do |options|
     UI.important "TestFlight delivery failed because a build is already in review, but continuing anyway!"
   end
 
-  success_message = 'A new Release Candidate has been published.'
+  success_message = 'A new Beta has been published.'
   UI.success "#{success_message} (#{tag_name})"
   slack_message(success_message, type: :release_build, tag_name: tag_name, release_url: release_url)
 end
@@ -172,7 +172,7 @@ lane :release do |options|
 
     # Create a new Github Release, which also merges the Changelog.md
     tag_name = create_tag_name(xcodeproj: xcodeproj, target: target)
-    release_title = is_hotfix ? "#{tag_name} - App Store Hotfix Release" : "#{tag_name} - App Store Release"
+    release_title = is_hotfix ? "#{tag_name} - Release (hotfix)" : "#{tag_name} - Release"
 
     # Push the changes to our release branch so we can create a tag from it
     sh 'git commit -a -m "Created a new release"'
@@ -288,7 +288,7 @@ lane :release do |options|
     # Currently doesn't work because as you can't download dsyms with an API key
     # upload_dsyms
 
-    release_type = is_hotfix ? 'hotfix' : 'release'
+    release_type = is_hotfix ? 'Release (hotfix)' : 'Release'
     success_message = "A new #{release_type} has been submitted to the App Store."
     UI.success "#{success_message} (#{tag_name})"
     slack_message(success_message, type: :submitted, tag_name: tag_name, release_url: release_url)

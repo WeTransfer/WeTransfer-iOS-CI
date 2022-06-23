@@ -113,7 +113,11 @@ def slack_message(message, options = {})
     message: slack_message,
     success: slack_success,
     default_payloads: default_payloads,
-    payload: slack_payload
+    payload: slack_payload,
+    attachment_properties: {
+      author_name: "Fastlane (iOS)",
+      author_icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Apple_Computer_Logo_rainbow.svg/206px-Apple_Computer_Logo_rainbow.svg.png"
+    }
   )
 end
 

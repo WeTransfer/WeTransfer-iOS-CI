@@ -292,8 +292,10 @@ lane :release do |options|
     success_message = "A new #{release_type} has been submitted to the App Store."
     UI.success "#{success_message} (#{tag_name})"
     slack_message(success_message, type: :submitted, tag_name: tag_name, release_url: release_url)
-  rescue StandardError => e
-    UI.error e
+
+  rescue StandardError => exception
+    UI.error exception
+    handle_error(:release, exception)
   end
 end
 

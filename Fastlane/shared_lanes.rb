@@ -107,7 +107,7 @@ def slack_message(message, options = {})
   default_payloads = options[:default_payloads] ? options[:default_payloads] : [:git_branch]
   slack_payload = {}
   slack_payload['Release URL'] = options[:release_url] if options[:release_url] && !options[:release_url].empty?
-  slack_payloads.merge!(options[:additional_payloads]) if options[:additional_payloads]
+  slack_payload.merge!(options[:additional_payloads]) if options[:additional_payloads]
 
   slack(
     message: slack_message,

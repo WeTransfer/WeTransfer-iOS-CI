@@ -148,7 +148,7 @@ def handle_error(lane, exception)
     success: false,
     additional_payloads: {
       "Bitrise build" => ENV['BITRISE_BUILD_URL'],
-      "Error Info" => exception.error_info.to_s
+      "Error Info" => exception.to_s
     }
   )
 end

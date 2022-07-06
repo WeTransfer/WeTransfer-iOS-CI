@@ -138,8 +138,13 @@ public enum WeTransferPRLinter {
         using danger: DangerDSL,
         environmentVariables: [String: String] = ProcessInfo.processInfo.environment
     ) {
-        print(environmentVariables["BITRISE_PERMANENT_DOWNLOAD_URL_MAP"])
-        guard let url = environmentVariables["SIMULATOR_BUILD_DOWNLOAD_URL"] else {
+        // Sample value in BITRISE_PERMANENT_DOWNLOAD_URL_MAP:
+        // "Transfer.app.zip=>https://..."
+        guard let map = environmentVariables["BITRISE_PERMANENT_DOWNLOAD_URL_MAP"]?.components(separatedBy: ","),
+              let targetName = environmentVariables["XCODE_TARGET"],
+              let simulatorBuildDownloadURL = map.first(where: { $0.hasPrefix("\(targetName).app.zip") }),
+              let url = simulatorBuildDownloadURL.components(separatedBy: "=>").last
+        else {
             print("Simulator build download URL not found")
             return
         }

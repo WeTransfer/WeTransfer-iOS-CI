@@ -121,13 +121,7 @@ workflows:
         - is_enable_public_page: 'false'
         - is_compress: 'true'
         - debug_mode: 'true'
-        - deploy_path: build/derived_data/Build/Products/Debug-iphonesimulator/${XCODE_SCHEME}.app/
-    - script:
-        title: Make Simulator Build Download URL available
-        inputs:
-        - content: |-
-            #!/usr/bin/env bash
-            export SIMULATOR_BUILD_DOWNLOAD_URL=BITRISE_PERMANENT_DOWNLOAD_URL_MAP["${XCODE_SCHEME}.app.zip"]    
+        - deploy_path: build/derived_data/Build/Products/Debug-iphonesimulator/${XCODE_TARGET}.app/  
     - script:
         title: Run Danger
         deps:

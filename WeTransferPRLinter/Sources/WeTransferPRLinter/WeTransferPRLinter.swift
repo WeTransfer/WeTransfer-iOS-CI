@@ -39,6 +39,10 @@ public enum WeTransferPRLinter {
             showBitriseBuildURL(using: danger, environmentVariables: environmentVariables)
         }
 
+        measure(taskName: "Simulator Download URL showing") {
+            showSimulatorBuildDownloadURL(using: danger, environmentVariables: environmentVariables)
+        }
+
         measure(taskName: "SwiftLint") {
             swiftLint(using: danger, executor: swiftLintExecutor, configsFolderPath: swiftLintConfigsFolderPath, fileManager: fileManager)
         }
@@ -127,6 +131,18 @@ public enum WeTransferPRLinter {
             return
         }
         danger.message("View more details on <a href=\"\(bitriseURL)\" target=\"_blank\">Bitrise</a>")
+    }
+
+    /// Show the simulator build download URL.
+    static func showSimulatorBuildDownloadURL(
+        using danger: DangerDSL,
+        environmentVariables: [String: String] = ProcessInfo.processInfo.environment
+    ) {
+        guard let url = environmentVariables["BITRISE_PERMANENT_DOWNLOAD_URL_MAP"] else {
+            print("Simulator build download URL not found")
+            return
+        }
+        danger.message("Download <a href=\"\(url)\" target=\"_blank\">Simulator Build</a>")
     }
 
     /// Triggers SwiftLint.

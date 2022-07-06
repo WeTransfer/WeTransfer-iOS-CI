@@ -93,7 +93,7 @@ workflows:
             fi
 
             # Get the latest master branch for WeTransfer-iOS-CI if the submodule exists
-            git submodule update --remote --no-fetch Submodules/WeTransfer-iOS-CI
+            # git submodule update --remote --no-fetch Submodules/WeTransfer-iOS-CI
         title: Update WeTransfer-iOS-CI submodule
     - script:
         run_if: .IsCI
@@ -113,6 +113,15 @@ workflows:
             # Use the environment FASTLANE_LANE if available. Otherwise, fallback to "test"
             lane=${FASTLANE_LANE:=test}
             fastlane $lane
+    - deploy-to-bitrise-io@2:
+        title: Deploy Simulator Build to Bitrise
+        is_skippable: true
+        inputs:
+        - notify_user_groups: none
+        - is_enable_public_page: 'false'
+        - is_compress: 'true'
+        - debug_mode: 'true'
+        - deploy_path: build/derived_data/Build/Products/Debug-iphonesimulator/${XCODE_SCHEME}.app/
     - script:
         title: Run Danger
         deps:

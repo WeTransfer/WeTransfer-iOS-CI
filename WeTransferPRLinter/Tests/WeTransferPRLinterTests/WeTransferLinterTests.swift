@@ -125,6 +125,19 @@ final class WeTransferLinterTests: XCTestCase {
         XCTAssertEqual(danger.messages.first?.message, "View more details on <a href=\"\(bitriseURL)\" target=\"_blank\">Bitrise</a>")
     }
 
+    /// It should show the Simulator Build Download URL if it's set.
+    func testSimulatorBuildDownloadURL() {
+        let danger = DangerDSL(testSettings: [:])
+        let url = "https://example.com"
+        let targetName = "TargetName"
+        WeTransferPRLinter.showSimulatorBuildDownloadURL(using: danger, environmentVariables: [
+            "BITRISE_PERMANENT_DOWNLOAD_URL_MAP": "\(targetName).app.zip=>\(url)",
+            "XCODE_TARGET": targetName
+        ])
+        XCTAssertEqual(danger.messages.count, 1)
+        XCTAssertEqual(danger.messages.first?.message, "Download <a href=\"\(url)\" target=\"_blank\">Simulator Build</a>")
+    }
+
     /// It should not trigger SwiftLint if there's no files to lint.
     func testSwiftLintSkippingForNoSwiftFiles() {
         let danger = githubWithFilesDSL(created: ["Changelog.md", "RubyTests.rb"], fileMap: [:])

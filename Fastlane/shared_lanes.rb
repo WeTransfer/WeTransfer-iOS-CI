@@ -64,8 +64,8 @@ end
 ## Helper
 
 # Checks if the current environment is CI.
-def is_running_on_CI(options)
-  options[:ci] || ENV['CI'] == 'true'
+def is_running_on_CI(options = nil)
+  (options != nil ? options[:ci] : false) || ENV['CI'] == 'true'
 end
 
 # Truncates a given string to a certain length and adds a truncation mark in the

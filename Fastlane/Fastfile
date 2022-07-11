@@ -24,9 +24,10 @@ desc ' * **`destination`**: ..'
 lane :test_project do |options|
   clear_derived_data
 
-  # Remove any leftover reports before running so CI won't fail due to an existing file.
-  # This also helps for local running this workflow frequently.
-  sh("rm -rf #{ENV['PWD']}/build/reports")
+  if is_running_on_CI(options) == false
+    # Remove any leftover reports before running so local runs won't fail due to an existing file.
+    sh("rm -rf #{ENV['PWD']}/build/reports")
+  end
 
   # Set timeout to prevent xcodebuild -list -project to take to much retries.
   ENV['FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT'] = '30'
@@ -77,9 +78,10 @@ end
 
 desc 'Tests the WeTransferPRLinter Swift Package'
 lane :test_pr_linter do
-  # Remove any leftover reports before running so CI won't fail due to an existing file.
-  # This also helps for local running this workflow frequently.
-  sh("rm -rf #{ENV['PWD']}/build/reports")
+  if is_running_on_CI(options) == false
+    # Remove any leftover reports before running so local runs won't fail due to an existing file.
+    sh("rm -rf #{ENV['PWD']}/build/reports")
+  end
 
   test_package(
         package_name: 'WeTransferPRLinter',

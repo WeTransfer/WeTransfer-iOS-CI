@@ -448,7 +448,7 @@ private_lane :current_preparing_app_version do |options|
     next
   end
 
-  UI.message "Latest perparing version is #{app.get_edit_app_store_version.version_string}"
+  UI.message "Latest preparing version is #{app.get_edit_app_store_version.version_string}"
 
   app.get_edit_app_store_version.version_string
 end

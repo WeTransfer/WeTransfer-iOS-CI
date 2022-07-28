@@ -516,7 +516,6 @@ private_lane :latest_github_release_tag do
     http_method: 'GET',
     path: "/repos/#{organisation}/#{repository}/releases?per_page=100"
   )
-  print result[:json]
   latest_release = result[:json].find { |release| !release['name'].downcase.include? 'beta' }
   UI.message "Found latest release version: #{latest_release['tag_name']}"
   latest_release['tag_name']

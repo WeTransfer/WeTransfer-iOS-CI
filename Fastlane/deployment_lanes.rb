@@ -73,7 +73,7 @@ lane :beta do |options|
   end
 
   # Create a new GitHub release
-  last_non_candidate_tag = latest_github_non_candidate_tag
+  last_non_candidate_tag = latest_github_release_tag
   release_title = "#{tag_name} - Beta"
   release_output = sh("mint run --silent gitbuddy release -l #{last_non_candidate_tag} -b develop --skip-comments --json --use-pre-release --target-commitish #{branch_name} --tag-name #{tag_name} --release-title '#{release_title}'")
   release_json = JSON.parse(release_output)
@@ -168,7 +168,7 @@ lane :release do |options|
     sh 'git submodule sync && git submodule update --init --recursive && git submodule update --remote --no-fetch ../Submodules/WeTransfer-iOS-CI'
 
     update_build_number(xcodeproj: xcodeproj, target: target)
-    last_non_candidate_tag = latest_github_non_candidate_tag
+    last_non_candidate_tag = latest_github_release_tag
 
     # Create a new Github Release, which also merges the Changelog.md
     tag_name = create_tag_name(xcodeproj: xcodeproj, target: target)
@@ -500,8 +500,8 @@ private_lane :ensure_release_is_needed do |options|
   end
 end
 
-desc 'Get latest release from Github that is not a prelease or release candidate'
-private_lane :latest_github_non_candidate_tag do
+desc 'Get latest release from Github that is not a beta'
+private_lane :latest_github_release_tag do
   origin_name = git_repository_name.split('/')
   organisation = origin_name[0]
   repository = origin_name[1]
@@ -516,7 +516,8 @@ private_lane :latest_github_non_candidate_tag do
     http_method: 'GET',
     path: "/repos/#{organisation}/#{repository}/releases?per_page=100"
   )
-  latest_release = result[:json].find { |release| !release['name'].downcase.include? 'candidate' }
+  latest_release = result[:json].find { |release| !release['name'].downcase.include? 'beta' }
+  UI.message "Found latest release version: #{latest_release['tag_name']}"
   latest_release['tag_name']
 end
 

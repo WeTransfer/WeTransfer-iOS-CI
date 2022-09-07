@@ -312,7 +312,7 @@ lane :appium_build do |options|
   ENV['FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT'] = '120'
   ENV['FASTLANE_XCODE_LIST_TIMEOUT'] = '120'
 
-  certs(app_identifier: options[:app_identifiers] || ENV['APP_IDENTIFIERS'], type: 'development') if is_running_on_CI(options)
+  install_certs
 
   gym(
     scheme: scheme,
@@ -323,6 +323,12 @@ lane :appium_build do |options|
   )
 
   UI.message "IPA saved at #{ENV['IPA_OUTPUT_PATH']}"
+end
+
+desc 'Just install the certs onto bitrise so this can build for test lab'
+lane :install_certs do
+  clear_derived_data
+  certs(app_identifier: options[:app_identifiers] || ENV['APP_IDENTIFIERS'], type: 'development') if is_running_on_CI(options)
 end
 
 desc 'Generates a JWT token used for JWT authorization with the App Store Connect API.'

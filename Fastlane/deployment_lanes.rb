@@ -325,7 +325,7 @@ lane :appium_build do |options|
   UI.message "IPA saved at #{ENV['IPA_OUTPUT_PATH']}"
 end
 
-desc 'Just install the certs onto bitrise so this can build for test lab'
+desc 'install the certificates onto Bitrise so this can build for test lab'
 lane :install_certs do
   clear_derived_data
   certs(app_identifier: options[:app_identifiers] || ENV['APP_IDENTIFIERS'], type: 'development') if is_running_on_CI(options)

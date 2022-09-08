@@ -326,7 +326,7 @@ lane :appium_build do |options|
 end
 
 desc 'install the certificates onto Bitrise so this can build for test lab'
-lane :install_certs do
+lane :install_certificates do
   clear_derived_data
   certs(app_identifier: options[:app_identifiers] || ENV['APP_IDENTIFIERS'], type: 'development') if is_running_on_CI(options)
 end

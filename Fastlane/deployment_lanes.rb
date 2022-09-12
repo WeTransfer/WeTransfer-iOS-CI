@@ -312,7 +312,7 @@ lane :appium_build do |options|
   ENV['FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT'] = '120'
   ENV['FASTLANE_XCODE_LIST_TIMEOUT'] = '120'
 
-  install_certificates
+  install_certificates(options)
 
   gym(
     scheme: scheme,
@@ -326,7 +326,7 @@ lane :appium_build do |options|
 end
 
 desc 'install the certificates onto Bitrise so this can build for firebase test lab'
-lane :install_certificates do
+lane :install_certificates do |options|
   certs(app_identifier: options[:app_identifiers] || ENV['APP_IDENTIFIERS'], type: 'development') if is_running_on_CI(options)
 end
 

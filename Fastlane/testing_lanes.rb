@@ -32,7 +32,7 @@ lane :test_project do |options|
   ENV['FASTLANE_XCODE_LIST_TIMEOUT'] = '30'
 
   begin
-    device = options[:device] || 'iPhone 13'
+    device = options[:device] || 'iPhone 14'
 
     if options[:package_path].nil?
       project_path = "#{options[:project_path]}#{options[:project_name]}.xcodeproj"

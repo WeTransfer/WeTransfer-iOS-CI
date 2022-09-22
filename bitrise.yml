@@ -67,18 +67,3 @@ workflows:
             #!/bin/bash
             set -ex
             bitrise run --config ./Bitrise/tag_releasing_bitrise.yml "${BITRISE_TRIGGERED_WORKFLOW_ID}"
-  update_marketing_version:
-    steps:
-    # This step expects `activate-ssh-key` and `git-clone` to be run beforehand
-    - script:
-        title: New marketing version
-        inputs:
-        - content: ./Submodules/WeTransfer-iOS-CI/scripts/new_marketing_version.sh
-    - script:
-        title: TestFlight release
-        inputs:
-        - content: |-
-            #!/bin/bash
-            set -ex
-
-            bitrise run --config ./bitrise.yml "TestFlight_Release"

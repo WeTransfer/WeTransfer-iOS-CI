@@ -67,7 +67,7 @@ lane :beta do |options|
   authenticate(use_app_manager_role: true)
 
   # Get the name of the current git branch.
-  branch_name = ENV['BITRISE_GIT_BRANCH']
+  branch_name = options[:branch] || ENV['BITRISE_GIT_BRANCH']
   if branch_name.nil? || branch_name.empty?
     branch_name = git_branch
   end

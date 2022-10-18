@@ -54,7 +54,7 @@ lane :test_project do |options|
       suppress_xcode_output: false,
       buildlog_path: ENV['BITRISE_DEPLOY_DIR'],
       prelaunch_simulator: true,
-      xcargs: "-clonedSourcePackagesDirPath #{sourcePackagesDir} -parallel-testing-enabled NO -retry-tests-on-failure -test-iterations 3",
+      xcargs: "-clonedSourcePackagesDirPath #{sourcePackagesDir} -parallel-testing-enabled NO -retry-tests-on-failure -test-iterations 3 #{ENV['EXTRA_XCARGS']}",
       include_simulator_logs: false, # Needed for this: https://github.com/fastlane/fastlane/issues/8909
       result_bundle: true,
       output_directory: "#{ENV['PWD']}/build/reports/",

@@ -38,10 +38,12 @@ lane :test_project do |options|
       project_path = "#{options[:project_path]}#{options[:project_name]}.xcodeproj"
     end
 
+    scheme = options[:scheme] || options[:package_name]
     sourcePackagesDir = "#{ENV['PWD']}/.spm-build"
+    datadog_testing = "TEST_RUNNER_DD_TEST_RUNNER=1 TEST_RUNNER_DD_ENV=ci TEST_RUNNER_DD_SITE=datadoghq.eu TEST_RUNNER_DD_SERVICE=#{scheme} TEST_RUNNER_DD_API_KEY=#{ENV['DD_API_KEY']} TEST_RUNNER_SRCROOT=#{ENV['PWD']}"
 
     scan(
-      scheme: options[:scheme] || options[:package_name],
+      scheme: scheme,
       project: project_path,
       device: device,
       destination: options[:destination],
@@ -54,7 +56,7 @@ lane :test_project do |options|
       suppress_xcode_output: false,
       buildlog_path: ENV['BITRISE_DEPLOY_DIR'],
       prelaunch_simulator: true,
-      xcargs: "-clonedSourcePackagesDirPath #{sourcePackagesDir} -parallel-testing-enabled NO -retry-tests-on-failure -test-iterations 3 #{ENV['EXTRA_XCARGS']}",
+      xcargs: "-clonedSourcePackagesDirPath #{sourcePackagesDir} -parallel-testing-enabled NO -retry-tests-on-failure -test-iterations 3 #{datadog_testing}",
       include_simulator_logs: false, # Needed for this: https://github.com/fastlane/fastlane/issues/8909
       result_bundle: true,
       output_directory: "#{ENV['PWD']}/build/reports/",

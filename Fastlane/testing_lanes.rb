@@ -52,6 +52,7 @@ lane :test_project do |options|
       fail_build: false,
       skip_slack: true,
       output_types: '',
+      xcodebuild_formatter: '', # Temporarily disable
       #disable_xcpretty: true, # [11:59:03]: Using deprecated option: '--disable_xcpretty' (Use `output_style: 'raw'` instead)
       suppress_xcode_output: false,
       buildlog_path: ENV['BITRISE_DEPLOY_DIR'],

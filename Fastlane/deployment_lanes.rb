@@ -219,9 +219,10 @@ lane :release do |options|
     # Create and submit the actual build.
     clear_derived_data
 
-    certs(app_identifier: options[:app_identifiers] || ENV['APP_IDENTIFIERS']) if is_running_on_CI(options)
-
-    prepare_for_ci
+    if is_running_on_CI(options)
+      certs(app_identifier: options[:app_identifiers] || ENV['APP_IDENTIFIERS'])
+      prepare_for_ci
+    end
 
     # Set timeout to prevent xcodebuild -list -project to take to much retries.
     ENV['FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT'] = '120'

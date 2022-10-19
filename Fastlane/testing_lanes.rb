@@ -44,7 +44,7 @@ lane :test_project do |options|
     # Setup Datadog CI Insights
     ENV["TEST_RUNNER_DD_TEST_RUNNER"] = '1' 
     ENV["TEST_RUNNER_DD_ENV"] = 'ci' 
-    ENV["TEST_RUNNER_DD_SITE"] = 'datadoghq.eu'
+    ENV["TEST_RUNNER_DD_SITE"] = 'eu1'
     ENV["TEST_RUNNER_DD_SERVICE"] = scheme
     ENV["TEST_RUNNER_DD_API_KEY"] = ENV['DD_API_KEY']
     ENV["TEST_RUNNER_SRCROOT"] = ENV['PWD']

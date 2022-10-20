@@ -44,6 +44,8 @@ lane :test_project do |options|
       service_name: scheme
     )
 
+    sh('printenv')
+
     scan(
       scheme: scheme,
       project: project_path,

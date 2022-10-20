@@ -44,8 +44,6 @@ lane :test_project do |options|
       service_name: scheme
     )
 
-    sh('printenv')
-
     scan(
       scheme: scheme,
       project: project_path,
@@ -56,7 +54,7 @@ lane :test_project do |options|
       fail_build: false,
       skip_slack: true,
       output_types: '',
-      xcodebuild_formatter: '', # Temporarily disable
+      # xcodebuild_formatter: '', # Add this to get verbose logging by disabling xcbeautify.
       suppress_xcode_output: false,
       buildlog_path: ENV['BITRISE_DEPLOY_DIR'],
       prelaunch_simulator: true,

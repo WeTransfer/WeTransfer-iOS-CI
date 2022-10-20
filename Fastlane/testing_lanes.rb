@@ -79,6 +79,10 @@ lane :test_project do |options|
 end
 
 desc 'Configures environment variables to enable Datadog CI Tests Tracing'
+desc ''
+desc 'To enable Datadog CI Tests Tracing for your project:'
+desc ' 1. Add the DD_API_KEY env variable as a secret to Bitrise'
+desc ' 2. Link the DatadogSDKTesting package following instructions here: https://docs.datadoghq.com/continuous_integration/setup_tests/swift/'
 lane :configure_datadog_ci_test_tracing do |options|
   ENV["TEST_RUNNER_DD_TEST_RUNNER"] = '1' 
   ENV["TEST_RUNNER_DD_ENV"] = 'ci' 

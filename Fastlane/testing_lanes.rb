@@ -22,8 +22,6 @@ desc ' * **`project_path`**: The path to the project'
 desc ' * **`project_name`**: The name of the project'
 desc ' * **`destination`**: ..'
 lane :test_project do |options|
-  #clear_derived_data
-
   # Remove any leftover reports before running so local runs won't fail due to an existing file.
   sh("rm -rf #{ENV['PWD']}/build/reports") unless is_running_on_CI(options)
 
@@ -38,10 +36,16 @@ lane :test_project do |options|
       project_path = "#{options[:project_path]}#{options[:project_name]}.xcodeproj"
     end
 
+    scheme = options[:scheme] || options[:package_name]
     sourcePackagesDir = "#{ENV['PWD']}/.spm-build"
+    
+    # Setup Datadog CI Insights
+    configure_datadog_ci_test_tracing(
+      service_name: scheme
+    )
 
     scan(
-      scheme: options[:scheme] || options[:package_name],
+      scheme: scheme,
       project: project_path,
       device: device,
       destination: options[:destination],
@@ -50,7 +54,7 @@ lane :test_project do |options|
       fail_build: false,
       skip_slack: true,
       output_types: '',
-      #disable_xcpretty: true, # [11:59:03]: Using deprecated option: '--disable_xcpretty' (Use `output_style: 'raw'` instead)
+      # xcodebuild_formatter: '', # Add this to get verbose logging by disabling xcbeautify.
       suppress_xcode_output: false,
       buildlog_path: ENV['BITRISE_DEPLOY_DIR'],
       prelaunch_simulator: true,
@@ -72,6 +76,26 @@ lane :test_project do |options|
       UI.important("Tests failed for #{e}")
     end
   end
+end
+
+desc 'Configures environment variables to enable Datadog CI Tests Tracing'
+desc ''
+desc 'To enable Datadog CI Tests Tracing for your project:'
+desc ' 1. Add the DD_API_KEY env variable as a secret to Bitrise'
+desc ' 2. Link the DatadogSDKTesting package following instructions here: https://docs.datadoghq.com/continuous_integration/setup_tests/swift/'
+lane :configure_datadog_ci_test_tracing do |options|
+  ENV["TEST_RUNNER_DD_TEST_RUNNER"] = '1' 
+  ENV["TEST_RUNNER_DD_ENV"] = 'ci' 
+  ENV["TEST_RUNNER_DD_SITE"] = 'datadoghq.eu'
+  ENV["TEST_RUNNER_DD_SERVICE"] = options[:service_name]
+  ENV["TEST_RUNNER_DD_API_KEY"] = ENV['DD_API_KEY']
+  ENV["TEST_RUNNER_SRCROOT"] = ENV['PWD']
+  ENV["TEST_RUNNER_DD_TRACE_DEBUG"] = '1'
+  ENV["TEST_RUNNER_DD_GIT_REPOSITORY_URL"] = ENV['GIT_REPOSITORY_URL']
+  ENV["TEST_RUNNER_DD_GIT_BRANCH"] = ENV['BITRISE_GIT_BRANCH']
+  ENV["TEST_RUNNER_DD_GIT_COMMIT_SHA"] = ENV['BITRISE_GIT_COMMIT']
+  ENV["TEST_RUNNER_DD_GIT_COMMIT_MESSAGE"] = ENV['BITRISE_GIT_MESSAGE']
+  ENV["TEST_RUNNER_DD_GIT_COMMIT_AUTHOR_NAME"] = ENV['GIT_CLONE_COMMIT_AUTHOR_NAME']
 end
 
 desc 'Create a release from a tag triggered CI run'

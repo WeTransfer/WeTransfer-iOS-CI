@@ -35,6 +35,19 @@ workflows:
             mint install WeTransfer/GitBuddy
         title: Brew install
     - script:
+        title: Set up signed commits
+        inputs:
+        - content: |-
+            #!/bin/bash
+            echo -e $GPG_KEY | gpg --import
+            
+            # Let'em know who is pushing commits to our branches!
+            git config --global user.name "wetransferplatform"
+            git config --global user.email "platform+github@wetransfer.com"
+            git config --global user.signinkey "$WETRANSFERPLATFORM_SIGNIN_KEY"
+            git config --global commit.gpgSign true
+            git config --global tag.gpgSign true      
+    - script:
         title: Run Fastlane
         inputs:
         - content: |-
@@ -62,3 +75,9 @@ workflows:
             $BREW_MINT
             $BREW_OPT_MINT
             .build
+app:
+  envs:
+  - opts:
+      is_expand: true
+      is_required: true
+    GPG_KEY: $WETRANSFERPLATFORM_GPG_KEY

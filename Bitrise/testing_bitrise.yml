@@ -141,7 +141,7 @@ workflows:
             # This all allows us to not define Danger dependencies in every repo. It also optimises reusing the SPM cache on CI systems.
 
             if [ "$BITRISEIO_GIT_REPOSITORY_SLUG" == "WeTransfer-iOS-CI" ]; then
-                swift run danger-swift ci --cache-path .build --build-path .build
+                ./danger-swift ci --cache-path .build --build-path .build
             else
                 cd Submodules/WeTransfer-iOS-CI
                 swift run danger-swift ci --cache-path ../../.build --build-path ../../.build --cwd ../../

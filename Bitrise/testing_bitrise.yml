@@ -145,7 +145,7 @@ workflows:
                 ./danger-swift ci
             else
                 cd Submodules/WeTransfer-iOS-CI
-                ./danger-swift ci --cache-path ../../.build --build-path ../../.build --cwd ../../
+                ./danger-swift ci --cwd ../../
             fi
     - deploy-to-bitrise-io@2:
         is_skippable: true

@@ -231,5 +231,13 @@ Make sure to have your `Bitrise.yml` locally inside your repo and then just run 
 
 Doing so allows you to run Bitrise workflows locally which will even update the Danger messages in GitHub itself. It kind of mimics [this](https://github.com/danger/danger-js/blob/fe5f080b4a267012dd80a9d589faee3bd278dc18/source/ci_source/providers/Bitrise.ts) Bitrise representation using env variables.
 
+
+## Bitrise Key-Based caching
+Key-based caching uses checksums. To test out a checksum locally, use `find . -print | grep -i */Package.resolved`. For example, that could result in:
+
+```yaml
+- key: spm-cache-{{ checksum "Package.resolved" "*.xcodeproj/**/Package.resolved" "WeTransferPRLinter/Package.resolved" }}
+```
+
 ## License
 WeTransfer-iOS-CI is available under the MIT license. See the LICENSE file for more info.

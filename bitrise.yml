@@ -67,3 +67,8 @@ workflows:
             #!/bin/bash
             set -ex
             bitrise run --config ./Bitrise/tag_releasing_bitrise.yml "${BITRISE_TRIGGERED_WORKFLOW_ID}"
+meta:
+  bitrise.io:
+    machine_type: standard
+    stack: osx-xcode-14.0.x
+    machine_type_id: g2.4core

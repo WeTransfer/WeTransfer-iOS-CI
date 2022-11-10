@@ -159,6 +159,7 @@ workflows:
         - debug_mode: 'true'
         - deploy_path: build/reports/
     - save-cache@1:
+        is_always_run: true
         inputs:
         - key: spm-cache-{{ checksum "**/*.resolved*" }}
         - paths: .spm-build

@@ -1,4 +1,5 @@
-// swift-tools-version:5.7
+// swift-tools-version:5.5
+// The above package version relates to the version Danger/Swift is using on their GIT repo package file.
 import PackageDescription
 
 let package = Package(

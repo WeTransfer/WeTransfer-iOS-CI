@@ -66,7 +66,6 @@ workflows:
               -d '{"assignees":["'${PR_AUTHOR}'"]}' \
               &> /dev/null
     - script@1:
-        run_if: false
         title: Skip running for Draft PRs
         inputs:
         - content: |-
@@ -82,7 +81,7 @@ workflows:
             fi
     - restore-cache@1:          
         inputs:          
-        - key: spm-cache-{{ checksum "Package.resolved" "*.xcodeproj/**/Package.resolved" }}
+        - key: spm-cache-{{ checksum "Package.resolved" "*.xcodeproj/**/Package.resolved" "WeTransferPRLinter/Package.resolved" }}
     - script:
         run_if: .IsCI
         inputs:
@@ -96,7 +95,7 @@ workflows:
             fi
 
             # Get the latest master branch for WeTransfer-iOS-CI if the submodule exists
-            # git submodule update --remote --no-fetch Submodules/WeTransfer-iOS-CI
+            git submodule update --remote --no-fetch Submodules/WeTransfer-iOS-CI
         title: Update WeTransfer-iOS-CI submodule
     - script:
         run_if: .IsCI

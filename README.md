@@ -239,5 +239,12 @@ Key-based caching uses checksums. To test out a checksum locally, use `find . -p
 - key: spm-cache-{{ checksum "Package.resolved" "*.xcodeproj/**/Package.resolved" "WeTransferPRLinter/Package.resolved" }}
 ```
 
+### Decompress caches
+If you want to decompress a `tzst` cache file after downloading it from Bitrise, you can use the following command:
+
+```bash
+% tar -xvf /path/to/cache-20221110-112409.tzst 
+```
+
 ## License
 WeTransfer-iOS-CI is available under the MIT license. See the LICENSE file for more info.

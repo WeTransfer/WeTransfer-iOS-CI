@@ -82,7 +82,7 @@ workflows:
             fi
     - restore-cache@1:          
         inputs:          
-        - key: spm-cache-{{ checksum "**/Package.resolved*" }}  
+        - key: spm-cache-{{ checksum "Package.resolved" "*.xcodeproj/**/Package.resolved" }}
     - script:
         run_if: .IsCI
         inputs:
@@ -161,5 +161,7 @@ workflows:
     - save-cache@1:
         is_always_run: true
         inputs:
-        - key: spm-cache-{{ checksum "**/Package.resolved*" }}
+        - key: spm-cache-{{ checksum "Package.resolved" "*.xcodeproj/**/Package.resolved" }}
         - paths: .spm-build
+        - is_key_unique: 'true'
+

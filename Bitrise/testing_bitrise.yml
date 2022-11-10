@@ -66,6 +66,7 @@ workflows:
               -d '{"assignees":["'${PR_AUTHOR}'"]}' \
               &> /dev/null
     - script@1:
+        run_if: false
         title: Skip running for Draft PRs
         inputs:
         - content: |-
@@ -79,7 +80,9 @@ workflows:
                 echo 'Cancelling CI run since the PR is for translations only'
                 exit 1
             fi
-    - cache-pull: {}
+    - restore-cache@1:          
+        inputs:          
+        - key: spm-cache-{{ checksum "**/*.resolved*" }}  
     - script:
         run_if: .IsCI
         inputs:
@@ -155,8 +158,7 @@ workflows:
         - is_compress: 'true'
         - debug_mode: 'true'
         - deploy_path: build/reports/
-    - cache-push:
-        run_if: true
+    - save-cache@1:
         inputs:
-        - cache_paths: |
-            .spm-build
+        - key: spm-cache-{{ checksum "**/*.resolved*" }}
+        - paths: .spm-build

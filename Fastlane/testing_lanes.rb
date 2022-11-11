@@ -61,7 +61,7 @@ lane :test_project do |options|
       output_types: '',
       # xcodebuild_formatter: '', # Add this to get verbose logging by disabling xcbeautify.
       suppress_xcode_output: false,
-      buildlog_path: ENV['BITRISE_DEPLOY_DIR'], # Makes sure our build log is deployed and available in Bitrise.
+      buildlog_path: ENV['BITRISE_DEPLOY_DIR'], # By configuring `BITRISE_DEPLOY_DIR` we make sure our build log is deployed and available in Bitrise.
       prelaunch_simulator: true,
       xcargs: "-clonedSourcePackagesDirPath #{source_packages_dir} -parallel-testing-enabled NO -retry-tests-on-failure -test-iterations 3",
       include_simulator_logs: false, # Needed for this: https://github.com/fastlane/fastlane/issues/8909

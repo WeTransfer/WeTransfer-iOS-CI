@@ -160,7 +160,7 @@ workflows:
     - save-cache@1:
         is_always_run: true
         inputs:
-        - key: spm-cache-{{ checksum "Package.resolved" "*.xcodeproj/**/Package.resolved" }}
+        - key: spm-cache-{{ checksum "Package.resolved" "*.xcodeproj/**/Package.resolved" "WeTransferPRLinter/Package.resolved" }}
         - paths: .spm-build
         - is_key_unique: 'true'
 

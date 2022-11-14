@@ -37,12 +37,17 @@ lane :test_project do |options|
     end
 
     scheme = options[:scheme] || options[:package_name]
-    sourcePackagesDir = "#{ENV['PWD']}/.spm-build"
+    source_packages_dir = "#{ENV['PWD']}/.spm-build"
     
     # Setup Datadog CI Insights
     configure_datadog_ci_test_tracing(
       service_name: scheme
     )
+
+    resolve_spm_packages(
+      source_packages_dir: source_packages_dir,
+      package_path: options[:package_path]
+    ) unless options.fetch(:disable_automatic_package_resolution, false)
 
     scan(
       scheme: scheme,
@@ -56,18 +61,18 @@ lane :test_project do |options|
       output_types: '',
       # xcodebuild_formatter: '', # Add this to get verbose logging by disabling xcbeautify.
       suppress_xcode_output: false,
-      buildlog_path: ENV['BITRISE_DEPLOY_DIR'],
+      buildlog_path: ENV['BITRISE_DEPLOY_DIR'], # By configuring `BITRISE_DEPLOY_DIR` we make sure our build log is deployed and available in Bitrise.
       prelaunch_simulator: true,
-      xcargs: "-clonedSourcePackagesDirPath #{sourcePackagesDir} -parallel-testing-enabled NO -retry-tests-on-failure -test-iterations 3",
+      xcargs: "-clonedSourcePackagesDirPath #{source_packages_dir} -parallel-testing-enabled NO -retry-tests-on-failure -test-iterations 3",
       include_simulator_logs: false, # Needed for this: https://github.com/fastlane/fastlane/issues/8909
       result_bundle: true,
       output_directory: "#{ENV['PWD']}/build/reports/",
-      derived_data_path: "#{ENV['PWD']}/build/derived_data", # Set buildlog and derived data path to fix permission issues on Bitrise
-      package_path: options[:package_path],
+      derived_data_path: "#{ENV['PWD']}/build/derived_data", # Set buildlog and derived data path to fix permission issues on Bitrise.
+      package_path: options[:package_path], # Optional path to the SPM package to test.
       build_for_testing: options.fetch(:build_for_testing, nil),
       test_without_building: options.fetch(:test_without_building, nil),
       disable_package_automatic_updates: true, # Makes xcodebuild -showBuildSettings more reliable too.
-      skip_package_dependencies_resolution: options.fetch(:disable_automatic_package_resolution, false)
+      skip_package_dependencies_resolution: true
     )
   rescue StandardError => e
     if options.fetch(:raise_exception_on_failure, false)
@@ -76,6 +81,14 @@ lane :test_project do |options|
       UI.important("Tests failed for #{e}")
     end
   end
+end
+
+desc 'Resolves packages in a separate lane so we can monitor performance of it based on caching.'
+private_lane :resolve_spm_packages do |options|
+  source_packages_dir = options[:source_packages_dir]
+  resolve_command = "xcodebuild -resolvePackageDependencies -clonedSourcePackagesDirPath #{source_packages_dir}"
+  resolve_command.prepend("cd #{ENV['PWD']}/#{options[:package_path]} && ") unless options[:package_path].nil?
+  sh(resolve_command)
 end
 
 desc 'Configures environment variables to enable Datadog CI Tests Tracing'

@@ -74,7 +74,9 @@ workflows:
                 echo 'Cancelling CI run since the PR is in draft'
                 exit 1
             fi
-    - cache-pull: {}
+    - restore-cache@1:          
+        inputs:          
+        - key: spm-cache-{{ checksum "Package.resolved" "*.xcodeproj/**/Package.resolved" "WeTransferPRLinter/Package.resolved" }}
     - script:
         run_if: .IsCI
         inputs:
@@ -150,8 +152,9 @@ workflows:
         - is_compress: 'true'
         - debug_mode: 'true'
         - deploy_path: build/reports/
-    - cache-push:
-        run_if: true
+    - save-cache@1:
+        is_always_run: true
         inputs:
-        - cache_paths: |
-            .spm-build
+        - key: spm-cache-{{ checksum "Package.resolved" "*.xcodeproj/**/Package.resolved" "WeTransferPRLinter/Package.resolved" }}
+        - paths: .spm-build
+        - is_key_unique: 'true'

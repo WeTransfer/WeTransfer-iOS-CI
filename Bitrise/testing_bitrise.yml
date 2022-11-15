@@ -139,10 +139,10 @@ workflows:
 
             if [ "$BITRISEIO_GIT_REPOSITORY_SLUG" == "WeTransfer-iOS-CI" ]; then
                 chmod +x danger-swift
-                ./danger-swift ci
+                ./danger-swift ci --cache-path .build --build-path .build
             else
                 cd Submodules/WeTransfer-iOS-CI
-                ./danger-swift ci --cwd ../../
+                ./danger-swift ci --cwd ../../ --cache-path ../../.build --build-path ../../.build
             fi
     - deploy-to-bitrise-io@2:
         is_skippable: true

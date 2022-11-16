@@ -44,10 +44,10 @@ lane :test_project do |options|
       service_name: scheme
     )
 
-    resolve_spm_packages(
-      source_packages_dir: source_packages_dir,
-      package_path: options[:package_path]
-    ) unless options.fetch(:disable_automatic_package_resolution, false)
+    # resolve_spm_packages(
+    #   source_packages_dir: source_packages_dir,
+    #   package_path: options[:package_path]
+    # ) unless options.fetch(:disable_automatic_package_resolution, false)
 
     scan(
       scheme: scheme,
@@ -72,7 +72,7 @@ lane :test_project do |options|
       build_for_testing: options.fetch(:build_for_testing, nil),
       test_without_building: options.fetch(:test_without_building, nil),
       disable_package_automatic_updates: true, # Makes xcodebuild -showBuildSettings more reliable too.
-      skip_package_dependencies_resolution: true
+      skip_package_dependencies_resolution: options.fetch(:disable_automatic_package_resolution, false)
     )
   rescue StandardError => e
     if options.fetch(:raise_exception_on_failure, false)

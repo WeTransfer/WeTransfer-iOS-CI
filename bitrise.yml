@@ -27,7 +27,7 @@ workflows:
     - activate-ssh-key:
         run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
     - git-clone: {}
-    - script@1.1.6:
+    - script:
         inputs:
         - content: |-
             #!/usr/bin/env bash

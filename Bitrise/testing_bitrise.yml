@@ -18,10 +18,10 @@ workflows:
             chmod +x Scripts/pr_labels_testing.sh
 
             # Assign a PR owner if not existing.
-            ./Scripts/pr_assignments.sh
+            ./Bitrise/Scripts/pr_assignments.sh
 
             # Configure CI_TESTING environment variable.
-            ./Scripts/pr_labels_testing.sh
+            ./Bitrise/Scripts/pr_labels_testing.sh
     - script@1:
         run_if: '{{enveq "CI_TESTING" "false"}}'
         title: Skip running for Draft PRs

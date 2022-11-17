@@ -44,11 +44,6 @@ lane :test_project do |options|
       service_name: scheme
     )
 
-    # resolve_spm_packages(
-    #   source_packages_dir: source_packages_dir,
-    #   package_path: options[:package_path]
-    # ) unless options.fetch(:disable_automatic_package_resolution, false)
-
     scan(
       scheme: scheme,
       project: project_path,
@@ -81,14 +76,6 @@ lane :test_project do |options|
       UI.important("Tests failed for #{e}")
     end
   end
-end
-
-desc 'Resolves packages in a separate lane so we can monitor performance of it based on caching.'
-private_lane :resolve_spm_packages do |options|
-  source_packages_dir = options[:source_packages_dir]
-  resolve_command = "xcodebuild -resolvePackageDependencies -clonedSourcePackagesDirPath #{source_packages_dir}"
-  resolve_command.prepend("cd #{ENV['PWD']}/#{options[:package_path]} && ") unless options[:package_path].nil?
-  sh(resolve_command)
 end
 
 desc 'Configures environment variables to enable Datadog CI Tests Tracing'

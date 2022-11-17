@@ -22,7 +22,7 @@ workflows:
 
             # Configure CI_TESTING environment variable.
             ./Bitrise/Scripts/pr_labels_testing.sh
-    - script@1:
+    - script:
         run_if: '{{enveq "CI_TESTING" "false"}}'
         title: Skip running for Draft PRs
         inputs:

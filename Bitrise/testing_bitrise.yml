@@ -121,7 +121,7 @@ workflows:
         - deploy_path: build/derived_data/Build/Products/Debug-iphonesimulator/${XCODE_TARGET}.app/  
     - restore-cache@1:          
         inputs:          
-        - key: danger-build-cache
+        - key: danger-build-cache-{{ checksum ".build/workspace-state.json" }}
     - script:
         title: Run Danger
         deps:
@@ -142,16 +142,16 @@ workflows:
 
             if [ "$BITRISEIO_GIT_REPOSITORY_SLUG" == "WeTransfer-iOS-CI" ]; then
                 chmod +x danger-swift
-                ./danger-swift ci --cache-path .danger-build --build-path .danger-build
+                ./danger-swift ci
             else
                 cd Submodules/WeTransfer-iOS-CI
-                ./danger-swift ci --cwd ../../ --cache-path .danger-build --build-path .danger-build
+                ./danger-swift ci --cwd ../../
             fi
     - save-cache@1:
         inputs:
-        - key: danger-build-cache
-        - paths: .danger-build
-        - is_key_unique: 'false'
+        - key: danger-build-cache-{{ checksum ".build/workspace-state.json" }}
+        - paths: .build
+        - is_key_unique: 'true'
     - deploy-to-bitrise-io@2:
         is_skippable: true
         inputs:

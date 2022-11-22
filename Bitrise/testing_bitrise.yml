@@ -70,10 +70,10 @@ workflows:
         inputs:
         - content: |-
             #!/usr/bin/env bash
-            if [ "$GITHUB_PR_IS_DRAFT" = true ] ; then
-                echo 'Cancelling CI run since the PR is in draft'
-                exit 1
-            fi
+            #if [ "$GITHUB_PR_IS_DRAFT" = true ] ; then
+            #    echo 'Cancelling CI run since the PR is in draft'
+            #    exit 1
+            #fi
     - restore-cache@1:          
         inputs:          
         - key: spm-cache-{{ checksum "Package.resolved" "*.xcodeproj/**/Package.resolved" "WeTransferPRLinter/Package.resolved" }}

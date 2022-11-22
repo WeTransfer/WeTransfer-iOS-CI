@@ -1,7 +1,6 @@
 junit-results.xml
 .build
 node_modules
-.swiftpm
 build
 *.xcodeproj
 Fastlane/report.xml

@@ -75,8 +75,8 @@ workflows:
         - content: |-
             #!/usr/bin/env bash
             # Use the environment FASTLANE_LANE if available. Otherwise, fallback to "test"
-            #lane=${FASTLANE_LANE:=test}
-            #fastlane $lane
+            lane=${FASTLANE_LANE:=test}
+            fastlane $lane
     - deploy-to-bitrise-io@2:
         title: Deploy Simulator Build to Bitrise
         is_skippable: true
@@ -86,9 +86,20 @@ workflows:
         - is_compress: 'true'
         - debug_mode: 'true'
         - deploy_path: build/derived_data/Build/Products/Debug-iphonesimulator/${XCODE_TARGET}.app/  
+    - script:
+        title: Set up Danger Caching
+        inputs:
+        - content: |-
+            if [ "$BITRISEIO_GIT_REPOSITORY_SLUG" == "WeTransfer-iOS-CI" ]; then
+                envman add --key DANGER_CHECKSUM_PATH --value "Package.resolved"
+                envman add --key DANGER_BUILD_DIRECTORY --value ".build"
+            else
+                envman add --key DANGER_CHECKSUM_PATH --value "Submodules/WeTransfer-iOS-CI/Package.resolved"
+                envman add --key DANGER_BUILD_DIRECTORY --value "Submodules/WeTransfer-iOS-CI/.build"
+            fi
     - restore-cache@1:          
         inputs:          
-        - key: danger-build-cache-{{ checksum ".build/workspace-state.json" "Submodules/WeTransfer-iOS-CI/.build/workspace-state.json" }}
+        - key: danger-build-cache-{{ checksum "$DANGER_CHECKSUM_PATH" }}
     - script:
         title: Run Danger
         deps:
@@ -110,15 +121,13 @@ workflows:
             if [ "$BITRISEIO_GIT_REPOSITORY_SLUG" == "WeTransfer-iOS-CI" ]; then
                 chmod +x danger-swift
                 ./danger-swift ci
-                envman add --key DANGER_BUILD_DIRECTORY --value ".build"
             else
                 cd Submodules/WeTransfer-iOS-CI
                 ./danger-swift ci --cwd ../../
-                envman add --key DANGER_BUILD_DIRECTORY --value "Submodules/WeTransfer-iOS-CI/.build"
             fi
     - save-cache@1:
         inputs:
-        - key: danger-build-cache-{{ checksum ".build/workspace-state.json" "Submodules/WeTransfer-iOS-CI/.build/workspace-state.json" }}
+        - key: danger-build-cache-{{ checksum "$DANGER_CHECKSUM_PATH" }}
         - paths: "$DANGER_BUILD_DIRECTORY"
         - is_key_unique: 'true'
     - deploy-to-bitrise-io@2:

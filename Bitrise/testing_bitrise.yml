@@ -28,10 +28,10 @@ workflows:
         inputs:
         - content: |-
             #!/usr/bin/env bash
-            #if [ "$GITHUB_PR_IS_DRAFT" = true ] ; then
-            #    echo 'Cancelling CI run since the PR is in draft'
-            #    exit 1
-            #fi
+            if [ "$GITHUB_PR_IS_DRAFT" = true ] ; then
+                echo 'Cancelling CI run since the PR is in draft'
+                exit 1
+            fi
     - restore-cache@1:          
         inputs:          
         - key: spm-cache-{{ checksum "Package.resolved" "*.xcodeproj/**/Package.resolved" "WeTransferPRLinter/Package.resolved" }}
@@ -43,12 +43,12 @@ workflows:
             set -ex
 
             if [ ! -d "Submodules/WeTransfer-iOS-CI" ] ; then
-              # file does not exist - simply exit with success
+              echo 'file does not exist - simply exit with success'
               exit 0
             fi
 
             # Get the latest master branch for WeTransfer-iOS-CI if the submodule exists
-            # git submodule update --remote --no-fetch Submodules/WeTransfer-iOS-CI
+            git submodule update --remote --no-fetch Submodules/WeTransfer-iOS-CI
         title: Update WeTransfer-iOS-CI submodule
     - script:
         run_if: .IsCI

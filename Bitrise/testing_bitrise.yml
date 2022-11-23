@@ -14,14 +14,27 @@ workflows:
         - content: |-
             #!/bin/bash
 
-            chmod +x Scripts/pr_assignments.sh
-            chmod +x Scripts/pr_labels_testing.sh
+            if [ ! -d "Submodules/WeTransfer-iOS-CI" ] ; then
+                echo 'Running inside the submodule itself'
+                chmod +x /Bitrise/Scripts/pr_assignments.sh
+                chmod +x /Bitrise/Scripts/pr_labels_testing.sh
 
-            # Assign a PR owner if not existing.
-            ./Bitrise/Scripts/pr_assignments.sh
+                # Assign a PR owner if not existing.
+                ./Bitrise/Scripts/pr_assignments.sh
 
-            # Configure CI_TESTING environment variable.
-            ./Bitrise/Scripts/pr_labels_testing.sh
+                # Configure CI_TESTING environment variable.
+                ./Bitrise/Scripts/pr_labels_testing.sh
+            else
+                echo 'Running from another package using a submodule'
+                chmod +x /Submodules/WeTransfer-iOS-CI/Bitrise/Scripts/pr_assignments.sh
+                chmod +x /Submodules/WeTransfer-iOS-CI/Bitrise/Scripts/pr_labels_testing.sh
+
+                # Assign a PR owner if not existing.
+                ./Submodules/WeTransfer-iOS-CI/Bitrise/Scripts/pr_assignments.sh
+
+                # Configure CI_TESTING environment variable.
+                ./Submodules/WeTransfer-iOS-CI/Bitrise/Scripts/pr_labels_testing.sh
+            fi
     - script:
         run_if: '{{enveq "CI_TESTING" "false"}}'
         title: Skip running for Draft PRs

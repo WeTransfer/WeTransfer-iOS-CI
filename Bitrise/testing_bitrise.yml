@@ -14,14 +14,14 @@ workflows:
         - content: |-
             #!/bin/bash
 
-            #chmod +x Scripts/pr_assignments.sh
-            #chmod +x Scripts/pr_labels_testing.sh
+            chmod +x Scripts/pr_assignments.sh
+            chmod +x Scripts/pr_labels_testing.sh
 
             # Assign a PR owner if not existing.
-            #./Bitrise/Scripts/pr_assignments.sh
+            ./Bitrise/Scripts/pr_assignments.sh
 
             # Configure CI_TESTING environment variable.
-            #./Bitrise/Scripts/pr_labels_testing.sh
+            ./Bitrise/Scripts/pr_labels_testing.sh
     - script:
         run_if: '{{enveq "CI_TESTING" "false"}}'
         title: Skip running for Draft PRs
@@ -66,8 +66,8 @@ workflows:
         - content: |-
             #!/usr/bin/env bash
             # Use the environment FASTLANE_LANE if available. Otherwise, fallback to "test"
-            #lane=${FASTLANE_LANE:=test}
-            #fastlane $lane
+            lane=${FASTLANE_LANE:=test}
+            fastlane $lane
     - deploy-to-bitrise-io@2:
         title: Deploy Simulator Build to Bitrise
         is_skippable: true

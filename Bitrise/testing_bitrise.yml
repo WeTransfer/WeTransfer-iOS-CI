@@ -16,8 +16,6 @@ workflows:
 
             if [ ! -d "Submodules/WeTransfer-iOS-CI" ] ; then
                 echo 'Running inside the submodule itself'
-                chmod +x /Bitrise/Scripts/pr_assignments.sh
-                chmod +x /Bitrise/Scripts/pr_labels_testing.sh
 
                 # Assign a PR owner if not existing.
                 ./Bitrise/Scripts/pr_assignments.sh
@@ -26,8 +24,6 @@ workflows:
                 ./Bitrise/Scripts/pr_labels_testing.sh
             else
                 echo 'Running from another package using a submodule'
-                chmod +x /Submodules/WeTransfer-iOS-CI/Bitrise/Scripts/pr_assignments.sh
-                chmod +x /Submodules/WeTransfer-iOS-CI/Bitrise/Scripts/pr_labels_testing.sh
 
                 # Assign a PR owner if not existing.
                 ./Submodules/WeTransfer-iOS-CI/Bitrise/Scripts/pr_assignments.sh

@@ -46,10 +46,10 @@ lane :test_project do |options|
 
     code_coverage_enabled = true
 
-    if options.fetch(:build_for_testing, false) {
+    if options.fetch(:build_for_testing, false)
       # The flag -enableCodeCoverage is only supported when testing.
       code_coverage_enabled = nil
-    }
+    end
 
     scan(
       scheme: scheme,

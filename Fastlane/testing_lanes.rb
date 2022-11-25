@@ -44,12 +44,19 @@ lane :test_project do |options|
       service_name: scheme
     )
 
+    code_coverage_enabled = true
+
+    if options.fetch(:build_for_testing, false) {
+      # The flag -enableCodeCoverage is only supported when testing.
+      code_coverage_enabled = nil
+    }
+
     scan(
       scheme: scheme,
       project: project_path,
       device: device,
       destination: options[:destination],
-      code_coverage: !(options.fetch(:build_for_testing, false)), # The flag -enableCodeCoverage is only supported when testing.
+      code_coverage: code_coverage_enabled,
       disable_concurrent_testing: true, # As of 27th October 2021, this seems to not be working anymore. We need `parallel-testing-enabled NO` instead.
       fail_build: false,
       skip_slack: true,

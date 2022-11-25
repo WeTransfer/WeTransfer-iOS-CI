@@ -31,6 +31,32 @@ opt_in_rules:
   - toggle_bool
   - type_contents_order
   - multiline_function_chains
+
+  - accessibility_trait_for_button
+  - accessibility_label_for_image
+  - shorthand_optional_binding
+  - anyobject_protocol
+  - array_init
+  - capture_variable
+  - contains_over_filter_count
+  - contains_over_filter_is_empty
+  - contains_over_range_nil_comparison
+  - discouraged_assert
+  - discouraged_none_name
+  - discouraged_optional_boolean
+  - empty_xctest_method
+  - flatmap_over_map_reduce
+  - last_where
+  - let_var_whitespace
+  - reduce_into
+  - redundant_type_annotation
+  - self_binding
+  - sorted_first_last
+  - sorted_imports
+  - unneeded_parentheses_in_closure_argument
+  - untyped_error_in_catch
+  - unused_import
+  - xct_specific_matcher
 syntactic_sugar: error
 unused_closure_parameter: error
 unused_optional_binding:

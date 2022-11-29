@@ -713,12 +713,12 @@ public let TestDSLGitHubJSON = """
               "forks": 267,
               "open_issues": 35,
               "watchers": 1999,
-              "default_branch": "master"
+              "default_branch": "main"
             }
           },
           "base": {
-            "label": "artsy:master",
-            "ref": "master",
+            "label": "artsy:main",
+            "ref": "main",
             "sha": "68c8db83776c1942145f530159a3fffddb812577",
             "user": {
               "login": "artsy",
@@ -827,7 +827,7 @@ public let TestDSLGitHubJSON = """
               "forks": 267,
               "open_issues": 35,
               "watchers": 1999,
-              "default_branch": "master"
+              "default_branch": "main"
             }
           },
           "_links": {

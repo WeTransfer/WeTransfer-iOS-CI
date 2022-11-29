@@ -109,12 +109,12 @@ end
 desc 'Create a release from a tag triggered CI run'
 lane :release_from_tag do
   # Get the latest tag, which is the new release that triggered this lane.
-  sh('git fetch --tags origin master --no-recurse-submodules -q')
+  sh('git fetch --tags origin main --no-recurse-submodules -q')
 
   latest_tag = ENV['BITRISE_GIT_TAG']
 
   # Create a release branch
-  sh "git branch release/#{latest_tag} origin/master"
+  sh "git branch release/#{latest_tag} origin/main"
   sh "git checkout release/#{latest_tag}"
   sh "git merge -X theirs #{latest_tag}"
 
@@ -139,12 +139,12 @@ lane :release_from_tag do
   sh('git commit -a -m "Created a new release"')
   sh("git push origin release/#{latest_tag}")
 
-  # Create a pull request for master to include the updated Changelog.md and podspec
+  # Create a pull request for main to include the updated Changelog.md
   create_pull_request(
     api_token: ENV['DANGER_GITHUB_API_TOKEN'],
     repo: git_repository_name,
-    title: "Merge release #{latest_tag} into master",
-    base: 'master', # The branch to merge the changes into.
+    title: "Merge release #{latest_tag} into main",
+    base: 'main', # The branch to merge the changes into.
     body: "Containing all the changes for our [**#{latest_tag} Release**](#{release_url})."
   )
 end

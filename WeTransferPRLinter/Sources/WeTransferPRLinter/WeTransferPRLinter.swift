@@ -44,7 +44,7 @@ public enum WeTransferPRLinter {
         }
 
         measure(taskName: "SwiftLint") {
-            swiftLint(using: danger, executor: swiftLintExecutor, configsFolderPath: swiftLintConfigsFolderPath, fileManager: fileManager)
+            swiftLint(using: danger, executor: swiftLintExecutor, configsFolderPath: swiftLintConfigsFolderPath, fileManager: fileManager, environmentVariables: environmentVariables)
         }
     }
 
@@ -156,9 +156,14 @@ public enum WeTransferPRLinter {
         using danger: DangerDSL,
         executor: SwiftLintExecuting.Type = SwiftLintExecutor.self,
         configsFolderPath: String? = nil,
-        fileManager: FileManager
+        fileManager: FileManager,
+        environmentVariables: [String: String] = [:]
     ) {
         defer { print("\n") }
+
+        guard environmentVariables["DISABLE_DANGER_SWIFTLINT"] != "true" else {
+            return print("Skip SwiftLint linting since `disable_danger_swiftlint` environment variable was set.")
+        }
 
         let configsFolderPath: String = {
             if let configsFolderPath = configsFolderPath, fileManager.fileExists(atPath: configsFolderPath, isDirectory: nil) {

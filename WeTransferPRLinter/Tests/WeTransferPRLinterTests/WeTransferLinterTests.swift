@@ -149,7 +149,7 @@ final class WeTransferLinterTests: XCTestCase {
             executor: mockedSwiftLintExecutor,
             configsFolderPath: customPath,
             fileManager: stubbedFileManager,
-            environmentVariables: ["disable_danger_swiftlint": "true"]
+            environmentVariables: ["DISABLE_DANGER_SWIFTLINT": "true"]
         )
 
         XCTAssertTrue(mockedSwiftLintExecutor.lintedFiles.isEmpty)

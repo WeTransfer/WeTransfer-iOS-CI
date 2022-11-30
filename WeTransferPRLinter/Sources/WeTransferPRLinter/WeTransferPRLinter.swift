@@ -161,7 +161,7 @@ public enum WeTransferPRLinter {
     ) {
         defer { print("\n") }
 
-        guard environmentVariables["disable_danger_swiftlint"] != "true" else {
+        guard environmentVariables["DISABLE_DANGER_SWIFTLINT"] != "true" else {
             return print("Skip SwiftLint linting since `disable_danger_swiftlint` environment variable was set.")
         }
 

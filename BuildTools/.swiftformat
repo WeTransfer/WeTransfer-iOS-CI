@@ -5,3 +5,4 @@
 --commas inline
 --selfrequired waitFor
 --selfrequired expectation
+--swiftversion 5.7

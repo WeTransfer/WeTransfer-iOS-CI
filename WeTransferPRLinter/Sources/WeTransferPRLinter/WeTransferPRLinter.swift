@@ -166,7 +166,7 @@ public enum WeTransferPRLinter {
         }
 
         let configsFolderPath: String = {
-            if let configsFolderPath = configsFolderPath, fileManager.fileExists(atPath: configsFolderPath, isDirectory: nil) {
+            if let configsFolderPath, fileManager.fileExists(atPath: configsFolderPath, isDirectory: nil) {
                 return configsFolderPath
             } else {
                 return "\(fileManager.currentDirectoryPath)/Submodules/WeTransfer-iOS-CI/BuildTools"

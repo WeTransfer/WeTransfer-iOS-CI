@@ -91,19 +91,23 @@ desc 'To enable Datadog CI Tests Tracing for your project:'
 desc ' 1. Add the DD_API_KEY env variable as a secret to Bitrise'
 desc ' 2. Link the DatadogSDKTesting package following instructions here: https://docs.datadoghq.com/continuous_integration/setup_tests/swift/'
 lane :configure_datadog_ci_test_tracing do |options|
-  next unless ENV.has_value?("DD_API_KEY")
-  ENV["TEST_RUNNER_DD_TEST_RUNNER"] = '1' 
-  ENV["TEST_RUNNER_DD_ENV"] = 'ci' 
-  ENV["TEST_RUNNER_DD_SITE"] = 'datadoghq.eu'
-  ENV["TEST_RUNNER_DD_SERVICE"] = options[:service_name]
-  ENV["TEST_RUNNER_DD_API_KEY"] = ENV['DD_API_KEY']
-  ENV["TEST_RUNNER_SRCROOT"] = ENV['PWD']
-  ENV["TEST_RUNNER_DD_TRACE_DEBUG"] = '1'
-  ENV["TEST_RUNNER_DD_GIT_REPOSITORY_URL"] = ENV['GIT_REPOSITORY_URL']
-  ENV["TEST_RUNNER_DD_GIT_BRANCH"] = ENV['BITRISE_GIT_BRANCH']
-  ENV["TEST_RUNNER_DD_GIT_COMMIT_SHA"] = ENV['BITRISE_GIT_COMMIT']
-  ENV["TEST_RUNNER_DD_GIT_COMMIT_MESSAGE"] = ENV['BITRISE_GIT_MESSAGE']
-  ENV["TEST_RUNNER_DD_GIT_COMMIT_AUTHOR_NAME"] = ENV['GIT_CLONE_COMMIT_AUTHOR_NAME']
+  if ENV.include?("DD_API_KEY")
+    ENV["TEST_RUNNER_DD_TEST_RUNNER"] = '1' 
+    ENV["TEST_RUNNER_DD_ENV"] = 'ci' 
+    ENV["TEST_RUNNER_DD_SITE"] = 'datadoghq.eu'
+    ENV["TEST_RUNNER_DD_SERVICE"] = options[:service_name]
+    ENV["TEST_RUNNER_DD_API_KEY"] = ENV['DD_API_KEY']
+    ENV["TEST_RUNNER_SRCROOT"] = ENV['PWD']
+    ENV["TEST_RUNNER_DD_TRACE_DEBUG"] = '1'
+    ENV["TEST_RUNNER_DD_GIT_REPOSITORY_URL"] = ENV['GIT_REPOSITORY_URL']
+    ENV["TEST_RUNNER_DD_GIT_BRANCH"] = ENV['BITRISE_GIT_BRANCH']
+    ENV["TEST_RUNNER_DD_GIT_COMMIT_SHA"] = ENV['BITRISE_GIT_COMMIT']
+    ENV["TEST_RUNNER_DD_GIT_COMMIT_MESSAGE"] = ENV['BITRISE_GIT_MESSAGE']
+    ENV["TEST_RUNNER_DD_GIT_COMMIT_AUTHOR_NAME"] = ENV['GIT_CLONE_COMMIT_AUTHOR_NAME']
+    puts "Configured Datadog CI tracing."
+  else 
+    puts "Datadog CI tracing not configured since DD_API_KEY is missing."
+  end
 end
 
 desc 'Create a release from a tag triggered CI run'

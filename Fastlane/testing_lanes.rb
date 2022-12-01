@@ -61,7 +61,7 @@ lane :test_project do |options|
       fail_build: false,
       skip_slack: true,
       output_types: '',
-      xcodebuild_formatter: '', # Add this to get verbose logging by disabling xcbeautify.
+      # xcodebuild_formatter: '', # Add this to get verbose logging by disabling xcbeautify.
       suppress_xcode_output: false,
       buildlog_path: ENV['BITRISE_DEPLOY_DIR'], # By configuring `BITRISE_DEPLOY_DIR` we make sure our build log is deployed and available in Bitrise.
       prelaunch_simulator: true,

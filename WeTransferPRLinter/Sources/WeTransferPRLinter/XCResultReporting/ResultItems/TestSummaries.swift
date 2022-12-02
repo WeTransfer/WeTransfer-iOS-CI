@@ -79,14 +79,14 @@ extension ActionTestableSummary: XCResultItemsConvertible {
     }
 
     func createResults(context: ResultGenerationContext) -> [XCResultItem] {
-        guard let targetName = targetName else { return [] }
+        guard let targetName else { return [] }
         let message = "\(targetName): Executed \(totalNumberOfTests) tests (\(totalNumberOfFailingTests) failed,"
             + " \(retriedTestIdentifiers.count) retried, \(skippedTests.count) skipped) in \(totalDuration) seconds"
         return [XCResultItem(message: message, category: .message)]
     }
 }
 
-extension Array where Element == ActionTestSummaryGroup {
+extension [ActionTestSummaryGroup] {
     var totalNumberOfTests: Int {
         reduce(0) { totalCount, testSummaryGroup in
             var totalCount = totalCount
@@ -132,7 +132,7 @@ extension ActionTestSummaryGroup {
     }
 }
 
-extension Array where Element == ActionTestMetadata {
+extension [ActionTestMetadata] {
     private var successIdentifiers: Set<String> {
         Set<String>(filter { $0.testStatus == "Success" }.map(\.identifier))
     }

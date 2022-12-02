@@ -21,7 +21,7 @@ extension ResultIssueSummaries {
     }
 }
 
-extension Array where Element == TestFailureIssueSummary {
+extension [TestFailureIssueSummary] {
     /// Test Failure Summaries contain all failed tests, even if they succeeded after retry.
     /// We can use this method to filter out retried tests and don't report them as failure,
     /// but instead show them as a warning.
@@ -86,7 +86,7 @@ extension IssueSummary {
     }
 }
 
-extension Array where Element == IssueSummary {
+extension [IssueSummary] {
     func createResults(category: XCResultItem.Category, context: ResultGenerationContext) -> [XCResultItem] {
         flatMap { $0.createResults(category: category, context: context) }
     }

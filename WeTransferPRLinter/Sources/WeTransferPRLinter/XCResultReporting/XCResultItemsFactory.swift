@@ -23,7 +23,7 @@ struct XCResultItemsFactory {
 
         let context = ResultGenerationContext(resultFile: resultFile, fileManager: fileManager)
         var results = invocationRecord.createResults(context: context)
-        if let resultsFilter = resultsFilter {
+        if let resultsFilter {
             results = results.filter(resultsFilter)
         }
         return results

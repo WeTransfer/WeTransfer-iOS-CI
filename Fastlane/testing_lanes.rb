@@ -30,8 +30,10 @@ lane :test_project do |options|
   ENV['FASTLANE_XCODE_LIST_TIMEOUT'] = '30'
 
   begin
-    device = options[:device] || 'iPhone 14'
-
+    if options[:destination].nil?
+      device = options[:device] || 'iPhone 14'
+    end
+    
     if options[:package_path].nil?
       project_path = "#{options[:project_path]}#{options[:project_name]}.xcodeproj"
     end
@@ -50,6 +52,7 @@ lane :test_project do |options|
       # The flag -enableCodeCoverage is only supported when testing.
       code_coverage_enabled = nil
     end
+
 
     scan(
       scheme: scheme,

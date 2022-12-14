@@ -22,9 +22,6 @@ desc ' * **`project_path`**: The path to the project'
 desc ' * **`project_name`**: The name of the project'
 desc ' * **`destination`**: ..'
 lane :test_project do |options|
-  # Remove any leftover reports before running so local runs won't fail due to an existing file.
-  sh("rm -rf #{ENV['PWD']}/build/reports") unless is_running_on_CI(options)
-
   # Set timeout to prevent xcodebuild -list -project to take to much retries.
   ENV['FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT'] = '30'
   ENV['FASTLANE_XCODE_LIST_TIMEOUT'] = '30'
@@ -46,13 +43,15 @@ lane :test_project do |options|
       service_name: scheme
     )
 
+    # Remove any leftover reports before running so local runs won't fail due to an existing file.
+    sh("rm -rf #{ENV['PWD']}/build/reports/#{scheme}.xcresult")
+
     code_coverage_enabled = true
 
     if options.fetch(:build_for_testing, false)
       # The flag -enableCodeCoverage is only supported when testing.
       code_coverage_enabled = nil
     end
-
 
     scan(
       step_name: options[:step_name] || "Scan - #{scheme}",

@@ -33,7 +33,7 @@ lane :test_project do |options|
     if options[:destination].nil?
       device = options[:device] || 'iPhone 14'
     end
-    
+
     if options[:package_path].nil?
       project_path = "#{options[:project_path]}#{options[:project_name]}.xcodeproj"
     end
@@ -55,6 +55,7 @@ lane :test_project do |options|
 
 
     scan(
+      step_name: options[:step_name] || "Scan - #{scheme}",
       scheme: scheme,
       project: project_path,
       device: device,

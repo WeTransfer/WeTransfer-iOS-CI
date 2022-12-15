@@ -39,9 +39,9 @@ lane :test_project do |options|
     source_packages_dir = "#{ENV['PWD']}/.spm-build"
     
     # Setup Datadog CI Insights
-    configure_datadog_ci_test_tracing(
-      service_name: scheme
-    )
+    # configure_datadog_ci_test_tracing(
+    #   service_name: scheme
+    # )
 
     # Remove any leftover reports before running so local runs won't fail due to an existing file.
     sh("rm -rf #{ENV['PWD']}/build/reports/#{scheme}.xcresult")

@@ -22,15 +22,14 @@ desc ' * **`project_path`**: The path to the project'
 desc ' * **`project_name`**: The name of the project'
 desc ' * **`destination`**: ..'
 lane :test_project do |options|
-  # Remove any leftover reports before running so local runs won't fail due to an existing file.
-  sh("rm -rf #{ENV['PWD']}/build/reports") unless is_running_on_CI(options)
-
   # Set timeout to prevent xcodebuild -list -project to take to much retries.
   ENV['FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT'] = '30'
   ENV['FASTLANE_XCODE_LIST_TIMEOUT'] = '30'
 
   begin
-    device = options[:device] || 'iPhone 14'
+    if options[:destination].nil?
+      device = options[:device] || 'iPhone 14'
+    end
 
     if options[:package_path].nil?
       project_path = "#{options[:project_path]}#{options[:project_name]}.xcodeproj"
@@ -40,9 +39,12 @@ lane :test_project do |options|
     source_packages_dir = "#{ENV['PWD']}/.spm-build"
     
     # Setup Datadog CI Insights
-    configure_datadog_ci_test_tracing(
-      service_name: scheme
-    )
+    # configure_datadog_ci_test_tracing(
+    #   service_name: scheme
+    # )
+
+    # Remove any leftover reports before running so local runs won't fail due to an existing file.
+    sh("rm -rf #{ENV['PWD']}/build/reports/#{scheme}.xcresult")
 
     code_coverage_enabled = true
 
@@ -52,6 +54,7 @@ lane :test_project do |options|
     end
 
     scan(
+      step_name: options[:step_name] || "Scan - #{scheme}",
       scheme: scheme,
       project: project_path,
       device: device,
@@ -64,7 +67,7 @@ lane :test_project do |options|
       # xcodebuild_formatter: '', # Add this to get verbose logging by disabling xcbeautify.
       suppress_xcode_output: false,
       buildlog_path: ENV['BITRISE_DEPLOY_DIR'], # By configuring `BITRISE_DEPLOY_DIR` we make sure our build log is deployed and available in Bitrise.
-      prelaunch_simulator: true,
+      prelaunch_simulator: false,
       xcargs: "-clonedSourcePackagesDirPath #{source_packages_dir} -parallel-testing-enabled NO -retry-tests-on-failure -test-iterations 3",
       include_simulator_logs: false, # Needed for this: https://github.com/fastlane/fastlane/issues/8909
       result_bundle: true,

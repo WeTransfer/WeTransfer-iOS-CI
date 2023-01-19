@@ -4,29 +4,71 @@ lane :install_match_dependencies do
 
   match_configuration(
     type: 'development',
-    readonly: true
+    readonly: true,
+    platform: 'ios'
   )
 
   match_configuration(
     type: 'appstore',
-    readonly: true
+    readonly: true,
+    platform: 'ios'
   )
+
+  if ENV.include?("MACOS_APP_IDENTIFIERS")
+    UI.message 'Installing macOS Match Dependencies'
+
+    match_configuration(
+      type: 'development',
+      readonly: true,
+      platform: 'macos',
+      app_identifier: ENV["MACOS_APP_IDENTIFIERS"]
+    )
+
+    match_configuration(
+      type: 'appstore',
+      readonly: true,
+      platform: 'macos',
+      app_identifier: ENV["MACOS_APP_IDENTIFIERS"]
+    )
+  end
 end
 
 desc 'Update the development certificates and profiles using fastlane match'
 lane :update_match_development_dependencies do
   match_configuration(
     type: 'development',
-    readonly: false
+    readonly: false,
+    platform: 'ios'
   )
+
+  if ENV.include?("MACOS_APP_IDENTIFIERS")
+    UI.message 'Updating macOS Match Development Dependencies'
+    match_configuration(
+      type: 'development',
+      readonly: false,
+      platform: 'macos',
+      app_identifier: ENV["MACOS_APP_IDENTIFIERS"]
+    )
+  end
 end
 
 desc 'Update the appstore certificates and profiles using fastlane match'
 lane :update_match_appstore_dependencies do
   match_configuration(
     type: 'appstore',
-    readonly: false
+    readonly: false,
+    platform: 'ios'
   )
+
+  if ENV.include?("MACOS_APP_IDENTIFIERS")
+    UI.message 'Updating macOS Match AppStore Dependencies'
+    match_configuration(
+      type: 'appstore',
+      readonly: false,
+      platform: 'macos',
+      app_identifier: ENV["MACOS_APP_IDENTIFIERS"]
+    )
+  end
 end
 
 desc 'A convenience method for using fastlane match'
@@ -36,7 +78,9 @@ private_lane :match_configuration do |options|
   sync_code_signing(
     type: options[:type],
     api_key: api_key,
-    readonly: options[:readonly]
+    readonly: options[:readonly],
+    platform: options[:platform],
+    app_identifier: options.fetch(:app_identifier, ENV["APP_IDENTIFIERS"])
   )
 end
 

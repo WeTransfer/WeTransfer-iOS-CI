@@ -411,7 +411,7 @@ desc ''
 desc '#### Options'
 desc ' * **`app_identifier`**: a list of all app identifiers for which to sync the certs'
 desc ''
-private_lane :certs do |options|
+lane :certs do |options|
   # Create Keychain to store certificates in
   create_keychain(
     name: ENV['MATCH_KEYCHAIN_NAME'],

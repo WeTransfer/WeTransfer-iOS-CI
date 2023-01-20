@@ -427,7 +427,9 @@ lane :certs do |options|
     keychain_password: (ENV['MATCH_KEYCHAIN_PASSWORD']).to_s,
     app_identifier: options[:app_identifier],
     force: true,
-    type: options[:type] || 'appstore'
+    type: options[:type] || 'appstore',
+    platform: options.fetch(:platform, 'ios'),
+    readonly: options.fetch(:readonly, false)
   )
 end
 

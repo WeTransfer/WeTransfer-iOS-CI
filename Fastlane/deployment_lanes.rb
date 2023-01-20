@@ -159,6 +159,10 @@ lane :release do |options|
 
     branch_name = is_hotfix ? "hotfix/#{latest_release_tag}" : "release/#{latest_release_tag}"
 
+    # This is a temporary measure to be able to merge our release.
+    # It will be revised in https://wetransfer.atlassian.net/browse/TMOB-2510
+    sh "git fetch --unshallow"
+
     sh "git branch #{branch_name} origin/main"
     sh "git checkout #{branch_name}"
 

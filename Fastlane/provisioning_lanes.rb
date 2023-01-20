@@ -84,8 +84,13 @@ private_lane :match_configuration do |options|
   )
 end
 
+desc 'Adds a Macos device to your developer account.'
+lane :add_macos_device do
+  add_device(platform: 'mac')
+end
+
 desc 'Adds a new device to your developer account.'
-lane :add_device do
+lane :add_device do |options|
   device_name = prompt(text: 'Enter the device name: ')
   device_udid = prompt(text: 'Enter the device UDID: ')
 
@@ -96,7 +101,8 @@ lane :add_device do
 
   register_devices(
     devices: device_hash,
-    team_id: ENV['FASTLANE_TEAM_ID']
+    team_id: ENV['FASTLANE_TEAM_ID'],
+    platform: options.fetch(:platform, 'ios')
   )
 
   sign

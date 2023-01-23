@@ -415,7 +415,7 @@ desc ''
 desc '#### Options'
 desc ' * **`app_identifier`**: a list of all app identifiers for which to sync the certs'
 desc ''
-private_lane :certs do |options|
+lane :certs do |options|
   # Create Keychain to store certificates in
   create_keychain(
     name: ENV['MATCH_KEYCHAIN_NAME'],
@@ -431,7 +431,9 @@ private_lane :certs do |options|
     keychain_password: (ENV['MATCH_KEYCHAIN_PASSWORD']).to_s,
     app_identifier: options[:app_identifier],
     force: true,
-    type: options[:type] || 'appstore'
+    type: options[:type] || 'appstore',
+    platform: options.fetch(:platform, 'ios'),
+    readonly: options.fetch(:readonly, false)
   )
 end
 

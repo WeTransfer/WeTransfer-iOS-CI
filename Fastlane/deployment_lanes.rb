@@ -75,7 +75,7 @@ lane :beta do |options|
   # Create a new GitHub release
   last_non_candidate_tag = latest_github_release_tag
   release_title = "#{tag_name} - Beta"
-  release_output = sh("mint run --silent gitbuddy release -l #{last_non_candidate_tag} -b develop --skip-comments --json --use-pre-release --target-commitish #{branch_name} --tag-name #{tag_name} --release-title '#{release_title}'")
+  release_output = sh("mint run --silent gitbuddy release -l #{last_non_candidate_tag} -b #{branch_name} --skip-comments --json --use-pre-release --target-commitish #{branch_name} --tag-name #{tag_name} --release-title '#{release_title}'")
   release_json = JSON.parse(release_output)
 
   release_url = release_json['url']
@@ -158,6 +158,10 @@ lane :release do |options|
     sh "git fetch --tags origin #{ENV['BITRISE_GIT_BRANCH']} --no-recurse-submodules"
 
     branch_name = is_hotfix ? "hotfix/#{latest_release_tag}" : "release/#{latest_release_tag}"
+
+    # This is a temporary measure to be able to merge our release.
+    # It will be revised in https://wetransfer.atlassian.net/browse/TMOB-2510
+    sh "git fetch --unshallow"
 
     sh "git branch #{branch_name} origin/main"
     sh "git checkout #{branch_name}"

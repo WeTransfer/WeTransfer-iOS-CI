@@ -162,7 +162,7 @@ lane :release do |options|
     sh "git branch #{branch_name} origin/main"
     sh "git checkout #{branch_name}"
 
-    sh "git merge -X theirs #{latest_release_tag}" unless is_hotfix
+    sh "git merge -X theirs #{latest_release_tag} --allow-unrelated-histories" unless is_hotfix
 
     # Update any new submodules
     sh 'git submodule sync && git submodule update --init --recursive && git submodule update --remote --no-fetch ../Submodules/WeTransfer-iOS-CI'

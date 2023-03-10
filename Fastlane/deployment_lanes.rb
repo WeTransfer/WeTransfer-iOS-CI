@@ -159,10 +159,12 @@ lane :release do |options|
 
     branch_name = is_hotfix ? "hotfix/#{latest_release_tag}" : "release/#{latest_release_tag}"
 
-    sh "git branch #{branch_name} origin/main"
-    sh "git checkout #{branch_name}"
-
-    sh "git merge -X theirs #{latest_release_tag}" unless is_hotfix
+    unless is_hotfix
+      sh "git checkout #{latest_release_tag} -b #{branch_name}"
+    else
+      sh "git branch #{branch_name} origin/main"
+      sh "git checkout #{branch_name}"
+    end
 
     # Update any new submodules
     sh 'git submodule sync && git submodule update --init --recursive && git submodule update --remote --no-fetch ../Submodules/WeTransfer-iOS-CI'

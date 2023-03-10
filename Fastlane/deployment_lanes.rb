@@ -160,7 +160,7 @@ lane :release do |options|
     branch_name = is_hotfix ? "hotfix/#{latest_release_tag}" : "release/#{latest_release_tag}"
 
     unless is_hotfix
-      sh "git checkout tags/#{latest_release_tag} -b #{branch_name}"
+      sh "git checkout #{latest_release_tag} -b #{branch_name}"
     else
       sh "git branch #{branch_name} origin/main"
       sh "git checkout #{branch_name}"

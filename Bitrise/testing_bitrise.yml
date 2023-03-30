@@ -70,7 +70,7 @@ workflows:
             # git config --global url."git@github.com:".insteadOf "https://github.com/"
             for ip in $(dig @8.8.8.8 github.com +short); do ssh-keyscan github.com,$ip; ssh-keyscan $ip; done 2>/dev/null >> ~/.ssh/known_hosts
     - script:
-        timeout: 2400
+        timeout: 3600
         title: Run Fastlane
         inputs:
         - content: |-

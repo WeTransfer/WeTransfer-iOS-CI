@@ -21,7 +21,7 @@ workflows:
                 ./Bitrise/Scripts/pr_assignments.sh
 
                 # Configure CI_TESTING environment variable.
-                ./Bitrise/Scripts/pr_labels_testing.sh
+                ./Bitrise/Scripts/configure_environment_for_pr.sh
             else
                 echo 'Running from another package using a submodule'
 
@@ -29,7 +29,7 @@ workflows:
                 ./Submodules/WeTransfer-iOS-CI/Bitrise/Scripts/pr_assignments.sh
 
                 # Configure CI_TESTING environment variable.
-                ./Submodules/WeTransfer-iOS-CI/Bitrise/Scripts/pr_labels_testing.sh
+                ./Submodules/WeTransfer-iOS-CI/Bitrise/Scripts/configure_environment_for_pr.sh
             fi
     - script:
         run_if: '{{enveq "CI_TESTING" "false"}}'
@@ -70,6 +70,7 @@ workflows:
             # git config --global url."git@github.com:".insteadOf "https://github.com/"
             for ip in $(dig @8.8.8.8 github.com +short); do ssh-keyscan github.com,$ip; ssh-keyscan $ip; done 2>/dev/null >> ~/.ssh/known_hosts
     - script:
+        run_if: '{{enveq "SKIP_TESTS_AND_DANGER" "false"}}'
         timeout: 3600
         title: Run Fastlane
         inputs:
@@ -89,6 +90,7 @@ workflows:
         - debug_mode: 'true'
         - deploy_path: build/derived_data/Build/Products/Debug-iphonesimulator/${XCODE_TARGET}.app/  
     - script:
+        run_if: '{{enveq "SKIP_TESTS_AND_DANGER" "false"}}'
         title: Set up Danger Caching
         inputs:
         - content: |-
@@ -99,10 +101,12 @@ workflows:
                 envman add --key DANGER_CHECKSUM_PATH --value "Submodules/WeTransfer-iOS-CI/Package.resolved"
                 envman add --key DANGER_BUILD_DIRECTORY --value "Submodules/WeTransfer-iOS-CI/.build"
             fi
-    - restore-cache@1:          
+    - restore-cache@1:      
+        run_if: '{{enveq "SKIP_TESTS_AND_DANGER" "false"}}'    
         inputs:          
         - key: danger-build-cache-{{ checksum "$DANGER_CHECKSUM_PATH" }}
     - script:
+        run_if: '{{enveq "SKIP_TESTS_AND_DANGER" "false"}}'
         title: Run Danger
         deps:
           brew:
@@ -128,6 +132,7 @@ workflows:
                 ./danger-swift ci --cwd ../../
             fi
     - save-cache@1:
+        run_if: '{{enveq "SKIP_TESTS_AND_DANGER" "false"}}'
         inputs:
         - key: danger-build-cache-{{ checksum "$DANGER_CHECKSUM_PATH" }}
         - paths: "$DANGER_BUILD_DIRECTORY"

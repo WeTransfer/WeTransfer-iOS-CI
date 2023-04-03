@@ -71,7 +71,7 @@ workflows:
             for ip in $(dig @8.8.8.8 github.com +short); do ssh-keyscan github.com,$ip; ssh-keyscan $ip; done 2>/dev/null >> ~/.ssh/known_hosts
     - script:
         run_if: '{{enveq "SKIP_TESTS_AND_DANGER" "false"}}'
-        timeout: 3600
+        timeout: 2400
         title: Run Fastlane
         inputs:
         - content: |-

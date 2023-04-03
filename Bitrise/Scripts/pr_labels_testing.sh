@@ -19,3 +19,11 @@ else
   echo "This PR is not configured for testing CI and runs as normal."
   envman add --key CI_TESTING --value "false"
 fi
+
+if [[ "$PR_LABELS" == *"create-simulator-build"* ]]; then
+  echo "This PR is going to deliver a Simulator Build inside the Danger message."
+  envman add --key CREATE_SIMULATOR_BUILD --value "true"
+else
+  echo "This PR is not going to deliver a Simulator Build inside the Danger message."
+  envman add --key CREATE_SIMULATOR_BUILD --value "false"
+fi

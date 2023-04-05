@@ -15,3 +15,4 @@
 REPOSITORY_NAME=$(echo ${GIT_REPOSITORY_URL} | rev | cut -d '.' -f2 | cut -d '/' -f1 | rev)
 ISSUE_URL="https://api.github.com/repos/${BITRISEIO_GIT_REPOSITORY_OWNER}/${REPOSITORY_NAME}/issues/${BITRISE_PULL_REQUEST}"
 HEADER="Accept: application/vnd.github.v3+json"
+PULL_FILES_URL="https://api.github.com/repos/${BITRISEIO_GIT_REPOSITORY_OWNER}/${REPOSITORY_NAME}/pulls/${BITRISE_PULL_REQUEST}/files"

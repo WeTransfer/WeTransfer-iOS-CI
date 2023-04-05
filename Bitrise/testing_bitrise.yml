@@ -42,6 +42,7 @@ workflows:
                 exit 1
             fi
     - restore-cache@1:          
+        run_if: '{{enveq "SKIP_TESTS" "false"}}'
         inputs:          
         - key: spm-cache-{{ checksum "Package.resolved" "*.xcodeproj/**/Package.resolved" "WeTransferPRLinter/Package.resolved" }}
     - script:
@@ -70,7 +71,7 @@ workflows:
             # git config --global url."git@github.com:".insteadOf "https://github.com/"
             for ip in $(dig @8.8.8.8 github.com +short); do ssh-keyscan github.com,$ip; ssh-keyscan $ip; done 2>/dev/null >> ~/.ssh/known_hosts
     - script:
-        run_if: '{{enveq "SKIP_TESTS_AND_DANGER" "false"}}'
+        run_if: '{{enveq "SKIP_TESTS" "false"}}'
         timeout: 2400
         title: Run Fastlane
         inputs:
@@ -90,7 +91,6 @@ workflows:
         - debug_mode: 'true'
         - deploy_path: build/derived_data/Build/Products/Debug-iphonesimulator/${XCODE_TARGET}.app/  
     - script:
-        run_if: '{{enveq "SKIP_TESTS_AND_DANGER" "false"}}'
         title: Set up Danger Caching
         inputs:
         - content: |-
@@ -102,15 +102,10 @@ workflows:
                 envman add --key DANGER_BUILD_DIRECTORY --value "Submodules/WeTransfer-iOS-CI/.build"
             fi
     - restore-cache@1:      
-        run_if: '{{enveq "SKIP_TESTS_AND_DANGER" "false"}}'    
         inputs:          
         - key: danger-build-cache-{{ checksum "$DANGER_CHECKSUM_PATH" }}
     - script:
-        run_if: '{{enveq "SKIP_TESTS_AND_DANGER" "false"}}'
         title: Run Danger
-        deps:
-          brew:
-          - name: swiftlint
         inputs:
         - content: |-
             #!/usr/bin/env bash
@@ -132,7 +127,6 @@ workflows:
                 ./danger-swift ci --cwd ../../
             fi
     - save-cache@1:
-        run_if: '{{enveq "SKIP_TESTS_AND_DANGER" "false"}}'
         inputs:
         - key: danger-build-cache-{{ checksum "$DANGER_CHECKSUM_PATH" }}
         - paths: "$DANGER_BUILD_DIRECTORY"

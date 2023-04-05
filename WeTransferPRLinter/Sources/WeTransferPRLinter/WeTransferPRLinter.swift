@@ -14,7 +14,9 @@ public enum WeTransferPRLinter {
         fileManager: FileManager = .default,
         environmentVariables: [String: String] = ProcessInfo.processInfo.environment
     ) {
-        measure(taskName: "XCResults Summary") {
+        let skippedTests = environmentVariables["SKIP_TESTS"]?.lowercased() == "true"
+
+        measure(taskName: "XCResults Summary", skipIf: skippedTests, danger: danger) {
             reportXCResultsSummary(
                 using: danger,
                 summaryReporter: xcResultSummaryReporter,
@@ -23,32 +25,42 @@ public enum WeTransferPRLinter {
             )
         }
 
-        measure(taskName: "PR Description Validation") {
+        measure(taskName: "PR Description Validation", danger: danger) {
             validatePRDescription(using: danger)
         }
 
-        measure(taskName: "Validating Work in Progress") {
+        measure(taskName: "Validating Work in Progress", danger: danger) {
             validateWorkInProgress(using: danger)
         }
 
-        measure(taskName: "Validating Files") {
+        measure(taskName: "Validating Files", danger: danger) {
             validateFiles(using: danger)
         }
 
-        measure(taskName: "Bitrise URL showing") {
+        measure(taskName: "Bitrise URL showing", danger: danger) {
             showBitriseBuildURL(using: danger, environmentVariables: environmentVariables)
         }
 
-        measure(taskName: "Simulator Download URL showing") {
+        measure(taskName: "Simulator Download URL showing", danger: danger) {
             showSimulatorBuildDownloadURL(using: danger, environmentVariables: environmentVariables)
         }
 
-        measure(taskName: "SwiftLint") {
+        measure(taskName: "SwiftLint", skipIf: skippedTests, danger: danger) {
             swiftLint(using: danger, executor: swiftLintExecutor, configsFolderPath: swiftLintConfigsFolderPath, fileManager: fileManager, environmentVariables: environmentVariables)
         }
     }
 
-    private static func measure(taskName: String, task: () -> Void) {
+    private static func measure(
+        taskName: String,
+        skipIf shouldSkip: Bool = false,
+        danger: DangerDSL,
+        task: () -> Void
+    ) {
+        guard !shouldSkip else {
+            danger.message("Skipped running \(taskName) as `shouldSkip` returned true.")
+            return
+        }
+
         let startDate = Date()
         task()
         let differenceInSeconds = Int(Date().timeIntervalSince(startDate))

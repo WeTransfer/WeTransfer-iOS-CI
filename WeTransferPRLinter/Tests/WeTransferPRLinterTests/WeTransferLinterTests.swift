@@ -155,6 +155,24 @@ final class WeTransferLinterTests: XCTestCase {
         XCTAssertTrue(mockedSwiftLintExecutor.lintedFiles.isEmpty)
     }
 
+    func testSwiftLintSkippingIfSkipTestsEnvVariableSet() {
+        let danger = githubWithFilesDSL(created: [], fileMap: [:])
+        let mockedSwiftLintExecutor = MockedSwiftLintExecutor.self
+        let stubbedFileManager = StubbedFileManager()
+        stubbedFileManager.fileExists = true
+        let customPath = "/Users/avanderlee/Projects/"
+        WeTransferPRLinter.lint(
+            using: danger,
+            swiftLintExecutor: mockedSwiftLintExecutor,
+            reportsPath: "file://faky/url",
+            swiftLintConfigsFolderPath: customPath,
+            fileManager: stubbedFileManager,
+            environmentVariables: ["SKIP_TESTS": "true"]
+        )
+
+        XCTAssertTrue(mockedSwiftLintExecutor.lintedFiles.isEmpty)
+    }
+
     /// It should not trigger SwiftLint if there's no files to lint.
     func testSwiftLintSkippingForNoSwiftFiles() {
         let danger = githubWithFilesDSL(created: ["Changelog.md", "RubyTests.rb"], fileMap: [:])

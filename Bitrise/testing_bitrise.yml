@@ -79,6 +79,7 @@ workflows:
             lane=${FASTLANE_LANE:=test}
             fastlane $lane
     - deploy-to-bitrise-io@2:
+        run_if: '{{enveq "CREATE_SIMULATOR_BUILD" "true"}}'
         title: Deploy Simulator Build to Bitrise
         is_skippable: true
         inputs:

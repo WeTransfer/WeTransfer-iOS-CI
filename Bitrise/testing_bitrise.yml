@@ -42,6 +42,7 @@ workflows:
                 exit 1
             fi
     - restore-cache@1:          
+        run_if: '{{enveq "SKIP_TESTS" "false"}}'
         inputs:          
         - key: spm-cache-{{ checksum "Package.resolved" "*.xcodeproj/**/Package.resolved" "WeTransferPRLinter/Package.resolved" }}
     - script:

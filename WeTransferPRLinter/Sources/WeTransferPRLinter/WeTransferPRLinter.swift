@@ -15,8 +15,7 @@ public enum WeTransferPRLinter {
         environmentVariables: [String: String] = ProcessInfo.processInfo.environment
     ) {
         let skippedTests = environmentVariables["SKIP_TESTS"]?.lowercased() == "true"
-        print("Running with environment vars: \(environmentVariables)")
-        
+
         measure(taskName: "XCResults Summary", skipIf: skippedTests, danger: danger) {
             reportXCResultsSummary(
                 using: danger,

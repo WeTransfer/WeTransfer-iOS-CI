@@ -106,9 +106,6 @@ workflows:
         - key: danger-build-cache-{{ checksum "$DANGER_CHECKSUM_PATH" }}
     - script:
         title: Run Danger
-        deps:
-          brew:
-          - name: swiftlint
         inputs:
         - content: |-
             #!/usr/bin/env bash

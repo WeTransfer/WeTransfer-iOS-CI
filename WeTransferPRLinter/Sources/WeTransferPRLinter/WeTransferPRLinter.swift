@@ -14,7 +14,7 @@ public enum WeTransferPRLinter {
         fileManager: FileManager = .default,
         environmentVariables: [String: String] = ProcessInfo.processInfo.environment
     ) {
-        let skippedTests = environmentVariables["SKIP_TESTS"] == "true"
+        let skippedTests = environmentVariables["SKIP_TESTS"]?.lowercased() == "true"
 
         measure(taskName: "XCResults Summary", skipIf: skippedTests, danger: danger) {
             reportXCResultsSummary(

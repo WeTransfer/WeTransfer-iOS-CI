@@ -34,8 +34,8 @@ CHANGED_FILES=$(
 
 if echo "$CHANGED_FILES" | grep -q "\.swift$"; then
   echo "The PR contains '.swift' files, let's test and run Danger"
-  envman add --key SKIP_TESTS_AND_DANGER --value "false"
+  envman add --key SKIP_TESTS --value "false"
 else
   echo "The PR does not contain '.swift' files, let's skip tests and Danger"
-  envman add --key SKIP_TESTS_AND_DANGER --value "true"
+  envman add --key SKIP_TESTS --value "true"
 fi

@@ -20,6 +20,8 @@ desc '#### Options'
 desc " * **`scheme`**: The project's scheme"
 desc ' * **`project_path`**: The path to the project'
 desc ' * **`project_name`**: The name of the project'
+desc ' * **`parallel_testing`**: Enables parallel testing'
+desc ' * **`xcargs`**: An optional extra set of arguments to pass to Fastlane Scan'
 desc ' * **`destination`**: ..'
 lane :test_project do |options|
   # Set timeout to prevent xcodebuild -list -project to take to much retries.

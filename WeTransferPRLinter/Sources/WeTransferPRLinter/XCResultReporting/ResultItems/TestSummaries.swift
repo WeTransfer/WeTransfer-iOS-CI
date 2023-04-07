@@ -58,6 +58,11 @@ extension ActionTestPlanRunSummaries {
 
         let slowestTests = allTests
             .sorted(using: KeyPathComparator(\.duration, order: .reverse))
+            .filter { test in
+                guard let duration = test.duration else { return false }
+                /// Tests under 1 second are acceptable.
+                return duration > 1
+            }
             .prefix(3)
 
         return slowestTests.compactMap { testMetadata in

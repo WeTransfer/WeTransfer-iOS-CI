@@ -84,10 +84,8 @@ final class XCResultSummartReporterTests: XCTestCase {
             environmentVariables: [:]
         )
 
-        XCTAssertEqual(danger.messages.map(\.message).suffix(3), [
-            "Slowest test: TestUITests/testExample() (16.052s)",
-            "Slowest test: TestTests/testPerformanceExample() (0.266s)",
-            "Slowest test: TestThisDude/testPerformanceExample() (0.253s)"
+        XCTAssertEqual(danger.messages.map(\.message).filter { $0.contains("Slowest test") }, [
+            "Slowest test: TestUITests/testExample() (16.052s)"
         ])
     }
 

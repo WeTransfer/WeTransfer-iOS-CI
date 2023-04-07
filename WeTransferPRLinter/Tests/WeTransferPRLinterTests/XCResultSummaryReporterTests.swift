@@ -85,9 +85,9 @@ final class XCResultSummartReporterTests: XCTestCase {
         )
 
         XCTAssertEqual(danger.messages.map(\.message).suffix(3), [
-            "Slowest test: testExample() (16.052s)",
-            "Slowest test: testPerformanceExample() (0.266s)",
-            "Slowest test: testPerformanceExample() (0.253s)"
+            "Slowest test: TestUITests/testExample() (16.052s)",
+            "Slowest test: TestTests/testPerformanceExample() (0.266s)",
+            "Slowest test: TestThisDude/testPerformanceExample() (0.253s)"
         ])
     }
 

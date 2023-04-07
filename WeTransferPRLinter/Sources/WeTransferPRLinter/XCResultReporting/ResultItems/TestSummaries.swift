@@ -27,7 +27,8 @@ extension ActionRecord: XCResultItemsConvertible {
             }
         }
 
-        return issueResultItems + testPlanResultItems
+        let slowestTestsItems = testPlanRunSummaries.createResultForSlowestTests()
+        return issueResultItems + testPlanResultItems + slowestTestsItems
     }
 }
 
@@ -46,6 +47,25 @@ extension ActionTestPlanRunSummaries {
     var skippedTests: [ActionTestMetadata] {
         summaries.flatMap { $0.testableSummaries.flatMap(\.skippedTests) }
     }
+
+    var allTests: [ActionTestMetadata] {
+        summaries.flatMap { $0.testableSummaries.flatMap(\.allTests) }
+    }
+
+    func createResultForSlowestTests() -> [XCResultItem] {
+        let allTests = self.allTests
+        guard !allTests.isEmpty else { return [] }
+
+        let slowestTests = allTests
+            .sorted(using: KeyPathComparator(\.duration, order: .reverse))
+            .prefix(3)
+
+        return slowestTests.compactMap { testMetadata in
+            guard let duration = testMetadata.duration else { return nil }
+            let durationString = String(format: "%.3fs", duration)
+            return XCResultItem(message: "Slowest test: \(testMetadata.name) (\(durationString))", category: .message)
+        }
+    }
 }
 
 extension ActionTestableSummary: XCResultItemsConvertible {
@@ -59,6 +79,10 @@ extension ActionTestableSummary: XCResultItemsConvertible {
 
     var skippedTests: [ActionTestMetadata] {
         tests.skippedTests
+    }
+
+    var allTests: [ActionTestMetadata] {
+        tests.allTests
     }
 
     var totalNumberOfTests: Int {
@@ -112,6 +136,12 @@ extension [ActionTestSummaryGroup] {
             skippedTests + testSummaryGroup.skippedTests
         }
     }
+
+    var allTests: [ActionTestMetadata] {
+        reduce([]) { skippedTests, testSummaryGroup in
+            skippedTests + testSummaryGroup.allTests
+        }
+    }
 }
 
 extension ActionTestSummaryGroup {
@@ -129,6 +159,10 @@ extension ActionTestSummaryGroup {
 
     var skippedTests: [ActionTestMetadata] {
         subtests.skipped + subtestGroups.skippedTests
+    }
+
+    var allTests: [ActionTestMetadata] {
+        subtests + subtestGroups.allTests
     }
 }
 

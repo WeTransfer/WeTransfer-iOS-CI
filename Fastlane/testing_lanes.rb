@@ -20,6 +20,8 @@ desc '#### Options'
 desc " * **`scheme`**: The project's scheme"
 desc ' * **`project_path`**: The path to the project'
 desc ' * **`project_name`**: The name of the project'
+desc ' * **`parallel_testing`**: Enables parallel testing'
+desc ' * **`xcargs`**: An optional extra set of arguments to pass to Fastlane Scan'
 desc ' * **`destination`**: ..'
 lane :test_project do |options|
   # Set timeout to prevent xcodebuild -list -project to take to much retries.
@@ -68,7 +70,8 @@ lane :test_project do |options|
       suppress_xcode_output: false,
       buildlog_path: ENV['BITRISE_DEPLOY_DIR'], # By configuring `BITRISE_DEPLOY_DIR` we make sure our build log is deployed and available in Bitrise.
       prelaunch_simulator: false,
-      xcargs: "-clonedSourcePackagesDirPath #{source_packages_dir} -parallel-testing-enabled NO -retry-tests-on-failure -test-iterations 3 #{options.fetch(:xcargs, nil)}",
+      parallel_testing: options.fetch(:parallel_testing, false),
+      xcargs: "-clonedSourcePackagesDirPath #{source_packages_dir} -retry-tests-on-failure -test-iterations 3 #{options.fetch(:xcargs, nil)}",
       include_simulator_logs: false, # Needed for this: https://github.com/fastlane/fastlane/issues/8909
       result_bundle: true,
       output_directory: "#{ENV['PWD']}/build/reports/",

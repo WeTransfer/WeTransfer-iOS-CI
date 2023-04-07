@@ -27,7 +27,10 @@ extension ActionRecord: XCResultItemsConvertible {
             }
         }
 
-        let slowestTestsItems = testPlanRunSummaries.createResultForSlowestTests()
+        var slowestTestsItems: [XCResultItem] = []
+        if #available(macOS 12.0, *) {
+            slowestTestsItems = testPlanRunSummaries.createResultForSlowestTests()
+        }
         return issueResultItems + testPlanResultItems + slowestTestsItems
     }
 }
@@ -52,6 +55,7 @@ extension ActionTestPlanRunSummaries {
         summaries.flatMap { $0.testableSummaries.flatMap(\.allTests) }
     }
 
+    @available(macOS 12.0, *)
     func createResultForSlowestTests() -> [XCResultItem] {
         let allTests = self.allTests
         guard !allTests.isEmpty else { return [] }

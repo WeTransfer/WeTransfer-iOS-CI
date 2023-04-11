@@ -40,7 +40,7 @@ final class XCResultSummartReporterTests: XCTestCase {
             environmentVariables: [:]
         )
 
-        XCTAssertEqual(danger.messages.map(\.message), [
+        XCTAssertEqual(danger.messages.map(\.message).prefix(2), [
             "TestUITests: Executed 1 tests (0 failed, 0 retried, 0 skipped) in 16.058 seconds",
             "TestThisDude: Executed 6 tests (2 failed, 0 retried, 0 skipped) in 0.534 seconds"
         ])
@@ -66,6 +66,29 @@ final class XCResultSummartReporterTests: XCTestCase {
         }
     }
 
+    func testSlowestTestsReporting() throws {
+        let xcResultFilename = "Trainer_example_result.xcresult"
+        let xcResultFile = Bundle.module.url(forResource: "Resources/\(xcResultFilename)", withExtension: nil)!
+        let file = try Folder(path: xcResultFile.deletingLastPathComponent().path).subfolder(named: xcResultFilename)
+        try file.copy(to: buildFolder)
+
+        let danger = githubWithFilesDSL()
+        let stubbedFileManager = StubbedFileManager()
+        stubbedFileManager.stubbedCurrentDirectoryPath = "/Users/josh/Projects/fastlane/"
+
+        WeTransferPRLinter.lint(
+            using: danger,
+            swiftLintExecutor: MockedSwiftLintExecutor.self,
+            reportsPath: buildFolder.path,
+            fileManager: stubbedFileManager,
+            environmentVariables: [:]
+        )
+
+        XCTAssertEqual(danger.messages.map(\.message).filter { $0.contains("Slowest test") }, [
+            "Slowest test: TestUITests/testExample() (16.052s)"
+        ])
+    }
+
     func testNotReportingRetriedSucceedingTest() throws {
         let xcResultFilename = "coverage_fail_flaky_skip_example.xcresult"
         let xcResultFile = Bundle.module.url(forResource: "Resources/\(xcResultFilename)", withExtension: nil)!
@@ -85,7 +108,7 @@ final class XCResultSummartReporterTests: XCTestCase {
             environmentVariables: [:]
         )
 
-        XCTAssertEqual(danger.messages.map(\.message), [
+        XCTAssertEqual(danger.messages.map(\.message).prefix(1), [
             "PRLinterAppTests: Executed 10 tests (1 failed, 1 retried, 1 skipped) in 0.097 seconds"
         ], "It should only report the actual failed test, instead of also the retried succeeded one")
 
@@ -121,7 +144,7 @@ final class XCResultSummartReporterTests: XCTestCase {
             environmentVariables: [:]
         )
 
-        XCTAssertEqual(danger.messages.map(\.message), [
+        XCTAssertEqual(danger.messages.map(\.message).prefix(1), [
             "TransferTests: Executed 519 tests (0 failed, 0 retried, 0 skipped) in 39.226 seconds"
         ], "It should only report the actual failed test, instead of also the retried succeeded one")
 
@@ -153,7 +176,7 @@ final class XCResultSummartReporterTests: XCTestCase {
             environmentVariables: [:]
         )
 
-        XCTAssertEqual(danger.messages.map(\.message), [
+        XCTAssertEqual(danger.messages.map(\.message).filter { $0.contains("Executed") }, [
             "PRLinterAppTests: Executed 10 tests (1 failed, 1 retried, 1 skipped) in 0.097 seconds",
             "PRLinterAppTests: Executed 10 tests (1 failed, 1 retried, 1 skipped) in 0.097 seconds"
         ], "Both reports should be handled")

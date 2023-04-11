@@ -23,6 +23,7 @@ Following is a list of features which are posted in a comment on PRs based on th
   - Show code coverage of PR related files
   - Show any failed tests
   - Show all `warnings` and `errors` in the project
+  - Show slowest tests
 
 All this is written in Swift and fully tested 🚀
 
@@ -36,6 +37,11 @@ These warnings are posted inline inside the PR, helping you to solve them easily
 
 ![](Assets/danger_comment.png)
 _This is an example comment. Note that `WeTransferBot` will be replaced by your own bot. More info can be found here: [Getting started with Danger](http://danger.systems/guides/getting_started.html)._
+
+### Adjusting slowests tests
+The following environment variables can be used to adjust the slowest tests outcomes:
+- Use `SLOW_TESTS_DURATION_THRESHOLD` to configure a minimum duration threshold before a slow test shows up. Defaults to `2`.
+- Use `SLOW_TESTS_LIMIT` to configure the limit of slow tests to be shown. Defaults to `3`.
 
 # How to integrate?
 

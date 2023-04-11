@@ -27,7 +27,11 @@ extension ActionRecord: XCResultItemsConvertible {
             }
         }
 
-        return issueResultItems + testPlanResultItems
+        var slowestTestsItems: [XCResultItem] = []
+        if #available(macOS 12.0, *) {
+            slowestTestsItems = testPlanRunSummaries.createResultForSlowestTests()
+        }
+        return issueResultItems + testPlanResultItems + slowestTestsItems
     }
 }
 
@@ -46,6 +50,42 @@ extension ActionTestPlanRunSummaries {
     var skippedTests: [ActionTestMetadata] {
         summaries.flatMap { $0.testableSummaries.flatMap(\.skippedTests) }
     }
+
+    var allTests: [ActionTestMetadata] {
+        summaries.flatMap { $0.testableSummaries.flatMap(\.allTests) }
+    }
+
+    @available(macOS 12.0, *)
+    func createResultForSlowestTests() -> [XCResultItem] {
+        let allTests = self.allTests
+        guard !allTests.isEmpty else { return [] }
+
+        var durationThreshold: Double = 2
+        var slowTestsLimit = 3
+
+        if let envDurationThreshold = ProcessInfo.processInfo.environment["SLOW_TESTS_DURATION_THRESHOLD"] {
+            durationThreshold = Double(envDurationThreshold) ?? durationThreshold
+        }
+
+        if let envSlowTestsLimit = ProcessInfo.processInfo.environment["SLOW_TESTS_LIMIT"] {
+            slowTestsLimit = Int(envSlowTestsLimit) ?? slowTestsLimit
+        }
+
+        let slowestTests = allTests
+            .sorted(using: KeyPathComparator(\.duration, order: .reverse))
+            .filter { test in
+                guard let duration = test.duration else { return false }
+                /// Tests under our `durationThreshold` second are acceptable.
+                return duration > durationThreshold
+            }
+            .prefix(slowTestsLimit)
+
+        return slowestTests.compactMap { testMetadata in
+            guard let duration = testMetadata.duration else { return nil }
+            let durationString = String(format: "%.3fs", duration)
+            return XCResultItem(message: "Slowest test: \(testMetadata.identifier) (\(durationString))", category: .message)
+        }
+    }
 }
 
 extension ActionTestableSummary: XCResultItemsConvertible {
@@ -59,6 +99,10 @@ extension ActionTestableSummary: XCResultItemsConvertible {
 
     var skippedTests: [ActionTestMetadata] {
         tests.skippedTests
+    }
+
+    var allTests: [ActionTestMetadata] {
+        tests.allTests
     }
 
     var totalNumberOfTests: Int {
@@ -112,6 +156,12 @@ extension [ActionTestSummaryGroup] {
             skippedTests + testSummaryGroup.skippedTests
         }
     }
+
+    var allTests: [ActionTestMetadata] {
+        reduce([]) { skippedTests, testSummaryGroup in
+            skippedTests + testSummaryGroup.allTests
+        }
+    }
 }
 
 extension ActionTestSummaryGroup {
@@ -129,6 +179,10 @@ extension ActionTestSummaryGroup {
 
     var skippedTests: [ActionTestMetadata] {
         subtests.skipped + subtestGroups.skippedTests
+    }
+
+    var allTests: [ActionTestMetadata] {
+        subtests + subtestGroups.allTests
     }
 }
 

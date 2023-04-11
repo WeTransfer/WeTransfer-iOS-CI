@@ -60,14 +60,25 @@ extension ActionTestPlanRunSummaries {
         let allTests = self.allTests
         guard !allTests.isEmpty else { return [] }
 
+        var durationThreshold: Double = 2
+        var slowTestsLimit = 3
+
+        if let envDurationThreshold = ProcessInfo.processInfo.environment["SLOW_TESTS_DURATION_THRESHOLD"] {
+            durationThreshold = Double(envDurationThreshold) ?? durationThreshold
+        }
+
+        if let envSlowTestsLimit = ProcessInfo.processInfo.environment["SLOW_TESTS_LIMIT"] {
+            slowTestsLimit = Int(envSlowTestsLimit) ?? slowTestsLimit
+        }
+
         let slowestTests = allTests
             .sorted(using: KeyPathComparator(\.duration, order: .reverse))
             .filter { test in
                 guard let duration = test.duration else { return false }
-                /// Tests under 1 second are acceptable.
-                return duration > 1
+                /// Tests under our `durationThreshold` second are acceptable.
+                return duration > durationThreshold
             }
-            .prefix(3)
+            .prefix(slowTestsLimit)
 
         return slowestTests.compactMap { testMetadata in
             guard let duration = testMetadata.duration else { return nil }

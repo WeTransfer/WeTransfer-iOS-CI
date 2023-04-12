@@ -91,6 +91,7 @@ workflows:
         - debug_mode: 'true'
         - deploy_path: build/derived_data/Build/Products/Debug-iphonesimulator/${XCODE_TARGET}.app/  
     - deploy-to-bitrise-io@2:
+        run_if: '{{enveq "SKIP_TESTS" "false"}}'
         is_skippable: true
         inputs:
         - notify_user_groups: none
@@ -98,6 +99,8 @@ workflows:
         - is_compress: 'true'
         - debug_mode: 'true'
         - deploy_path: build/reports/
+        - pipeline_intermediate_files: |-
+            "build/reports/:BITRISE_TEST_REPORTS"
     - save-cache@1:
         is_always_run: true
         inputs:

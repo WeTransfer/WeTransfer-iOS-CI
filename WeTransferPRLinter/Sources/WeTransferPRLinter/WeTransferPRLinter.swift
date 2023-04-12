@@ -21,7 +21,8 @@ public enum WeTransferPRLinter {
                 using: danger,
                 summaryReporter: xcResultSummaryReporter,
                 reportsPath: reportsPath,
-                fileManager: fileManager
+                fileManager: fileManager,
+                environmentVariables: environmentVariables
             )
         }
 
@@ -71,54 +72,55 @@ public enum WeTransferPRLinter {
         using danger: DangerDSL,
         summaryReporter: XCResultSummaryReporting.Type,
         reportsPath: String,
-        fileManager: FileManager
+        fileManager: FileManager,
+        environmentVariables: [String: String]
     ) {
         defer { print("\n") }
 
-        do {
-            let reportsFolder = try Folder(path: reportsPath)
-            let xcResultFiles = reportsFolder.subfolders.filter { $0.extension == "xcresult" }
+        var xcResultFiles = xcResultFiles(for: environmentVariables)
+        if let reportsFolder = try? Folder(path: reportsPath) {
+            xcResultFiles.append(contentsOf: reportsFolder.subfolders.filter { $0.extension == "xcresult" })
+        }
 
-            guard !xcResultFiles.isEmpty else {
-                return print("There were no files to create an XCResult Summary report for.")
-            }
+        guard !xcResultFiles.isEmpty else {
+            return print("Skipping XCResult summaries since no xcresult files were found.")
+        }
 
-            print("Found XCResult Summary Reports:\n- \(xcResultFiles.map(\.name).joined(separator: "\n- "))")
+        print("Found XCResult Summary Reports:\n- \(xcResultFiles.map(\.name).joined(separator: "\n- "))")
 
-            let pathsToFilter: [String] = [
-                "Submodules/",
-                "SourcePackages/",
-                ".build/",
-                ".spm-build/"
-            ]
+        let pathsToFilter: [String] = [
+            "Submodules/",
+            "SourcePackages/",
+            ".build/",
+            ".spm-build/"
+        ]
 
-            summaryReporter.reportXCResultSummary(for: xcResultFiles, using: danger, fileManager: fileManager) { result in
-                guard let file = result.file else {
-                    return true
-                }
-
-                /// Filter specific paths to make sure we don't display results from
-                /// vendor packages, SPM packages, etc.
-                for pathToFilter in pathsToFilter {
-                    guard file.contains(pathToFilter) else {
-                        continue
-                    }
-                    print("Filtered out \(file) for filtered path \(pathToFilter)")
-                    return false
-                }
-
+        summaryReporter.reportXCResultSummary(for: xcResultFiles, using: danger, fileManager: fileManager) { result in
+            guard let file = result.file else {
                 return true
             }
-            print("Finished reporting XCResult summaries.")
-        } catch let error as LocationError where error.isMissingError {
-            let message = "No tests found for the current changes in \(reportsPath)"
-            print(message)
-            danger.message(message)
-        } catch {
-            let warning = "XCResult Summary failed with error: \(error)."
-            print(warning)
-            danger.warn(warning)
+
+            /// Filter specific paths to make sure we don't display results from
+            /// vendor packages, SPM packages, etc.
+            for pathToFilter in pathsToFilter {
+                guard file.contains(pathToFilter) else {
+                    continue
+                }
+                print("Filtered out \(file) for filtered path \(pathToFilter)")
+                return false
+            }
+
+            return true
         }
+        print("Finished reporting XCResult summaries.")
+    }
+
+    static func xcResultFiles(for environmentVariables: [String: String]) -> [Folder] {
+        environmentVariables.compactMap { (key, value) -> [Folder]? in
+            guard key.starts(with: "BITRISE_TEST_REPORTS_") else { return nil }
+            guard let folder = try? Folder(path: value) else { return nil }
+            return folder.subfolders.filter { $0.extension == "xcresult" }
+        }.flatMap { $0 }
     }
 
     /// Mainly to encourage writing up some reasoning about the PR, rather than just leaving a title.

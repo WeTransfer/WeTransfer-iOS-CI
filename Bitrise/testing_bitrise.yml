@@ -104,7 +104,7 @@ workflows:
         title: Deploy pipeline test reports
         inputs:
         - pipeline_intermediate_files: |-
-            build/reports/:BITRISE_TEST_REPORTS
+            build/reports/:BITRISE_TEST_REPORTS_${FASTLANE_LANE:=DEFAULT}
     - save-cache@1:
         is_always_run: true
         inputs:

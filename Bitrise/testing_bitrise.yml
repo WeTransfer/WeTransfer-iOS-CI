@@ -6,9 +6,7 @@ trigger_map:
 - pull_request_source_branch: "*"
   workflow: wetransfer_pr_testing
 workflows:
-  wetransfer_pr_testing:
-    after_run:
-    - workflow_danger
+  pr_testing:
     steps:
     - script:
         title: Assign PR author and configure CI Testing mode
@@ -106,6 +104,13 @@ workflows:
         - key: spm-cache-{{ checksum "Package.resolved" "*.xcodeproj/**/Package.resolved" "WeTransferPRLinter/Package.resolved" }}
         - paths: .spm-build
         - is_key_unique: 'true'
+
+  wetransfer_pr_testing:
+    before_run:
+    - pr_testing
+    after_run:
+    - workflow_danger
+    
   workflow_danger:
     steps:
     - script:

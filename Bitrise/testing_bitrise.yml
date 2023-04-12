@@ -7,6 +7,8 @@ trigger_map:
   workflow: wetransfer_pr_testing
 workflows:
   wetransfer_pr_testing:
+    after_run:
+    - workflow_danger
     steps:
     - script:
         title: Assign PR author and configure CI Testing mode
@@ -46,7 +48,7 @@ workflows:
         inputs:          
         - key: spm-cache-{{ checksum "Package.resolved" "*.xcodeproj/**/Package.resolved" "WeTransferPRLinter/Package.resolved" }}
     - script:
-        run_if: '{{enveq "CI_TESTING" "false"}}'
+        run_if: '{{enveq "CI_TESTING" "false" | and .IsCI }}'
         inputs:
         - content: |-
             #!/usr/bin/env bash
@@ -90,6 +92,22 @@ workflows:
         - is_compress: 'true'
         - debug_mode: 'true'
         - deploy_path: build/derived_data/Build/Products/Debug-iphonesimulator/${XCODE_TARGET}.app/  
+    - deploy-to-bitrise-io@2:
+        is_skippable: true
+        inputs:
+        - notify_user_groups: none
+        - is_enable_public_page: 'false'
+        - is_compress: 'true'
+        - debug_mode: 'true'
+        - deploy_path: build/reports/
+    - save-cache@1:
+        is_always_run: true
+        inputs:
+        - key: spm-cache-{{ checksum "Package.resolved" "*.xcodeproj/**/Package.resolved" "WeTransferPRLinter/Package.resolved" }}
+        - paths: .spm-build
+        - is_key_unique: 'true'
+  workflow_danger:
+    steps:
     - script:
         title: Set up Danger Caching
         inputs:
@@ -130,18 +148,4 @@ workflows:
         inputs:
         - key: danger-build-cache-{{ checksum "$DANGER_CHECKSUM_PATH" }}
         - paths: "$DANGER_BUILD_DIRECTORY"
-        - is_key_unique: 'true'
-    - deploy-to-bitrise-io@2:
-        is_skippable: true
-        inputs:
-        - notify_user_groups: none
-        - is_enable_public_page: 'false'
-        - is_compress: 'true'
-        - debug_mode: 'true'
-        - deploy_path: build/reports/
-    - save-cache@1:
-        is_always_run: true
-        inputs:
-        - key: spm-cache-{{ checksum "Package.resolved" "*.xcodeproj/**/Package.resolved" "WeTransferPRLinter/Package.resolved" }}
-        - paths: .spm-build
         - is_key_unique: 'true'

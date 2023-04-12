@@ -100,7 +100,7 @@ workflows:
         - debug_mode: 'true'
         - deploy_path: build/reports/
         - pipeline_intermediate_files: |-
-            "build/reports/:BITRISE_TEST_REPORTS"
+            build/reports/:BITRISE_TEST_REPORTS
     - save-cache@1:
         is_always_run: true
         inputs:

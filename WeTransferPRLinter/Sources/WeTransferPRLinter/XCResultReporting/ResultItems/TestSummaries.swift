@@ -57,7 +57,7 @@ extension ActionTestPlanRunSummaries {
 
     @available(macOS 12.0, *)
     func createResultForSlowestTests() -> [XCResultItem] {
-        let allTests = self.allTests
+        let allTests = allTests
         guard !allTests.isEmpty else { return [] }
 
         var durationThreshold: Double = 2

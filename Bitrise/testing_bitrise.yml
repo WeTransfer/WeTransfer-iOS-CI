@@ -99,6 +99,10 @@ workflows:
         - is_compress: 'true'
         - debug_mode: 'true'
         - deploy_path: build/reports/
+    - deploy-to-bitrise-io@2:
+        run_if: '{{enveq "SKIP_TESTS" "false"}}'
+        title: Deploy pipeline test reports
+        inputs:
         - pipeline_intermediate_files: |-
             build/reports/:BITRISE_TEST_REPORTS
     - save-cache@1:

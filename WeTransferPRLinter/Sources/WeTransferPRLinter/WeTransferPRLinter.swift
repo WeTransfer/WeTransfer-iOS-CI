@@ -111,9 +111,13 @@ public enum WeTransferPRLinter {
             }
             print("Finished reporting XCResult summaries.")
         } catch let error as LocationError where error.isMissingError {
-            danger.message("No tests found for the current changes in \(reportsPath)")
+            let message = "No tests found for the current changes in \(reportsPath)"
+            print(message)
+            danger.message(message)
         } catch {
-            danger.warn("XCResult Summary failed with error: \(error).")
+            let warning = "XCResult Summary failed with error: \(error)."
+            print(warning)
+            danger.warn(warning)
         }
     }
 

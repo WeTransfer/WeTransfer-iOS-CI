@@ -137,7 +137,7 @@ end
 # Shared method for handling errors that are being raised during fastlane deployment.
 # Errors being raised on the test lane (PR tests) will be ignore, because they could lead to too much spam on the slack channel.
 def handle_error(lane, exception)
-  return if lane == :test # Do not report errors on PR tests.
+  return if lane.to_s.start_with?("test") # Do not report errors on lanes that start with "test" (ex. :test, :test_package, :test_sdk).
   return unless is_running_on_CI # Do not report errors on other environments than CI.
 
   # Makes sure we clean up the tag and the release branch if release_from_tag failed, to allow future releases

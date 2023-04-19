@@ -66,6 +66,28 @@ final class XCResultSummartReporterTests: XCTestCase {
         }
     }
 
+    func testXCResultSummaryReportingFromENV() throws {
+        let xcResultFilename = "Trainer_example_result.xcresult"
+        let xcResultFile = Bundle.module.url(forResource: "Resources/\(xcResultFilename)", withExtension: nil)!
+
+        let danger = githubWithFilesDSL()
+        let stubbedFileManager = StubbedFileManager()
+        stubbedFileManager.stubbedCurrentDirectoryPath = "/Users/josh/Projects/fastlane/"
+
+        WeTransferPRLinter.lint(
+            using: danger,
+            swiftLintExecutor: MockedSwiftLintExecutor.self,
+            reportsPath: buildFolder.path,
+            fileManager: stubbedFileManager,
+            environmentVariables: ["BITRISE_TEST_REPORTS_TEST": xcResultFile.deletingLastPathComponent().path]
+        )
+
+        XCTAssertEqual(danger.messages.map(\.message).prefix(2), [
+            "TestUITests: Executed 1 tests (0 failed, 0 retried, 0 skipped) in 16.058 seconds",
+            "TestThisDude: Executed 6 tests (2 failed, 0 retried, 0 skipped) in 0.534 seconds"
+        ])
+    }
+
     func testSlowestTestsReporting() throws {
         let xcResultFilename = "Trainer_example_result.xcresult"
         let xcResultFile = Bundle.module.url(forResource: "Resources/\(xcResultFilename)", withExtension: nil)!

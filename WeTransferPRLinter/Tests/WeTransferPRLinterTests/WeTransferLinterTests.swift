@@ -219,14 +219,12 @@ final class WeTransferLinterTests: XCTestCase {
             using: danger,
             summaryReporter: XCResultSummaryReporter.self,
             reportsPath: "file://faky/url",
-            fileManager: .default
+            fileManager: .default,
+            environmentVariables: [:]
         )
 
         XCTAssertEqual(danger.warnings.count, 0)
-        XCTAssertEqual(danger.messages.count, 1)
-        XCTAssertEqual(danger.messages.map(\.message), [
-            "No tests found for the current changes in file://faky/url"
-        ])
+        XCTAssertEqual(danger.messages.count, 0)
     }
 }
 

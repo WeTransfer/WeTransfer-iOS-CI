@@ -116,7 +116,7 @@ public enum WeTransferPRLinter {
     }
 
     static func xcResultFiles(for environmentVariables: [String: String]) -> [Folder] {
-        environmentVariables.compactMap { (key, value) -> [Folder]? in
+        environmentVariables.compactMap { key, value -> [Folder]? in
             guard key.starts(with: "BITRISE_TEST_REPORTS_") else { return nil }
             guard let folder = try? Folder(path: value) else { return nil }
             return folder.subfolders.filter { $0.extension == "xcresult" }

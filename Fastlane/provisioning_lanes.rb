@@ -110,7 +110,8 @@ end
 
 desc 'Download and refresh profiles for local development'
 private_lane :sign do
-  match(type: 'development', force: true)
-  match(type: 'adhoc', force: true)
-  match(type: 'appstore', force: true)
+  app_identifiers = ENV['APP_IDENTIFIERS']
+  match(type: 'development', force: true, app_identifier: app_identifiers)
+  match(type: 'adhoc', force: true, app_identifier: app_identifiers)
+  match(type: 'appstore', force: true, app_identifier: app_identifiers)
 end

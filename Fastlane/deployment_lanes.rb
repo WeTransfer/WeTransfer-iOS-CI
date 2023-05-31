@@ -75,7 +75,7 @@ lane :beta do |options|
   # Create a new GitHub release
   last_non_candidate_tag = latest_github_release_tag
   release_title = "#{tag_name} - Beta"
-  release_output = sh("mint run --silent gitbuddy release -l #{last_non_candidate_tag} -b #{branch_name} --skip-comments --json --use-pre-release --target-commitish #{branch_name} --tag-name #{tag_name} --release-title '#{release_title}'")
+  release_output = sh("mint run --silent gitbuddy release -l #{last_non_candidate_tag} -b #{branch_name} --skip-comments --json --useGitHubReleaseNotes --use-pre-release --target-commitish #{branch_name} --tag-name #{tag_name} --release-title '#{release_title}'")
   release_json = JSON.parse(release_output)
 
   release_url = release_json['url']
@@ -183,7 +183,7 @@ lane :release do |options|
     release_latest_tag = is_hotfix ? latest_release_tag : last_non_candidate_tag
     release_base_branch = is_hotfix ? 'main' : 'develop'
     target_commitish = branch_name
-    release_output = sh("mint run --silent gitbuddy release --skip-comments -l #{release_latest_tag} -b #{release_base_branch} -c '../Changelog.md' --changelogToTag #{latest_release_tag} --target-commitish #{target_commitish} --tag-name #{tag_name} --release-title '#{release_title}' --json")
+    release_output = sh("mint run --silent gitbuddy release --skip-comments --useGitHubReleaseNotes -l #{release_latest_tag} -b #{release_base_branch} -c '../Changelog.md' --changelogToTag #{latest_release_tag} --target-commitish #{target_commitish} --tag-name #{tag_name} --release-title '#{release_title}' --json")
     release_json = JSON.parse(release_output)
 
     release_url = release_json['url']

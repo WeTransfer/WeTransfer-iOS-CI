@@ -443,7 +443,8 @@ desc ''
 private_lane :current_preparing_app_version do |options|
   UI.message 'fetching highest version on App Store Connect...'
 
-  token = Spaceship::ConnectAPI::Token.create(Actions.lane_context[SharedValues::APP_STORE_CONNECT_API_KEY])
+  api_key = Actions.lane_context[SharedValues::APP_STORE_CONNECT_API_KEY]
+  token = Spaceship::ConnectAPI::Token.create(**api_key)
   Spaceship::ConnectAPI.token = token
 
   app = Spaceship::ConnectAPI::App.find(options[:app_identifier])

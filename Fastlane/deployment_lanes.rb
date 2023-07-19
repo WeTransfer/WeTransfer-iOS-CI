@@ -531,44 +531,10 @@ private_lane :latest_github_release_tag do
   latest_release['tag_name']
 end
 
-lane :markdown_url_strip_test do
-  input = "<!-- Release notes generated using configuration in .github/release.yml at release/2.0.2b6876 -->
-
-## What's Changed
-### Features and Bugfixes
-* Tracking for `accessibilityPerformEscape` for the feature discovery modal by @peagasilva in https://github.com/WeTransfer/Mule/pull/2999
-* Update marketing version to `2.0.2` by @kairadiagne in https://github.com/WeTransfer/Mule/pull/3013
-* [TMOB 3574] fix unit tests by @swaan-miller in https://github.com/WeTransfer/Mule/pull/3003
-* [Cellular Settings] remove toggle by @swaan-miller in https://github.com/WeTransfer/Mule/pull/3014
-* Temporarily add fallback creative ads response locally by @peagasilva in https://github.com/WeTransfer/Mule/pull/3011
-* Add tracking for when the modal is dismissed interactively by @peagasilva in https://github.com/WeTransfer/Mule/pull/3015
-* [Cellular Settings] create settings view by @swaan-miller in https://github.com/WeTransfer/Mule/pull/3017
-* [Send flow] Make the whole Files + > a button by @BasThomas in https://github.com/WeTransfer/Mule/pull/3009
-* [Mac App] Adjust statusbar icon for Menu Bar appearance by @AvdLee in https://github.com/WeTransfer/Mule/pull/3023
-* [Live Activity]: Adding alerts by @neodym in https://github.com/WeTransfer/Mule/pull/3024
-* Mobile Ads - Update local fallback response by @peagasilva in https://github.com/WeTransfer/Mule/pull/3025
-* Add error description copy by @AvdLee in https://github.com/WeTransfer/Mule/pull/3020
-* [TMOB-3448] - Improve handling of pending payments by @kairadiagne in https://github.com/WeTransfer/Mule/pull/3021
-* [Cellular Settings] cellular usage picker by @swaan-miller in https://github.com/WeTransfer/Mule/pull/3026
-### Non-testable Changes
-* Fix failing test in ContactSyncing package by @BasThomas in https://github.com/WeTransfer/Mule/pull/3005
-* Update iMessage screenshots by @kairadiagne in https://github.com/WeTransfer/Mule/pull/3010
-* [TMOB 3418] Event tracking migration by @AvdLee in https://github.com/WeTransfer/Mule/pull/2992
-* Add unit tests for subscription tracking by @kairadiagne in https://github.com/WeTransfer/Mule/pull/3006
-* Remove StoreKit 2 experiment by @kairadiagne in https://github.com/WeTransfer/Mule/pull/3022
-* Add system resources to Amplitude Transfer Sent event by @AvdLee in https://github.com/WeTransfer/Mule/pull/3030
-
-
-**Full Changelog**: https://github.com/WeTransfer/Mule/compare/2.0.1b6820...2.0.2b6912"
-  
-
-  UI.message "Stripped output is: \n #{strip_changelog(input: input)}"
-end
-
-desc 'Strips Markdown URLs and returns it as plain text'
+desc 'Strips URLs and unuseful decoration for reading changelogs outside of GitHub'
 desc 'Used for example for the App Store changelog'
 desc '#### Options'
-desc ' * **`input`**: The text from which to strip the Markdown URLs'
+desc ' * **`input`**: The text from which to strip the URLs and decoration'
 desc ''
 private_lane :strip_changelog do |options|
   output = options[:input]
@@ -577,8 +543,8 @@ private_lane :strip_changelog do |options|
     # Remove all trailing URLs including the " in " prefix.
     .gsub(/ in https?:\/\/[\S]+/, '')
 
-  # Remove the last line containing "Full Changelog..." since it's not useful outside of GitHub.
-  lines = output.strip.split("\n")
+  # Remove the last line containing "Full Changelog..." since it's not useful outside of GitHub, and the first line containing <!--- Release notes...
+  lines = output.strip.split("\n").drop(1)
   lines.pop
 
   # Join together again, chop (aka trim) linebreaks and whitespaces, and return as the result.

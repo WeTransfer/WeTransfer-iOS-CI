@@ -80,7 +80,7 @@ lane :beta do |options|
 
   release_url = release_json['url']
   changelog = release_json['changelog']
-  stripped_changelog = strip_markdown_url(input: changelog)
+  stripped_changelog = strip_changelog(input: changelog)
   truncated_changelog = truncate(stripped_changelog, 3900) # 4000 characters is the maximum allowed by Apple
 
   UI.message "Created release with URL: #{release_url}"
@@ -188,7 +188,7 @@ lane :release do |options|
 
     release_url = release_json['url']
     changelog = release_json['changelog']
-    stripped_changelog = strip_markdown_url(input: changelog)
+    stripped_changelog = strip_changelog(input: changelog)
 
     UI.message "Created release with URL: #{release_url}"
 
@@ -532,13 +532,24 @@ private_lane :latest_github_release_tag do
   latest_release['tag_name']
 end
 
-desc 'Strips Markdown URLs and returns it as plain text'
+desc 'Strips URLs and unuseful decoration for reading changelogs outside of GitHub'
 desc 'Used for example for the App Store changelog'
 desc '#### Options'
-desc ' * **`input`**: The text from which to strip the Markdown URLs'
+desc ' * **`input`**: The text from which to strip the URLs and decoration'
 desc ''
-private_lane :strip_markdown_url do |options|
-  options[:input].gsub(/(?:__|[*#])|\[(.*?)\]\(.*?\)/, '\1')
+private_lane :strip_changelog do |options|
+  output = options[:input]
+    # Add an extra enter before headers
+    .gsub('### ', "\n### ")
+    # Remove all trailing URLs including the " in " prefix.
+    .gsub(/ in https?:\/\/[\S]+/, '')
+
+  # Remove the last line containing "Full Changelog..." since it's not useful outside of GitHub, and the first line containing <!--- Release notes...
+  lines = output.strip.split("\n").drop(1)
+  lines.pop
+
+  # Join together again, chop (aka trim) linebreaks and whitespaces, and return as the result.
+  lines.join("\n").chop
 end
 
 desc 'Generates a new tag name using the projects build and version number'

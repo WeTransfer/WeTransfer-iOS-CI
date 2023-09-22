@@ -1,6 +1,6 @@
 --indent 4
 --patternlet inline
---disable unusedArguments
+--disable unusedArguments,hoistAwait,hoistTry
 --header strip
 --commas inline
 --selfrequired waitFor

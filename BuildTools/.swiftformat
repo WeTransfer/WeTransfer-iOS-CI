@@ -3,6 +3,5 @@
 --disable unusedArguments,hoistAwait,hoistTry,conditionalAssignment,wrapMultilineStatementBraces,braces 
 --header strip
 --commas inline
---selfrequired waitFor
---selfrequired expectation
+--selfrequired waitFor,expectation
 --swiftversion 5.9

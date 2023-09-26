@@ -1,6 +1,6 @@
 --indent 4
 --patternlet inline
---disable unusedArguments,hoistAwait,hoistTry,conditionalAssignment,wrapMultilineStatementBraces,braces 
+--disable unusedArguments,hoistAwait,hoistTry,conditionalAssignment,wrapMultilineStatementBraces,braces,redundantreturn 
 --header strip
 --commas inline
 --selfrequired waitFor,expectation

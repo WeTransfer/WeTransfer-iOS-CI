@@ -5,9 +5,9 @@ extension LocationError {
     var isMissingError: Bool {
         switch reason {
         case .missing:
-            true
+            return true
         default:
-            false
+            return false
         }
     }
 }

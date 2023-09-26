@@ -12,5 +12,5 @@ if [ -z "$CI" ]; then
         xcrun --sdk macosx mint bootstrap -m $MINT_FILE_PATH
     fi
 
-    xcrun --sdk macosx mint run -m $MINT_FILE_PATH $SWIFT_FORMAT --config "$BASEDIR/.swiftformat" .
+    xcrun --sdk macosx mint run -m $MINT_FILE_PATH $SWIFT_FORMAT --config "$BASEDIR/.swiftformat" . --verbose
 fi

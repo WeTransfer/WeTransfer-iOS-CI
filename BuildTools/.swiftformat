@@ -1,8 +1,7 @@
 --indent 4
 --patternlet inline
---disable unusedArguments
+--disable unusedArguments,hoistAwait,hoistTry,conditionalAssignment,wrapMultilineStatementBraces,braces,redundantreturn 
 --header strip
 --commas inline
---selfrequired waitFor
---selfrequired expectation
---swiftversion 5.7
+--selfrequired waitFor,expectation
+--swiftversion 5.9

@@ -73,10 +73,10 @@ end
 ```
 
 ### 3: Integrate SwiftLint in your project
-Add a run script and use the common used [SwiftLint](https://github.com/WeTransfer/WeTransfer-iOS-CI/blob/master/SwiftLint/swiftlint.sh) script:
+Add a run script and use the common used [SwiftLint](https://github.com/WeTransfer/WeTransfer-iOS-CI/blob/master/BuildTools/swiftlint.sh) script:
 
 ```shell
-./Submodules/WeTransfer-iOS-CI/SwiftLint/swiftlint.sh
+./Submodules/WeTransfer-iOS-CI/BuildTools/swiftlint.sh
 ```
 
 ### 4: Make use of the shared Bitrise.yml workflows
@@ -255,9 +255,9 @@ If you want to decompress a `tzst` cache file after downloading it from Bitrise,
 ## Danger Binary Updating
 - See https://github.com/danger/swift/issues/476
 - Fork https://github.com/danger/swift
-- Update Danger's Package.swift to Swift 5.7 and switch `isDevelop` to `false`
+- Update Danger's Package.swift to Swift 5.9 and switch `isDevelop` to `false`
 - Run `swift build --configuration release --arch arm64 --arch x86_64`
-- Copy the file from `.build/apple/Products/Release/danger-swift`
+- Copy the file from `.build/apple/Products/Release/danger-swift` to the root of the repository
 
 ## License
 WeTransfer-iOS-CI is available under the MIT license. See the LICENSE file for more info.

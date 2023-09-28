@@ -73,10 +73,10 @@ end
 ```
 
 ### 3: Integrate SwiftLint in your project
-Add a run script and use the common used [SwiftLint](https://github.com/WeTransfer/WeTransfer-iOS-CI/blob/master/SwiftLint/swiftlint.sh) script:
+Add a run script and use the common used [SwiftLint](https://github.com/WeTransfer/WeTransfer-iOS-CI/blob/master/BuildTools/swiftlint.sh) script:
 
 ```shell
-./Submodules/WeTransfer-iOS-CI/SwiftLint/swiftlint.sh
+./Submodules/WeTransfer-iOS-CI/BuildTools/swiftlint.sh
 ```
 
 ### 4: Make use of the shared Bitrise.yml workflows

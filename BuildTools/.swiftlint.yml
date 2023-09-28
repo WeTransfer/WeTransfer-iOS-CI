@@ -31,7 +31,6 @@ opt_in_rules:
   - toggle_bool
   - type_contents_order
   - multiline_function_chains
-
   - accessibility_trait_for_button
   - accessibility_label_for_image
   - shorthand_optional_binding
@@ -51,7 +50,16 @@ opt_in_rules:
   - unneeded_parentheses_in_closure_argument
   - untyped_error_in_catch
   - xct_specific_matcher
+  - private_swiftui_state
+  - unneeded_override
 
+analyzer_rules:
+  - capture_variable
+  - unused_import
+
+explicit_init:
+  severity: warning
+  include_bare_init: true
 syntactic_sugar: error
 unused_closure_parameter: error
 unused_optional_binding:
@@ -87,10 +95,6 @@ type_contents_order:
     - view_life_cycle_method
     - [subscript, other_method, ib_action]
     - type_method
-
-analyzer_rules:
-  - capture_variable
-  - unused_import
 
 custom_rules:
   overridden_only_calls_super:

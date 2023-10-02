@@ -84,10 +84,10 @@ object_literal:
   color_literal: false
 type_contents_order:
   order:
-    - type_alias
     - case
     - subtype
     - associated_type
+    - type_alias
     - ib_outlet
     - ib_inspectable
     - type_property

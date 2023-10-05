@@ -278,6 +278,7 @@ lane :release do |options|
       phased_release: true,
       automatic_release: false,
       precheck_include_in_app_purchases: false,
+      skip_screenshots: true, # Screenshots should be manually updated using `fastlane deliver_screenshots`.
       submission_information: {
         add_id_info_uses_idfa: false
       }

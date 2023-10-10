@@ -278,7 +278,11 @@ lane :release do |options|
       phased_release: true,
       automatic_release: false,
       precheck_include_in_app_purchases: false,
-      skip_screenshots: true, # Screenshots should be manually updated using `fastlane deliver_screenshots`.
+
+      # Screenshots should be manually updated using `fastlane deliver_screenshots`.
+      # Updating screenshots during the release phase risks unexpected issues and could delay our
+      # release train. Therefore, we want to update screenshots explicitly to capture issues early on.
+      skip_screenshots: true, 
       submission_information: {
         add_id_info_uses_idfa: false
       }

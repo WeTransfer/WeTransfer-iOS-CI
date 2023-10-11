@@ -58,6 +58,7 @@ lane :test_project do |options|
     scan(
       step_name: options[:step_name] || "Scan - #{scheme}",
       scheme: scheme,
+      testplan: options[:testplan],
       project: project_path,
       device: device,
       destination: options[:destination],

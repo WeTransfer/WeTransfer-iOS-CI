@@ -8,6 +8,7 @@ disabled_rules: # Rule identifiers to exclude from running
   - switch_case_alignment
   - trailing_comma
   - todo
+  - nesting
 opt_in_rules:
   - block_based_kvo
   - class_delegate_protocol

@@ -372,7 +372,7 @@ desc 'Returns true if there are new changes since the last available tag'
 private_lane :is_changed_since_last_tag do
   sh "git fetch --tags origin #{ENV['BITRISE_GIT_BRANCH']} --no-recurse-submodules"
   last_tag = last_git_tag
-  changes = sh "git diff --name-only HEAD #{last_tag}"
+  changes = sh "git --no-pager diff --name-status #{last_tag} HEAD"
   UI.message "Is local HEAD changed since last tag #{last_tag}: #{!changes.empty?}"
   is_changed = !changes.empty?
 end

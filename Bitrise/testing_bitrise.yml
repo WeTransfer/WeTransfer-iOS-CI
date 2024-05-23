@@ -79,7 +79,7 @@ workflows:
             #!/usr/bin/env bash
             # Use the environment FASTLANE_LANE if available. Otherwise, fallback to "test"
             lane=${FASTLANE_LANE:=test}
-            fastlane $lane
+            bundle exec fastlane $lane
     - deploy-to-bitrise-io@2:
         run_if: '{{enveq "CREATE_SIMULATOR_BUILD" "true"}}'
         title: Deploy Simulator Build to Bitrise

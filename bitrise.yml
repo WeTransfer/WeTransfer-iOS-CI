@@ -22,11 +22,15 @@ workflows:
             export BITRISE_PULL_REQUEST=117
 
             bitrise run wetransfer_pr_testing
+  
   wetransfer_pr_testing:
     steps:
     - activate-ssh-key:
         run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
     - git-clone: {}
+    - script:
+        inputs:
+        - content: bitrise run bundle_install
     - script:
         inputs:
         - content: |-
@@ -47,6 +51,7 @@ workflows:
     - opts:
         is_expand: false
       FASTLANE_LANE: test_pr_linter
+  
   wetransfer_tag_releasing:
     steps:
     - activate-ssh-key:
@@ -61,12 +66,33 @@ workflows:
             git config --global url."git@github.com:".insteadOf "https://github.com/"
     - git-clone: {}
     - script:
+        inputs:
+        - content: bitrise run bundle_install
+    - script:
         title: Continue from WeTransfer-iOS-CI repo
         inputs:
         - content: |-
             #!/bin/bash
             set -ex
             bitrise run --config ./Bitrise/tag_releasing_bitrise.yml "${BITRISE_TRIGGERED_WORKFLOW_ID}"
+
+  bundle_install:
+    steps:
+    - restore-cache:
+        title: Restore bundler cache
+        inputs:
+        - key: bundler-cache-{{ checksum "Gemfile.lock" ".ruby-version" }}
+    - script:
+        title: Run Bundler
+        inputs:
+        - content: |-
+            bundle config set path 'vendor/bundle'
+            bundle install
+    - save-cache:
+        title: Save bundler cache
+        inputs:
+        - key: bundler-cache-{{ checksum "Gemfile.lock" ".ruby-version" }}
+        - paths: vendor/
 meta:
   bitrise.io:
     machine_type: standard

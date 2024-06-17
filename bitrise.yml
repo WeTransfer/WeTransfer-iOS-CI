@@ -71,4 +71,4 @@ meta:
   bitrise.io:
     machine_type: standard
     stack: osx-xcode-14.2.x
-    machine_type_id: g2.4core
+    machine_type_id: g2-m1.4core

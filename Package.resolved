@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/nerdishbynature/octokit.swift",
         "state": {
           "branch": null,
-          "revision": "9521cdff919053868ab13cd08a228f7bc1bde2a9",
-          "version": "0.11.0"
+          "revision": "44192458beb89180c3a3a1245d904aacac8be0ae",
+          "version": "0.13.0"
         }
       },
       {
@@ -33,8 +33,8 @@
         "repositoryURL": "https://github.com/nerdishbynature/RequestKit.git",
         "state": {
           "branch": null,
-          "revision": "fd5e9e99aada7432170366c9e95967011ce13bad",
-          "version": "2.4.0"
+          "revision": "e4d905fed938807e36d87f28375f88b7c1c26840",
+          "version": "3.3.0"
         }
       },
       {
@@ -42,8 +42,17 @@
         "repositoryURL": "https://github.com/danger/swift",
         "state": {
           "branch": null,
-          "revision": "c1bba33f705ca0fd4a0022997c8b696210083755",
-          "version": "3.12.3"
+          "revision": "fd4af3b9f11fcc68e9bbc1b6de783374bdf29f85",
+          "version": "3.19.1"
+        }
+      },
+      {
+        "package": "SwiftFormat",
+        "repositoryURL": "https://github.com/nicklockwood/SwiftFormat",
+        "state": {
+          "branch": null,
+          "revision": "ab6844edb79a7b88dc6320e6cee0a0db7674dac3",
+          "version": "0.54.5"
         }
       },
       {
@@ -51,8 +60,8 @@
         "repositoryURL": "https://github.com/mxcl/Version",
         "state": {
           "branch": null,
-          "revision": "200046c93f6d5d78a6d72bfd9c0b27a95e9c0a2b",
-          "version": "1.2.0"
+          "revision": "303a0f916772545e1e8667d3104f83be708a723c",
+          "version": "2.1.0"
         }
       },
       {

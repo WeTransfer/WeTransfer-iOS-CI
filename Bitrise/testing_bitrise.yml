@@ -115,8 +115,9 @@ workflows:
   wetransfer_pr_testing:
     before_run:
     - pr_testing
-    after_run:
-    - workflow_danger
+# Uncomment once Danger adopts Xcode 16
+#    after_run:
+#    - workflow_danger
     
   workflow_danger:
     steps:

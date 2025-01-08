@@ -57,8 +57,9 @@ workflows:
               exit 0
             fi
 
-            # Get the latest master branch for WeTransfer-iOS-CI if the submodule exists
-            git submodule update --remote --no-fetch Submodules/WeTransfer-iOS-CI
+            # Update WeTransfer-iOS-CI if the submodule exists
+            # (pulls the submodule at the commit pointed by the parent repo!)
+            git submodule update Submodules/WeTransfer-iOS-CI
         title: Update WeTransfer-iOS-CI submodule
     - script:
         run_if: .IsCI

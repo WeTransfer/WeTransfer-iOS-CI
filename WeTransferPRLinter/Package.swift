@@ -17,7 +17,7 @@ let package = Package(
     dependencies: [
         .package(name: "danger-swift", url: "https://github.com/danger/swift", from: "3.20.2"),
         .package(name: "Files", url: "https://github.com/JohnSundell/Files", from: "4.1.1"),
-        .package(name: "XCResultKit", url: "https://github.com/davidahouse/XCResultKit.git", from: "0.9.2")
+        .package(name: "XCResultKit", url: "https://github.com/davidahouse/XCResultKit.git", from: "1.2.1")
     ],
     targets: [
         .target(

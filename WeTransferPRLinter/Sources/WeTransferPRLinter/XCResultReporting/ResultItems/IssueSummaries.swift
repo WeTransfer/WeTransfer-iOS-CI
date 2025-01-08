@@ -60,7 +60,7 @@ extension ActionTestSummary: XCResultItemsConvertible {
         guard let title = activitySummaries.first?.title else {
             return []
         }
-        let message = "**\(identifier):**<br/>\(title)"
+        let message = "**\(identifier ?? "<unknown>"):**<br/>\(title)"
         return [XCResultItem(message: message, category: .warning)]
     }
 }

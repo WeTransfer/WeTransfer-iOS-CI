@@ -83,7 +83,7 @@ extension ActionTestPlanRunSummaries {
         return slowestTests.compactMap { testMetadata in
             guard let duration = testMetadata.duration else { return nil }
             let durationString = String(format: "%.3fs", duration)
-            return XCResultItem(message: "Slowest test: \(testMetadata.identifier) (\(durationString))", category: .message)
+            return XCResultItem(message: "Slowest test: \(testMetadata.identifier ?? "<unknown>") (\(durationString))", category: .message)
         }
     }
 }
@@ -188,11 +188,11 @@ extension ActionTestSummaryGroup {
 
 extension [ActionTestMetadata] {
     private var successIdentifiers: Set<String> {
-        Set<String>(filter { $0.testStatus == "Success" }.map(\.identifier))
+        Set<String>(filter { $0.testStatus == "Success" }.compactMap(\.identifier))
     }
 
     private var failedIdentifiers: Set<String> {
-        Set<String>(filter { $0.testStatus == "Failure" }.map(\.identifier))
+        Set<String>(filter { $0.testStatus == "Failure" }.compactMap(\.identifier))
     }
 
     var skipped: [ActionTestMetadata] {

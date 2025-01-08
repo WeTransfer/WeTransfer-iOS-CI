@@ -30,7 +30,7 @@ lane :test_project do |options|
 
   begin
     if options[:destination].nil?
-      device = options[:device] || 'iPhone 14'
+      device = options[:device] || 'iPhone 16 (18.0)'
     end
 
     if options[:package_path].nil?

@@ -28,13 +28,10 @@ struct XCResultCoverageReporter {
                 $0?.summaries.flatMap { $0.testableSummaries.compactMap(\.targetName) }
             }
             .flatMap { $0 }
-            let coverageTargets = testTargetNames.map { targetName -> String in
-                targetName.replacingOccurrences(of: "Tests", with: "")
-            }
 
             markdown += coverage.targets
                 .compactMap { target in
-                    guard coverageTargets.contains(target.coverageTargetName) else { return nil }
+                    guard testTargetNames.contains(target.coverageTargetName) else { return nil }
                     return "\(target.name) | \(target.coverageDescription)% | \(target.lineCoverage > minimumCoverage ? "✅" : "⚠️")\n"
                 }
                 .joined()

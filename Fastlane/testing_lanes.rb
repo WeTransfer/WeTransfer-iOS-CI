@@ -30,7 +30,7 @@ lane :test_project do |options|
 
   begin
     if options[:destination].nil?
-      device = options[:device] || 'iPhone 14'
+      device = options[:device] || 'iPhone 16 (18.0)'
     end
 
     if options[:package_path].nil?
@@ -64,7 +64,7 @@ lane :test_project do |options|
       destination: options[:destination],
       code_coverage: code_coverage_enabled,
       disable_concurrent_testing: true, # As of 27th October 2021, this seems to not be working anymore. We need `parallel-testing-enabled NO` instead.
-      fail_build: false,
+      fail_build: true,
       skip_slack: true,
       output_types: '',
       # xcodebuild_formatter: '', # Add this to get verbose logging by disabling xcbeautify.

@@ -57,8 +57,9 @@ workflows:
               exit 0
             fi
 
-            # Get the latest master branch for WeTransfer-iOS-CI if the submodule exists
-            git submodule update --remote --no-fetch Submodules/WeTransfer-iOS-CI
+            # Update WeTransfer-iOS-CI if the submodule exists
+            # (pulls the submodule at the commit pointed by the parent repo!)
+            git submodule update Submodules/WeTransfer-iOS-CI
         title: Update WeTransfer-iOS-CI submodule
     - script:
         run_if: .IsCI
@@ -115,14 +116,14 @@ workflows:
   wetransfer_pr_testing:
     before_run:
     - pr_testing
-# Uncomment once Danger adopts Xcode 16
-#    after_run:
-#    - workflow_danger
+    after_run:
+    - workflow_danger
     
   workflow_danger:
     steps:
     - script:
         title: Set up Danger Caching
+        is_always_run: true
         inputs:
         - content: |-
             if [ "$BITRISEIO_GIT_REPOSITORY_SLUG" == "WeTransfer-iOS-CI" ]; then
@@ -132,11 +133,13 @@ workflows:
                 envman add --key DANGER_CHECKSUM_PATH --value "Submodules/WeTransfer-iOS-CI/Package.resolved"
                 envman add --key DANGER_BUILD_DIRECTORY --value "Submodules/WeTransfer-iOS-CI/.build"
             fi
-    - restore-cache@1:      
+    - restore-cache@1:
+        is_always_run: true      
         inputs:          
         - key: danger-build-cache-{{ checksum "$DANGER_CHECKSUM_PATH" }}
     - script:
         title: Run Danger
+        is_always_run: true
         inputs:
         - content: |-
             #!/usr/bin/env bash
@@ -158,6 +161,7 @@ workflows:
                 ./danger-swift ci --cwd ../../
             fi
     - save-cache@1:
+        is_always_run: true
         inputs:
         - key: danger-build-cache-{{ checksum "$DANGER_CHECKSUM_PATH" }}
         - paths: "$DANGER_BUILD_DIRECTORY"

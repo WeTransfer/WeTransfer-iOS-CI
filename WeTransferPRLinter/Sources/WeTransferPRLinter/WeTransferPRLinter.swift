@@ -94,8 +94,9 @@ public enum WeTransferPRLinter {
             ".build/",
             ".spm-build/"
         ]
+        let shouldReportWarnings = environmentVariables["REPORT_WARNINGS"]?.lowercased() == "true"
 
-        summaryReporter.reportXCResultSummary(for: xcResultFiles, using: danger, fileManager: fileManager) { result in
+        summaryReporter.reportXCResultSummary(for: xcResultFiles, using: danger, shouldReportWarnings: shouldReportWarnings, fileManager: fileManager) { result in
             guard let file = result.file else {
                 return true
             }

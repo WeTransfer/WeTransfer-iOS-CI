@@ -28,7 +28,8 @@ lane :install_match_dependencies do
       type: 'appstore',
       readonly: true,
       platform: 'macos',
-      app_identifier: ENV["MACOS_APP_IDENTIFIERS"]
+      app_identifier: ENV["MACOS_APP_IDENTIFIERS"],
+      additional_cert_types: ["mac_installer_distribution"]
     )
   end
 end
@@ -66,7 +67,8 @@ lane :update_match_appstore_dependencies do
       type: 'appstore',
       readonly: false,
       platform: 'macos',
-      app_identifier: ENV["MACOS_APP_IDENTIFIERS"]
+      app_identifier: ENV["MACOS_APP_IDENTIFIERS"],
+      additional_cert_types: ["mac_installer_distribution"]
     )
   end
 end
@@ -80,7 +82,8 @@ private_lane :match_configuration do |options|
     api_key: api_key,
     readonly: options[:readonly],
     platform: options[:platform],
-    app_identifier: options.fetch(:app_identifier, ENV["APP_IDENTIFIERS"])
+    app_identifier: options.fetch(:app_identifier, ENV["APP_IDENTIFIERS"]),
+    additional_cert_types: options.fetch(:additional_cert_types, [])
   )
 end
 

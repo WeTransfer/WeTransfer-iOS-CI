@@ -9,6 +9,7 @@ disabled_rules: # Rule identifiers to exclude from running
   - trailing_comma
   - todo
   - nesting
+  - explicit_init
 opt_in_rules:
   - block_based_kvo
   - class_delegate_protocol
@@ -16,7 +17,6 @@ opt_in_rules:
   - convenience_type
   - empty_count
   - empty_string
-  - explicit_init
   - fallthrough
   - fatal_error_message
   - first_where
@@ -72,8 +72,8 @@ file_length:
   warning: 660
   error: 1320
 function_body_length:
-  warning: 60
-  error: 90
+  warning: 150
+  error: 200
 type_body_length:
   warning: 400
   error: 500

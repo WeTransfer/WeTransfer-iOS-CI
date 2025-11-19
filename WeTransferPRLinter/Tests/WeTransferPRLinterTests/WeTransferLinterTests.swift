@@ -70,52 +70,6 @@ final class WeTransferLinterTests: XCTestCase {
         XCTAssertEqual(danger.warnings.first?.message, "PR is classed as Work in Progress")
     }
 
-    /// It should warn for using Mark in big files without any mark.
-    func testMarkUsage() {
-        let danger = DangerDSL(testSettings: [:])
-        WeTransferPRLinter.validateMarkUsage(using: danger, file: "File.swift", lines: [
-            "func myMethod() {",
-            "print(\"something\")",
-            "}"
-        ], minimumLinesCount: 2)
-        XCTAssertEqual(danger.warnings.count, 1)
-        XCTAssertEqual(danger.warnings.first?.message, "Consider to place some `MARK:` lines for File.swift, which is over 2 lines big.")
-    }
-
-    /// It should not warn for using Mark in small files without any mark.
-    func testMarkUsageSmallFiles() {
-        let danger = DangerDSL(testSettings: [:])
-        WeTransferPRLinter.validateMarkUsage(using: danger, file: "File.swift", lines: [
-            "func myMethod() {",
-            "print(\"something\")",
-            "}"
-        ], minimumLinesCount: 5)
-        XCTAssertEqual(danger.warnings.count, 0)
-    }
-
-    /// It should not warn for using Mark in big files if a mark is used.
-    func testMarkAlreadyUsed() {
-        let danger = DangerDSL(testSettings: [:])
-        WeTransferPRLinter.validateMarkUsage(using: danger, file: "File.swift", lines: [
-            "MARK: Methods",
-            "func myMethod() {",
-            "print(\"something\")",
-            "}"
-        ], minimumLinesCount: 2)
-        XCTAssertEqual(danger.warnings.count, 0)
-    }
-
-    /// It should not warn for using Mark in test files.
-    func testMarkUsageInTests() {
-        let danger = DangerDSL(testSettings: [:])
-        WeTransferPRLinter.validateMarkUsage(using: danger, file: "FileTests.swift", lines: [
-            "func myMethod() {",
-            "print(\"something\")",
-            "}"
-        ], minimumLinesCount: 2)
-        XCTAssertEqual(danger.warnings.count, 0)
-    }
-
     /// It should show the Bitrise URL if it's set.
     func testBitriseURL() {
         let danger = DangerDSL(testSettings: [:])

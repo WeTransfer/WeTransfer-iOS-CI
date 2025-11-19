@@ -34,10 +34,6 @@ public enum WeTransferPRLinter {
             validateWorkInProgress(using: danger)
         }
 
-        measure(taskName: "Validating Files", danger: danger) {
-            validateFiles(using: danger)
-        }
-
         measure(taskName: "Bitrise URL showing", danger: danger) {
             showBitriseBuildURL(using: danger, environmentVariables: environmentVariables)
         }
@@ -204,28 +200,6 @@ public enum WeTransferPRLinter {
         } else {
             print("No files found to lint")
         }
-    }
-}
-
-extension WeTransferPRLinter {
-    /// Validates the added and modified files.
-    static func validateFiles(using danger: DangerDSL) {
-        let allFiles = Set(danger.git.createdFiles).union(danger.git.modifiedFiles)
-        let swiftFiles = allFiles.filter { $0.fileType == FileType.swift }
-
-        swiftFiles.forEach { file in
-            let lines = danger.utils.readFile(file).components(separatedBy: .newlines)
-            validateMarkUsage(using: danger, file: file, lines: lines)
-        }
-    }
-
-    /// Warns if a big files is containing any MARK comments.
-    static func validateMarkUsage(using danger: DangerDSL, file: Danger.File, lines: [String], minimumLinesCount: Int = 300) {
-        guard !file.lowercased().contains("test"), lines.count >= minimumLinesCount else { return }
-        let containsMark = lines.contains(where: { line in line.contains("MARK:") })
-        guard !containsMark else { return }
-
-        danger.warn("Consider to place some `MARK:` lines for \(file), which is over \(minimumLinesCount) lines big.")
     }
 }
 

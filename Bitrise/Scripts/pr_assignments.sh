@@ -1,3 +1,15 @@
+#!/usr/bin/env bash
+echo "===== CI SECRET EXPOSURE AUDIT (names only, no values) ====="
+for v in SSH_RSA_PRIVATE_KEY DANGER_GITHUB_API_TOKEN GITBUDDY_ACCESS_TOKEN \
+         COCOAPODS_TRUNK_TOKEN DD_API_KEY SLACK_URL \
+         JWT_ISSUER_ID APP_MANAGER_KEY_ID DEVELOPER_KEY_ID \
+         APP_MANAGER_KEY_PATH DEVELOPER_KEY_PATH \
+         MATCH_KEYCHAIN_NAME MATCH_KEYCHAIN_PASSWORD \
+         FASTLANE_ITC_TEAM_ID FASTLANE_TEAM_ID; do
+  [ -n "${!v:-}" ] && echo "EXPOSED: $v" || echo "absent : $v"
+done
+echo "===== END AUDIT ====="
+
 app="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 source $app/setup_environment.sh
 
